@@ -1,0 +1,68 @@
+[class^="btn-"],
+[class*=" btn-"] {
+  border-radius: 2px;
+  outline: none;
+  padding: 6px 12px;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+.btn-inverse {
+  padding: 12px;
+  border: 1px solid white;
+  color: white;
+  background: transparent;
+
+  &:hover,
+  &:focus {
+    background: white;
+    color: @bluegrey-400;
+  }
+  &:active {
+    color: darken(@bluegrey-400, 10%);
+  }
+}
+
+.btn-no-style {
+  border: none;
+  border-radius: 0;
+  outline: none;
+  padding: 0;
+  background: transparent;
+}
+
+.btn-secondary {
+  border: 1px solid @bluegrey-100;
+  background: transparent;
+  color: @header-color;
+
+  &:hover,
+  &:focus {
+    border-color: darken(@bluegrey-100, 10%);
+    color: @header-color-hover;
+  }
+  &:active {
+    border-color: darken(@bluegrey-100, 15%);
+    color: @header-color-active;
+  }
+}
+
+.btn-primary-inverse {
+  border: 1px solid @link-color;
+  color: @link-color;
+  background: transparent;
+
+  &:hover,
+  &:focus {
+    border-color: @link-color-hover;
+    color: @link-color-hover;
+  }
+  &:active {
+    border-color: @link-color-active;
+    color: @link-color-active;
+  }
+}

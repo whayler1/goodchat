@@ -1,0 +1,48 @@
+.main-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: url(../../images/hero-blue.jpg) top center no-repeat;
+  background-size: cover;
+
+  @media(min-width: 768px) {
+    background-image: url(../../images/hero-wide4.jpg);
+  }
+}
+
+.main-home-title {
+  margin: 70px auto 0;
+  background: url(../../images/logo-white.png) 0 0 no-repeat;
+  background-size: 283px 71px;
+  width: 283px;
+  height: 71px;
+  font-size: 0;
+}
+
+.main-home-copy {
+  text-align: center;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.main-home-bottom {
+  position: absolute;
+  bottom: 90px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  .btn-inverse {
+    display: inline-block;
+    font-size: 1.2rem;
+    i {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  @media(min-width: 768px) {
+    bottom: 20px;
+  }
+}

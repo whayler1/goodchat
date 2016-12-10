@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Le Baume</title>
+    <script src="https://use.fontawesome.com/3dca8b675d.js"></script>
+    <!-- FB login redirect fix -->
+    <script type="text/javascript">
+      if (window.location.hash && window.location.hash == '#_=_') {
+          window.location.hash = '';
+      }
+    </script>
+  </head>
+  <body>
+      {% block content %}
+      {% endblock %}
+    <script type="text/javascript" src="/js/bundle.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

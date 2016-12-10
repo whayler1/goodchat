@@ -1,0 +1,101 @@
+.header {
+  position: relative;
+  padding: 10px 20px;
+  color: @header-color;
+  z-index: 10;
+  background: white;
+  border-bottom: 1px solid @bluegrey-50;
+
+  a,
+  button {
+    display: inline-block;
+    color: @header-color;
+    font-size: 1rem;
+    vertical-align: middle;
+
+    &:hover,
+    &:focus {
+      color: @header-color-hover;
+      text-decoration: none;
+    }
+    &:active {
+      color: @header-color-active;
+    }
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.header-home-anchor {
+  display: inline-block;
+  background: url(../../images/logo.png) 0 0 no-repeat transparent;
+  background-size: 72px 18px;
+  width: 72px;
+  height: 18px;
+  margin-left: 10px;
+}
+
+.header-user-ui {
+  float: right;
+}
+
+.header-user-ui-img {
+  float: right;
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.header-app-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 5;
+  padding-top: 50px;
+  transform: translateX(-100%);
+  transition: transform .25s;
+
+  &.header-app-nav-show {
+    transform: translateX(0);
+  }
+
+  button.btn-primary-inverse,
+  button.btn-secondary {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+
+    +button {
+      margin-top: 20px;
+    }
+  }
+}
+
+.header-app-nav-list {
+  margin: 0;
+  padding: 0;
+  >li {
+    >a {
+      display: block;
+      padding: 10px 20px;
+      color: @header-color;
+
+      &:hover,
+      &:focus {
+        color: @header-color-hover;
+      }
+      &:active {
+        color: @header-color-active;
+      }
+    }
+  }
+}
+
+.header-app-nav-footer {
+  margin: 40px 20px 20px;
+}
