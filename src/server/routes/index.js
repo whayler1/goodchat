@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
     if (error) return next(error);
     if (results) {
       renderObject.sum = results;
-      renderObject.fbAppId = process.env.FACEBOOK_APP_ID;
+      renderObject.googleClientId = process.env.GOOGLE_CLIENT_ID;
       res.render('index', renderObject);
     }
   });

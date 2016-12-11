@@ -1,4 +1,4 @@
-const databaseName = 'passport_local_knex';
+const databaseName = 'goodchat';
 
 module.exports = {
   production: {

@@ -15,7 +15,7 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-class LeBaume extends Component {
+class GoodChat extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -29,4 +29,4 @@ class LeBaume extends Component {
   }
 }
 
-ReactDOM.render(<LeBaume/>, document.getElementById('app'));
+ReactDOM.render(<GoodChat/>, document.getElementById('app'));

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import {setLoggedIn, logout} from '../user/user.dux';
 import {showNav, hideNav} from './navbar.dux';
 
@@ -42,36 +42,26 @@ class Navbar extends Component {
             if (shouldShowNav) {
               return <button className="btn-no-style"
                 onClick={this.props.hideNav}>
-                <i className="fa fa-times" />
+                <i className="material-icons">close</i>
               </button>;
             }
             return <button className="btn-no-style"
               onClick={this.props.showNav}>
-              <i className="fa fa-bars" />
+              <i className="material-icons">menu</i>
             </button>;
           })()}
           {shouldShowHeroLink && <a className="header-home-anchor"/>}
-          {!isLoggedIn && <FacebookLogin
-            appId={window.fbAppId}
-            autoLoad={true}
-            fields="name,email,picture"
-            cssClass="btn-no-style header-user-ui"
-            textButton="Login"
-            callback={this.props.setLoggedIn}
-          />}
           {this.props.isLoggedIn && this.getLoggedInUI()}
         </nav>
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
           <ul className="header-app-nav-list">
-            <li>
-              <a>Beauty talent <i className="fa fa-chevron-right pull-right"/></a>
-            </li>
-            <li>
-              <a>Calendar <i className="fa fa-chevron-right pull-right"/></a>
-            </li>
-            <li>
-              <a>Foo bar <i className="fa fa-chevron-right pull-right"/></a>
-            </li>
+            {[
+              { title: 'Link One' },
+              { title: 'Second Link' },
+              {title: 'Another link'}
+            ].map((link, index) => <li key={index}>
+              <a>{link.title} <i className="material-icons pull-right">chevron_right</i></a>
+            </li>)}
           </ul>
           <div className="header-app-nav-footer">
             {isLoggedIn && <button className="btn-secondary"

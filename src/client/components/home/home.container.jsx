@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import GoogleLogin from 'react-google-login';
 import Helmet from "react-helmet";
-import FacebookLogin from 'react-facebook-login';
 import {setLoggedIn} from '../user/user.dux';
 import {showHeroLink, hideHeroLink} from '../navbar/navbar.dux';
 
@@ -18,24 +18,24 @@ class Home extends Component {
   componentWillUnmount() {
     this.props.showHeroLink();
   }
+  responseGoogle = (res, err) => console.log('res:', res, 'err:', err);
   render() {
+    const googleClientId = window.googleClientId;
     return (
       <main className="main main-home" role="main">
         <Helmet
-          title="Le Baume"
-          meta={[{"name": "description", "content": "Top tier beauty talent at your home or event. Browse NYC makeup artists and hair stylists previously only available to the fashion industry. Book online now."}]}
+          title="Good Chat"
+          meta={[{"name": "description", "content": "This thing me and Chris are building."}]}
         />
-        <h1 className="main-home-title">Le Baume</h1>
+      <h1 className="main-home-title">Good Chat</h1>
         <div className="main-home-bottom">
-          <p className="main-home-copy">Top tier beauty talent<br/>at your home or event.</p>
-          {!this.props.isLoggedIn && <FacebookLogin
-            appId={window.fbAppId}
-            autoLoad={true}
-            fields="name,email,picture"
-            cssClass="btn-inverse"
-            icon={<i className="fa fa-facebook" />}
-            textButton="Login with facebook"
-            callback={this.props.setLoggedIn} />}
+          <GoogleLogin
+            clientId={googleClientId}
+            scope="profile"
+            className="btn-primary-inverse"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+          />
         </div>
       </main>
     );

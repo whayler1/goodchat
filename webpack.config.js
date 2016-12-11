@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./src/client/app.jsx",
+  entry: "./src/client/goodchat.jsx",
   output: {
     path: __dirname + '/dist',
     filename: "/js/bundle.js"
