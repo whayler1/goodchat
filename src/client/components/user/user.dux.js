@@ -1,24 +1,25 @@
 const defaultState = {
   isLoggedIn: false,
   email: '',
-  id: '',
-  name: '',
-  picture: {}
+  familyName: '',
+  givenName: '',
+  googleId: '',
+  imageUrl: ''
 };
 
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
-export const setLoggedIn = fbUser => {
-  console.log('fbUser:', fbUser);
-  const {email, id, name, picture} = fbUser;
+export const setLoggedIn = profileObj => {
+  console.log('googleProfile:', profileObj);
+  const {email, familyName, givenName, googleId, imageUrl} = profileObj;
   return {
     type: SET_LOGGED_IN,
-    isLoggedIn: true,
     email,
-    id,
-    name,
-    picture
+    familyName,
+    givenName,
+    googleId,
+    imageUrl
   };
 }
 
@@ -27,22 +28,25 @@ export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOU
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_LOGGED_IN:
-      const {email, id, name, picture} = action;
-      return {...state,
-        isLoggedIn: action.isLoggedIn,
+      const {email, familyName, givenName, googleId, imageUrl} = action;
+      return {
+        ...state,
+        isLoggedIn: true,
         email,
-        id,
-        name,
-        picture
+        familyName,
+        givenName,
+        googleId,
+        imageUrl
       }
     case LOGOUT:
       return {
         ...state,
         isLoggedIn: false,
         email: '',
-        id: '',
-        name: '',
-        picture: {}
+        familyName: '',
+        givenName: '',
+        googleId: '',
+        imageUrl: ''
       }
     default:
       return state;

@@ -9,23 +9,11 @@ class Navbar extends Component {
     shouldShowHeroLink: PropTypes.bool.isRequired,
     shouldShowNav: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    picture: PropTypes.object,
     setLoggedIn: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     showNav: PropTypes.func.isRequired,
     hideNav: PropTypes.func.isRequired,
-    name: PropTypes.string
-  }
-
-  getLoggedInUI = () => {
-    const {picture, name} = this.props;
-    // if ('data' in picture && 'url' in picture.data) {
-    //   return <img
-    //     className="header-user-ui-img"
-    //     src={picture.data.url}
-    //   />;
-    // }
-    return <a className="header-user-ui">{name.split(' ')[0]}</a>;
+    givenName: PropTypes.string
   }
 
   onLogoutClick = () => {
@@ -33,8 +21,10 @@ class Navbar extends Component {
     this.props.hideNav();
   }
 
+  responseGoogle = res => this.props.setLoggedIn(res.profileObj)
+
   render() {
-    const { shouldShowNav, shouldShowHeroLink, isLoggedIn } = this.props;
+    const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName } = this.props;
     return (
       <header>
         <nav className="header">
@@ -51,7 +41,16 @@ class Navbar extends Component {
             </button>;
           })()}
           {shouldShowHeroLink && <a className="header-home-anchor"/>}
-          {this.props.isLoggedIn && this.getLoggedInUI()}
+          {!this.props.isLoggedIn && <GoogleLogin
+            clientId={googleClientId}
+            scope="profile"
+            className="btn-no-style header-user-ui"
+            buttonText="Login"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+            autoLoad={true}
+          />}
+          {this.props.isLoggedIn && <a className="header-user-ui">{givenName}</a>}
         </nav>
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
           <ul className="header-app-nav-list">
@@ -84,8 +83,7 @@ class Navbar extends Component {
 export default connect(
   state => ({
     isLoggedIn: state.user.isLoggedIn,
-    picture: state.user.picture,
-    name: state.user.name,
+    givenName: state.user.givenName,
     shouldShowHeroLink: state.navbar.shouldShowHeroLink,
     shouldShowNav: state.navbar.shouldShowNav
   }),

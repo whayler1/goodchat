@@ -1,15 +1,12 @@
-const bcrypt = require('bcryptjs');
-
 exports.seed = (knex, Promise) => {
   return knex('users').del()
   .then(() => {
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync('johnson123', salt);
     return Promise.join(
       knex('users').insert({
-        username: 'jeremy',
-        email: 'foo@foo.co',
-        password: hash
+        email: 'hillary@trump.gov',
+        family_name: 'Trump',
+        given_name: 'Hillary',
+        google_id: '123123'
       })
     );
   })
@@ -18,9 +15,10 @@ exports.seed = (knex, Promise) => {
     const hash = bcrypt.hashSync('bryant123', salt);
     return Promise.join(
       knex('users').insert({
-        username: 'kelly',
-        email: 'bar@bar.co',
-        password: hash,
+        email: 'rsarkis@trump.gov',
+        family_name: 'Sarkis',
+        given_name: 'Richard',
+        google_id: '0987654321',
         admin: true
       })
     );

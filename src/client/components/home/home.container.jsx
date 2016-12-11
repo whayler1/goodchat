@@ -21,6 +21,7 @@ class Home extends Component {
   responseGoogle = (res, err) => console.log('res:', res, 'err:', err);
   render() {
     const googleClientId = window.googleClientId;
+    const { isLoggedIn } = this.props;
     return (
       <main className="main main-home" role="main">
         <Helmet
@@ -29,13 +30,13 @@ class Home extends Component {
         />
       <h1 className="main-home-title">Good Chat</h1>
         <div className="main-home-bottom">
-          <GoogleLogin
+          {!isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
             className="btn-primary-inverse"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
-          />
+          />}
         </div>
       </main>
     );
