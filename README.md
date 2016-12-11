@@ -4,7 +4,7 @@ Some sort of management tool I am working on with @thechrisfischer
 
 server forked from [node passport postgres](http://mherman.org/blog/2016/09/25/node-passport-and-postgres/#.V-gocpMrJE4).
 
-## dependancies
+## dependencies
 
 - node
 - yarn
