@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 
@@ -22,27 +22,35 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
 });
 
 router.post('/login/google', (req, res) => {
-  // console.log('req:', req);
-  console.log('-> google_id', req.body.google_id);
-  return knex('users').where({ google_id: req.body.google_id }).first().then(
-    user => {
-      console.log('found a user!', user);
-      // user
-      // .update({
-      //   updated_at: knex.fn.now()
-      // });
-      handleResponse(res, 200, 'gotem');
+  const { email, family_name, given_name, google_id } = req.body;
+  console.log('--gid:', google_id, email);
+  const user = knex('users').where({ google_id }).first();
+  console.log('knex');
+
+  user.then(userObj => {
+    console.log('--userObj', userObj);
+    if (!userObj) {
+      console.log('no user obj-');
+      knex('users')
+      .insert({
+        email,
+        family_name,
+        given_name,
+        google_id
+      })
+      .returning('*')
+      .then(() => {
+        console.log('the insertion happened');
+        handleResponse(res, 200, 'user created');
+      });
+    } else {
+      user.update({ updated_at: knex.fn.now() })
+      .returning('*')
+      .then((user) => {
+        console.log('updated', user);
+        handleResponse(res, 200, 'user updated');
+      });
     }
-  ).catch((err) => {
-    console.log('no user');
-    // knex('users')
-    // .insert({
-    //   email,
-    //   family_name,
-    //   given_name,
-    //   google_id
-    // });
-    handleResponse(res, 200, 'no user');
   });
 });
 
