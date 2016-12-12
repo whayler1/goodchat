@@ -1,6 +1,4 @@
-const bcrypt = require('bcryptjs');
 const knex = require('../db/connection');
-const uuid = require('node-uuid');
 
 function comparePass(userPassword, databasePassword) {
   return bcrypt.compareSync(userPassword, databasePassword);
@@ -10,23 +8,13 @@ function createUser(req, res) {
   console.log('createUser', req.body);
   return handleErrors(req)
   .then(() => {
-    const { username, email, fb_id, familyName, givenName, gender, provider, profileUrl } = req.body;
-    console.log(username, '\n', email, '\n', fb_id, '\n', familyName, '\n', givenName, '\n', gender, '\n', provider, '\n', profileUrl);
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const { email, family_name, given_name, google_id } = req.body;
     return knex('users')
     .insert({
-      id: uuid.v1(),
-      admin: false,
-      username,
       email,
-      fb_id,
-      familyName,
-      givenName,
-      gender,
-      provider,
-      profileUrl,
-      password: hash
+      family_name,
+      given_name,
+      google_id
     })
     .returning('*');
   })

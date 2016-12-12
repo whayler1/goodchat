@@ -21,6 +21,21 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
   })(req, res, next);
 });
 
+router.post('/login/google', (req, res) => {
+  console.log('req:'. req);
+  console.log('google_id', req.google_id);
+  knex('users').where({ google_id: req.google_id }).first().then(
+    user => {
+      console.log('found a user!');
+      handleResponse(res, 200, 'gotem');
+    },
+    err => {
+      console.log('no user');
+      handleResponse(res, 500, error);
+    }
+  );
+});
+
 router.get('/logout', authHelpers.loginRequired, (req, res, next) => {
   req.logout();
   handleResponse(res, 200, 'success');

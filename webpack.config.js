@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./src/client/goodchat.jsx",
+  entry: ['./src/client/goodchat.jsx', 'whatwg-fetch', 'promise-polyfill'],
   output: {
     path: __dirname + '/dist',
     filename: "/js/bundle.js"
