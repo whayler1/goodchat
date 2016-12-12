@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
-    "start": "babel-node --presets es2015 ./src/server/server",
+    "start": "babel-node --presets es2015,stage-0 ./src/server/server",
     "test": "./node_modules/mocha/bin/_mocha"
   },
   "dependencies": {

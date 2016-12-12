@@ -22,18 +22,28 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
 });
 
 router.post('/login/google', (req, res) => {
-  console.log('req:'. req);
-  console.log('google_id', req.google_id);
-  knex('users').where({ google_id: req.google_id }).first().then(
+  // console.log('req:', req);
+  console.log('-> google_id', req.body.google_id);
+  return knex('users').where({ google_id: req.body.google_id }).first().then(
     user => {
-      console.log('found a user!');
+      console.log('found a user!', user);
+      // user
+      // .update({
+      //   updated_at: knex.fn.now()
+      // });
       handleResponse(res, 200, 'gotem');
-    },
-    err => {
-      console.log('no user');
-      handleResponse(res, 500, error);
     }
-  );
+  ).catch((err) => {
+    console.log('no user');
+    // knex('users')
+    // .insert({
+    //   email,
+    //   family_name,
+    //   given_name,
+    //   google_id
+    // });
+    handleResponse(res, 200, 'no user');
+  });
 });
 
 router.get('/logout', authHelpers.loginRequired, (req, res, next) => {
