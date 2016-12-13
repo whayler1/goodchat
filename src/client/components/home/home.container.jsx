@@ -18,7 +18,6 @@ class Home extends Component {
   componentWillUnmount() {
     this.props.showHeroLink();
   }
-  responseGoogle = (res, err) => console.log('res:', res, 'err:', err);
   render() {
     const googleClientId = window.googleClientId;
     const { isLoggedIn } = this.props;
@@ -34,8 +33,8 @@ class Home extends Component {
             clientId={googleClientId}
             scope="profile"
             className="btn-primary-inverse"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle}
+            onSuccess={this.props.setLoggedIn}
+            onFailure={this.props.setLoggedIn}
           >Login with google</GoogleLogin>}
         </div>
       </main>

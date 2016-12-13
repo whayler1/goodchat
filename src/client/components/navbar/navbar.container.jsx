@@ -21,8 +21,6 @@ class Navbar extends Component {
     this.props.hideNav();
   }
 
-  responseGoogle = res => this.props.setLoggedIn(res.profileObj)
-
   render() {
     const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName } = this.props;
     return (
@@ -46,8 +44,8 @@ class Navbar extends Component {
             scope="profile"
             className="btn-no-style header-user-ui"
             buttonText="Login"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle}
+            onSuccess={this.props.setLoggedIn}
+            onFailure={this.props.setLoggedIn}
             autoLoad={true}
           />}
           {this.props.isLoggedIn && <a className="header-user-ui">{givenName}</a>}

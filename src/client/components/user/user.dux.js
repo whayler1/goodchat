@@ -10,32 +10,30 @@ const defaultState = {
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
-export const setLoggedIn = profileObj => (dispatch) => {
-  const {email, familyName, givenName, googleId, imageUrl} = profileObj;
-
-  fetch('/auth/login/google', {
+export const setLoggedIn = res => (dispatch) => {
+  console.log('res:', res);
+  // console.log('--', res.tokenId);
+  // const {email, familyName, givenName, googleId, imageUrl} = profileObj;
+  //
+  fetch('/auth/google', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email,
-      family_name: familyName,
-      given_name: givenName,
-      google_id: googleId,
-      image_url: imageUrl
+      idToken: res.tokenId
     })
   }).then(
-    res => dispatch({
-      type: SET_LOGGED_IN,
-      email,
-      familyName,
-      givenName,
-      googleId,
-      imageUrl
-    }),
-    err => alert('google ERR', err)
+    json => console.log('got back some json!', json),
   );
+  // dispatch({
+  //   type: SET_LOGGED_IN,
+  //   email,
+  //   familyName,
+  //   givenName,
+  //   googleId,
+  //   imageUrl
+  // })
 }
 
 export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOUT }));

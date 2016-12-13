@@ -21,47 +21,55 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/login/google', authHelpers.loginRedirect, (req, res, next) => {
-  const { email, family_name, given_name, google_id } = req.body;
-  console.log('new login:', req.user);
-  const user = knex('users').where({ google_id }).first();
-
-  user.then(userObj => {
-    console.log('--userObj', userObj);
-    if (!userObj) {
-      console.log('no user obj-');
-      knex('users')
-      .insert({
-        email,
-        family_name,
-        given_name,
-        google_id
-      })
-      .returning('*')
-      .then((userres) => {
-        console.log('the insertion happened', userres);
-        handleLogin(res, useres[0]);
-      })
-      .then(() => { handleResponse(res, 200, 'success'); })
-      .catch((err) => { handleResponse(res, 500, 'error'); });
-    } else {
-      passport.authenticate('local', (err, user, info) => {
-        console.log('passport auth cb', err);
-        console.log('passport auth user', user);
-        console.log('passport auth info', info);
-        if (err) { handleResponse(res, 500, 'error'); }
-        if (!user) { handleResponse(res, 404, 'User not found'); }
-        if (user) { handleResponse(res, 200, 'success'); }
-      })(req, res, next);
-      // user.update({ updated_at: knex.fn.now() })
-      // .returning('*')
-      // .then((user) => {
-      //   console.log('updated', user);
-      //   handleResponse(res, 200, 'user updated');
-      // });
-    }
-  });
+router.post('/google', (req, res, next) => {
+  console.log('google endpoint <-', req.user);
+  passport.authenticate('google-signin', (err, user, info) => {
+    console.log('auth cb:', user);
+    res.json(user);
+  })(req, res, next);
 });
+
+// router.post('/login/google', authHelpers.loginRedirect, (req, res, next) => {
+//   const { email, family_name, given_name, google_id } = req.body;
+//   console.log('new login:', req.user);
+//   const user = knex('users').where({ google_id }).first();
+//
+//   user.then(userObj => {
+//     console.log('--userObj', userObj);
+//     if (!userObj) {
+//       console.log('no user obj-');
+//       knex('users')
+//       .insert({
+//         email,
+//         family_name,
+//         given_name,
+//         google_id
+//       })
+//       .returning('*')
+//       .then((userres) => {
+//         console.log('the insertion happened', userres);
+//         handleLogin(res, useres[0]);
+//       })
+//       .then(() => { handleResponse(res, 200, 'success'); })
+//       .catch((err) => { handleResponse(res, 500, 'error'); });
+//     } else {
+//       passport.authenticate('local', (err, user, info) => {
+//         console.log('passport auth cb', err);
+//         console.log('passport auth user', user);
+//         console.log('passport auth info', info);
+//         if (err) { handleResponse(res, 500, 'error'); }
+//         if (!user) { handleResponse(res, 404, 'User not found'); }
+//         if (user) { handleResponse(res, 200, 'success'); }
+//       })(req, res, next);
+//       // user.update({ updated_at: knex.fn.now() })
+//       // .returning('*')
+//       // .then((user) => {
+//       //   console.log('updated', user);
+//       //   handleResponse(res, 200, 'user updated');
+//       // });
+//     }
+//   });
+// });
 
 router.get('/logout', authHelpers.loginRequired, (req, res, next) => {
   req.logout();
