@@ -10,8 +10,7 @@ const defaultState = {
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
-export const setLoggedIn = profileObj => {
-  console.log('googleProfile:', profileObj);
+export const setLoggedIn = profileObj => (dispatch) => {
   const {email, familyName, givenName, googleId, imageUrl} = profileObj;
 
   fetch('/auth/login/google', {
@@ -27,18 +26,16 @@ export const setLoggedIn = profileObj => {
       image_url: imageUrl
     })
   }).then(
-    res => console.log('google login res:', res),
-    err => console.log('google ERR', err)
+    res => dispatch({
+      type: SET_LOGGED_IN,
+      email,
+      familyName,
+      givenName,
+      googleId,
+      imageUrl
+    }),
+    err => alert('google ERR', err)
   );
-
-  return {
-    type: SET_LOGGED_IN,
-    email,
-    familyName,
-    givenName,
-    googleId,
-    imageUrl
-  };
 }
 
 export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOUT }));

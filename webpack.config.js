@@ -1,3 +1,12 @@
+const webpack = require('webpack');
+
+new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: JSON.stringify('production')
+  }
+}),
+new webpack.optimize.UglifyJsPlugin()
+
 module.exports = {
   entry: ['./src/client/goodchat.jsx', 'whatwg-fetch', 'promise-polyfill'],
   output: {

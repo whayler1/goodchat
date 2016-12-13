@@ -21,11 +21,10 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/login/google', (req, res) => {
+router.post('/login/google', authHelpers.loginRedirect, (req, res, next) => {
   const { email, family_name, given_name, google_id } = req.body;
-  console.log('--gid:', google_id, email);
+  console.log('new login:', req.user);
   const user = knex('users').where({ google_id }).first();
-  console.log('knex');
 
   user.then(userObj => {
     console.log('--userObj', userObj);
@@ -39,17 +38,27 @@ router.post('/login/google', (req, res) => {
         google_id
       })
       .returning('*')
-      .then(() => {
-        console.log('the insertion happened');
-        handleResponse(res, 200, 'user created');
-      });
+      .then((userres) => {
+        console.log('the insertion happened', userres);
+        handleLogin(res, useres[0]);
+      })
+      .then(() => { handleResponse(res, 200, 'success'); })
+      .catch((err) => { handleResponse(res, 500, 'error'); });
     } else {
-      user.update({ updated_at: knex.fn.now() })
-      .returning('*')
-      .then((user) => {
-        console.log('updated', user);
-        handleResponse(res, 200, 'user updated');
-      });
+      passport.authenticate('local', (err, user, info) => {
+        console.log('passport auth cb', err);
+        console.log('passport auth user', user);
+        console.log('passport auth info', info);
+        if (err) { handleResponse(res, 500, 'error'); }
+        if (!user) { handleResponse(res, 404, 'User not found'); }
+        if (user) { handleResponse(res, 200, 'success'); }
+      })(req, res, next);
+      // user.update({ updated_at: knex.fn.now() })
+      // .returning('*')
+      // .then((user) => {
+      //   console.log('updated', user);
+      //   handleResponse(res, 200, 'user updated');
+      // });
     }
   });
 });

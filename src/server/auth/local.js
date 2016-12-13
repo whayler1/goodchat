@@ -11,6 +11,7 @@ const options = {};
 
 passport.use(new LocalStrategy(options, (username, password, done) => {
   // check to see if the username exists
+  console.log('local strategy called');
   knex('users').where({ username }).first()
   .then((user) => {
     if (!user) return done(null, false);

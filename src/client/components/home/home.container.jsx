@@ -36,7 +36,7 @@ class Home extends Component {
             className="btn-primary-inverse"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
-          />}
+          >Login with google</GoogleLogin>}
         </div>
       </main>
     );
