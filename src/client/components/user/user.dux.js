@@ -1,3 +1,5 @@
+import superagent from 'superagent';
+
 const defaultState = {
   isLoggedIn: false,
   email: '',
@@ -10,38 +12,38 @@ const defaultState = {
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
-export const setLoggedIn = profileObj => {
-  console.log('googleProfile:', profileObj);
-  const {email, familyName, givenName, googleId, imageUrl} = profileObj;
-
-  fetch('/auth/login/google', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email,
-      family_name: familyName,
-      given_name: givenName,
-      google_id: googleId,
-      image_url: imageUrl
-    })
-  }).then(
-    res => console.log('google login res:', res),
-    err => console.log('google ERR', err)
-  );
-
-  return {
-    type: SET_LOGGED_IN,
-    email,
-    familyName,
-    givenName,
-    googleId,
-    imageUrl
-  };
+export const setLoggedIn = res => (dispatch) => {
+  console.log('res:', res);
+  // console.log('--', res.tokenId);
+  const {email, familyName, givenName, googleId, imageUrl} = res.profileObj;
+  superagent.post('auth/google')
+    .send({ idToken: res.tokenId })
+    .then(
+      res => {
+        console.log('got it', res)
+        dispatch({
+          type: SET_LOGGED_IN,
+          email,
+          familyName,
+          givenName,
+          googleId,
+          imageUrl
+        });
+      },
+      err => alert('error with google auth on server')
+    )
 }
 
-export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOUT }));
+export const logout = () => (dispatch) => superagent.get('auth/logout')
+  .then(
+    res => {
+      console.log('logout success');
+      dispatch({
+        type: LOGOUT
+      });
+    },
+    err => console.log('logout fail')
+  )
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {

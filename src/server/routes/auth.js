@@ -4,6 +4,19 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 
+passport.serializeUser((user, done) => {
+  console.log('\n\n serializeUser', user);
+  done(null, user.google_id);
+});
+
+passport.deserializeUser((google_id, done) => {
+  console.log('\n\n deserializeUser');
+  // done(null, user);
+  knex('users').where({google_id}).first()
+  .then((user) => { done(null, user); })
+  .catch((err) => { done(err, null); });
+});
+
 router.post('/register', authHelpers.loginRedirect, (req, res, next)  => {
   return authHelpers.createUser(req, res)
   .then((user) => {
@@ -21,37 +34,17 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/login/google', (req, res) => {
-  const { email, family_name, given_name, google_id } = req.body;
-  console.log('--gid:', google_id, email);
-  const user = knex('users').where({ google_id }).first();
-  console.log('knex');
-
-  user.then(userObj => {
-    console.log('--userObj', userObj);
-    if (!userObj) {
-      console.log('no user obj-');
-      knex('users')
-      .insert({
-        email,
-        family_name,
-        given_name,
-        google_id
-      })
-      .returning('*')
-      .then(() => {
-        console.log('the insertion happened');
-        handleResponse(res, 200, 'user created');
-      });
-    } else {
-      user.update({ updated_at: knex.fn.now() })
-      .returning('*')
-      .then((user) => {
-        console.log('updated', user);
-        handleResponse(res, 200, 'user updated');
-      });
-    }
-  });
+router.post('/google', (req, res, next) => {
+  console.log('\n\ngoogle endpoint <-', req.user);
+  passport.authenticate('google-signin', (err, user, info) => {
+    console.log('\n\nauth cb:', user, '\n err', err);
+    req.login(user, (err) => {
+      if (err) {
+        console.log('\n-----login err:', err);
+      }
+      res.json(user);
+    });
+  })(req, res, next);
 });
 
 router.get('/logout', authHelpers.loginRequired, (req, res, next) => {
