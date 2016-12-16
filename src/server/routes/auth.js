@@ -44,17 +44,6 @@ router.post('/google', (req, res, next) => {
       }
       res.json(user);
     });
-    // handleLogin(res, user).then(
-    //   () => {
-    //     console.log('handleLogin returned');
-    //     res.json(user)
-    //   },
-    //   err => console.log('handleLogin err')
-    // )
-    // res.json(user);
-    // res.send(JSON.stringify(user))
-    // res.json(req.user);
-    // handleResponse(res, 200, JSON.stringify(user));
   })(req, res, next);
 });
 

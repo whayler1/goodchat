@@ -19,36 +19,31 @@ export const setLoggedIn = res => (dispatch) => {
   superagent.post('auth/google')
     .send({ idToken: res.tokenId })
     .then(
-      res => console.log('got it', res),
-      err => console.log('error', err)
+      res => {
+        console.log('got it', res)
+        dispatch({
+          type: SET_LOGGED_IN,
+          email,
+          familyName,
+          givenName,
+          googleId,
+          imageUrl
+        });
+      },
+      err => alert('error with google auth on server')
     )
-  //
-  // fetch('/auth/google', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   credentials: 'same-origin',
-  //   body: JSON.stringify({
-  //     idToken: res.tokenId
-  //   })
-  // }).then(
-  //   json => {
-  //     console.log('got back some json!', json);
-  //
-  //   }
-  // );
-  dispatch({
-    type: SET_LOGGED_IN,
-    email,
-    familyName,
-    givenName,
-    googleId,
-    imageUrl
-  });
 }
 
-export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOUT }));
+export const logout = () => (dispatch) => superagent.get('auth/logout')
+  .then(
+    res => {
+      console.log('logout success');
+      dispatch({
+        type: LOGOUT
+      });
+    },
+    err => console.log('logout fail')
+  )
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
