@@ -1,3 +1,5 @@
+import superagent from 'superagent';
+
 const defaultState = {
   isLoggedIn: false,
   email: '',
@@ -13,27 +15,37 @@ const LOGOUT = 'user/logout';
 export const setLoggedIn = res => (dispatch) => {
   console.log('res:', res);
   // console.log('--', res.tokenId);
-  // const {email, familyName, givenName, googleId, imageUrl} = profileObj;
+  const {email, familyName, givenName, googleId, imageUrl} = res.profileObj;
+  superagent.post('auth/google')
+    .send({ idToken: res.tokenId })
+    .then(
+      res => console.log('got it', res),
+      err => console.log('error', err)
+    )
   //
-  fetch('/auth/google', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      idToken: res.tokenId
-    })
-  }).then(
-    json => console.log('got back some json!', json),
-  );
-  // dispatch({
-  //   type: SET_LOGGED_IN,
-  //   email,
-  //   familyName,
-  //   givenName,
-  //   googleId,
-  //   imageUrl
-  // })
+  // fetch('/auth/google', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   credentials: 'same-origin',
+  //   body: JSON.stringify({
+  //     idToken: res.tokenId
+  //   })
+  // }).then(
+  //   json => {
+  //     console.log('got back some json!', json);
+  //
+  //   }
+  // );
+  dispatch({
+    type: SET_LOGGED_IN,
+    email,
+    familyName,
+    givenName,
+    googleId,
+    imageUrl
+  });
 }
 
 export const logout = () => (dispatch) => FB.logout(() => dispatch({ type: LOGOUT }));

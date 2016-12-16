@@ -22,10 +22,26 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
 });
 
 router.post('/google', (req, res, next) => {
-  console.log('google endpoint <-', req.user);
+  console.log('\n\ngoogle endpoint <-', req.user);
   passport.authenticate('google-signin', (err, user, info) => {
-    console.log('auth cb:', user);
-    res.json(user);
+    console.log('\n\nauth cb:', user, '\n err', err);
+    req.login(user, (err) => {
+      if (err) {
+        console.log('\n-----login err:', err);
+        res.json(user);
+      }
+    });
+    // handleLogin(res, user).then(
+    //   () => {
+    //     console.log('handleLogin returned');
+    //     res.json(user)
+    //   },
+    //   err => console.log('handleLogin err')
+    // )
+    // res.json(user);
+    // res.send(JSON.stringify(user))
+    // res.json(req.user);
+    // handleResponse(res, 200, JSON.stringify(user));
   })(req, res, next);
 });
 

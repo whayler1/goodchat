@@ -12,7 +12,7 @@ const options = {};
 
 passport.use(new LocalStrategy(options, (username, password, done) => {
   // check to see if the username exists
-  console.log('local strategy called');
+  console.log('local strategy called - User');
   knex('users').where({ username }).first()
   .then((user) => {
     if (!user) return done(null, false);
@@ -29,12 +29,13 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
   // User.findOrCreate({ googleId: profile.id }, function(err, user) {
   //   return cb(err, user);
   // });
-  console.log('-google strategy token!', token);
-  console.log('google strategy profile:', profile);
+  // console.log('User?', User);
+  console.log('\n\n-google strategy token!', token);
+  console.log('\n\n google strategy profile:', profile, '\n\n');
   knex('users').where({ google_id: profile.id }).first()
   .then(user => {
     if (!user) {
-      console.log('not user');
+      console.log('\n\nnot user');
       // return done(null, false);
       knex('users')
       .insert({
@@ -45,11 +46,11 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       })
       .returning('*')
       .then(userres => {
-        console.log('userres:', userres);
+        console.log('\n\nuserres:', userres);
         return done(null, userres);
       })
     } else {
-      console.log('there is user', user);
+      console.log('\n\nthere is user', user);
       return done(null, user);
     }
   })

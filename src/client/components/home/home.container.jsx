@@ -27,8 +27,9 @@ class Home extends Component {
           title="Good Chat"
           meta={[{"name": "description", "content": "This thing me and Chris are building."}]}
         />
-      <h1 className="main-home-title">Good Chat</h1>
+        <h1 className="main-home-title">Good Chat</h1>
         <div className="main-home-bottom">
+          <p className="main-home-copy">This thing I am building with Chris</p>
           {!isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
