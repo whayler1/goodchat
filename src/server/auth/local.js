@@ -4,7 +4,7 @@ const uuid = require('node-uuid');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-web');
 
-const init = require('./passport');
+// const init = require('./passport');
 const knex = require('../db/connection');
 const authHelpers = require('./_helpers');
 

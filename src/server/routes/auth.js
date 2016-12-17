@@ -35,7 +35,7 @@ router.post('/login', authHelpers.loginRedirect, (req, res, next) => {
 });
 
 router.post('/google', (req, res, next) => {
-  console.log('\n\ngoogle endpoint <-', req.user);
+  console.log('\n\nres user token <-', req.user);
   passport.authenticate('google-signin', (err, user, info) => {
     console.log('\n\nauth cb:', user, '\n err', err);
     req.login(user, (err) => {
