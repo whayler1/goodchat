@@ -2,9 +2,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "7.0.0",
-    "npm": "3.10.8",
-    "yarn": "0.17.2"
+    "node": "7.0.0"
   },
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
