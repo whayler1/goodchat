@@ -27,6 +27,27 @@
   }
 }
 
+.btn-inverse-google {
+  &::before {
+    content: ' ';
+    display: inline-block;
+    position: relative;
+    width: 22px;
+    height: 20px;
+    background: url(../images/google-signin-button-logosprite.png) 0 0 no-repeat transparent;
+    background-size: 22px 40px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  &:hover,
+  &:focus {
+    &::before {
+      background-position: 0 -20px;
+    }
+  }
+}
+
 .btn-no-style {
   border: none;
   border-radius: 0;

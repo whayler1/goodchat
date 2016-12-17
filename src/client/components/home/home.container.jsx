@@ -33,7 +33,7 @@ class Home extends Component {
           {!isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
-            className="btn-primary-inverse"
+            className="btn-inverse btn-inverse-google"
             onSuccess={this.props.setLoggedIn}
             onFailure={this.props.setLoggedIn}
           >Login with google</GoogleLogin>}
