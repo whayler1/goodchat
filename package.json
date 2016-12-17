@@ -2,7 +2,9 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "npm": "3.10.8"
+    "node": "7.0.0",
+    "npm": "3.10.8",
+    "yarn": "0.17.2"
   },
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
@@ -33,6 +35,7 @@
     "knex": "^0.11.10",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "lodash": "^4.17.2",
     "material-design-icons": "^3.0.1",
     "morgan": "~1.7.0",
     "nunjucks": "^2.4.2",
