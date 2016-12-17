@@ -1,6 +1,9 @@
 {
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "npm": "3.10.8"
+  },
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
     "start": "babel-node --presets es2015,stage-0 ./src/server/server",
