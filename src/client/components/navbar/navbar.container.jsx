@@ -24,21 +24,21 @@ class Navbar extends Component {
   render() {
     const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName } = this.props;
     return (
-      <header>
-        <nav className="header">
+      <header className="header">
+        <nav className="header-nav">
           {(() => {
             if (shouldShowNav) {
-              return <button className="btn-no-style"
+              return <button className="btn-no-style header-nav-mobile-ui"
                 onClick={this.props.hideNav}>
                 <i className="material-icons">close</i>
               </button>;
             }
-            return <button className="btn-no-style"
+            return <button className="btn-no-style header-nav-mobile-ui"
               onClick={this.props.showNav}>
               <i className="material-icons">menu</i>
             </button>;
           })()}
-          {shouldShowHeroLink && <a className="header-home-anchor"/>}
+          <a className="header-home-anchor"/>
           {!this.props.isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
@@ -57,7 +57,7 @@ class Navbar extends Component {
               { title: 'Second Link' },
               {title: 'Another link'}
             ].map((link, index) => <li key={index}>
-              <a>{link.title} <i className="material-icons pull-right">chevron_right</i></a>
+              <a>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></a>
             </li>)}
           </ul>
           <div className="header-app-nav-footer">

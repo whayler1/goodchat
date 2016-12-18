@@ -1,4 +1,4 @@
-.header {
+.header-nav {
   position: relative;
   padding: 10px 20px;
   color: @header-color;
@@ -25,12 +25,34 @@
     i {
       font-size: 1.2rem;
     }
+
+    &.header-nav-mobile-ui {
+      @media(min-width: @tablet-width) {
+        display: none;
+      }
+    }
   }
 }
 
 .header-home-anchor {
   display: inline-block;
   margin-left: 10px;
+  width: 79px;
+  height: 20px;
+  background: url(../../images/logo-menu-sprite.png) 0 0 no-repeat transparent;
+  background-size: 79px 60px;
+
+  &:hover,
+  &:focus {
+    background-position: 0 -20px;
+  }
+  &:active {
+    background-position: 0 -40px;
+  }
+
+  @media(min-width: @tablet-width) {
+    margin-left: 0;
+  }
 }
 
 .header-user-ui {
@@ -69,6 +91,11 @@
     +button {
       margin-top: 20px;
     }
+  }
+
+  @media(min-width: @tablet-width) {
+    width: 350px;
+    right: auto;
   }
 }
 
