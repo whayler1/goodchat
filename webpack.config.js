@@ -1,11 +1,6 @@
 const webpack = require('webpack');
 
-new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify('production')
-  }
-}),
-new webpack.optimize.UglifyJsPlugin()
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: ['./src/client/goodchat.jsx'],
@@ -13,6 +8,18 @@ module.exports = {
     path: __dirname + '/dist',
     filename: "/js/bundle.js"
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new FaviconsWebpackPlugin({
+      logo: './src/client/images/goodchat-g.png',
+      prefix: 'icons/'
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  ],
   module: {
     loaders: [
       {
