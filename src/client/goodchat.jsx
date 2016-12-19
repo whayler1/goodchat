@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
+import Team from './components/team/team.container.jsx';
 import reducer from './reducers/index';
 import thunk from 'redux-thunk';
 
@@ -22,6 +23,7 @@ class GoodChat extends Component {
         <Router history={hashHistory}>
           <Route path="/" component={App}>
             <IndexRoute component={Home}/>
+            <Route path="/team" component={Team}/>
           </Route>
         </Router>
       </Provider>

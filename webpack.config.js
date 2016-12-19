@@ -18,7 +18,7 @@ module.exports = {
       logo: './src/client/images/goodchat-g.png',
       prefix: 'icons/'
     }),
-    new webpack.optimize.UglifyJsPlugin()
+    // new webpack.optimize.UglifyJsPlugin()
   ],
   module: {
     loaders: [
