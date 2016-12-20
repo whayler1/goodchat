@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import GoogleLogin from 'react-google-login';
-import {setLoggedIn, logout} from '../user/user.dux';
+import {setLoggedIn} from '../user/user.dux';
 import {showNav, hideNav} from './navbar.dux';
 
 class Navbar extends Component {
@@ -10,15 +10,9 @@ class Navbar extends Component {
     shouldShowNav: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     setLoggedIn: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
     showNav: PropTypes.func.isRequired,
     hideNav: PropTypes.func.isRequired,
     givenName: PropTypes.string
-  }
-
-  onLogoutClick = () => {
-    this.props.logout();
-    this.props.hideNav();
   }
 
   render() {
@@ -61,11 +55,6 @@ class Navbar extends Component {
             </li>)}
           </ul>
           <div className="header-app-nav-footer">
-            {isLoggedIn && <button className="btn-secondary"
-              type="button"
-              onClick={this.onLogoutClick}>
-              Logout
-            </button>}
             <button className="btn-primary-inverse"
               type="button"
               onClick={this.props.hideNav}>
@@ -87,7 +76,6 @@ export default connect(
   }),
   {
     setLoggedIn,
-    logout,
     showNav,
     hideNav
   }
