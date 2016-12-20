@@ -7,7 +7,7 @@ const defaultState = {
 const SET_TEAMS = 'team/set-teams';
 
 export const setTeams = () => (dispatch) => {
-  superagent.get('/team')
+  superagent.get('team')
   .then(
     res => {
       console.log('team:', res);

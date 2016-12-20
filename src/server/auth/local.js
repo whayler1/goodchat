@@ -47,6 +47,14 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       .returning('*')
       .then(userres => {
         console.log('\n\nuserres:', userres);
+
+        knex('teams').insert({
+          user_ids: `{${profile.id}}`
+        }).returning('*')
+        .then(teamres => {
+          console.log('new team!', teamres);
+          // res.json({msg: 'yay!'});
+        })
         return done(null, userres);
       })
     } else {

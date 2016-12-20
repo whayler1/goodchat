@@ -30,7 +30,7 @@ function loginRequired(req, res, next) {
 
 function adminRequired(req, res, next) {
   if (!req.user) res.status(401).json({status: 'Please log in'});
-  return knex('users').where({username: req.user.username}).first()
+  return knex('users').where({google_id: req.user.google_id}).first()
   .then((user) => {
     if (!user.admin) res.status(401).json({status: 'You are not authorized'});
     return next();
