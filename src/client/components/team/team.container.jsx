@@ -1,27 +1,30 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {setTeams} from './team.dux';
 
 class Team extends Component {
   static propTypes = {
-    setTeams: PropTypes.func.isRequired
+    teams: PropTypes.array
   };
-  componentDidMount() {
-    console.log('team mounted');
-    this.props.setTeams();
-  }
   render() {
+    console.log('render:', this.props.teams);
+    const {teams} = this.props;
     return (
       <main role="main">
         <h1>Team Page</h1>
+        <ul>
+          {teams.map(team => (
+            <li key={team.id}>
+              {team.id}
+            </li>
+          ))}
+        </ul>
       </main>
     );
   }
 }
 
 export default connect(
-  state => ({}),
-  {
-    setTeams
-  }
+  state => ({
+    teams: state.team.teams
+  })
 )(Team);

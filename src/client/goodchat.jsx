@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import App from './components/app/app.jsx';
-import Home from './components/home/home.container.jsx';
-import Team from './components/team/team.container.jsx';
+import Routes from './routes.jsx';
+
 import reducer from './reducers/index';
 import thunk from 'redux-thunk';
 
@@ -20,12 +18,7 @@ class GoodChat extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={hashHistory}>
-          <Route path="/" component={App}>
-            <IndexRoute component={Home}/>
-            <Route path="/team" component={Team}/>
-          </Route>
-        </Router>
+        <Routes />
       </Provider>
     );
   }

@@ -1,26 +1,21 @@
-import superagent from 'superagent';
-
 const defaultState = {
   teams: []
 };
 
 const SET_TEAMS = 'team/set-teams';
 
-export const setTeams = () => (dispatch) => {
-  superagent.get('team')
-  .then(
-    res => {
-      console.log('team:', res);
-    },
-    err => {
-      console.log('err:', err);
-    }
-  );
-}
-
+export const setTeams = (teams) => ({
+  type: SET_TEAMS,
+  teams
+})
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
+    case SET_TEAMS:
+      return {
+        ...state,
+        teams: action.teams
+      };
     default:
       return state;
   }

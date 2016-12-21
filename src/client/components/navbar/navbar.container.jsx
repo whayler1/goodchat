@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import GoogleLogin from 'react-google-login';
 import {setLoggedIn} from '../user/user.dux';
 import {showNav, hideNav} from './navbar.dux';
@@ -32,7 +33,7 @@ class Navbar extends Component {
               <i className="material-icons">menu</i>
             </button>;
           })()}
-          <a className="header-home-anchor"/>
+          <Link to="/" className="header-home-anchor">Good Chat</Link>
           {!this.props.isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
@@ -47,11 +48,9 @@ class Navbar extends Component {
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
           <ul className="header-app-nav-list">
             {[
-              { title: 'Link One' },
-              { title: 'Second Link' },
-              {title: 'Another link'}
+              { title: 'Team', to: '/team' }
             ].map((link, index) => <li key={index}>
-              <a>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></a>
+              <Link to={link.to} onClick={this.props.hideNav}>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></Link>
             </li>)}
           </ul>
           <div className="header-app-nav-footer">
