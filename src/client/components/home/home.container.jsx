@@ -29,7 +29,7 @@ class Home extends Component {
         />
         <h1 className="main-home-title">Good Chat</h1>
         <div className="main-home-bottom">
-          <p className="main-home-copy">A tool for managers to<br/><strong>make the most<br/>out of 1 on 1&rsquo;s</strong></p>
+          <p className="main-home-copy">A tool for managers to<br/><strong>make the most<br/>out of 1on1&rsquo;s</strong></p>
           {!isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"

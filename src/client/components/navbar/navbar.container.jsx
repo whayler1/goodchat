@@ -33,7 +33,13 @@ class Navbar extends Component {
               <i className="material-icons">menu</i>
             </button>;
           })()}
-          {shouldShowHeroLink && <Link to="/" className="header-home-anchor">Good Chat</Link>}
+          {shouldShowHeroLink &&
+          <Link
+            to="/"
+            onClick={this.props.hideNav}
+            className="header-home-anchor">
+            Good Chat
+          </Link>}
           {!this.props.isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
