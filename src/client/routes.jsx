@@ -6,27 +6,39 @@ import {setTeams} from './components/team/team.dux.js';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Team from './components/team/team.container.jsx';
+import TeamId from './components/team/team.id.container.jsx';
 
 class Routes extends Component {
   static propTypes = {
-    setTeams: PropTypes.array
+    setTeams: PropTypes.array.isRequired
   }
   onTeamEnter = (nextState, replace, callback) => {
     superagent.get('team').then(
       res => {
-        console.log('res:', res);
-        this.props.setTeams(res.body);
+        console.log('onTeamEnter es:', res);
+        this.props.setTeams(res.body.teams);
         callback();
       },
-      err => console.log('get team error', err)
+      err => {
+        console.log('-get team error', err);
+        replace('/');
+        callback();
+      }
     )
+  }
+  onTeamIdEnter = (nextState, replace, callback) => {
+    console.log('onTeamIdEnter !');
+    callback();
   }
   render() {
     return (
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={Home}/>
-          <Route path="/team" component={Team} onEnter={this.onTeamEnter}/>
+          <Route path="/team" onEnter={this.onTeamEnter}>
+            <IndexRoute component={Team}/>
+            <Route path="/:teamId" component={TeamId} onEnter={this.onTeamIdEnter}/>
+          </Route>
         </Route>
       </Router>
     );

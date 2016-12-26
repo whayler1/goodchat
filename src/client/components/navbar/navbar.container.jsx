@@ -52,20 +52,23 @@ class Navbar extends Component {
           {this.props.isLoggedIn && <a className="header-user-ui">{givenName}</a>}
         </nav>
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
+          {isLoggedIn &&
           <ul className="header-app-nav-list">
             {[
               { title: 'Team', to: '/team' }
             ].map((link, index) => <li key={index}>
               <Link to={link.to} onClick={this.props.hideNav}>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></Link>
             </li>)}
+          </ul>}
+          <ul className="footer-btn-list">
+            <li>
+              <button className="btn-primary-inverse btn-block"
+                type="button"
+                onClick={this.props.hideNav}>
+                Close
+              </button>
+            </li>
           </ul>
-          <div className="header-app-nav-footer">
-            <button className="btn-primary-inverse"
-              type="button"
-              onClick={this.props.hideNav}>
-              Close
-            </button>
-          </div>
         </nav>
       </header>
     );
