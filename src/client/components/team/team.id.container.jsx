@@ -2,9 +2,17 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 class TeamId extends Component {
-  static propTypes = {};
+  static propTypes = {
+    teams: PropTypes.array,
+    team: PropTypes.object
+  };
+  defaultProps = {
+    team: this.props.teams.find(team => team.id === this.props.params.teamId)
+  }
   render() {
-    console.log('userId:', this.props.params.userId);
+    console.log('teamId:', this.props.params.teamId);
+    console.log('teams', this.props.teams);
+    console.log('team', this.props.team);
     return (
       <main role="main">
         <header className="page-header">
@@ -19,6 +27,8 @@ class TeamId extends Component {
 }
 
 export default connect(
-  state => ({}),
+  state => ({
+    teams: state.team.teams
+  }),
   {}
 )(TeamId);

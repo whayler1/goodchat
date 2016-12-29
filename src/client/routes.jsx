@@ -37,7 +37,7 @@ class Routes extends Component {
           <IndexRoute component={Home}/>
           <Route path="/team" onEnter={this.onTeamEnter}>
             <IndexRoute component={Team}/>
-            <Route path="/:teamId" component={TeamId} onEnter={this.onTeamIdEnter}/>
+            <Route path=":teamId" component={TeamId} onEnter={this.onTeamIdEnter}/>
           </Route>
         </Route>
       </Router>
