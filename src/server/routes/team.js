@@ -79,6 +79,8 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
 
+  console.log('\n\nput team', id, ', name:', name);
+
   knex('memberships').where({
     user_id: userId,
     team_id: id
