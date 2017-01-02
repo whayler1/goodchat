@@ -6,40 +6,102 @@ const passport = require('../auth/local');
 const uuid = require('node-uuid');
 
 router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
+  const { id } = req.user;
+  const teamId = uuid.v1();
+
   knex('teams').insert({
-    id: uuid.v1(),
-    owner: req.user.id
-  }).returning('*')
-  .then(team => {
+    id: teamId
+  })
+  .then(teams => {
     console.log('new team!', res);
-    res.json({ team });
+
+    knex('memberships').insert({
+      team_id: teamId,
+      user_id: id,
+      is_owner: true
+    })
+    .then(membership => {
+      console.log('membership created', teams[0]);
+
+      res.json({ team: teams[0] });
+    })
+    .catch(err => {
+      res.status(500);
+    });
   })
   .catch(err => {
     res.status(500);
   });
-  // knex('organizations').insert({
-  //
-  // })
 });
 
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   console.log('\n\nget team', req.user);
   const { id } = req.user;
-  knex('teams').whereRaw(`user_ids @> '{${id}}' OR admin_ids @> '{${id}}' OR owner = '${id}'`)
-  .returning('*')
+
+  knex('memberships').where({ user_id: id }).join('teams', {
+    'memberships.team_id': 'teams.id'
+  })
   .then(teams => {
-    console.log('team return', teams);
+    console.log('teams:', teams);
     res.json({ teams });
   })
-  .catch(err => {
-    console.log('err', err);
-    res.json(err);
-  });
+  .catch(err => res.status(500));
+});
+
+router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { name } = req.body;
+
+  knex('memberships').where({
+    user_id: userId,
+    team_id: id
+  })
+  .first()
+  .then(membership => {
+
+    if (!membership) {
+      res.status(403);
+    } else {
+      knex('teams').where({ id })
+      .first()
+      .then(team => {
+        res.json({ team });
+      })
+      .catch(err => res.status(500));
+    }
+  })
+  .catch(err => res.status(500));
+});
+
+router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { name } = req.body;
+
+  knex('memberships').where({
+    user_id: userId,
+    team_id: id
+  })
+  .first()
+  .then(membership => {
+
+    if (!(membership.is_owner || membership.is_admin)) {
+      res.status(403);
+    } else {
+      knex('teams').where({ id })
+      .update({ name })
+      .then(teams => {
+        res.json({ team: teams[0] });
+      })
+      .catch(err => res.status(500));
+    }
+  })
+  .catch(err => res.status(500));
 });
 
 router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const teamID = req.params.id;
-  const teamQuery = knex('teams').where({ id: teamId }).first().returning('*');
 
   teamQuery.then(team => {
     if (!team) {

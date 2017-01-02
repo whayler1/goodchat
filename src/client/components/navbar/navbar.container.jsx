@@ -55,7 +55,7 @@ class Navbar extends Component {
           {isLoggedIn &&
           <ul className="header-app-nav-list">
             {[
-              { title: 'Team', to: '/team' }
+              { title: 'Teams', to: '/teams' }
             ].map((link, index) => <li key={index}>
               <Link to={link.to} onClick={this.props.hideNav}>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></Link>
             </li>)}

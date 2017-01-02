@@ -1,64 +1,31 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import { Link } from 'react-router';
-
-import superagent from 'superagent';
 
 class Team extends Component {
   static propTypes = {
-    teams: PropTypes.array
+    teams: PropTypes.array.isRequired
   };
-  onCreateTeam = () => {
-    console.log('onCreateTeam');
-    superagent.post('team').then(
-      res => {
-        console.log('create team superagent success', res);
-      },
-      err => {
-        console.log('create team err :(', err);
-      }
-    );
+  componentWillMount() {
+    console.log('%c - mounted', 'background:aqua', this.props.teams);
+    this.setState({
+      team: this.props.teams.find(team => team.id === this.props.params.teamId)
+    })
   }
   render() {
-    console.log('render:', this.props.teams);
-    const {teams} = this.props;
+    console.log('teamId:', this.props.params.teamId);
+    console.log('teams', this.props.teams);
+    console.log('team', this.state.team);
+    const { name } = this.state.team;
+    // console.log('team find:', this.props.teams.find(team => team.id === this.props.params.teamId));
     return (
       <main role="main">
         <header className="page-header">
-          <h1>My Teams</h1>
+          {name && <h1>{name}</h1>}
+          {!name && <h1>Untitled Team</h1>}
         </header>
-        {teams.length > 0 &&
-        <ul>
-          {teams.map(team => (
-            <li key={team.id}>
-              <Link to={`/team/${team.id}`}>
-                {team.name &&
-                <span>{team.name}</span>}
-                {!team.name &&
-                <span>Untitled team</span>}
-              </Link>
-            </li>
-          ))}
-        </ul>}
-        {teams.length < 1 &&
-        <div className="page-body">
-          <p>You don&rsquo;t belong to any teams yet! But don&rsquo;t worry, there&rsquo;s hope 😀. Create your own team or join an existing one below.</p>
-        </div>}
-        <ul className="footer-btn-list">
-          <li>
-            <button
-              className="btn-primary-inverse btn-block"
-              type="button"
-              onClick={this.onCreateTeam}>
-              Create a new team <i className="material-icons">add</i>
-            </button>
-          </li>
-          <li>
-            <button className="btn-secondary btn-block" type="button">
-              Join an existing team <i className="material-icons">group_add</i>
-            </button>
-          </li>
-        </ul>
+        <div class="page-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
       </main>
     );
   }
@@ -67,5 +34,6 @@ class Team extends Component {
 export default connect(
   state => ({
     teams: state.team.teams
-  })
+  }),
+  {}
 )(Team);

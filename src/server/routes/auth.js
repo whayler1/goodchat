@@ -6,13 +6,12 @@ const passport = require('../auth/local');
 
 passport.serializeUser((user, done) => {
   console.log('\n\n serializeUser', user);
-  done(null, user.google_id);
+  done(null, user.id);
 });
 
-passport.deserializeUser((google_id, done) => {
-  console.log('\n\n deserializeUser');
-  // done(null, user);
-  knex('users').where({google_id}).first()
+passport.deserializeUser((id, done) => {
+  console.log('\n\n deserializeUser', id);
+  knex('users').where({id}).first()
   .then((user) => { done(null, user); })
   .catch((err) => { done(err, null); });
 });
