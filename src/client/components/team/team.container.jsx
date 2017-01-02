@@ -5,19 +5,19 @@ import _ from 'underscore';
 
 class Team extends Component {
   static propTypes = {
-    teams: PropTypes.array.isRequired
+    team: PropTypes.array.isRequired
   };
   state = {
-    name: ''
+    name: this.props.team.name || ''
   };
   componentWillMount() {
-    console.log('%c - mounted', 'background:aqua', this.props.teams);
-    const team = this.props.teams.find(team => team.id === this.props.params.teamId);
-    const teamName = team.name ? team.name : '';
-    this.setState({
-      team,
-      name: teamName
-    });
+    console.log('%c -- team', 'background:aqua', this.props.team);
+    // const team = this.props.teams.find(team => team.id === this.props.params.teamId);
+    // const teamName = team.name ? team.name : '';
+    // const name = this.props.team;
+    // this.setState({
+    //   name: name ? name : '';
+    // });
   }
   onTeamNameSubmit = _.debounce(() => {
     console.log('debounce func');
@@ -36,7 +36,7 @@ class Team extends Component {
     this.setState({ [name]: value }, this.onTeamNameSubmit);
   };
   render() {
-    const { name } = this.state.team;
+    // const { name } = this.state.team;
     return (
       <main role="main">
         <header className="page-header">
@@ -71,7 +71,7 @@ class Team extends Component {
 
 export default connect(
   state => ({
-    teams: state.team.teams
+    team: state.team.team
   }),
   {}
 )(Team);

@@ -12,18 +12,28 @@ router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   knex('teams').insert({
     id: teamId
   })
+  .returning('*')
   .then(teams => {
-    console.log('new team!', res);
+    console.log('\n\nnew team!', teams);
 
     knex('memberships').insert({
+      id: uuid.v1(),
       team_id: teamId,
       user_id: id,
       is_owner: true
     })
+    .returning('*')
     .then(membership => {
-      console.log('membership created', teams[0]);
+      console.log('\n\nmembership created');
 
-      res.json({ team: teams[0] });
+      knex('memberships').where({ user_id: id, team_id: teamId }).join('teams', {
+        'memberships.team_id': 'teams.id'
+      })
+      .then(teams => {
+        console.log('\n\nteams:', teams);
+        res.json({ team: teams[0] });
+      })
+      .catch(err => res.status(500));
     })
     .catch(err => {
       res.status(500);
@@ -63,9 +73,13 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
     if (!membership) {
       res.status(403);
     } else {
-      knex('teams').where({ id })
+      knex('memberships').where({ user_id: userId, team_id: id })
+      .join('teams', {
+        'memberships.team_id': 'teams.id'
+      })
       .first()
       .then(team => {
+        console.log('\n\nteam:', team);
         res.json({ team });
       })
       .catch(err => res.status(500));
@@ -92,7 +106,10 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
       res.status(403);
     } else {
       knex('teams').where({ id })
-      .update({ name })
+      .update({
+        name,
+        updated_at: knex.fn.now()
+      })
       .then(teams => {
         res.json({ team: teams[0] });
       })

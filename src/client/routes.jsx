@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
-import {setTeams} from './components/team/team.dux.js';
+import { setTeams, setTeam } from './components/team/team.dux.js';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -10,7 +10,8 @@ import Team from './components/team/team.container.jsx';
 
 class Routes extends Component {
   static propTypes = {
-    setTeams: PropTypes.array.isRequired
+    setTeams: PropTypes.func.isRequired,
+    setTeam: PropTypes.func.isRequired
   }
   onTeamsEnter = (nextState, replace, callback) => {
     superagent.get('team').then(
@@ -27,18 +28,24 @@ class Routes extends Component {
     )
   }
   onTeamEnter = (nextState, replace, callback) => {
-    console.log('onTeamIdEnter !');
-    callback();
+    console.log('onTeamEnter ! nextState', nextState.params.teamId);
+    superagent.get(`team/${nextState.params.teamId}`).then(
+      res => {
+        console.log('onTeamEnter res', res);
+        this.props.setTeam(res.body.team);
+        callback();
+      },
+      err => console.log('err retrieving team', err)
+    );
+    // callback();
   }
   render() {
     return (
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={Home}/>
-          <Route path="/teams" onEnter={this.onTeamsEnter}>
-            <IndexRoute component={Teams}/>
-            <Route path=":teamId" component={Team} onEnter={this.onTeamEnter}/>
-          </Route>
+          <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
+          <Route path="/teams/:teamId" component={Team} onEnter={this.onTeamEnter}/>
         </Route>
       </Router>
     );
@@ -48,6 +55,7 @@ class Routes extends Component {
 export default connect(
   null,
   {
-    setTeams
+    setTeams,
+    setTeam
   }
 )(Routes);

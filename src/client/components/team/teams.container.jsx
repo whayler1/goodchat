@@ -1,18 +1,18 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Router, { Link } from 'react-router';
 
 import superagent from 'superagent';
 
 class Teams extends Component {
   static propTypes = {
-    teams: PropTypes.array
+    teams: PropTypes.array,
+    browserHistory: PropTypes.array
   };
   onCreateTeam = () => {
-    console.log('onCreateTeam');
     superagent.post('team').then(
       res => {
-        console.log('create team superagent success', res);
+        this.props.router.push(`teams/${res.body.team.id}`);
       },
       err => {
         console.log('create team err :(', err);
@@ -20,8 +20,7 @@ class Teams extends Component {
     );
   }
   render() {
-    console.log('render:', this.props.teams);
-    const {teams} = this.props;
+    const { teams } = this.props;
     return (
       <main role="main">
         <header className="page-header">
