@@ -10,7 +10,12 @@ class Team extends Component {
   state = {
     name: this.props.team.name || ''
   };
-  onTeamNameSubmit = _.debounce(() => {
+  onTeamNameSubmit = e => {
+    e.preventDefault();
+    this.submit();
+    return false;
+  };
+  submit = _.debounce(() => {
     console.log('debounce func');
     superagent.put(`team/${this.props.params.teamId}`)
     .send({ name: this.state.name })
@@ -24,7 +29,7 @@ class Team extends Component {
   onChange = e => {
     const { value, name } = e.target;
     console.log('onChange', value);
-    this.setState({ [name]: value }, this.onTeamNameSubmit);
+    this.setState({ [name]: value }, this.submit);
   };
   render() {
     // const { name } = this.state.team;
