@@ -9,12 +9,16 @@
     const login = require('../routes/login');
     const authRoutes = require('../routes/auth');
     const userRoutes = require('../routes/user');
+    const organizationRoutes = require('../routes/organization');
+    const teamRoutes = require('../routes/team');
 
     // *** register routes *** //
     app.use('/', routes);
     app.use('/', login);
     app.use('/auth', authRoutes);
     app.use('/', userRoutes);
+    app.use('/', organizationRoutes)
+    app.use('/', teamRoutes)
 
   };
 

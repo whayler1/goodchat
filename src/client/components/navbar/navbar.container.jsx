@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import GoogleLogin from 'react-google-login';
-import {setLoggedIn, logout} from '../user/user.dux';
+import {setLoggedIn} from '../user/user.dux';
 import {showNav, hideNav} from './navbar.dux';
 
 class Navbar extends Component {
@@ -10,15 +11,9 @@ class Navbar extends Component {
     shouldShowNav: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     setLoggedIn: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired,
     showNav: PropTypes.func.isRequired,
     hideNav: PropTypes.func.isRequired,
     givenName: PropTypes.string
-  }
-
-  onLogoutClick = () => {
-    this.props.logout();
-    this.props.hideNav();
   }
 
   render() {
@@ -38,7 +33,13 @@ class Navbar extends Component {
               <i className="material-icons">menu</i>
             </button>;
           })()}
-          <a className="header-home-anchor"/>
+          {shouldShowHeroLink &&
+          <Link
+            to="/"
+            onClick={this.props.hideNav}
+            className="header-home-anchor">
+            Good Chat
+          </Link>}
           {!this.props.isLoggedIn && <GoogleLogin
             clientId={googleClientId}
             scope="profile"
@@ -51,27 +52,23 @@ class Navbar extends Component {
           {this.props.isLoggedIn && <a className="header-user-ui">{givenName}</a>}
         </nav>
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
+          {isLoggedIn &&
           <ul className="header-app-nav-list">
             {[
-              { title: 'Link One' },
-              { title: 'Second Link' },
-              {title: 'Another link'}
+              { title: 'Teams', to: '/teams' }
             ].map((link, index) => <li key={index}>
-              <a>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></a>
+              <Link to={link.to} onClick={this.props.hideNav}>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></Link>
             </li>)}
+          </ul>}
+          <ul className="footer-btn-list">
+            <li>
+              <button className="btn-primary-inverse btn-block"
+                type="button"
+                onClick={this.props.hideNav}>
+                Close
+              </button>
+            </li>
           </ul>
-          <div className="header-app-nav-footer">
-            {isLoggedIn && <button className="btn-secondary"
-              type="button"
-              onClick={this.onLogoutClick}>
-              Logout
-            </button>}
-            <button className="btn-primary-inverse"
-              type="button"
-              onClick={this.props.hideNav}>
-              Close
-            </button>
-          </div>
         </nav>
       </header>
     );
@@ -87,7 +84,6 @@ export default connect(
   }),
   {
     setLoggedIn,
-    logout,
     showNav,
     hideNav
   }

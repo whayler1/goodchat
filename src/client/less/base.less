@@ -1,7 +1,10 @@
+@font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-family: @font-family;
+  font-size: 1rem;
   color: @bluegrey-400;
 }
 
@@ -10,6 +13,38 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
 }
 
+h1 {
+  font-size: 2rem;
+}
+
 a, button {
+  font-family: @font-family;
   cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+input, textarea, select {
+  font-family: @font-family;
+  font-size: 1rem;
+  outline: none;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.page-header,
+.page-body {
+  padding: @gutter;
+
+  p {
+    margin: 0;
+  }
+}
+.page-header {
+
+  +.page-body {
+    padding-top: 0;
+  }
 }
