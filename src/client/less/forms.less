@@ -1,0 +1,93 @@
+.form {
+
+}
+
+.input-group {
+  border: 1px solid @bluegrey-50;
+  border-radius: @border-radius;
+  position: relative;
+  display: table;
+  border-collapse: collapse;
+
+  &:hover,
+  &:focus {
+    border-color: @bluegrey-100;
+  }
+  &:active {
+    border-color: @bluegrey-400;
+  }
+
+  ::-webkit-input-placeholder {
+    color: @bluegrey-100;
+    font-style: italic;
+  }
+  ::-moz-placeholder {
+    color: @bluegrey-100;
+    font-style: italic;
+  }
+  :-ms-input-placeholder {
+    color: @bluegrey-100;
+    font-style: italic;
+  }
+  :-moz-placeholder {
+    color: @bluegrey-100;
+    font-style: italic;
+  }
+
+  &.input-group-seamless {
+    margin: -6px;
+    border-color: transparent;
+
+    &:hover,
+    &:focus {
+      border-color: @bluegrey-100;
+
+      .input-group-addon {
+        opacity: 1;
+      }
+    }
+    &:active {
+      border-color: @bluegrey-400;
+    }
+  }
+}
+
+.form-control {
+  display: table-cell;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  color: @bluegrey-400;
+
+  .input-group-h1 & {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+  .input-group-seamless & {
+    padding: 6px;
+  }
+}
+
+.input-group-addon {
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 1;
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+  display: table-cell;
+
+  .input-group-h1 & {
+    font-size: 2rem;
+    i {
+      font-size: 2rem;
+    }
+  }
+  .input-group-seamless & {
+    padding: 6px;
+    opacity: 0;
+  }
+}

@@ -10,15 +10,6 @@ class Team extends Component {
   state = {
     name: this.props.team.name || ''
   };
-  componentWillMount() {
-    console.log('%c -- team', 'background:aqua', this.props.team);
-    // const team = this.props.teams.find(team => team.id === this.props.params.teamId);
-    // const teamName = team.name ? team.name : '';
-    // const name = this.props.team;
-    // this.setState({
-    //   name: name ? name : '';
-    // });
-  }
   onTeamNameSubmit = _.debounce(() => {
     console.log('debounce func');
     superagent.put(`team/${this.props.params.teamId}`)
@@ -45,7 +36,7 @@ class Team extends Component {
             name="team-name-form"
             onSubmit={this.onTeamNameSubmit}
           >
-            <div className="input-group input-group-seamless">
+            <div className="input-group input-group-seamless input-group-h1">
               <input
                 className="form-control"
                 type="text"
