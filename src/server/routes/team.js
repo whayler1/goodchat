@@ -120,25 +120,49 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
 });
 
 router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
-  const teamID = req.params.id;
+  const teamId = req.params.id;
+  const userId = req.user.id;
 
-  teamQuery.then(team => {
-    if (!team) {
-      res.status(400).json({ msg: 'no team with that id' });
-    } else if (team.owner === req.user.google_id) {
-      // delete team
-      teamQuery.del().then(res => {
-        console.log('team successfully deleted');
-        res.status(200);
+  console.log('\n\ndelete\nteamId:', teamId, '\nuserId:', userId);
+
+  knex('memberships').where({ team_id: teamId, user_id: userId })
+  .then(memberships => {
+    console.log('\n\nmemberships:', memberships);
+    if (!memberships[0].is_owner) {
+      res.status(403);
+    } else {
+      knex('memberships').del().where({ team_id: teamId, user_id: userId })
+      .then(() => {
+        console.log('\n\ndeleted membership');
+        knex('teams').del().where({ id: teamId })
+        .then(() => {
+          console.log('\n\ndeleted team');
+          res.json({});
+        })
+        .catch(err => res.status(500));
       })
       .catch(err => res.status(500));
-    } else {
-      res.status(401).json({ msg: 'user does not have priviledges to delete this team' });
     }
   })
-  .catch(err => {
-    console.log('delete team error!', err);
-  });
+  .catch(err => res.status(500));
+
+  // teamQuery.then(team => {
+  //   if (!team) {
+  //     res.status(400).json({ msg: 'no team with that id' });
+  //   } else if (team.owner === req.user.google_id) {
+  //     // delete team
+  //     teamQuery.del().then(res => {
+  //       console.log('team successfully deleted');
+  //       res.status(200);
+  //     })
+  //     .catch(err => res.status(500));
+  //   } else {
+  //     res.status(401).json({ msg: 'user does not have priviledges to delete this team' });
+  //   }
+  // })
+  // .catch(err => {
+  //   console.log('delete team error!', err);
+  // });
 })
 
 module.exports = router;

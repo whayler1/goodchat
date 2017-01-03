@@ -34,8 +34,18 @@
     font-style: italic;
   }
 
+  &.input-group-cosmetic {
+    border: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+
+    }
+  }
+
   &.input-group-seamless {
-    margin: -6px;
+    margin: -6px -6px 0 -6px;
     border-color: transparent;
 
     &:hover,
@@ -61,6 +71,7 @@
   font-size: 1rem;
   border: none;
   color: @bluegrey-400;
+  text-overflow: ellipsis;
 
   .input-group-h1 & {
     font-size: 2rem;
@@ -68,6 +79,9 @@
   }
   .input-group-seamless & {
     padding: 6px;
+  }
+  .input-group-cosmetic & {
+    padding: 0;
   }
 }
 
@@ -89,5 +103,9 @@
   .input-group-seamless & {
     padding: 6px;
     opacity: 0;
+  }
+  .input-group-cosmetic & {
+    padding: 0;
+    visibility: hidden;
   }
 }
