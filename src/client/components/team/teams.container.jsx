@@ -27,7 +27,7 @@ class Teams extends Component {
           <h1>My Teams</h1>
         </header>
         {teams.length > 0 &&
-        <ul>
+        <ul className="page-body-list">
           {teams.map(team => (
             <li key={team.id}>
               <Link to={`/teams/${team.id}`}>
@@ -35,6 +35,7 @@ class Teams extends Component {
                 <span>{team.name}</span>}
                 {!team.name &&
                 <span>Untitled team</span>}
+                <i className="material-icons pull-right">chevron_right</i>
               </Link>
             </li>
           ))}
