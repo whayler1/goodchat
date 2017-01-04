@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
-import { setTeams, setTeam } from './components/team/team.dux.js';
+import { setTeams, setTeam } from './components/team/team.dux';
+import { setInvites } from './components/invite/invite.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -12,7 +13,8 @@ import TeamInvite from './components/team/team.invite.container.jsx';
 class Routes extends Component {
   static propTypes = {
     setTeams: PropTypes.func.isRequired,
-    setTeam: PropTypes.func.isRequired
+    setTeam: PropTypes.func.isRequired,
+    setInvites: PropTypes.func.isRequired
   }
   onTeamsEnter = (nextState, replace, callback) => {
     superagent.get('team').then(
@@ -39,6 +41,15 @@ class Routes extends Component {
       err => console.log('err retrieving team', err)
     );
   }
+  onTeamInviteEnter = (nextState, replace, callback) => {
+    superagent.get(`invite/${nextState.params.teamId}`).then(
+      res => {
+        this.props.setInvites(res.body.invites);
+        callback();
+      },
+      err => console.log('err retrieving invites')
+    );
+  }
   render() {
     return (
       <Router history={hashHistory}>
@@ -47,7 +58,7 @@ class Routes extends Component {
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter}>
             <IndexRoute component={Team}/>
-            <Route path="invite" component={TeamInvite}/>
+            <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
           </Route>
         </Route>
       </Router>
@@ -59,6 +70,7 @@ export default connect(
   null,
   {
     setTeams,
-    setTeam
+    setTeam,
+    setInvites
   }
 )(Routes);

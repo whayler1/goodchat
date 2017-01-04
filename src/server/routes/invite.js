@@ -45,4 +45,21 @@ router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
   }
 });
 
+router.get('/invite/:team_id', authHelpers.loginRequired, (req, res) => {
+  const { team_id } = req.params;
+  const { is_used } = req.body;
+
+  console.log('\n\ninvite teamId', team_id, '\nis_used:', is_used);
+
+  knex('invites').where({
+    team_id,
+    is_used: is_used || false
+  })
+  .then(invites => {
+    console.log('\n\ninvites', invites);
+    res.json({ invites });
+  })
+  .catch(err => res.sendStatus(500));
+});
+
 module.exports = router;

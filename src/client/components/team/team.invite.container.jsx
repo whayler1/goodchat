@@ -5,7 +5,8 @@ import superagent from 'superagent';
 
 class TeamInvite extends Component {
   static propTypes = {
-    team: PropTypes.object.isRequired
+    team: PropTypes.object.isRequired,
+    invites: PropTypes.array.isRequired
   }
   state = {
     email: '',
@@ -36,7 +37,7 @@ class TeamInvite extends Component {
   });
   render() {
     const { name, id } = this.props.team;
-    console.log('%cteam invite', 'background:pink');
+    console.log('%cteam invite\ninvites:', 'background:pink', this.props.invites);
     return (
       <main role="main">
         <header className="page-header">
@@ -97,6 +98,7 @@ class TeamInvite extends Component {
 
 export default connect(
   state => ({
-    team: state.team.team
+    team: state.team.team,
+    invites: state.invite.invites
   })
 )(TeamInvite);
