@@ -61,6 +61,7 @@ class Team extends Component {
                 maxLength={50}
                 readOnly={!is_owner}
                 value={this.state.name}
+                autoComplete="off"
                 onChange={this.onChange}
               />
               <span className="input-group-addon">

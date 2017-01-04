@@ -33,14 +33,14 @@ router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
         console.log('\n\nteams:', teams);
         res.json({ team: teams[0] });
       })
-      .catch(err => res.status(500));
+      .catch(err => res.sendStatus(500));
     })
     .catch(err => {
-      res.status(500);
+      res.sendStatus(500);
     });
   })
   .catch(err => {
-    res.status(500);
+    res.sendStatus(500);
   });
 });
 
@@ -55,7 +55,7 @@ router.get('/team', authHelpers.loginRequired, (req, res, next) => {
     console.log('teams:', teams);
     res.json({ teams });
   })
-  .catch(err => res.status(500));
+  .catch(err => res.sendStatus(500));
 });
 
 router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
@@ -71,7 +71,7 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   .then(membership => {
 
     if (!membership) {
-      res.status(403);
+      res.sendStatus(403);
     } else {
       knex('memberships').where({ user_id: userId, team_id: id })
       .join('teams', {
@@ -82,10 +82,10 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
         console.log('\n\nteam:', team);
         res.json({ team });
       })
-      .catch(err => res.status(500));
+      .catch(err => res.sendStatus(500));
     }
   })
-  .catch(err => res.status(500));
+  .catch(err => res.sendStatus(500));
 });
 
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
@@ -103,7 +103,7 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   .then(membership => {
 
     if (!(membership.is_owner || membership.is_admin)) {
-      res.status(403);
+      res.sendStatus(403);
     } else {
       knex('teams').where({ id })
       .update({
@@ -113,10 +113,10 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
       .then(teams => {
         res.json({ team: teams[0] });
       })
-      .catch(err => res.status(500));
+      .catch(err => res.sendStatus(500));
     }
   })
-  .catch(err => res.status(500));
+  .catch(err => res.sendStatus(500));
 });
 
 router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
@@ -129,7 +129,7 @@ router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   .then(memberships => {
     console.log('\n\nmemberships:', memberships);
     if (!memberships[0].is_owner) {
-      res.status(403);
+      res.sendStatus(403);
     } else {
       knex('memberships').del().where({ team_id: teamId, user_id: userId })
       .then(() => {
@@ -139,25 +139,25 @@ router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
           console.log('\n\ndeleted team');
           res.json({});
         })
-        .catch(err => res.status(500));
+        .catch(err => res.sendStatus(500));
       })
-      .catch(err => res.status(500));
+      .catch(err => res.sendStatus(500));
     }
   })
-  .catch(err => res.status(500));
+  .catch(err => res.sendStatus(500));
 
   // teamQuery.then(team => {
   //   if (!team) {
-  //     res.status(400).json({ msg: 'no team with that id' });
+  //     res.sendStatus(400).json({ msg: 'no team with that id' });
   //   } else if (team.owner === req.user.google_id) {
   //     // delete team
   //     teamQuery.del().then(res => {
   //       console.log('team successfully deleted');
-  //       res.status(200);
+  //       res.sendStatus(200);
   //     })
-  //     .catch(err => res.status(500));
+  //     .catch(err => res.sendStatus(500));
   //   } else {
-  //     res.status(401).json({ msg: 'user does not have priviledges to delete this team' });
+  //     res.sendStatus(401).json({ msg: 'user does not have priviledges to delete this team' });
   //   }
   // })
   // .catch(err => {
