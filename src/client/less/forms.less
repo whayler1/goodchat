@@ -19,19 +19,15 @@
 
   ::-webkit-input-placeholder {
     color: @bluegrey-100;
-    font-style: italic;
   }
   ::-moz-placeholder {
     color: @bluegrey-100;
-    font-style: italic;
   }
   :-ms-input-placeholder {
     color: @bluegrey-100;
-    font-style: italic;
   }
   :-moz-placeholder {
     color: @bluegrey-100;
-    font-style: italic;
   }
 
   &.input-group-cosmetic {
@@ -60,10 +56,25 @@
       border-color: @bluegrey-400;
     }
   }
+
+  &.input-group-h1 {
+    ::-webkit-input-placeholder {
+      font-style: italic;
+    }
+    ::-moz-placeholder {
+      font-style: italic;
+    }
+    :-ms-input-placeholder {
+      font-style: italic;
+    }
+    :-moz-placeholder {
+      font-style: italic;
+    }
+  }
 }
 
 .form-control {
-  display: table-cell;
+  display: block;
   z-index: 2;
   float: left;
   width: 100%;
@@ -72,6 +83,27 @@
   border: none;
   color: @bluegrey-400;
   text-overflow: ellipsis;
+  border: 1px solid @bluegrey-50;
+  border-radius: @border-radius;
+
+  &:hover,
+  &:focus {
+    border-color: @bluegrey-100;
+  }
+  &:active {
+    border-color: @bluegrey-400;
+  }
+
+  .input-group & {
+    display: table-cell;
+    border: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border: none;
+    }
+  }
 
   .input-group-h1 & {
     font-size: 2rem;

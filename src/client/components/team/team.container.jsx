@@ -1,5 +1,6 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import superagent from 'superagent';
 import _ from 'underscore';
 
@@ -43,7 +44,7 @@ class Team extends Component {
     );
   }
   render() {
-    const { is_owner } = this.props.team;
+    const { is_owner, is_admin, id } = this.props.team;
     return (
       <main role="main">
         <header className="page-header">
@@ -73,14 +74,20 @@ class Team extends Component {
         <div class="page-body">
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
-        {is_owner &&
         <ul className="footer-btn-list">
+          {(is_owner || is_admin) &&
+          <li>
+            <Link className="btn-secondary btn-block" to={`teams/${id}/invite`}>
+              Invite team member <i className="material-icons">person_add</i>
+            </Link>
+          </li>}
+          {is_owner &&
           <li>
             <button className="btn-secondary btn-block" type="button" onClick={this.onDeleteClick}>
               Delete this team <i className="material-icons">delete</i>
             </button>
-          </li>
-        </ul>}
+          </li>}
+        </ul>
       </main>
     );
   }

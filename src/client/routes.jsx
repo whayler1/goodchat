@@ -7,6 +7,7 @@ import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
 import Team from './components/team/team.container.jsx';
+import TeamInvite from './components/team/team.invite.container.jsx';
 
 class Routes extends Component {
   static propTypes = {
@@ -37,7 +38,6 @@ class Routes extends Component {
       },
       err => console.log('err retrieving team', err)
     );
-    // callback();
   }
   render() {
     return (
@@ -45,7 +45,10 @@ class Routes extends Component {
         <Route path="/" component={App}>
           <IndexRoute component={Home}/>
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
-          <Route path="/teams/:teamId" component={Team} onEnter={this.onTeamEnter}/>
+          <Route path="/teams/:teamId" onEnter={this.onTeamEnter}>
+            <IndexRoute component={Team}/>
+            <Route path="invite" component={TeamInvite}/>
+          </Route>
         </Route>
       </Router>
     );

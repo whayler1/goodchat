@@ -11,14 +11,16 @@
     const userRoutes = require('../routes/user');
     const organizationRoutes = require('../routes/organization');
     const teamRoutes = require('../routes/team');
+    const inviteRoutes = require('../routes/invite');
 
     // *** register routes *** //
     app.use('/', routes);
     app.use('/', login);
     app.use('/auth', authRoutes);
     app.use('/', userRoutes);
-    app.use('/', organizationRoutes)
-    app.use('/', teamRoutes)
+    app.use('/', organizationRoutes);
+    app.use('/', teamRoutes);
+    app.use('/', inviteRoutes);
 
   };
 
