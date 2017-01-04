@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Time from 'react-time';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import superagent from 'superagent';
@@ -37,6 +38,7 @@ class TeamInvite extends Component {
   });
   render() {
     const { name, id } = this.props.team;
+    const { invites } = this.props;
     console.log('%cteam invite\ninvites:', 'background:pink', this.props.invites);
     return (
       <main role="main">
@@ -83,6 +85,22 @@ class TeamInvite extends Component {
               </button>
             </fieldset>
           </form>
+          {invites.length > 0 && [
+          <h3>Pending invites</h3>,
+          <ul className="page-body-list">
+            {invites.map(invite => (
+              <li key={invite.id}>
+                <div>
+                  <h4>{invite.invitee_email}</h4>
+                  <Time
+                    value={new Date(invite.created_at)}
+                    relative
+                    titleFormat="YYYY/MM/DD"
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>]}
         </div>
         <ul className="footer-btn-list">
           <li>
@@ -99,6 +117,6 @@ class TeamInvite extends Component {
 export default connect(
   state => ({
     team: state.team.team,
-    invites: state.invite.invites
+    invites: state.invite.invites.sort((a, b) => a.created_at < b.created_at)
   })
 )(TeamInvite);

@@ -15,6 +15,11 @@
   margin: 0 @gutter @gutter;
   padding: 0;
 
+  .page-body & {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   >li {
     list-style: none;
     border-top: 1px dotted @bluegrey-100;
@@ -22,7 +27,9 @@
     &:first-child {
       border-top: none;
     }
-
+    >div {
+      padding: @gutter 0;
+    }
     >a {
       display: block;
       padding: @gutter 0;
