@@ -62,4 +62,12 @@ router.get('/invite/:team_id', authHelpers.loginRequired, (req, res) => {
   .catch(err => res.sendStatus(500));
 });
 
+router.delete('/invite/:invite_id', authHelpers.loginRequired, (req, res) => {
+  const { invite_id } = req.params;
+
+  knex('invites').del().where({ id: invite_id })
+  .then(() => res.json({ msg: 'success' }))
+  .catch(err => res.sendStatus(500));
+});
+
 module.exports = router;

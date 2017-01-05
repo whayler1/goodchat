@@ -145,24 +145,6 @@ router.delete('/team/:id', authHelpers.loginRequired, (req, res, next) => {
     }
   })
   .catch(err => res.sendStatus(500));
-
-  // teamQuery.then(team => {
-  //   if (!team) {
-  //     res.sendStatus(400).json({ msg: 'no team with that id' });
-  //   } else if (team.owner === req.user.google_id) {
-  //     // delete team
-  //     teamQuery.del().then(res => {
-  //       console.log('team successfully deleted');
-  //       res.sendStatus(200);
-  //     })
-  //     .catch(err => res.sendStatus(500));
-  //   } else {
-  //     res.sendStatus(401).json({ msg: 'user does not have priviledges to delete this team' });
-  //   }
-  // })
-  // .catch(err => {
-  //   console.log('delete team error!', err);
-  // });
 })
 
 module.exports = router;

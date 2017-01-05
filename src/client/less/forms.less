@@ -2,10 +2,14 @@
   fieldset {
     border: 0;
     padding: 0;
+    margin-top: @gutter;
+  }
+}
 
-    +fieldset {
-      margin-top: @gutter;
-    }
+.input-label {
+  +.input-group,
+  +.form-control {
+    margin-top: @half-gutter;
   }
 }
 
@@ -24,17 +28,16 @@
     border-color: @bluegrey-400;
   }
 
-  ::-webkit-input-placeholder {
-    color: @bluegrey-100;
-  }
-  ::-moz-placeholder {
-    color: @bluegrey-100;
-  }
-  :-ms-input-placeholder {
-    color: @bluegrey-100;
-  }
-  :-moz-placeholder {
-    color: @bluegrey-100;
+  .input-error & {
+    border-color: @danger-color;
+
+    &:hover,
+    &:focus {
+      border-color: @danger-color-hover;
+    }
+    &:active {
+      border-color: @danger-color-active;
+    }
   }
 
   &.input-group-cosmetic {
@@ -82,8 +85,6 @@
 
 .form-control {
   display: block;
-  z-index: 2;
-  float: left;
   width: 100%;
   padding: 12px;
   font-size: 1rem;
@@ -101,9 +102,23 @@
     border-color: @bluegrey-400;
   }
 
+  .input-error & {
+    border-color: @danger-color;
+
+    &:hover,
+    &:focus {
+      border-color: @danger-color-hover;
+    }
+    &:active {
+      border-color: @danger-color-active;
+    }
+  }
+
   .input-group & {
     display: table-cell;
     border: none;
+    z-index: 2;
+    float: left;
 
     &:hover,
     &:focus,
@@ -147,4 +162,22 @@
     padding: 0;
     visibility: hidden;
   }
+}
+
+.input-error-msg {
+  margin-top: @half-gutter;
+  color: @danger-color;
+}
+
+::-webkit-input-placeholder {
+  color: @bluegrey-100;
+}
+::-moz-placeholder {
+  color: @bluegrey-100;
+}
+:-ms-input-placeholder {
+  color: @bluegrey-100;
+}
+:-moz-placeholder {
+  color: @bluegrey-100;
 }

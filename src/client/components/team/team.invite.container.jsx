@@ -4,20 +4,92 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import superagent from 'superagent';
 
+import { setInvites } from '../invite/invite.dux';
+
+class InviteListItem extends Component {
+  static propTypes = {
+    inviteId: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
+    inviteeEmail: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    setInvites: PropTypes.func.isRequired
+  };
+  state = {
+    isInFlight: false
+  }
+  delete = () => {
+    const { inviteId, teamId, setInvites } = this.props;
+
+    superagent.delete(`invite/${inviteId}`).then(
+      res => {
+        superagent.get(`invite/${teamId}`).then(
+          res => {
+            setInvites(res.body.invites);
+          },
+          err => console.log('err retrieving invites', err)
+        );
+      },
+      err => console.log('error deleting invite', err)
+    );
+  }
+  onDeleteClick = () => {
+    if (!this.state.isInFlight) {
+      this.setState({ isInFlight: true }, this.delete);
+    }
+  }
+  render() {
+    const { inviteeEmail, createdAt } = this.props;
+    return (
+      <div>
+        <div>{inviteeEmail}</div>
+        <Time
+          className="font-small"
+          value={new Date(createdAt)}
+          relative
+          titleFormat="YYYY/MM/DD"
+        />
+        <ul className="pending-invite-list-ui-list">
+          <li>
+            <button
+              className="btn-icon btn-icon-danger"
+              type="button"
+              onClick={this.onDeleteClick}
+            >
+              <i className="material-icons">delete</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+
 class TeamInvite extends Component {
   static propTypes = {
     team: PropTypes.object.isRequired,
-    invites: PropTypes.array.isRequired
+    invites: PropTypes.array.isRequired,
+    setInvites: PropTypes.func.isRequired
   }
   state = {
     email: '',
-    isAdmin: false
+    isAdmin: false,
+    emailError: '',
+    isInFlight: false
   }
-  onSubmit = e => {
-    e.preventDefault();
+  validate = () => {
+    const { email } = this.state;
+    if (email.trim() === '') {
+      this.setState({ emailError: 'empty' });
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      this.setState({ emailError: 'invalid' });
+      return;
+    }
+    this.setState({ emailError: '', isInFlight: true }, this.submit);
+  }
+  submit = () => {
     const { email, isAdmin } = this.state;
-
-    console.log('submit\nemail:', email, '\nisAdmin:', isAdmin);
 
     superagent.post('invite')
       .send({
@@ -28,9 +100,22 @@ class TeamInvite extends Component {
       .then(
         res => {
           console.log('invite success!', res);
+          superagent.get(`invite/${this.props.team.id}`).then(
+            res => {
+              this.props.setInvites(res.body.invites);
+              this.setState({ isInFlight: false });
+            },
+            err => console.log('err retrieving invites')
+          );
         },
         err => console.log('err', err)
       );
+  }
+  onSubmit = e => {
+    e.preventDefault();
+    if (!this.state.isInFlight) {
+      this.validate();
+    }
     return false;
   }
   onChange = e => this.setState({
@@ -39,22 +124,24 @@ class TeamInvite extends Component {
   render() {
     const { name, id } = this.props.team;
     const { invites } = this.props;
+    const { emailError } = this.state;
     console.log('%cteam invite\ninvites:', 'background:pink', this.props.invites);
     return (
       <main role="main">
         <header className="page-header">
           <h1>{ name ? name : 'Untitled Team' }</h1>
-          <h2>Invite a team member</h2>
+          <h2>Invites</h2>
         </header>
         <div className="page-body">
+          <h3>Invite a team member</h3>
           <form
             name="invite-team-member-form"
             onSubmit={this.onSubmit}
             className="form"
             noValidate
           >
-            <fieldset>
-              <label htmlFor="email">Invitee email</label>
+            <fieldset className={ emailError ? 'input-error' : '' }>
+              <label className="input-label" htmlFor="email">Invitee email</label>
               <input
                 id="email"
                 name="email"
@@ -66,6 +153,9 @@ class TeamInvite extends Component {
                 autoComplete="off"
                 onChange={this.onChange}
               />
+              {emailError &&
+              <p className="input-error-msg">Please provide a valid email.</p>
+              }
             </fieldset>
             <fieldset>
               <label htmlFor="isAdmin">
@@ -87,17 +177,16 @@ class TeamInvite extends Component {
           </form>
           {invites.length > 0 && [
           <h3>Pending invites</h3>,
-          <ul className="page-body-list">
+          <ul className="page-body-list pending-invite-list">
             {invites.map(invite => (
               <li key={invite.id}>
-                <div>
-                  <h4>{invite.invitee_email}</h4>
-                  <Time
-                    value={new Date(invite.created_at)}
-                    relative
-                    titleFormat="YYYY/MM/DD"
-                  />
-                </div>
+                <InviteListItem
+                  inviteId={invite.id}
+                  teamId={id}
+                  inviteeEmail={invite.invitee_email}
+                  createdAt={invite.created_at}
+                  setInvites={this.props.setInvites}
+                />
               </li>
             ))}
           </ul>]}
@@ -118,5 +207,8 @@ export default connect(
   state => ({
     team: state.team.team,
     invites: state.invite.invites.sort((a, b) => a.created_at < b.created_at)
-  })
+  }),
+  {
+    setInvites
+  }
 )(TeamInvite);

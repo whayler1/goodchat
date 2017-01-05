@@ -66,6 +66,34 @@ a.btn-block {
   background: transparent;
 }
 
+@btn-icon-radius: 2rem;
+
+.btn-icon {
+  border: 1px solid @bluegrey-100;
+  background: transparent;
+  color: @header-color;
+  width: @btn-icon-radius;
+  height: @btn-icon-radius;
+  text-align: center;
+  border-radius: @btn-icon-radius;
+  padding: 0;
+  >i {
+    line-height: @btn-icon-radius;
+  }
+}
+
+.btn-icon-danger {
+  &:hover,
+  &:focus {
+    color: @danger-color;
+    border-color: @danger-color;
+  }
+  &:active {
+    color: @danger-color-active;
+    border-color: @danger-color-active;
+  }
+}
+
 .btn-secondary {
   border: 1px solid @bluegrey-100;
   background: transparent;
