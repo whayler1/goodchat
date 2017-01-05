@@ -25,16 +25,25 @@ router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
       console.log('\n\nmembership:', membership);
       const { is_owner, is_admin } = membership;
       if (is_owner || is_admin) {
-        knex('invites').insert({
-          id,
-          team_id,
-          host_id,
-          invitee_email
-        })
-        .returning('*')
-        .then(invite => {
-          console.log('\n\ninvite success', invite);
-          res.json({ invite });
+        knex('invites').where({ team_id, invitee_email })
+        .then(invites => {
+          if (invites.length > 0) {
+            console.log('\n\ninvites length over 0');
+            res.status(400).json({ msg: 'email-exists' });
+          } else {
+            knex('invites').insert({
+              id,
+              team_id,
+              host_id,
+              invitee_email
+            })
+            .returning('*')
+            .then(invite => {
+              console.log('\n\ninvite success', invite);
+              res.json({ invite });
+            })
+            .catch(err => res.sendStatus(500));
+          }
         })
         .catch(err => res.sendStatus(500));
       } else {

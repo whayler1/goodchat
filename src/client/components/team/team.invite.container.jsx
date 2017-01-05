@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Time from 'react-time';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import superagent from 'superagent';
 
 import { setInvites } from '../invite/invite.dux';
@@ -11,7 +12,7 @@ class InviteListItem extends Component {
     inviteId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     inviteeEmail: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
     setInvites: PropTypes.func.isRequired
   };
   state = {
@@ -38,13 +39,14 @@ class InviteListItem extends Component {
     }
   }
   render() {
-    const { inviteeEmail, createdAt } = this.props;
+    const { inviteeEmail, updatedAt } = this.props;
     return (
       <div>
         <div>{inviteeEmail}</div>
+        {/* subtract a few seconds from updatedAt because server time is slightly ahead */}
         <Time
           className="font-small"
-          value={new Date(createdAt)}
+          value={moment(updatedAt).subtract(3, 'seconds')}
           relative
           titleFormat="YYYY/MM/DD"
         />
@@ -97,8 +99,16 @@ class TeamInvite extends Component {
         team_id: this.props.team.id,
         is_admin: isAdmin
       })
-      .then(
-        res => {
+      .end((err, res) => {
+        if (err) {
+          console.log('err:', err, '\nres:', res);
+          if (res.body.msg === 'email-exists') {
+            this.setState({
+              isInFlight: false,
+              emailError: 'email-exists'
+            });
+          }
+        } else {
           console.log('invite success!', res);
           superagent.get(`invite/${this.props.team.id}`).then(
             res => {
@@ -107,9 +117,8 @@ class TeamInvite extends Component {
             },
             err => console.log('err retrieving invites')
           );
-        },
-        err => console.log('err', err)
-      );
+        }
+      });
   }
   onSubmit = e => {
     e.preventDefault();
@@ -154,7 +163,11 @@ class TeamInvite extends Component {
                 onChange={this.onChange}
               />
               {emailError &&
-              <p className="input-error-msg">Please provide a valid email.</p>
+              <p className="input-error-msg">
+                {emailError === 'invalid' && 'Please provide a valid email.'}
+                {emailError === 'empty' && 'Please provide an email.'}
+                {emailError === 'email-exists' && 'This email has already been invited.'}
+              </p>
               }
             </fieldset>
             <fieldset>
@@ -184,7 +197,7 @@ class TeamInvite extends Component {
                   inviteId={invite.id}
                   teamId={id}
                   inviteeEmail={invite.invitee_email}
-                  createdAt={invite.created_at}
+                  updatedAt={invite.updated_at}
                   setInvites={this.props.setInvites}
                 />
               </li>
