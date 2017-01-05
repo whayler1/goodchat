@@ -72,7 +72,8 @@ class Team extends Component {
           </form>
         </header>
         <div className="page-body">
-          <p>This team has no members. Click below to invite team members.</p>
+          {(is_owner || is_admin) &&
+          <p>This team has no members. Click below to invite team members.</p>}
         </div>
         <ul className="footer-btn-list">
           {(is_owner || is_admin) &&

@@ -44,6 +44,39 @@ router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   });
 });
 
+router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, res) => {
+  const user_id = req.user.id;
+  const { team_id, invite_id } = req.params;
+
+  knex('invites').where({ id: invite_id }).first()
+  .then(invite => {
+    if (!invite.is_used && team_id === invite.team_id) {
+      knex('invites').where({ id: invite_id }).update({ is_used: true })
+      .then(() => {
+        knex('memberships').where({ user_id })
+        .then(memberships => {
+          if (memberships.length > 0) {
+            res.json({ msg: 'membership-already-exists' });
+          } else {
+            knex('memberships').insert({
+              id: uuid.v1(),
+              user_id,
+              team_id
+            })
+            .then(() => res.sendStatus(200))
+            .catch(err => res.sendStatus(500));
+          }
+        })
+        .catch(err => res.sendStatus(500));
+      })
+      .catch(err => res.sendStatus(500));
+    } else {
+      res.sendStatus(400);
+    }
+  })
+  .catch(err => res.sendStatus(500));
+});
+
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   console.log('\n\nget team', req.user);
   const { id } = req.user;
@@ -110,38 +143,30 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
   .catch(err => res.sendStatus(500));
 });
 
-router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, res) => {
-  const user_id = req.user.id;
-  const { team_id, invite_id } = req.params;
+router.get('/team/:team_id/membership', authHelpers.loginRequired, (req, res) => {
+  const { team_id } = req.params;
 
-  knex('invites').where({ id: invite_id }).first()
-  .then(invite => {
-    if (!invite.is_used && team_id === invite.team_id) {
-      knex('invites').where({ id: invite_id }).update({ is_used: true })
-      .then(() => {
-        knex('memberships').where({ user_id })
-        .then(memberships => {
-          if (memberships.length > 0) {
-            res.json({ msg: 'membership-already-exists' });
-          } else {
-            knex('memberships').insert({
-              id: uuid.v1(),
-              user_id,
-              team_id
-            })
-            .then(() => res.sendStatus(200))
-            .catch(err => res.sendStatus(500));
-          }
-        })
-        .catch(err => res.sendStatus(500));
-      })
-      .catch(err => res.sendStatus(500));
+  knex('memberships').where({ team_id })
+  .join('users', { 'memberships.user_id': 'users.id'})
+  .returning(['id', 'family_name', 'given_name', 'email'])
+  .then(users => res.json({ users }))
+  .catch(err => res.status(500).json({ msg: 'error-retrieving-membership-with-teamid' }));
+});
+
+const membershipRequired = (req, res, next) => {
+  const { team_id } = req.params;
+  const { id } = req.user;
+
+  knex('memberships').where({ team_id, user_id: id })
+  .then(memberships => {
+    if (memberships.length > 0) {
+      next();
     } else {
-      res.sendStatus(400);
+      res.status(401).json({ msg: 'membership-required' });
     }
   })
-  .catch(err => res.sendStatus(500));
-});
+  .catch(err => res.status(500).json({ msg: 'server-error-in-membership-required' }));
+}
 
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const userId = req.user.id;

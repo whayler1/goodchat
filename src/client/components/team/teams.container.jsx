@@ -42,7 +42,8 @@ class Teams extends Component {
         </ul>}
         {teams.length < 1 &&
         <div className="page-body">
-          <p>You don&rsquo;t belong to any teams yet! But don&rsquo;t worry, there&rsquo;s hope 😀. Create your own team or join an existing one below.</p>
+          <p><b>You don&rsquo;t belong to any teams yet!</b></p>
+          <p>But don&rsquo;t worry, there&rsquo;s hope 😀. Create your own team or join an existing one below.</p>
         </div>}
         <ul className="footer-btn-list">
           <li>

@@ -33,8 +33,21 @@ class Routes extends Component {
     )
   }
   onTeamEnter = (nextState, replace, callback) => {
-    console.log('onTeamEnter ! nextState', nextState.params.teamId);
-    superagent.get(`team/${nextState.params.teamId}`).then(
+    const { teamId } = nextState.params;
+    console.log('onTeamEnter ! nextState', teamId);
+    // Promise.all([
+    //   new Promise((resolve, reject) => {
+    //
+    //   }),
+    //   new Promise()
+    // ])
+    superagent.get(`team/${teamId}/membership`).then(
+      res => {
+        console.log('memberships success', res);
+      },
+      err => console.log('memberships fail', err)
+    );
+    superagent.get(`team/${teamId}`).then(
       res => {
         console.log('onTeamEnter res', res);
         this.props.setTeam(res.body.team);
