@@ -23,7 +23,7 @@ class InviteListItem extends Component {
 
     superagent.delete(`invite/${inviteId}`).then(
       res => {
-        superagent.get(`invite/${teamId}`).then(
+        superagent.get(`team/${teamId}/invite`).then(
           res => {
             setInvites(res.body.invites);
           },
@@ -110,7 +110,7 @@ class TeamInvite extends Component {
           }
         } else {
           console.log('invite success!', res);
-          superagent.get(`invite/${this.props.team.id}`).then(
+          superagent.get(`team/${this.props.team.id}/invite`).then(
             res => {
               this.props.setInvites(res.body.invites);
               this.setState({ isInFlight: false, email: '', emailError: '' });

@@ -6,16 +6,16 @@ const passport = require('../auth/local');
 const uuid = require('node-uuid');
 const nodemailer = require('nodemailer');
 
-// create reusable transporter object using the default SMTP transport
-const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
-
 const sendInvite = (inviteeEmail, teamId, inviteId) => {
+  // create reusable transporter object using the default SMTP transport
+  const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
+
   // setup e-mail data with unicode symbols
   knex('teams').where({ id: teamId })
   .first()
   .then(team => {
     const { name } = team;
-    const link = `https://good-chat.herokuapp.com/#/invite/${inviteId}`;
+    const link = `https://good-chat.herokuapp.com/#/invites/accept/${inviteId}`;
 
     const mailOptions = {
         from: '"Justin at Good Chat" <whayler1@gmail.com>',
@@ -27,10 +27,12 @@ const sendInvite = (inviteeEmail, teamId, inviteId) => {
 
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            return console.log(error);
+        if (error){
+            console.log(error);
+        } else {
+          console.log('Message sent: ' + info.response);
         }
-        console.log('Message sent: ' + info.response);
+        transporter.close();
     });
   });
 };
@@ -85,19 +87,17 @@ router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
   }
 });
 
-router.get('/invite/:team_id', authHelpers.loginRequired, (req, res) => {
-  const { team_id } = req.params;
-  const { is_used } = req.body;
-
-  console.log('\n\ninvite teamId', team_id, '\nis_used:', is_used);
+router.get('/invite/:invite_id', (req, res) => {
+  const { invite_id } = req.params;
+  console.log('\n\ninvite_id:', invite_id);
 
   knex('invites').where({
-    team_id,
-    is_used: is_used || false
+    id: invite_id
   })
-  .then(invites => {
-    console.log('\n\ninvites', invites);
-    res.json({ invites });
+  .first()
+  .then(invite => {
+    console.log('\n\ninvite', invite);
+    res.json({ invite });
   })
   .catch(err => res.sendStatus(500));
 });

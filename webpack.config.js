@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
-  entry: ['./src/client/goodchat.jsx'],
+  entry: ['./src/client/goodchat.jsx', 'babel-polyfill'],
   output: {
     path: __dirname + '/dist',
     filename: "/js/bundle.js"

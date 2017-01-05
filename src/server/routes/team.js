@@ -88,6 +88,61 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   .catch(err => res.sendStatus(500));
 });
 
+router.get('/team/:team_id/unauth', (req, res) => {
+  const { team_id } = req.params;
+
+  knex('teams').where({ id: team_id }).first()
+  .then(team => res.json({ team }))
+  .catch(err => res.sendStatus(500));
+});
+
+router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
+  const { team_id } = req.params;
+  const { is_used } = req.body;
+
+  console.log('\n\nteam invites\nteam_id', team_id, '\nis_used:', is_used);
+
+  knex('invites').where({
+    team_id,
+    is_used: is_used || false
+  })
+  .then(invites => res.json({ invites }))
+  .catch(err => res.sendStatus(500));
+});
+
+router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, res) => {
+  const user_id = req.user.id;
+  const { team_id, invite_id } = req.params;
+
+  knex('invites').where({ id: invite_id }).first()
+  .then(invite => {
+    if (!invite.is_used && team_id === invite.team_id) {
+      knex('invites').where({ id: invite_id }).update({ is_used: true })
+      .then(() => {
+        knex('memberships').where({ user_id })
+        .then(memberships => {
+          if (memberships.length > 0) {
+            res.json({ msg: 'membership-already-exists' });
+          } else {
+            knex('memberships').insert({
+              id: uuid.v1(),
+              user_id,
+              team_id
+            })
+            .then(() => res.sendStatus(200))
+            .catch(err => res.sendStatus(500));
+          }
+        })
+        .catch(err => res.sendStatus(500));
+      })
+      .catch(err => res.sendStatus(500));
+    } else {
+      res.sendStatus(400);
+    }
+  })
+  .catch(err => res.sendStatus(500));
+});
+
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const userId = req.user.id;
   const { id } = req.params;

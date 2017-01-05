@@ -10,3 +10,20 @@
   font-size: 0.8rem;
   font-weight: 400;
 }
+
+.danger-text {
+  color: @danger-color;
+  a {
+    color: @danger-color;
+    text-decoration: underline;
+    font-weight: 400;
+
+    &:hover,
+    &:focus {
+      color: @danger-color-hover;
+    }
+    &:active {
+      color: @danger-color-active;
+    }
+  }
+}

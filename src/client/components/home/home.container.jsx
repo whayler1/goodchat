@@ -1,9 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import GoogleLogin from 'react-google-login';
 import Helmet from "react-helmet";
-import {setLoggedIn} from '../user/user.dux';
-import {showHeroLink, hideHeroLink} from '../navbar/navbar.dux';
+import { setLoggedIn } from '../user/user.dux';
+import { showHeroLink, hideHeroLink } from '../navbar/navbar.dux';
 
 class Home extends Component {
   static propTypes = {
@@ -36,7 +36,7 @@ class Home extends Component {
             className="btn-inverse btn-inverse-google"
             onSuccess={this.props.setLoggedIn}
             onFailure={this.props.setLoggedIn}
-          >Login with google</GoogleLogin>}
+          >Login with Google</GoogleLogin>}
         </div>
       </main>
     );
