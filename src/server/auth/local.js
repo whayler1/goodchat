@@ -39,6 +39,7 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       // return done(null, false);
       knex('users')
       .insert({
+        id: uuid.v1(),
         email: profile.email,
         family_name: profile.familyName,
         given_name: profile.givenName,
@@ -47,14 +48,6 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       .returning('*')
       .then(userres => {
         console.log('\n\nuserres:', userres);
-
-        knex('teams').insert({
-          user_ids: `{${profile.id}}`
-        }).returning('*')
-        .then(teamres => {
-          console.log('new team!', teamres);
-          // res.json({msg: 'yay!'});
-        })
         return done(null, userres);
       })
     } else {
