@@ -105,7 +105,7 @@ class TeamInvite extends Component {
           if (res.body.msg === 'email-exists') {
             this.setState({
               isInFlight: false,
-              emailError: 'email-exists'
+              emailError: 'exists'
             });
           }
         } else {
@@ -113,7 +113,7 @@ class TeamInvite extends Component {
           superagent.get(`invite/${this.props.team.id}`).then(
             res => {
               this.props.setInvites(res.body.invites);
-              this.setState({ isInFlight: false });
+              this.setState({ isInFlight: false, email: '', emailError: '' });
             },
             err => console.log('err retrieving invites')
           );
@@ -166,7 +166,7 @@ class TeamInvite extends Component {
               <p className="input-error-msg">
                 {emailError === 'invalid' && 'Please provide a valid email.'}
                 {emailError === 'empty' && 'Please provide an email.'}
-                {emailError === 'email-exists' && 'This email has already been invited.'}
+                {emailError === 'exists' && 'This email has already been invited.'}
               </p>
               }
             </fieldset>

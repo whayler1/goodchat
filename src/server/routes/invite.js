@@ -4,6 +4,36 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 const uuid = require('node-uuid');
+const nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
+
+const sendInvite = (inviteeEmail, teamId, inviteId) => {
+  // setup e-mail data with unicode symbols
+  knex('teams').where({ id: teamId })
+  .first()
+  .then(team => {
+    const { name } = team;
+    const link = `https://good-chat.herokuapp.com/#/invite/${inviteId}`;
+
+    const mailOptions = {
+        from: '"Justin at Good Chat" <whayler1@gmail.com>',
+        to: inviteeEmail,
+        subject: 'Your invite to Good Chat!',
+        text: `You've been invited to join the team "${name}" on goodchat.io. Go to ${link} to join!`,
+        html: `<p>You've been invited to join the team "${name}" on goodchat.io. <a href="${link}">Click here</a> or go to ${link} to join!</p>`
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+    });
+  });
+};
 
 router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
   const host_id = req.user.id;
@@ -40,6 +70,7 @@ router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
             .returning('*')
             .then(invite => {
               console.log('\n\ninvite success', invite);
+              sendInvite(invitee_email, team_id, id);
               res.json({ invite });
             })
             .catch(err => res.sendStatus(500));
