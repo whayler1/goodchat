@@ -171,15 +171,6 @@ class TeamInvite extends Component {
               }
             </fieldset>
             <fieldset>
-              <label htmlFor="isAdmin">
-                <input
-                  id="isAdmin"
-                  name="isAdmin"
-                  type="checkbox"
-                /> Admin
-              </label>
-            </fieldset>
-            <fieldset>
               <button
                 type="submit"
                 className="btn-primary-inverse btn-block"

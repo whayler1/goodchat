@@ -2,6 +2,7 @@ import superagent from 'superagent';
 
 const defaultState = {
   isLoggedIn: false,
+  id: '',
   email: '',
   familyName: '',
   givenName: '',
@@ -20,9 +21,11 @@ export const setLoggedIn = res => (dispatch) => {
     .send({ idToken: res.tokenId })
     .then(
       res => {
+        const { id } = res.body;
         console.log('got it', res)
         dispatch({
           type: SET_LOGGED_IN,
+          id,
           email,
           familyName,
           givenName,
@@ -48,10 +51,11 @@ export const logout = () => (dispatch) => superagent.get('auth/logout')
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_LOGGED_IN:
-      const {email, familyName, givenName, googleId, imageUrl} = action;
+      const {id, email, familyName, givenName, googleId, imageUrl} = action;
       return {
         ...state,
         isLoggedIn: true,
+        id,
         email,
         familyName,
         givenName,
@@ -62,6 +66,7 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         isLoggedIn: false,
+        id: '',
         email: '',
         familyName: '',
         givenName: '',

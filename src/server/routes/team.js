@@ -145,6 +145,7 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
 
 router.get('/team/:team_id/membership', authHelpers.loginRequired, (req, res) => {
   const { team_id } = req.params;
+  const user_id = req.user.id;
 
   knex('memberships').select(['users.id', 'users.given_name', 'users.family_name', 'users.email', 'memberships.is_owner', 'memberships.is_admin'])
   .join('users', { 'memberships.user_id': 'users.id'})

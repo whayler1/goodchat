@@ -103,9 +103,13 @@ class Team extends Component {
 }
 
 export default connect(
-  state => ({
-    team: state.team.team,
-    members: state.team.members
-  }),
+  state => {
+    const userId = state.user.id;
+    console.log('userId:', userId);
+    return {
+      team: state.team.team,
+      members: state.team.members.filter(member => member.id !== userId)
+    };
+  },
   {}
 )(Team);
