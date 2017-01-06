@@ -146,10 +146,10 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
 router.get('/team/:team_id/membership', authHelpers.loginRequired, (req, res) => {
   const { team_id } = req.params;
 
-  knex('memberships').where({ team_id })
+  knex('memberships').select(['users.id', 'users.given_name', 'users.family_name', 'users.email', 'memberships.is_owner', 'memberships.is_admin'])
   .join('users', { 'memberships.user_id': 'users.id'})
-  .returning(['id', 'family_name', 'given_name', 'email'])
-  .then(users => res.json({ users }))
+  .where({ team_id })
+  .then(members => res.json({ members }))
   .catch(err => res.status(500).json({ msg: 'error-retrieving-membership-with-teamid' }));
 });
 

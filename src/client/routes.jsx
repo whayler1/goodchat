@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
-import { setTeams, setTeam } from './components/team/team.dux';
+import { setTeams, setTeam, setMembers } from './components/team/team.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
@@ -15,6 +15,7 @@ class Routes extends Component {
   static propTypes = {
     setTeams: PropTypes.func.isRequired,
     setTeam: PropTypes.func.isRequired,
+    setMembers: PropTypes.func.isRequired,
     setInvites: PropTypes.func.isRequired,
     setInvite: PropTypes.func.isRequired
   }
@@ -32,38 +33,42 @@ class Routes extends Component {
       }
     )
   }
+  setTeamMemberships = teamId => new Promise((resolve, reject) => {
+    superagent.get(`team/${teamId}/membership`)
+    .end((err, res) => {
+      if (err) {
+        reject();
+        return console.log('--memberships fail', res);
+      }
+      this.props.setMembers(res.body.members);
+      resolve();
+      // console.log('%cmemberships success', 'background:yellowgreen', res.body.members);
+    });
+  });
+  setTeam = teamId => new Promise((resolve, reject) => {
+    superagent.get(`team/${teamId}`)
+    .end((err, res) => {
+      if (err) {
+        reject();
+        return console.log('err retrieving team', res)
+      }
+      this.props.setTeam(res.body.team);
+      resolve();
+    });
+  });
   onTeamEnter = (nextState, replace, callback) => {
     const { teamId } = nextState.params;
-    console.log('onTeamEnter ! nextState', teamId);
-    // Promise.all([
-    //   new Promise((resolve, reject) => {
-    //
-    //   }),
-    //   new Promise()
-    // ])
-    superagent.get(`team/${teamId}/membership`).then(
-      res => {
-        console.log('memberships success', res);
-      },
-      err => console.log('memberships fail', err)
-    );
-    superagent.get(`team/${teamId}`).then(
-      res => {
-        console.log('onTeamEnter res', res);
-        this.props.setTeam(res.body.team);
-        callback();
-      },
-      err => console.log('err retrieving team', err)
-    );
+    Promise.all([this.setTeamMemberships(teamId), this.setTeam(teamId)]).then(() => callback());
   }
   onTeamInviteEnter = (nextState, replace, callback) => {
-    superagent.get(`team/${nextState.params.teamId}/invite`).then(
-      res => {
-        this.props.setInvites(res.body.invites);
-        callback();
-      },
-      err => console.log('err retrieving invites')
-    );
+    superagent.get(`team/${nextState.params.teamId}/invite`)
+    .end((err, res) => {
+      if (err) {
+        return console.log('err retrieving invites', err);
+      }
+      this.props.setInvites(res.body.invites);
+      callback();
+    });
   }
   onInviteAcceptEnter = (nextState, replace, callback) => {
     superagent.get(`invite/${nextState.params.inviteId}`).then(
@@ -109,6 +114,7 @@ export default connect(
   {
     setTeams,
     setTeam,
+    setMembers,
     setInvites,
     setInvite
   }

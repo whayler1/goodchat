@@ -33,7 +33,7 @@
     "gifsicle": "^3.0.4",
     "html-webpack-plugin": "^2.24.1",
     "image-webpack-loader": "^3.0.0",
-    "knex": "^0.11.10",
+    "knex": "^0.12.6",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.2",

@@ -6,7 +6,8 @@ import _ from 'underscore';
 
 class Team extends Component {
   static propTypes = {
-    team: PropTypes.array.isRequired
+    team: PropTypes.object.isRequired,
+    members: PropTypes.array.isRequired
   };
   state = {
     name: this.props.team.name || ''
@@ -44,7 +45,9 @@ class Team extends Component {
     );
   }
   render() {
+    const { members } = this.props;
     const { is_owner, is_admin, id } = this.props.team;
+
     return (
       <main role="main">
         <header className="page-header">
@@ -72,8 +75,13 @@ class Team extends Component {
           </form>
         </header>
         <div className="page-body">
-          {(is_owner || is_admin) &&
+          {(is_owner || is_admin) && members.length < 1 &&
           <p>This team has no members. Click below to invite team members.</p>}
+          {members.length > 0 && <ul>
+            {members.map(member => <li key={member.id}>
+              {member.email}
+            </li>)}
+          </ul>}
         </div>
         <ul className="footer-btn-list">
           {(is_owner || is_admin) &&
@@ -96,7 +104,8 @@ class Team extends Component {
 
 export default connect(
   state => ({
-    team: state.team.team
+    team: state.team.team,
+    members: state.team.members
   }),
   {}
 )(Team);
