@@ -43,6 +43,7 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
         email: profile.email,
         family_name: profile.familyName,
         given_name: profile.givenName,
+        picture: profile.picture,
         google_id: profile.id
       })
       .returning('*')
@@ -52,7 +53,16 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       })
     } else {
       console.log('\n\nthere is user', user);
-      return done(null, user);
+      knex('users').where({ google_id: profile.id }).update({
+        family_name: profile.familyName,
+        given_name: profile.givenName,
+        picture: profile.picture
+      })
+      .returning('*')
+      .then(userres => {
+        console.log('updated user:', userres[0]);
+        return done(null, userres[0]);
+      });
     }
   })
   .catch((err) => { return done(err); });
