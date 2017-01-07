@@ -4,6 +4,7 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 const uuid = require('node-uuid');
+const membershipHelpers = require('../membership/_helpers');
 
 router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   const { id } = req.user;
@@ -143,31 +144,22 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
   .catch(err => res.sendStatus(500));
 });
 
-router.get('/team/:team_id/membership', authHelpers.loginRequired, (req, res) => {
+router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
   const { team_id } = req.params;
   const user_id = req.user.id;
 
-  knex('memberships').select(['users.id', 'users.given_name', 'users.family_name', 'users.email', 'memberships.is_owner', 'memberships.is_admin'])
+  knex('memberships').select([
+    'users.id',
+    'users.given_name',
+    'users.family_name',
+    'users.email',
+    'memberships.is_owner',
+    'memberships.is_admin'])
   .join('users', { 'memberships.user_id': 'users.id'})
   .where({ team_id })
   .then(members => res.json({ members }))
   .catch(err => res.status(500).json({ msg: 'error-retrieving-membership-with-teamid' }));
 });
-
-const membershipRequired = (req, res, next) => {
-  const { team_id } = req.params;
-  const { id } = req.user;
-
-  knex('memberships').where({ team_id, user_id: id })
-  .then(memberships => {
-    if (memberships.length > 0) {
-      next();
-    } else {
-      res.status(401).json({ msg: 'membership-required' });
-    }
-  })
-  .catch(err => res.status(500).json({ msg: 'server-error-in-membership-required' }));
-}
 
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const userId = req.user.id;
