@@ -20,7 +20,7 @@ const sendInvite = (inviteeEmail, teamId, inviteId) => {
     const mailOptions = {
         from: '"Justin at Good Chat" <goochat.test@gmail.com>',
         to: inviteeEmail,
-        subject: 'Your invite to join "${name}" on Good Chat!',
+        subject: `Your invite to join "${name}" on Good Chat!`,
         text: `You've been invited to join the team "${name}" on goodchat.io. Go to ${link} to join!`,
         html: `<p>You've been invited to join the team "${name}" on goodchat.io. <a href="${link}">Click here</a> or go to ${link} to join!</p>`
     };
@@ -67,6 +67,7 @@ router.post('/invite', authHelpers.loginRequired, (req, res, next) => {
               id,
               team_id,
               host_id,
+              is_admin,
               invitee_email
             })
             .returning('*')
@@ -91,9 +92,7 @@ router.get('/invite/:invite_id', (req, res) => {
   const { invite_id } = req.params;
   console.log('\n\ninvite_id:', invite_id);
 
-  knex('invites').where({
-    id: invite_id
-  })
+  knex('invites').where({ id: invite_id })
   .first()
   .then(invite => {
     console.log('\n\ninvite', invite);

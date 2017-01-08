@@ -51,6 +51,7 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
 
   knex('invites').where({ id: invite_id }).first()
   .then(invite => {
+    const { is_admin } = invite;
     if (!invite.is_used && team_id === invite.team_id) {
       knex('invites').where({ id: invite_id }).update({ is_used: true })
       .then(() => {
@@ -62,7 +63,8 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
             knex('memberships').insert({
               id: uuid.v1(),
               user_id,
-              team_id
+              team_id,
+              is_admin
             })
             .then(() => res.sendStatus(200))
             .catch(err => res.sendStatus(500));
