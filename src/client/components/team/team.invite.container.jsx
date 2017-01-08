@@ -127,14 +127,13 @@ class TeamInvite extends Component {
     }
     return false;
   }
-  onChange = e => this.setState({
-    [e.target.name]: e.target.value
-  });
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onCheckboxChange = e => this.setState({ [e.target.name]: e.target.checked });
   render() {
     const { name, id } = this.props.team;
     const { invites } = this.props;
     const { emailError } = this.state;
-    console.log('%cteam invite\ninvites:', 'background:pink', this.props.invites);
+    console.log('%cteam invite\nstate:', 'background:pink', this.state);
     return (
       <main role="main">
         <header className="page-header">
@@ -169,6 +168,17 @@ class TeamInvite extends Component {
                 {emailError === 'exists' && 'This email has already been invited.'}
               </p>
               }
+            </fieldset>
+            <fieldset>
+              <label htmlFor="isAdmin">
+                <input
+                  type="checkbox"
+                  id="isAdmin"
+                  name="isAdmin"
+                  checked={this.state.isAdmin}
+                  onChange={this.onCheckboxChange}
+                /> Admin
+              </label>
             </fieldset>
             <fieldset>
               <button
