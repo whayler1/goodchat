@@ -124,6 +124,19 @@ class Team extends Component {
                       <span className="input-group-addon">
                         <i className="material-icons">keyboard_arrow_down</i>
                       </span>
+                      <div className="dropdown-container">
+                        <div className="dropdown">
+                          <ul className="dropdown-list">
+                            {questionDefaults[index].map((question, innerIndex) => (
+                              <li key={`${index}${innerIndex}`}>
+                                <a>
+                                  {question}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </fieldset>
                 )

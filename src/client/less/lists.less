@@ -1,6 +1,11 @@
 .footer-btn-list {
-  margin: @gutter 0 @gutter * 2;
+  margin: @gutter @gutter @gutter * 2;
   padding-left: 0;
+
+  .page-body & {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   li {
     list-style: none;
