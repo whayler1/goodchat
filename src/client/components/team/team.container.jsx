@@ -16,7 +16,12 @@ class Team extends Component {
     question2: this.props.team.question2 || questionDefaults[1][0],
     question3: this.props.team.question3 || questionDefaults[2][0],
     question4: this.props.team.question4 || questionDefaults[3][0],
-    question5: this.props.team.question5 || questionDefaults[4][0]
+    question5: this.props.team.question5 || questionDefaults[4][0],
+    isQuestion1DropdownVisible: false,
+    isQuestion2DropdownVisible: false,
+    isQuestion3DropdownVisible: false,
+    isQuestion4DropdownVisible: false,
+    isQuestion5DropdownVisible: false
   };
   onTeamNameSubmit = e => {
     e.preventDefault();
@@ -55,6 +60,7 @@ class Team extends Component {
     console.log('question form submit');
     return false;
   }
+  onQuestionChange = e => this.setState({ [e.target.name]: e.target.value })
   render() {
     const {
       members,
@@ -110,6 +116,9 @@ class Team extends Component {
             >
               {questionValues.map((question, index) => {
                 const qId = `question${index + 1}`;
+                const elRef = `${qId}El`;
+                const stateName = `isQuestion${index + 1}Visible`;
+                const onDropdownToggle = () => this.setState({ [stateName]: !this.state[stateName] });
                 return (
                   <fieldset>
                     <div className="input-group">
@@ -122,21 +131,31 @@ class Team extends Component {
                         onChange={this.onQuestionChange}
                       />
                       <span className="input-group-addon">
-                        <i className="material-icons">keyboard_arrow_down</i>
+                        <button
+                          type="button"
+                          className="btn-no-style"
+                          onClick={onDropdownToggle}
+                        >
+                          <i className="material-icons">keyboard_arrow_down</i>
+                        </button>
                       </span>
-                      <div className="dropdown-container">
+                      {this.state[stateName] &&
+                      <div className="dropdown-container" ref={el => this[elRef] = el}>
                         <div className="dropdown">
                           <ul className="dropdown-list">
-                            {questionDefaults[index].map((question, innerIndex) => (
-                              <li key={`${index}${innerIndex}`}>
-                                <a>
-                                  {question}
-                                </a>
-                              </li>
-                            ))}
+                            {questionDefaults[index].map((question, innerIndex) => {
+                              const onDropdownItemClick = () => this.setState({ [qId]: question });
+                              return (
+                                <li key={`${index}${innerIndex}`}>
+                                  <a onClick={onDropdownItemClick}>
+                                    {question}
+                                  </a>
+                                </li>
+                              );
+                            })}
                           </ul>
                         </div>
-                      </div>
+                      </div>}
                     </div>
                   </fieldset>
                 )
