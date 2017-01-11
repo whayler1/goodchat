@@ -14,7 +14,10 @@
 }
 
 .input-group {
-  border: 1px solid @bluegrey-50;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid @bluegrey-50;
   border-radius: @border-radius;
   position: relative;
   display: table;
@@ -51,7 +54,6 @@
   }
 
   &.input-group-seamless {
-    margin: -6px -6px 0 -6px;
     border-color: transparent;
 
     &:hover,
@@ -86,12 +88,15 @@
 .form-control {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 12px 0;
   font-size: 1rem;
   border: none;
   color: @bluegrey-400;
   text-overflow: ellipsis;
-  border: 1px solid @bluegrey-50;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid @bluegrey-50;
   border-radius: @border-radius;
 
   &:hover,
@@ -131,22 +136,23 @@
     font-size: 2rem;
     font-weight: 300;
   }
-  .input-group-seamless & {
-    padding: 6px;
-  }
   .input-group-cosmetic & {
     padding: 0;
   }
 }
 
 .input-group-addon {
-  padding: 12px;
+  padding: 12px 0 12px 12px;
   font-size: 1rem;
   line-height: 1;
   width: 1%;
   white-space: nowrap;
   vertical-align: middle;
   display: table-cell;
+
+  .material-icons {
+    line-height: 1rem;
+  }
 
   .input-group-h1 & {
     font-size: 2rem;
@@ -155,7 +161,6 @@
     }
   }
   .input-group-seamless & {
-    padding: 6px;
     opacity: 0;
   }
   .input-group-cosmetic & {

@@ -16,7 +16,13 @@ class Team extends Component {
     question2: this.props.team.question2 || questionDefaults[1][0],
     question3: this.props.team.question3 || questionDefaults[2][0],
     question4: this.props.team.question4 || questionDefaults[3][0],
-    question5: this.props.team.question5 || questionDefaults[4][0]
+    question5: this.props.team.question5 || questionDefaults[4][0],
+    isQuestion1DropdownVisible: false,
+    isQuestion2DropdownVisible: false,
+    isQuestion3DropdownVisible: false,
+    isQuestion4DropdownVisible: false,
+    isQuestion5DropdownVisible: false,
+    elRef: null
   };
   onTeamNameSubmit = e => {
     e.preventDefault();
@@ -24,7 +30,6 @@ class Team extends Component {
     return false;
   };
   submit = _.debounce(() => {
-    console.log('debounce func');
     superagent.put(`team/${this.props.params.teamId}`)
     .send({ name: this.state.name })
     .then(
@@ -36,11 +41,9 @@ class Team extends Component {
   }, 500);
   onChange = e => {
     const { value, name } = e.target;
-    console.log('onChange', value);
     this.setState({ [name]: value }, this.submit);
   };
   onDeleteClick = () => {
-    console.log('onDeleteClick');
     superagent.delete(`team/${this.props.params.teamId}`)
     .then(
       res => {
@@ -55,6 +58,36 @@ class Team extends Component {
     console.log('question form submit');
     return false;
   }
+  onQuestionChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  onBodyClick = e => {
+    const { elRef } = this.state;
+    if (elRef && !elRef.contains(e.target)) {
+      this.closeDropdowns();
+    }
+  };
+
+  closeDropdowns = () => this.setState({
+    isQuestion1DropdownVisible: false,
+    isQuestion2DropdownVisible: false,
+    isQuestion3DropdownVisible: false,
+    isQuestion4DropdownVisible: false,
+    isQuestion5DropdownVisible: false,
+    elRef: null
+  });
+
+  componentDidUpdate() {
+    if (this.state.elRef) {
+      document.body.addEventListener('click', this.onBodyClick);
+    } else {
+      document.body.removeEventListener('click', this.onBodyClick);
+    }
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('click', this.onBodyClick);
+  }
+
   render() {
     const {
       members,
@@ -110,9 +143,22 @@ class Team extends Component {
             >
               {questionValues.map((question, index) => {
                 const qId = `question${index + 1}`;
+                const elRef = `${qId}El`;
+                const stateName = `isQuestion${index + 1}DropdownVisible`;
+                const onDropdownToggle = () => {
+                  const isVisible = this.state[stateName];
+                  if (!isVisible) {
+                    this.setState({
+                      [stateName]: true,
+                      elRef: this[elRef]
+                    });
+                  } else {
+                    this.closeDropdowns();
+                  }
+                };
                 return (
                   <fieldset>
-                    <div className="input-group">
+                    <div className="input-group" ref={el => this[elRef] = el}>
                       <input
                         id={qId}
                         name={qId}
@@ -122,8 +168,38 @@ class Team extends Component {
                         onChange={this.onQuestionChange}
                       />
                       <span className="input-group-addon">
-                        <i className="material-icons">keyboard_arrow_down</i>
+                        <button
+                          type="button"
+                          className="btn-no-style"
+                          onClick={onDropdownToggle}
+                        >
+                          <i className="material-icons">keyboard_arrow_down</i>
+                        </button>
                       </span>
+                      <div className={`dropdown-container${this.state[stateName] ? ' dropdown-container-show' : ''}`}>
+                        <div className="dropdown">
+                          <ul className="dropdown-list">
+                            {questionDefaults[index].map((question, innerIndex) => {
+                              const onDropdownItemClick = () => this.setState({
+                                [qId]: question,
+                                isQuestion1DropdownVisible: false,
+                                isQuestion2DropdownVisible: false,
+                                isQuestion3DropdownVisible: false,
+                                isQuestion4DropdownVisible: false,
+                                isQuestion5DropdownVisible: false,
+                                elRef: null
+                              });
+                              return (
+                                <li key={`${index}${innerIndex}`}>
+                                  <a onClick={onDropdownItemClick}>
+                                    {question}
+                                  </a>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </fieldset>
                 )
