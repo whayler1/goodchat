@@ -1,10 +1,15 @@
 .dropdown-container {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
   min-width: 100%;
   padding-top: @quarter-gutter;
   z-index: 10;
+
+  &.dropdown-container-show {
+    display: block;
+  }
 }
 
 .dropdown {
