@@ -223,7 +223,7 @@ class Team extends Component {
                                 isQuestion4DropdownVisible: false,
                                 isQuestion5DropdownVisible: false,
                                 elRef: null
-                              });
+                              }, this.questionFormSubmit);
                               return (
                                 <li key={`${index}${innerIndex}`}>
                                   <a onClick={onDropdownItemClick}>
