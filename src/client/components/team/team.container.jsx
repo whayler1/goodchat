@@ -10,6 +10,7 @@ class Team extends Component {
     team: PropTypes.object.isRequired,
     members: PropTypes.array.isRequired
   };
+
   state = {
     name: this.props.team.name || '',
     question1: this.props.team.question1 || questionDefaults[0][0],
@@ -24,11 +25,13 @@ class Team extends Component {
     isQuestion5DropdownVisible: false,
     elRef: null
   };
+
   onTeamNameSubmit = e => {
     e.preventDefault();
     this.submit();
     return false;
   };
+
   submit = _.debounce(() => {
     superagent.put(`team/${this.props.params.teamId}`)
     .send({ name: this.state.name })
@@ -39,10 +42,12 @@ class Team extends Component {
       err => console.log('error updating team name')
     );
   }, 500);
+
   onChange = e => {
     const { value, name } = e.target;
     this.setState({ [name]: value }, this.submit);
   };
+
   onDeleteClick = () => {
     superagent.delete(`team/${this.props.params.teamId}`)
     .then(
@@ -53,12 +58,42 @@ class Team extends Component {
       err => console.log('error deleting team', err)
     );
   }
+
+  questionFormSubmit = _.debounce(() => {
+    console.log('%cquestion form submit', 'background:lightblue');
+    const {
+      question1,
+      question2,
+      question3,
+      question4,
+      question5
+    } = this.state;
+
+    superagent.put(`team/${this.props.team.id}`)
+      .send({
+        question1,
+        question2,
+        question3,
+        question4,
+        question5
+      })
+      .end((err, res) => {
+        if (err) {
+          return console.log('%cerr putting team', 'background:pink', res);
+        }
+        console.log('%csuccess updating team!', 'background:yellowgreen', res);
+      });
+  }, 750);
+
   onQuestionFormSubmit = e => {
     e.preventDefault();
-    console.log('question form submit');
+
+    this.questionFormSubmit();
+
     return false;
   }
-  onQuestionChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  onQuestionChange = e => this.setState({ [e.target.name]: e.target.value }, this.questionFormSubmit);
 
   onBodyClick = e => {
     const { elRef } = this.state;
@@ -139,7 +174,7 @@ class Team extends Component {
               id="team-questions"
               name="team-questions"
               className="form"
-              onSuccess={this.onQuestionFormSubmit}
+              onSubmit={this.onQuestionFormSubmit}
             >
               {questionValues.map((question, index) => {
                 const qId = `question${index + 1}`;

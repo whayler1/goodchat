@@ -5,6 +5,7 @@ const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 const uuid = require('node-uuid');
 const membershipHelpers = require('../membership/_helpers');
+const _ = require('lodash');
 
 router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   const { id } = req.user;
@@ -166,7 +167,14 @@ router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHel
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const userId = req.user.id;
   const { id } = req.params;
-  const { name } = req.body;
+  const {
+    name,
+    question1,
+    question2,
+    question3,
+    question4,
+    question5
+  } = req.body;
 
   console.log('\n\nput team', id, ', name:', name);
 
@@ -181,10 +189,18 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
       res.sendStatus(403);
     } else {
       knex('teams').where({ id })
-      .update({
-        name,
-        updated_at: knex.fn.now()
-      })
+      .update(
+        _.omitBy({
+          name,
+          question1,
+          question2,
+          question3,
+          question4,
+          question5,
+          updated_at: knex.fn.now()
+        },
+        _.isNil)
+      )
       .then(teams => {
         res.json({ team: teams[0] });
       })
