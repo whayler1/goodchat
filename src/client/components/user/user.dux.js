@@ -16,7 +16,7 @@ const LOGOUT = 'user/logout';
 export const setLoggedIn = res => (dispatch) => {
   console.log('res:', res);
   // console.log('--', res.tokenId);
-  const {email, familyName, givenName, googleId, imageUrl} = res.profileObj;
+  const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
   superagent.post('auth/google')
     .send({ idToken: res.tokenId })
     .then(

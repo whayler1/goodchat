@@ -49,7 +49,7 @@ class Navbar extends Component {
             onFailure={this.props.setLoggedIn}
             autoLoad={true}
           />}
-          {this.props.isLoggedIn && <a className="header-user-ui">{givenName}</a>}
+          {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
         </nav>
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
           {isLoggedIn &&

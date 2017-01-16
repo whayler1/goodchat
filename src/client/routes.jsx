@@ -10,6 +10,7 @@ import Teams from './components/team/teams.container.jsx';
 import Team from './components/team/team.container.jsx';
 import TeamInvite from './components/team/team.invite.container.jsx';
 import InviteAccept from './components/invite/invite.accept.container.jsx';
+import User from './components/user/user.container.jsx';
 
 class Routes extends Component {
   static propTypes = {
@@ -92,6 +93,12 @@ class Routes extends Component {
       }
     );
   }
+  onUserEnter = (nextState, replace, callback) => {
+    if (!this.props.isLoggedIn) {
+      replace('/');
+    }
+    callback();
+  }
   render() {
     return (
       <Router history={hashHistory}>
@@ -103,6 +110,7 @@ class Routes extends Component {
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
           </Route>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
+          <Route path="/user" onEnter={this.onUserEnter} component={User}/>
         </Route>
       </Router>
     );
@@ -110,7 +118,9 @@ class Routes extends Component {
 };
 
 export default connect(
-  null,
+  state => ({
+    isLoggedIn: state.user.isLoggedIn
+  }),
   {
     setTeams,
     setTeam,
