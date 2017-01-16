@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import superagent from 'superagent';
 import _ from 'underscore';
 import questionDefaults from '../../questions/questions.js';
+import TeamMemberListItem from './team.member-list-item.component.jsx';
 
 class Team extends Component {
   static propTypes = {
@@ -125,6 +126,7 @@ class Team extends Component {
 
   render() {
     const {
+      team,
       members,
       question1,
       question2,
@@ -140,6 +142,8 @@ class Team extends Component {
       question5
     ];
     const { is_owner, is_admin, id } = this.props.team;
+
+    console.log('members:', members);
 
     return (
       <main role="main">
@@ -245,9 +249,16 @@ class Team extends Component {
             <h3>Team members</h3>
             {(is_owner || is_admin) && members.length < 1 &&
             <p>This team has no members. Click below to invite team members.</p>}
-            {members.length > 0 && <ul>
+            {members.length > 0 && <ul className="team-member-list">
               {members.map(member => <li key={member.id}>
-                {member.email}
+                <TeamMemberListItem
+                  givenName={member.given_name}
+                  familyName={member.family_name}
+                  email={member.email}
+                  picture={member.picture}
+                  id={member.id}
+                  teamId={team.id}
+                />
               </li>)}
             </ul>}
           </section>

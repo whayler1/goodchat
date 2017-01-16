@@ -14,3 +14,50 @@
     list-style: none;
   }
 }
+
+.team-member-list {
+  padding: 0;
+  margin: 0;
+
+  >li {
+    position: relative;
+    list-style: none;
+    border-top: 1px dotted @bluegrey-100;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    >a {
+      display: block;
+      padding: @gutter 0;
+      color: @body-color;
+
+      &:hover,
+      &:focus {
+        color: @body-color-hover;
+      }
+      &:active {
+        color: @body-color-active;
+      }
+    }
+  }
+}
+
+@team-member-list-item-image-size: 40px;
+
+.team-member-list-item-image {
+  position: absolute;
+  top: @gutter;
+  left: 0;
+  width: @team-member-list-item-image-size;
+  height: @team-member-list-item-image-size;
+  border-radius: @team-member-list-item-image-size;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.team-member-list-item-content {
+  margin-left: @team-member-list-item-image-size + @gutter;
+}

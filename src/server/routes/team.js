@@ -160,6 +160,7 @@ router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHel
     'users.given_name',
     'users.family_name',
     'users.email',
+    'users.picture',
     'memberships.is_owner',
     'memberships.is_admin'])
   .join('users', { 'memberships.user_id': 'users.id'})
