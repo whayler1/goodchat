@@ -56,7 +56,7 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
     if (!invite.is_used && team_id === invite.team_id) {
       knex('invites').where({ id: invite_id }).update({ is_used: true })
       .then(() => {
-        knex('memberships').where({ user_id })
+        knex('memberships').where({ user_id, team_id })
         .then(memberships => {
           if (memberships.length > 0) {
             res.json({ msg: 'membership-already-exists' });
@@ -67,7 +67,11 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
               team_id,
               is_admin
             })
-            .then(() => res.sendStatus(200))
+            .returning('*')
+            .then(newMembership => {
+              console.log('\n\nnewMembership created', newMembership);
+              res.sendStatus(200);
+            })
             .catch(err => res.sendStatus(500));
           }
         })
