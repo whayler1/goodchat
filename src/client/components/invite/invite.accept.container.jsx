@@ -24,6 +24,7 @@ class InviteAccept extends Component {
           this.state({ error: 'server-error' });
           return;
         }
+        console.log('success accepting invite');
         this.props.router.push(`teams/${team.id}`);
       });
   }
