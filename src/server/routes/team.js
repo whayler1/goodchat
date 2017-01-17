@@ -151,6 +151,17 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
   .catch(err => res.sendStatus(500));
 });
 
+router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const { team_id, user_id } = req.params;
+
+  knex('meetings').where({ team_id, user_id })
+  .then(meetings => {
+    console.log('\n\ngot meetings success!', meetings);
+    res.json({ meetings });
+  })
+  .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
+});
+
 router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
   const { team_id } = req.params;
   const user_id = req.user.id;

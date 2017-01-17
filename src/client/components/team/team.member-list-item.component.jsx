@@ -11,10 +11,10 @@ export default function TeamMemberListItem({
 }) {
   return (
     <Link to={`teams/${teamId}/members/${id}`}>
-      <div className="team-member-list-item-image"
+      <div className="team-member-ui-image"
         style={{backgroundImage: `url(${picture})`}}
       ></div>
-      <div className="team-member-list-item-content">
+      <div className="team-member-ui-content">
         <div>{givenName} {familyName}</div>
         <div>{email}</div>
       </div>

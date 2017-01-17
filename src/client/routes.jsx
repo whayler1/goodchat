@@ -4,11 +4,13 @@ import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
 import { setTeams, setTeam, setMembers } from './components/team/team.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
+import { setMeetings } from './components/meeting/meeting.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
 import Team from './components/team/team.container.jsx';
 import TeamInvite from './components/team/team.invite.container.jsx';
+import TeamMemberDetail from './components/team/team.member-detail.container.jsx';
 import InviteAccept from './components/invite/invite.accept.container.jsx';
 import User from './components/user/user.container.jsx';
 
@@ -71,6 +73,21 @@ class Routes extends Component {
       callback();
     });
   }
+  onTeamMemberDetailEnter = (nextState, replace, callback) => {
+    const { teamId, memberId } = nextState.params;
+    superagent.get(`team/${teamId}/meetings/${memberId}`)
+      .end((err, res) => {
+        if (err) {
+          console.log('err retrieving meetings', res);
+          callback();
+          return;
+        }
+        console.log('team members res', res);
+        const { meetings } = res.body;
+        this.props.setMeetings(res.body.meetings);
+        callback();
+      });
+  }
   onInviteAcceptEnter = (nextState, replace, callback) => {
     superagent.get(`invite/${nextState.params.inviteId}`).then(
       res => {
@@ -108,6 +125,7 @@ class Routes extends Component {
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter}>
             <IndexRoute component={Team}/>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
+            <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
           </Route>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
           <Route path="/user" onEnter={this.onUserEnter} component={User}/>
@@ -126,6 +144,7 @@ export default connect(
     setTeam,
     setMembers,
     setInvites,
-    setInvite
+    setInvite,
+    setMeetings
   }
 )(Routes);
