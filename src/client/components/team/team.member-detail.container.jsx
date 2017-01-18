@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -10,10 +11,46 @@ class TeamMemberDetail extends Component {
     meetings: PropTypes.array.isRequired,
     members: PropTypes.array,
     member: PropTypes.object
-  };
-  state = {
-    member: this.props.members.find(member => member.id === this.props.params.memberId)
   }
+
+  state = {
+    member: this.props.members.find(member => member.id === this.props.params.memberId),
+    now: moment().format('YYYY-MM-DD'),
+    newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`,
+    newMeetingDateTimeError: ''
+  }
+
+  onChange = e => {
+    console.log('onChange', e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  validate = () => new Promise((resolve, reject) => {
+    // const { newMeetingDate, now } = this.state;
+    // const newMeetingMoment = moment(newMeetingDate);
+    //
+    // if (!newMeetingDate) {
+    //   this.setState({ newMeetingDateError: 'doesnt-exist' }, reject);
+    // } else if (newMeetingMoment.isBefore(now)) {
+    //   this.setState({ newMeetingDateError: 'before-now' }, reject);
+    // } else {
+    //   this.setState({ newMeetingDateError: '' }, resolve)
+    // }
+  })
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    this.validate().then(
+      () => {
+        console.log('resolved validated');
+      },
+      () => console.log('rejected validation')
+    );
+
+    return false;
+  }
+
   render = () => {
     const { team, meetings } = this.props;
     const { member } = this.state;
@@ -27,8 +64,8 @@ class TeamMemberDetail extends Component {
 
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
 
-    console.log('team member detail\nteam:', team, '\nmeetings:', meetings);
-    console.log('state:', this.state);
+    // console.log('team member detail\nteam:', team, '\nmeetings:', meetings);
+    // console.log('state:', this.state);
 
     return (
       <main role="main">
@@ -54,12 +91,30 @@ class TeamMemberDetail extends Component {
             question5={question5 || questionDefaults[4][0]}
           />
           {canCreateNewMeeting &&
-          <button
-            type="button"
-            className="btn-primary-inverse btn-block"
-          >
-            Create New Meeting <i className="material-icons">note_add</i>
-          </button>
+          <form className="form" onSubmit={this.onSubmit}>
+            <fieldset>
+              <label
+                htmlFor="newMeetingDateTime"
+                className="input-label"
+              >New meeting date</label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                id="newMeetingDateTime"
+                name="newMeetingDateTime"
+                value={this.state.newMeetingDateTime}
+                onChange={this.onChange}
+              />
+            </fieldset>
+            <fieldset>
+              <button
+                type="submit"
+                className="btn-primary-inverse btn-block"
+              >
+                Create New Meeting <i className="material-icons">note_add</i>
+              </button>
+            </fieldset>
+          </form>
           }
         </div>
       </main>

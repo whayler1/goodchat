@@ -85,6 +85,18 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
   .catch(err => res.sendStatus(500));
 });
 
+// router.post('/team/:team_id/meeting/:user_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+//   const { team_id, user_id } = req.params;
+//   const host_id = req.user.id;
+//
+//   knex('meetings').insert({
+//     id: uuid.v1(),
+//     team_id,
+//     user_id,
+//     host_id
+//   })
+// });
+
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   console.log('\n\nget team', req.user);
   const { id } = req.user;
