@@ -11,7 +11,8 @@ function QuestionAnswer({
   return (
     <div>
       <p><b>Q:</b> {question}</p>
-      <p><b>A:</b> {answer}</p>
+      {answer &&
+      <p><b>A:</b> {answer}</p>}
     </div>
   );
 }
@@ -26,7 +27,7 @@ class TeamMemberDetailMeeting extends Component {
     return (
       <div>
         {!is_done && <p>
-          Upcoming:<br/><b>{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</b>
+          <i className="material-icons">date_range</i> <b>{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</b>
         </p>}
         <ul className="team-member-detail-qa-list">
           {_(5).times(n => (
