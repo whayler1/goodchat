@@ -1,30 +1,42 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import _ from 'underscore';
+import moment from 'moment';
+
+function QuestionAnswer({
+  question,
+  answer
+}) {
+  return (
+    <div>
+      <p><b>Q:</b> {question}</p>
+      <p><b>A:</b> {answer}</p>
+    </div>
+  );
+}
+
 class TeamMemberDetailMeeting extends Component {
   static propTypes = {
-    question1: PropTypes.string.isRequired,
-    question2: PropTypes.string.isRequired,
-    question3: PropTypes.string.isRequired,
-    question4: PropTypes.string.isRequired,
-    question5: PropTypes.string.isRequired,
-  }
-  state = {
-    questions: [
-      this.props.question1,
-      this.props.question2,
-      this.props.question3,
-      this.props.question4,
-      this.props.question5
-    ]
+    meeting: PropTypes.object.isRequired
   }
   render = () => {
-    const { questions } = this.state;
+    const { meeting } = this.props;
+    const { meeting_date, is_done } = meeting;
     return (
       <div>
-        <ul>
-          {questions.map((question, index) =>
-          <li key={index}>{question}</li>)}
+        {!is_done && <p>
+          Upcoming:<br/><b>{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</b>
+        </p>}
+        <ul className="team-member-detail-qa-list">
+          {_(5).times(n => (
+            <li key={n}>
+              <QuestionAnswer
+                question={meeting[`question${n + 1}`]}
+                answer={meeting[`answer${n + 1}`]}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     );

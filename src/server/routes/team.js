@@ -85,17 +85,61 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
   .catch(err => res.sendStatus(500));
 });
 
-// router.post('/team/:team_id/meeting/:user_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
-//   const { team_id, user_id } = req.params;
-//   const host_id = req.user.id;
-//
-//   knex('meetings').insert({
-//     id: uuid.v1(),
-//     team_id,
-//     user_id,
-//     host_id
-//   })
-// });
+router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const {
+    team_id,
+    user_id
+  } = req.params;
+
+  const {
+    question1,
+    question2,
+    question3,
+    question4,
+    question5,
+    answer1,
+    answer2,
+    answer3,
+    answer4,
+    answer5,
+    is_done,
+    meeting_date
+  } = req.body;
+
+  const host_id = req.user.id;
+
+  if (!meeting_date) {
+    res.status(400).json({ msg: 'meeting-date-required' });
+  }
+
+  const insertObj = _.omitBy({
+    id: uuid.v1(),
+    team_id,
+    user_id,
+    host_id,
+    question1,
+    question2,
+    question3,
+    question4,
+    question5,
+    answer1,
+    answer2,
+    answer3,
+    answer4,
+    answer5,
+    is_done,
+    meeting_date
+  },
+  _.isNil);
+
+  knex('meetings').insert(insertObj)
+  .returning('*')
+  .then(meeting => {
+    console.log('\n\nmeeting created', meeting);
+    res.json({ meeting });
+  })
+  .catch(err => res.sendStatus(500));
+});
 
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   console.log('\n\nget team', req.user);

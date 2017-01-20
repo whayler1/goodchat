@@ -1,6 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import superagent from 'superagent';
+import _ from 'underscore';
+
+import { setMeetings } from '../meeting/meeting.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -10,12 +14,13 @@ class TeamMemberDetail extends Component {
     team: PropTypes.object.isRequired,
     meetings: PropTypes.array.isRequired,
     members: PropTypes.array,
-    member: PropTypes.object
+    member: PropTypes.object,
+    setMeetings: PropTypes.func.isRequired
   }
 
   state = {
     member: this.props.members.find(member => member.id === this.props.params.memberId),
-    now: moment().format('YYYY-MM-DD'),
+    now: moment(),
     newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`,
     newMeetingDateTimeError: ''
   }
@@ -26,17 +31,55 @@ class TeamMemberDetail extends Component {
   }
 
   validate = () => new Promise((resolve, reject) => {
-    // const { newMeetingDate, now } = this.state;
-    // const newMeetingMoment = moment(newMeetingDate);
-    //
-    // if (!newMeetingDate) {
-    //   this.setState({ newMeetingDateError: 'doesnt-exist' }, reject);
-    // } else if (newMeetingMoment.isBefore(now)) {
-    //   this.setState({ newMeetingDateError: 'before-now' }, reject);
-    // } else {
-    //   this.setState({ newMeetingDateError: '' }, resolve)
-    // }
+    const { newMeetingDateTime, now } = this.state;
+
+    if (!newMeetingDateTime) {
+      this.setState({ newMeetingDateTimeError: 'doesnt-exist' }, reject);
+    } else if (moment(newMeetingDateTime).isBefore(now)) {
+      this.setState({ newMeetingDateTimeError: 'before-now' }, reject);
+    } else {
+      this.setState({ newMeetingDateTimeError: '' }, resolve)
+    }
   })
+
+  updateMeetings = () => superagent.get(`team/${this.props.team.id}/meetings/${this.state.member.id}`)
+    .end((err, res) => {
+      if (err) {
+        console.log('err updating meetings', res);
+        return;
+      }
+      console.log('success! updating meetings', res);
+      this.props.setMeetings(res.body.meetings);
+    });
+
+  submit = () => {
+    const {
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+      newMeetingDateTime
+    } = this.state;
+
+    superagent.post(`team/${this.props.team.id}/meeting/${this.state.member.id}`)
+    .send({
+      question1: question1 || questionDefaults[0][0],
+      question2: question2 || questionDefaults[1][0],
+      question3: question3 || questionDefaults[2][0],
+      question4: question4 || questionDefaults[3][0],
+      question5: question5 || questionDefaults[4][0],
+      meeting_date: moment(newMeetingDateTime).toISOString()
+    })
+    .end((err, res) => {
+      if (err) {
+        console.log('error creating new meeting', res);
+        return;
+      }
+      console.log('SUCCESS creating new meeting', res);
+      this.updateMeetings();
+    });
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -44,8 +87,9 @@ class TeamMemberDetail extends Component {
     this.validate().then(
       () => {
         console.log('resolved validated');
+        this.submit();
       },
-      () => console.log('rejected validation')
+      () => console.log('rejected validation', this.state)
     );
 
     return false;
@@ -53,7 +97,7 @@ class TeamMemberDetail extends Component {
 
   render = () => {
     const { team, meetings } = this.props;
-    const { member } = this.state;
+    const { member, newMeetingDateTime, newMeetingDateTimeError } = this.state;
     const {
       question1,
       question2,
@@ -64,7 +108,7 @@ class TeamMemberDetail extends Component {
 
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
 
-    // console.log('team member detail\nteam:', team, '\nmeetings:', meetings);
+    console.log('%c team member detail\nteam:', 'background:aqua', team, '\nmeetings:', meetings);
     // console.log('state:', this.state);
 
     return (
@@ -82,29 +126,27 @@ class TeamMemberDetail extends Component {
               <div>{member.email}</div>
             </div>
           </div>
-          <h3>Meetings</h3>
-          <TeamMemberDetailMeeting
-            question1={question1 || questionDefaults[0][0]}
-            question2={question2 || questionDefaults[1][0]}
-            question3={question3 || questionDefaults[2][0]}
-            question4={question4 || questionDefaults[3][0]}
-            question5={question5 || questionDefaults[4][0]}
-          />
           {canCreateNewMeeting &&
           <form className="form" onSubmit={this.onSubmit}>
-            <fieldset>
+            <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
               <label
                 htmlFor="newMeetingDateTime"
                 className="input-label"
-              >New meeting date</label>
+              >New meeting date and time</label>
               <input
                 type="datetime-local"
                 className="form-control"
                 id="newMeetingDateTime"
                 name="newMeetingDateTime"
-                value={this.state.newMeetingDateTime}
+                value={newMeetingDateTime}
                 onChange={this.onChange}
               />
+              {newMeetingDateTimeError &&
+              <p className="input-error-msg">
+                {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
+                {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
+              </p>
+              }
             </fieldset>
             <fieldset>
               <button
@@ -116,6 +158,14 @@ class TeamMemberDetail extends Component {
             </fieldset>
           </form>
           }
+          <h3>Meetings</h3>
+          <ul className="page-body-list">
+            {meetings.map(meeting => (
+              <li key={meeting.id}>
+                <TeamMemberDetailMeeting meeting={meeting}/>
+              </li>
+            ))}
+          </ul>
         </div>
       </main>
     );
@@ -127,5 +177,8 @@ export default connect(
     team: state.team.team,
     meetings: state.meeting.meetings,
     members: state.team.members
-  })
+  }),
+  {
+    setMeetings
+  }
 )(TeamMemberDetail);
