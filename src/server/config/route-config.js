@@ -12,6 +12,7 @@
     const organizationRoutes = require('../routes/organization');
     const teamRoutes = require('../routes/team');
     const inviteRoutes = require('../routes/invite');
+    const meetingRoutes = require('../routes/meeting');
 
     // *** register routes *** //
     app.use('/', routes);
@@ -21,7 +22,7 @@
     app.use('/', organizationRoutes);
     app.use('/', teamRoutes);
     app.use('/', inviteRoutes);
-
+    app.use('/', meetingRoutes);
   };
 
 })(module.exports);

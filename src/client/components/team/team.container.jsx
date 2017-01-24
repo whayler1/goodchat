@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import superagent from 'superagent';
-import _ from 'underscore';
+import _ from 'lodash';
 import questionDefaults from '../../questions/questions.js';
 import TeamMemberListItem from './team.member-list-item.component.jsx';
 

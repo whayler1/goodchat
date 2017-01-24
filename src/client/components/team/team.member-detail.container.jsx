@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import superagent from 'superagent';
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { setMeetings } from '../meeting/meeting.dux.js';
 

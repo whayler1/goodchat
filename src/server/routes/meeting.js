@@ -4,6 +4,7 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 const uuid = require('node-uuid');
+const _ = require('lodash');
 
 router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
   const hostId = req.user.id;
@@ -37,5 +38,51 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
     .then(meeting => {
       res.json({ meeting });
     })
+    .catch(err => res.sendStatus(500));
   }
 });
+
+const isMeetingMember = (req, res, next) => {
+  const user_id = req.user.id;
+  const { id } = req.params;
+
+  return knex('meetings').where({ id }).first().then(meeting => {
+    if (user_id === meeting.user_id || user_id === meeting.host_id) {
+      return next();
+    } else {
+      return res.status(401).json({ msg: 'user is not a member of this meeting' });
+    }
+  })
+  .catch(err => res.sendStatus(500));
+}
+
+router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res) => {
+  const { id } = req.params;
+  const updateObj = _.assign(_.omitBy(
+    _.pick(
+      req.body,
+      'question1',
+      'question2',
+      'question3',
+      'question4',
+      'question5',
+      'answer1',
+      'answer2',
+      'answer3',
+      'answer4',
+      'answer5',
+      'meeting_date'
+    ),
+    _.isNil
+  ), { updated_at: knex.fn.now() });
+
+  console.log('\n\nput meeting', id, '\n updateObj:', updateObj);
+
+  knex('meetings').where({ id })
+  .update(updateObj)
+  .returning('*')
+  .then(meeting => res.json({ meeting: meeting[0] }))
+  .catch(err => res.sendStatus(500));
+});
+
+module.exports = router;
