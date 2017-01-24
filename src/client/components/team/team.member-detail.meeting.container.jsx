@@ -5,13 +5,16 @@ import _ from 'lodash';
 import moment from 'moment';
 import superagent from 'superagent';
 
+import { updateMeeting } from '../meeting/meeting.dux.js';
+
 function QuestionAnswer({
   index,
   question,
   answer,
   onChange,
   isUser,
-  isHost
+  isHost,
+  isDone
 }) {
   return (
     <div>
@@ -20,9 +23,9 @@ function QuestionAnswer({
         <textarea
           id={`question${index}`}
           name={`question${index}`}
-          className={`form-control${ !isHost ? 'form-control-cosmetic' : '' }`}
+          className={`form-control${ (!isHost || isDone) ? 'form-control-cosmetic' : '' }`}
           maxLength={300}
-          readOnly={!isHost}
+          readOnly={!isHost || isDone}
           value={question}
           onChange={onChange}
         />
@@ -32,9 +35,9 @@ function QuestionAnswer({
         <textarea
           id={`answer${index}`}
           name={`answer${index}`}
-          className={`form-control${ !isUser ? ' form-control-cosmetic' : ''}`}
+          className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
           maxLength={300}
-          readOnly={!isUser}
+          readOnly={!isUser || isDone}
           value={answer}
           onChange={onChange}
         />
@@ -46,7 +49,8 @@ function QuestionAnswer({
 class TeamMemberDetailMeeting extends Component {
   static propTypes = {
     meeting: PropTypes.object.isRequired,
-    userId: PropTypes.string.isRequired
+    userId: PropTypes.string.isRequired,
+    updateMeeting: PropTypes.func.isRequired
   }
   state = {
     question1: this.props.meeting.question1,
@@ -61,29 +65,40 @@ class TeamMemberDetailMeeting extends Component {
     answer5: this.props.meeting.answer5
   }
   submit = _.debounce(() => {
-    console.log('submit');
-    superagent.put(`meeting/${this.props.meeting.id}`)
-    .send(
-      _.pick(
+    const isUser = this.props.meeting.user_id === this.props.userId;
+    const isHost = this.props.meeting.host_id === this.props.userId;
+
+    const sendObj = {};
+
+    if (isUser) {
+      _.assign(sendObj, _.pick(
         this.state,
-        'question1',
-        'question2',
-        'question3',
-        'question4',
-        'question5',
         'answer1',
         'answer2',
         'answer3',
         'answer4',
         'answer5'
-      )
-    )
+      ));
+    } else if (isHost) {
+      _.assign(sendObj, _.pick(
+        this.state,
+        'question1',
+        'question2',
+        'question3',
+        'question4',
+        'question5'
+      ));
+    }
+
+    superagent.put(`meeting/${this.props.meeting.id}`)
+    .send(sendObj)
     .end((err, res) => {
       if (err) {
         console.log('error putting to meeting', res);
         return;
       }
-      console.log('success putting meeting!', res);
+      console.log('success putting meeting!', res.body.meeting);
+      this.props.updateMeeting(res.body.meeting);
     });
   }, 750)
   onSubmit = e => {
@@ -111,21 +126,29 @@ class TeamMemberDetailMeeting extends Component {
           className="form"
           onSubmit={this.onSubmit}
         >
-        <ul className="team-member-detail-qa-list">
-          {_(5).times(n => (
-            <li key={n}>
-              <QuestionAnswer
-                index={n + 1}
-                question={this.state[`question${n + 1}`]}
-                answer={this.state[`answer${n + 1}`]}
-                onChange={this.onChange}
-                isUser={isUser}
-                isHost={isHost}
-              />
-            </li>
-          ))}
-        </ul>
+          <ul className="team-member-detail-qa-list">
+            {_(5).times(n => (
+              <li key={n}>
+                <QuestionAnswer
+                  index={n + 1}
+                  question={this.state[`question${n + 1}`]}
+                  answer={this.state[`answer${n + 1}`]}
+                  onChange={this.onChange}
+                  isUser={isUser}
+                  isHost={isHost}
+                  isDone={is_done}
+                />
+              </li>
+            ))}
+          </ul>
         </form>
+        {isHost && !is_done &&
+        <button
+          type="button"
+          className="btn-secondary btn-block"
+        >
+          Finish meeting
+        </button>}
       </div>
     );
   }
@@ -134,5 +157,8 @@ class TeamMemberDetailMeeting extends Component {
 export default connect (
   state => ({
       userId: state.user.id
-  })
+  }),
+  {
+    updateMeeting
+  }
 )(TeamMemberDetailMeeting);

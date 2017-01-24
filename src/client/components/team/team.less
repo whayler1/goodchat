@@ -74,12 +74,6 @@
   padding: 0;
   >li {
     list-style: none;
-    p {
-      margin: 0;
-      +p {
-        margin-top: @quarter-gutter;
-      }
-    }
     +li {
       margin-top: @half-gutter;
     }
@@ -87,7 +81,13 @@
 }
 
 .team-member-detail-qa-list-item-input-group {
+  display: block;
   position: relative;
+  padding-left: 25px;
+
+  .form-control {
+    padding-top: 0;
+  }
 }
 
 .team-member-detail-qa-list-item-icon {
