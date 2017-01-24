@@ -64,6 +64,16 @@ class TeamMemberDetailMeeting extends Component {
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5
   }
+  onCompleteMeeting = () => superagent.put(`meeting/${this.props.meeting.id}`)
+    .send({ is_done: true })
+    .end((err, res) => {
+      if (err) {
+        console.log('err finishing meeting', res);
+        return;
+      }
+      console.log('meeting is done!', res);
+      this.props.updateMeeting(res.body.meeting);
+    });
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -146,8 +156,9 @@ class TeamMemberDetailMeeting extends Component {
         <button
           type="button"
           className="btn-secondary btn-block"
+          onClick={this.onCompleteMeeting}
         >
-          Finish meeting
+          Complete meeting
         </button>}
       </div>
     );

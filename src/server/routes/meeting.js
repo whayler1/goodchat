@@ -71,6 +71,7 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'answer3',
       'answer4',
       'answer5',
+      'is_done',
       'meeting_date'
     ),
     _.isNil
