@@ -23,7 +23,7 @@ function QuestionAnswer({
         <textarea
           id={`question${index}`}
           name={`question${index}`}
-          className={`form-control${ (!isHost || isDone) ? 'form-control-cosmetic' : '' }`}
+          className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
           maxLength={300}
           readOnly={!isHost || isDone}
           value={question}
@@ -129,9 +129,9 @@ class TeamMemberDetailMeeting extends Component {
 
     return (
       <div>
-        {!is_done && <p>
+        <p>
           <i className="material-icons">date_range</i> <b>{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</b>
-        </p>}
+        </p>
         <form
           className="form"
           onSubmit={this.onSubmit}
