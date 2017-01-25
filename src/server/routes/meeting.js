@@ -47,7 +47,11 @@ const isMeetingMember = (req, res, next) => {
   const { id } = req.params;
 
   return knex('meetings').where({ id }).first().then(meeting => {
+
     if (user_id === meeting.user_id || user_id === meeting.host_id) {
+      if (meeting.is_done) {
+        return res.status(401).json({ msg: 'meeting-is-done' });
+      }
       return next();
     } else {
       return res.status(401).json({ msg: 'user is not a member of this meeting' });

@@ -209,8 +209,11 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
 
 router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
   const { team_id, user_id } = req.params;
+  const currentUserId = req.user.id;
 
-  knex('meetings').orderBy('meeting_date', 'desc').where({ team_id, user_id })
+  knex('meetings').orderBy('meeting_date', 'desc')
+  .where({ team_id, host_id: currentUserId, user_id })
+  .orWhere({ team_id, host_id: user_id, user_id: currentUserId })
   .then(meetings => {
     console.log('\n\ngot meetings success!', meetings);
     res.json({ meetings });
