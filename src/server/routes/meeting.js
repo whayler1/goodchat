@@ -36,7 +36,18 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
     })
     .returning('*')
     .then(meeting => {
-      res.json({ meeting });
+      knex('notes').insert({
+        id: uuid.v1(),
+        user_id: userId
+      })
+      .then(() => knex('notes').insert({
+        id: uuid.v1(),
+        user_id: hostId
+      })
+      .then(() => res.json({ meeting }))
+      .catch(err => res.send(500).json({ msg: 'error-creating-host-note' }))
+      )
+      .catch(err => res.send(500).json({ msg: 'error-creating-user-note' }))
     })
     .catch(err => res.sendStatus(500));
   }
