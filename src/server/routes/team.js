@@ -226,11 +226,11 @@ router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, member
   const currentUserId = req.user.id;
 
   knex('meetings')
-  // .select([ 'meetings.id', 'notes.note' ])
-  // .join('notes', { 'meetings.id': 'notes.meeting_id' })
+  .select([ 'meetings.*', 'notes.note' ])
+  .join('notes', { 'meetings.id': 'notes.meeting_id' })
   .orderBy('meeting_date', 'desc')
-  .where({ team_id, host_id: currentUserId, user_id })
-  .orWhere({ team_id, host_id: user_id, user_id: currentUserId })
+  .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
+  .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
   .then(meetings => {
     console.log('\n\ngot meetings success!', meetings);
     res.json({ meetings });
@@ -238,12 +238,12 @@ router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, member
   .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
 });
 
-// router.get('/team/:team_id/notes',authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
-//   const { team_id } = req.params;
-//   const user_id = req.user.id;
-//
-//   knex('notes').where({ team_id, user_id })
-// });
+router.get('/team/:team_id/notes',authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const { team_id } = req.params;
+  const user_id = req.user.id;
+
+  knex('notes').where({ team_id, user_id })
+});
 
 router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
   const { team_id } = req.params;
