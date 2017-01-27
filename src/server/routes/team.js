@@ -226,7 +226,7 @@ router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, member
   const currentUserId = req.user.id;
 
   knex('meetings')
-  .select([ 'meetings.*', 'notes.note' ])
+  .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
   .join('notes', { 'meetings.id': 'notes.meeting_id' })
   .orderBy('meeting_date', 'desc')
   .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
