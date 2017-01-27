@@ -107,13 +107,14 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
   } = req.body;
 
   const host_id = req.user.id;
+  const meeting_id = uuid.v1()
 
   if (!meeting_date) {
     res.status(400).json({ msg: 'meeting-date-required' });
   }
 
   const insertObj = _.omitBy({
-    id: uuid.v1(),
+    id: meeting_id,
     team_id,
     user_id,
     host_id,
@@ -136,7 +137,20 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
   .returning('*')
   .then(meeting => {
     console.log('\n\nmeeting created', meeting);
-    res.json({ meeting });
+    knex('notes').insert({
+      id: uuid.v1(),
+      user_id,
+      meeting_id
+    })
+    .then(() => knex('notes').insert({
+      id: uuid.v1(),
+      user_id: insertObj.host_id,
+      meeting_id
+    })
+    .then(() => res.json({ meeting }))
+    .catch(err => res.status(500).json({ msg: 'error-creating-host-note' }))
+    )
+    .catch(err => res.status(500).json({ msg: 'error-creating-user-note' }));
   })
   .catch(err => res.sendStatus(500));
 });
@@ -211,14 +225,24 @@ router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, member
   const { team_id, user_id } = req.params;
   const currentUserId = req.user.id;
 
-  knex('meetings').orderBy('meeting_date', 'desc')
-  .where({ team_id, host_id: currentUserId, user_id })
-  .orWhere({ team_id, host_id: user_id, user_id: currentUserId })
+  knex('meetings')
+  .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
+  .join('notes', { 'meetings.id': 'notes.meeting_id' })
+  .orderBy('meeting_date', 'desc')
+  .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
+  .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
   .then(meetings => {
     console.log('\n\ngot meetings success!', meetings);
     res.json({ meetings });
   })
   .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
+});
+
+router.get('/team/:team_id/notes',authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const { team_id } = req.params;
+  const user_id = req.user.id;
+
+  knex('notes').where({ team_id, user_id })
 });
 
 router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {

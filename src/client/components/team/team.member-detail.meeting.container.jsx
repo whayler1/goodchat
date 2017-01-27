@@ -52,6 +52,7 @@ class TeamMemberDetailMeeting extends Component {
     userId: PropTypes.string.isRequired,
     updateMeeting: PropTypes.func.isRequired
   }
+
   state = {
     question1: this.props.meeting.question1,
     question2: this.props.meeting.question2,
@@ -62,8 +63,10 @@ class TeamMemberDetailMeeting extends Component {
     answer2: this.props.meeting.answer2,
     answer3: this.props.meeting.answer3,
     answer4: this.props.meeting.answer4,
-    answer5: this.props.meeting.answer5
+    answer5: this.props.meeting.answer5,
+    note: this.props.meeting.note
   }
+
   onCompleteMeeting = () => superagent.put(`meeting/${this.props.meeting.id}`)
     .send({ is_done: true })
     .end((err, res) => {
@@ -111,15 +114,45 @@ class TeamMemberDetailMeeting extends Component {
       this.props.updateMeeting(res.body.meeting);
     });
   }, 750)
+
   onSubmit = e => {
     e.preventDefault();
     console.log('onSubmit');
+    this.submit();
     return false;
   }
+
   onChange = e => {
     console.log('on change', e.target);
     this.setState({ [e.target.name]: e.target.value }, this.submit);
   }
+
+  noteSubmit = _.debounce(() => {
+    console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
+    superagent.put(`note/${this.props.meeting.note_id}`)
+    .send({
+      note: this.state.note
+    })
+    .end((err, res) => {
+      if (err) {
+        console.log('error updating note', res);
+        return;
+      }
+      console.log('notes updated', res);
+    });
+  }, 750);
+
+  onNoteSubmit = e => {
+    if (e) {
+      e.preventDefault();
+    }
+    console.log('onNoteSubmit');
+    this.noteSubmit();
+    return false;
+  }
+
+  onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
+
   render = () => {
     const { meeting } = this.props;
     const { meeting_date, is_done } = meeting;
@@ -151,6 +184,19 @@ class TeamMemberDetailMeeting extends Component {
               </li>
             ))}
           </ul>
+        </form>
+        <form className="form"
+          onSubmit={this.onNoteSubmit}
+        >
+          <label htmlFor="note" className="input-label">Notes</label>
+          <textarea
+            className="form-control"
+            id="note"
+            name="note"
+            placeholder="Write your private meeting notes here"
+            onChange={this.onNoteChange}
+            value={this.state.note}
+          />
         </form>
         {isHost && !is_done &&
         <button
