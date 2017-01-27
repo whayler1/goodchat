@@ -128,7 +128,18 @@ class TeamMemberDetailMeeting extends Component {
   }
 
   noteSubmit = _.debounce(() => {
-    console.log('note submit', this.state.note);
+    console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
+    superagent.put(`note/${this.props.meeting.note_id}`)
+    .send({
+      note: this.state.note
+    })
+    .end((err, res) => {
+      if (err) {
+        console.log('error updating note', res);
+        return;
+      }
+      console.log('notes updated', res);
+    });
   }, 750);
 
   onNoteSubmit = e => {
@@ -184,6 +195,7 @@ class TeamMemberDetailMeeting extends Component {
             name="note"
             placeholder="Write your private meeting notes here"
             onChange={this.onNoteChange}
+            value={this.state.note}
           />
         </form>
         {isHost && !is_done &&
