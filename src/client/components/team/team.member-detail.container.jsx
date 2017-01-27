@@ -15,7 +15,9 @@ class TeamMemberDetail extends Component {
     meetings: PropTypes.array.isRequired,
     members: PropTypes.array,
     member: PropTypes.object,
-    setMeetings: PropTypes.func.isRequired
+    setMeetings: PropTypes.func.isRequired,
+    givenName: PropTypes.string.isRequired,
+    familyName: PropTypes.string.isRequired
   }
 
   state = {
@@ -158,7 +160,7 @@ class TeamMemberDetail extends Component {
             </fieldset>
           </form>
           }
-          <h3>Meetings</h3>
+          <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
           <ul className="page-body-list">
             {meetings.map(meeting => (
               <li key={meeting.id}>
@@ -176,7 +178,9 @@ export default connect(
   state => ({
     team: state.team.team,
     meetings: state.meeting.meetings,
-    members: state.team.members
+    members: state.team.members,
+    givenName: state.user.givenName,
+    familyName: state.user.familyName
   }),
   {
     setMeetings
