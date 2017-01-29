@@ -1,3 +1,6 @@
+import superagent from 'superagent';
+import _ from 'underscore';
+
 const defaultState = {
   teams: [],
   team: {},
@@ -7,6 +10,27 @@ const defaultState = {
 const SET_TEAMS = 'team/set-teams';
 const SET_TEAM = 'team/set-team';
 const SET_MEMBERS = 'team/set-members';
+
+export const getTeams = (success, fail) => (dispatch, getState) => {
+  console.log('get teams');
+  superagent.get('team')
+  .end((err, res) => {
+    if (err) {
+      console.log('failed to get teams', res);
+      if (_.isFunction(fail)) {
+        fail(res);
+      }
+    } else {
+      dispatch({
+        type: SET_TEAMS,
+        teams: res.body.teams
+      });
+      if (_.isFunction(success)) {
+        success();
+      }
+    }
+  });
+}
 
 export const setTeams = teams => ({
   type: SET_TEAMS,

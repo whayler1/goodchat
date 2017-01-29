@@ -5,6 +5,7 @@
   z-index: 10;
   background: white;
   border-bottom: 1px solid @bluegrey-50;
+  box-shadow: @box-shadow-z1;
 
   a,
   button {
@@ -95,10 +96,11 @@
     }
   }
 
-  // @media(min-width: @tablet-width) {
-  //   width: 350px;
-  //   right: auto;
-  // }
+  @media(min-width: @tablet-width) {
+    width: 300px;
+    right: auto;
+    border-right: 1px solid @bluegrey-50;
+  }
 }
 
 .header-app-nav-list {
@@ -116,6 +118,21 @@
       }
       &:active {
         color: @header-color-active;
+      }
+    }
+
+    &.header-app-nav-list-item-secondary {
+      >a {
+        padding-left: 30px;
+        color: @header-color-secondary;
+
+        &:hover,
+        &:focus {
+          color: @header-color-secondary-hover;
+        }
+        &:active {
+          color: @header-color-active;
+        }
       }
     }
   }

@@ -1,9 +1,10 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import GoogleLogin from 'react-google-login';
-import {setLoggedIn} from '../user/user.dux';
-import {showNav, hideNav} from './navbar.dux';
+import { setLoggedIn } from '../user/user.dux';
+import { showNav, hideNav } from './navbar.dux';
+import { getTeams } from '../team/team.dux';
 
 class Navbar extends Component {
   static propTypes = {
@@ -13,11 +14,23 @@ class Navbar extends Component {
     setLoggedIn: PropTypes.func.isRequired,
     showNav: PropTypes.func.isRequired,
     hideNav: PropTypes.func.isRequired,
-    givenName: PropTypes.string
+    givenName: PropTypes.string,
+    teams: PropTypes.array,
+    getTeams: PropTypes.func.isRequired
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.isLoggedIn !== this.props.isLoggedIn) {
+      if (nextProps.isLoggedIn) {
+        console.log('getting teams from nav');
+        this.props.getTeams()
+      }
+    }
   }
 
   render() {
-    const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName } = this.props;
+    const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName, teams } = this.props;
+    const teamsForNav = teams.map(team => ({ title: team.name || 'Untitled team', to: `/teams/${team.id}`, isSecondary: true }));
     return (
       <header className="header">
         <nav className="header-nav">
@@ -55,8 +68,10 @@ class Navbar extends Component {
           {isLoggedIn &&
           <ul className="header-app-nav-list">
             {[
-              { title: 'My Teams', to: '/teams' }
-            ].map((link, index) => <li key={index}>
+              { title: 'My Teams', to: '/teams' },
+              ...teamsForNav,
+              { title: 'MyProfile', to: '/user'}
+            ].map((link, index) => <li key={index} className={link.isSecondary ? 'header-app-nav-list-item-secondary' : ''}>
               <Link to={link.to} onClick={this.props.hideNav}>{link.title} <i className="material-icons pull-right header-app-nav-list-icon">chevron_right</i></Link>
             </li>)}
           </ul>}
@@ -80,11 +95,13 @@ export default connect(
     isLoggedIn: state.user.isLoggedIn,
     givenName: state.user.givenName,
     shouldShowHeroLink: state.navbar.shouldShowHeroLink,
-    shouldShowNav: state.navbar.shouldShowNav
+    shouldShowNav: state.navbar.shouldShowNav,
+    teams: state.team.teams
   }),
   {
     setLoggedIn,
     showNav,
-    hideNav
+    hideNav,
+    getTeams
   }
 )(Navbar);

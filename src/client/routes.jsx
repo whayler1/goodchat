@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
-import { setTeams, setTeam, setMembers } from './components/team/team.dux';
+import { getTeams, setTeams, setTeam, setMembers } from './components/team/team.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import { setMeetings } from './components/meeting/meeting.dux';
 import App from './components/app/app.jsx';
@@ -16,26 +16,20 @@ import User from './components/user/user.container.jsx';
 
 class Routes extends Component {
   static propTypes = {
+    getTeams: PropTypes.func.isRequired,
     setTeams: PropTypes.func.isRequired,
     setTeam: PropTypes.func.isRequired,
     setMembers: PropTypes.func.isRequired,
     setInvites: PropTypes.func.isRequired,
     setInvite: PropTypes.func.isRequired
   }
-  onTeamsEnter = (nextState, replace, callback) => {
-    superagent.get('team').then(
-      res => {
-        console.log('%c onTeamEnter es:', 'background:yellow', res);
-        this.props.setTeams(res.body.teams);
-        callback();
-      },
-      err => {
-        console.log('-get team error', err);
-        replace('/');
-        callback();
-      }
-    )
-  }
+  onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
+    res => {
+      console.log('success getting team');
+      callback();
+    },
+    err => console.log('error getting teams')
+  );
   setTeamMemberships = teamId => new Promise((resolve, reject) => {
     superagent.get(`team/${teamId}/membership`)
     .end((err, res) => {
@@ -45,7 +39,7 @@ class Routes extends Component {
       }
       this.props.setMembers(res.body.members);
       resolve();
-      // console.log('%cmemberships success', 'background:yellowgreen', res.body.members);
+      console.log('%cmemberships success', 'background:yellowgreen', res.body.members);
     });
   });
   setTeam = teamId => new Promise((resolve, reject) => {
@@ -57,6 +51,7 @@ class Routes extends Component {
       }
       this.props.setTeam(res.body.team);
       resolve();
+      console.log('%cteam success', 'background:yellowgreen', res.body.team);
     });
   });
   onTeamEnter = (nextState, replace, callback) => {
@@ -144,6 +139,7 @@ export default connect(
     isLoggedIn: state.user.isLoggedIn
   }),
   {
+    getTeams,
     setTeams,
     setTeam,
     setMembers,

@@ -27,6 +27,21 @@ class Team extends Component {
     elRef: null
   };
 
+  resetState = team => this.setState({
+    name: team.name || '',
+    question1: team.question1 || questionDefaults[0][0],
+    question2: team.question2 || questionDefaults[1][0],
+    question3: team.question3 || questionDefaults[2][0],
+    question4: team.question4 || questionDefaults[3][0],
+    question5: team.question5 || questionDefaults[4][0],
+    isQuestion1DropdownVisible: false,
+    isQuestion2DropdownVisible: false,
+    isQuestion3DropdownVisible: false,
+    isQuestion4DropdownVisible: false,
+    isQuestion5DropdownVisible: false,
+    elRef: null
+  });
+
   onTeamNameSubmit = e => {
     e.preventDefault();
     this.submit();
@@ -112,7 +127,16 @@ class Team extends Component {
     elRef: null
   });
 
-  componentDidUpdate() {
+  componentWillReceiveProps = nextProps => {
+    const { team } = nextProps;
+
+    if (team.id !== this.props.team.id) {
+      console.log('nextprops.team.id !== this.props.team.id');
+      this.resetState(team);
+    }
+  }
+
+  componentDidUpdate = () => {
     if (this.state.elRef) {
       document.body.addEventListener('click', this.onBodyClick);
     } else {
@@ -120,11 +144,11 @@ class Team extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     document.body.removeEventListener('click', this.onBodyClick);
   }
 
-  render() {
+  render = () => {
     const {
       team,
       members,
