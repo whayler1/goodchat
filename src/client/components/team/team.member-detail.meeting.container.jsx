@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import superagent from 'superagent';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import { updateMeeting } from '../meeting/meeting.dux.js';
 
@@ -20,7 +21,7 @@ function QuestionAnswer({
     <div>
       <div className="team-member-detail-qa-list-item-input-group">
         <b className="team-member-detail-qa-list-item-icon">Q:</b>
-        <textarea
+        <TextareaAutosize
           id={`question${index}`}
           name={`question${index}`}
           className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
@@ -32,7 +33,7 @@ function QuestionAnswer({
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <b className="team-member-detail-qa-list-item-icon">A:</b>
-        <textarea
+        <TextareaAutosize
           id={`answer${index}`}
           name={`answer${index}`}
           className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
@@ -189,7 +190,7 @@ class TeamMemberDetailMeeting extends Component {
           onSubmit={this.onNoteSubmit}
         >
           <label htmlFor="note" className="input-label">Notes</label>
-          <textarea
+          <TextareaAutosize
             className="form-control"
             id="note"
             name="note"
