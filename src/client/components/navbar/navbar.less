@@ -69,6 +69,31 @@
   border-radius: 2px;
 }
 
+@keyframes header-app-nav-scrim-in {
+  0% {
+    opacity: 0;
+  } 100% {
+    opacity: 1;
+  }
+}
+
+.header-app-nav-scrim {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.7);
+  z-index: 4;
+  padding-top: 50px;
+  animation: header-app-nav-scrim-in .25s;
+
+  @media(min-width: @tablet-width) {
+    display: block;
+  }
+}
+
 .header-app-nav {
   position: fixed;
   top: 0;

@@ -64,6 +64,7 @@ class Navbar extends Component {
           />}
           {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
         </nav>
+        {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
           {isLoggedIn &&
           <ul className="header-app-nav-list">
