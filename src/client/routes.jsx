@@ -25,7 +25,7 @@ class Routes extends Component {
   onTeamsEnter = (nextState, replace, callback) => {
     superagent.get('team').then(
       res => {
-        console.log('onTeamEnter es:', res);
+        console.log('%c onTeamEnter es:', 'background:yellow', res);
         this.props.setTeams(res.body.teams);
         callback();
       },
@@ -61,9 +61,11 @@ class Routes extends Component {
   });
   onTeamEnter = (nextState, replace, callback) => {
     const { teamId } = nextState.params;
+    console.log('%c on team enter', 'background:yellow');
     Promise.all([this.setTeamMemberships(teamId), this.setTeam(teamId)]).then(() => callback());
   }
   onTeamInviteEnter = (nextState, replace, callback) => {
+    console.log('on team invite enter', 'background:yellow');
     superagent.get(`team/${nextState.params.teamId}/invite`)
     .end((err, res) => {
       if (err) {
@@ -74,6 +76,7 @@ class Routes extends Component {
     });
   }
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
+    console.log('team member detail enter', 'background:yellow');
     const { teamId, memberId } = nextState.params;
     superagent.get(`team/${teamId}/meetings/${memberId}`)
       .end((err, res) => {
@@ -89,6 +92,7 @@ class Routes extends Component {
       });
   }
   onInviteAcceptEnter = (nextState, replace, callback) => {
+    console.log('invite accept enter', 'background:yellow');
     superagent.get(`invite/${nextState.params.inviteId}`).then(
       res => {
         const { invite } = res.body;
