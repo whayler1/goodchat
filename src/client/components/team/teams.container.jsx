@@ -4,6 +4,8 @@ import Router, { Link } from 'react-router';
 
 import superagent from 'superagent';
 
+import Helmet from "react-helmet";
+
 class Teams extends Component {
   static propTypes = {
     teams: PropTypes.array,
@@ -22,7 +24,10 @@ class Teams extends Component {
   render() {
     const { teams } = this.props;
     return (
-      <main role="main">
+      <main className="main" role="main">
+        <Helmet
+          title="My teams"
+        />
         <header className="page-header">
           <h1>My Teams</h1>
         </header>

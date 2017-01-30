@@ -8,6 +8,7 @@ html, body {
   font-weight: 300;
   color: @bluegrey-400;
   box-sizing: border-box;
+  background: #f7fcfc;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -68,7 +69,6 @@ textarea {
   vertical-align: middle;
 }
 
-.page-header,
 .page-body {
   position: relative;
   padding: @gutter;
@@ -78,8 +78,39 @@ textarea {
   }
 }
 .page-header {
+  padding: @gutter;
+  background: white;
+  border-bottom: 1px solid @bluegrey-50;
+  box-shadow: @box-shadow-z1;
 
   +.page-body {
     padding-top: 0;
   }
+}
+
+.main {
+  position: relative;
+  padding: 10px;
+}
+
+.col {
+  display: inline-block;
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.card {
+  background: white;
+  border: 1px solid @bluegrey-50;
+  border-radius: @border-radius;
+  box-shadow: @box-shadow-z1;
+}
+.card-padded-content {
+  padding: 20px;
+}
+
+.card-header {
+  padding: 20px;
+  border-bottom: 1px solid @bluegrey-50;
 }
