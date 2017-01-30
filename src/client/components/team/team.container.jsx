@@ -160,77 +160,81 @@ class Team extends Component {
           />
           <div className="col">
             <section className="card">
-              <h3>Questions</h3>
-              <form
-                id="team-questions"
-                name="team-questions"
-                className="form"
-                onSubmit={this.onQuestionFormSubmit}
-              >
-                {questionValues.map((question, index) => {
-                  const qId = `question${index + 1}`;
-                  const elRef = `${qId}El`;
-                  const stateName = `isQuestion${index + 1}DropdownVisible`;
-                  const onDropdownToggle = () => {
-                    const isVisible = this.state[stateName];
-                    if (!isVisible) {
-                      this.setState({
-                        [stateName]: true,
-                        elRef: this[elRef]
-                      });
-                    } else {
-                      this.closeDropdowns();
-                    }
-                  };
-                  return (
-                    <fieldset>
-                      <div className="input-group" ref={el => this[elRef] = el}>
-                        <input
-                          id={qId}
-                          name={qId}
-                          type="text"
-                          className="form-control"
-                          value={this.state[qId]}
-                          onChange={this.onQuestionChange}
-                        />
-                        <span className="input-group-addon">
-                          <button
-                            type="button"
-                            className="btn-no-style"
-                            onClick={onDropdownToggle}
-                          >
-                            <i className="material-icons">keyboard_arrow_down</i>
-                          </button>
-                        </span>
-                        <div className={`dropdown-container${this.state[stateName] ? ' dropdown-container-show' : ''}`}>
-                          <div className="dropdown">
-                            <ul className="dropdown-list">
-                              {questionDefaults[index].map((question, innerIndex) => {
-                                const onDropdownItemClick = () => this.setState({
-                                  [qId]: question,
-                                  isQuestion1DropdownVisible: false,
-                                  isQuestion2DropdownVisible: false,
-                                  isQuestion3DropdownVisible: false,
-                                  isQuestion4DropdownVisible: false,
-                                  isQuestion5DropdownVisible: false,
-                                  elRef: null
-                                }, this.questionFormSubmit);
-                                return (
-                                  <li key={`${index}${innerIndex}`}>
-                                    <a onClick={onDropdownItemClick}>
-                                      {question}
-                                    </a>
-                                  </li>
-                                );
-                              })}
-                            </ul>
+              <header className="card-header">
+                <h3>Questions</h3>
+              </header>
+              <div className="card-padded-content">
+                <form
+                  id="team-questions"
+                  name="team-questions"
+                  className="form"
+                  onSubmit={this.onQuestionFormSubmit}
+                >
+                  {questionValues.map((question, index) => {
+                    const qId = `question${index + 1}`;
+                    const elRef = `${qId}El`;
+                    const stateName = `isQuestion${index + 1}DropdownVisible`;
+                    const onDropdownToggle = () => {
+                      const isVisible = this.state[stateName];
+                      if (!isVisible) {
+                        this.setState({
+                          [stateName]: true,
+                          elRef: this[elRef]
+                        });
+                      } else {
+                        this.closeDropdowns();
+                      }
+                    };
+                    return (
+                      <fieldset>
+                        <div className="input-group" ref={el => this[elRef] = el}>
+                          <input
+                            id={qId}
+                            name={qId}
+                            type="text"
+                            className="form-control"
+                            value={this.state[qId]}
+                            onChange={this.onQuestionChange}
+                          />
+                        <span className="input-group-addon input-group-addon-divided">
+                            <button
+                              type="button"
+                              className="btn-no-style"
+                              onClick={onDropdownToggle}
+                            >
+                              <i className="material-icons">keyboard_arrow_down</i>
+                            </button>
+                          </span>
+                          <div className={`dropdown-container${this.state[stateName] ? ' dropdown-container-show' : ''}`}>
+                            <div className="dropdown">
+                              <ul className="dropdown-list">
+                                {questionDefaults[index].map((question, innerIndex) => {
+                                  const onDropdownItemClick = () => this.setState({
+                                    [qId]: question,
+                                    isQuestion1DropdownVisible: false,
+                                    isQuestion2DropdownVisible: false,
+                                    isQuestion3DropdownVisible: false,
+                                    isQuestion4DropdownVisible: false,
+                                    isQuestion5DropdownVisible: false,
+                                    elRef: null
+                                  }, this.questionFormSubmit);
+                                  return (
+                                    <li key={`${index}${innerIndex}`}>
+                                      <a onClick={onDropdownItemClick}>
+                                        {question}
+                                      </a>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </fieldset>
-                  )
-                })}
-              </form>
+                      </fieldset>
+                    )
+                  })}
+                </form>
+              </div>
             </section>
           </div>
           <div className="col">
@@ -238,22 +242,20 @@ class Team extends Component {
               <header className="card-header">
               <h3>Team members</h3>
               </header>
-              <div className="card-padded-content">
-                {(is_owner || is_admin) && members.length < 1 &&
-                <p>This team has no members. Click below to invite team members.</p>}
-                {members.length > 0 && <ul className="team-member-list">
-                  {members.map(member => <li key={member.id}>
-                    <TeamMemberListItem
-                      givenName={member.given_name}
-                      familyName={member.family_name}
-                      email={member.email}
-                      picture={member.picture}
-                      id={member.id}
-                      teamId={team.id}
-                    />
-                  </li>)}
-                </ul>}
-              </div>
+              {(is_owner || is_admin) && members.length < 1 &&
+              <div className="card-padded-content"><p>This team has no members. Click below to invite team members.</p></div>}
+              {members.length > 0 && <ul className="team-member-list">
+                {members.map(member => <li key={member.id}>
+                  <TeamMemberListItem
+                    givenName={member.given_name}
+                    familyName={member.family_name}
+                    email={member.email}
+                    picture={member.picture}
+                    id={member.id}
+                    teamId={team.id}
+                  />
+                </li>)}
+              </ul>}
               <ul className="footer-btn-list">
                 {(is_owner || is_admin) &&
                 <li>

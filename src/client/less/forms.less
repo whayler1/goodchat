@@ -14,10 +14,7 @@
 }
 
 .input-group {
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid @bluegrey-50;
+  border: 1px solid @bluegrey-50;
   border-radius: @border-radius;
   position: relative;
   display: table;
@@ -70,6 +67,7 @@
   }
 
   &.input-group-h1 {
+    margin: -6px;
     ::-webkit-input-placeholder {
       font-style: italic;
     }
@@ -88,15 +86,12 @@
 .form-control {
   display: block;
   width: 100%;
-  padding: 12px 0;
+  padding: 12px;
   font-size: 1rem;
   border: none;
   color: @bluegrey-400;
   text-overflow: ellipsis;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid @bluegrey-50;
+  border: 1px solid @bluegrey-50;
   border-radius: @border-radius;
 
   &:hover,
@@ -133,6 +128,7 @@
   }
 
   .input-group-h1 & {
+    padding: 6px;
     font-size: 2rem;
     font-weight: 300;
   }
@@ -144,10 +140,14 @@
     resize: none;
     border: none;
   }
+
+  +.input-group-addon-divided {
+    border-left: 1px solid @bluegrey-50;
+  }
 }
 
 .input-group-addon {
-  padding: 12px 0 12px 12px;
+  padding: 12px;
   font-size: 1rem;
   line-height: 1;
   width: 1%;
@@ -160,6 +160,7 @@
   }
 
   .input-group-h1 & {
+    padding: 6px;
     font-size: 2rem;
     i {
       font-size: 2rem;
@@ -171,6 +172,17 @@
   .input-group-cosmetic & {
     padding: 0;
     visibility: hidden;
+  }
+
+  button {
+    color: @bluegrey-400;
+    &:hover,
+    &:focus {
+      color: darken(@bluegrey-400, 10%);
+    }
+    &:active {
+      color: darken(@bluegrey-400, 15%);
+    }
   }
 }
 

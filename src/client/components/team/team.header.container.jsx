@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import superagent from 'superagent';
 
+import InputAutosize from 'react-input-autosize';
+
 class TeamHeader extends Component {
   static propTypes = {
     team: PropTypes.object.isRequired
@@ -57,7 +59,7 @@ class TeamHeader extends Component {
           onSubmit={this.onTeamNameSubmit}
         >
           <div className={`input-group input-group-h1 ${ is_owner ? 'input-group-seamless' : 'input-group-cosmetic'}`}>
-            <input
+            <InputAutosize
               className="form-control"
               type="text"
               name="name"
