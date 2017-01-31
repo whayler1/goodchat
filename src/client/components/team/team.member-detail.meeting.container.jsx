@@ -25,29 +25,29 @@ function QuestionAnswer({
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${hostImageUrl})`}}
         ></div>
-        <TextareaAutosize
+        {(isHost && !isDone) && <TextareaAutosize
           id={`question${index}`}
           name={`question${index}`}
           className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
           maxLength={300}
-          readOnly={!isHost || isDone}
           value={question}
           onChange={onChange}
-        />
+        />}
+        {(!isHost || isDone) && <p>{ question ? question : '💬'}</p>}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${userImageUrl})`}}
         ></div>
-        <TextareaAutosize
+        {(isUser && !isDone) && <TextareaAutosize
           id={`answer${index}`}
           name={`answer${index}`}
           className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
           maxLength={300}
-          readOnly={!isUser || isDone}
           value={answer}
           onChange={onChange}
-        />
+        />}
+        {(!isUser || isDone) && <p>{ answer ? answer : '💬'}</p>}
       </div>
     </div>
   );
