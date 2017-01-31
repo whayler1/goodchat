@@ -58,22 +58,17 @@ class TeamHeader extends Component {
           name="team-name-form"
           onSubmit={this.onTeamNameSubmit}
         >
-          <div className={`input-group input-group-h1 ${ is_owner ? 'input-group-seamless' : 'input-group-cosmetic'}`}>
-            <InputAutosize
-              className="form-control"
-              type="text"
-              name="name"
-              placeholder="Untitled Team"
-              maxLength={50}
-              readOnly={!is_owner}
-              value={this.state.name}
-              autoComplete="off"
-              onChange={this.onChange}
-            />
-            <span className="input-group-addon">
-              <i className="material-icons">mode_edit</i>
-            </span>
-          </div>
+          {is_owner && <InputAutosize
+            className="team-header-title"
+            type="text"
+            name="name"
+            placeholder="Untitled Team"
+            maxLength={50}
+            value={this.state.name}
+            autoComplete="off"
+            onChange={this.onChange}
+          />}
+          {!is_owner && <h2 className="team-header-title">{this.state.name}</h2>}
         </form>
       </header>
     );
