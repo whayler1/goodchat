@@ -19,7 +19,8 @@ class TeamMemberDetail extends Component {
     member: PropTypes.object,
     setMeetings: PropTypes.func.isRequired,
     givenName: PropTypes.string.isRequired,
-    familyName: PropTypes.string.isRequired
+    familyName: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired
   }
 
   state = {
@@ -100,7 +101,7 @@ class TeamMemberDetail extends Component {
   }
 
   render = () => {
-    const { team, meetings } = this.props;
+    const { team, meetings, imageUrl } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError } = this.state;
     const {
       question1,
@@ -109,11 +110,7 @@ class TeamMemberDetail extends Component {
       question4,
       question5,
     } = team;
-
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
-
-    console.log('%c team member detail\nteam:', 'background:aqua', team, '\nmeetings:', meetings);
-    // console.log('state:', this.state);
 
     return (
       <div>
@@ -124,15 +121,6 @@ class TeamMemberDetail extends Component {
           />
           <section className="card">
             <header className="card-header">
-              <div className="team-member-ui-wrapper">
-                <div className="team-member-ui-image"
-                  style={{backgroundImage: `url(${member.picture})`}}
-                ></div>
-                <div className="team-member-ui-content">
-                  <div>{member.given_name} {member.family_name}</div>
-                  <div>{member.email}</div>
-                </div>
-              </div>
               <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
             </header>
             {canCreateNewMeeting &&
@@ -170,7 +158,11 @@ class TeamMemberDetail extends Component {
             <ul className="page-body-list">
               {meetings.map(meeting => (
                 <li key={meeting.id}>
-                  <TeamMemberDetailMeeting meeting={meeting}/>
+                  <TeamMemberDetailMeeting
+                    meeting={meeting}
+                    imageUrl={imageUrl}
+                    memberImageUrl={member.picture}
+                  />
                 </li>
               ))}
             </ul>
@@ -187,7 +179,8 @@ export default connect(
     meetings: state.meeting.meetings,
     members: state.team.members,
     givenName: state.user.givenName,
-    familyName: state.user.familyName
+    familyName: state.user.familyName,
+    imageUrl: state.user.imageUrl
   }),
   {
     setMeetings
