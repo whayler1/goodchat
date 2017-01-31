@@ -4,8 +4,9 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import superagent from 'superagent';
-
 import { setInvites } from '../invite/invite.dux';
+import TeamHeader from './team.header.container.jsx';
+import Helmet from "react-helmet";
 
 class InviteListItem extends Component {
   static propTypes = {
@@ -135,84 +136,90 @@ class TeamInvite extends Component {
     const { emailError } = this.state;
     console.log('%cteam invite\nstate:', 'background:pink', this.state);
     return (
-      <main role="main">
-        <header className="page-header">
-          <h1>{ name ? name : 'Untitled Team' }</h1>
-          <h2>Invites</h2>
-        </header>
-        <div className="page-body">
-          <h3>Invite a team member</h3>
-          <form
-            name="invite-team-member-form"
-            onSubmit={this.onSubmit}
-            className="form"
-            noValidate
-          >
-            <fieldset className={ emailError ? 'input-error' : '' }>
-              <label className="input-label" htmlFor="email">Invitee email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="jane.doe@gmail.com"
-                className="form-control"
-                maxLength={50}
-                value={this.state.email}
-                autoComplete="off"
-                onChange={this.onChange}
-              />
-              {emailError &&
-              <p className="input-error-msg">
-                {emailError === 'invalid' && 'Please provide a valid email.'}
-                {emailError === 'empty' && 'Please provide an email.'}
-                {emailError === 'exists' && 'This email has already been invited.'}
-              </p>
-              }
-            </fieldset>
-            <fieldset>
-              <label htmlFor="isAdmin">
-                <input
-                  type="checkbox"
-                  id="isAdmin"
-                  name="isAdmin"
-                  checked={this.state.isAdmin}
-                  onChange={this.onCheckboxChange}
-                /> Admin
-              </label>
-            </fieldset>
-            <fieldset>
-              <button
-                type="submit"
-                className="btn-primary-inverse btn-block"
+      <div>
+        <TeamHeader/>
+        <main className="main" role="main">
+          <Helmet
+            title={`${name} invites`}
+          />
+          <section className="card">
+            <header className="card-header">
+              <h3>Invite a team member</h3>
+            </header>
+            <div className="card-padded-content">
+              <form
+                name="invite-team-member-form"
+                onSubmit={this.onSubmit}
+                className="form"
+                noValidate
               >
-                Send Invite
-              </button>
-            </fieldset>
-          </form>
-          {invites.length > 0 && [
-          <h3>Pending invites</h3>,
-          <ul className="page-body-list pending-invite-list">
-            {invites.map(invite => (
-              <li key={invite.id}>
-                <InviteListItem
-                  inviteId={invite.id}
-                  teamId={id}
-                  inviteeEmail={invite.invitee_email}
-                  updatedAt={invite.updated_at}
-                  setInvites={this.props.setInvites}
-                />
-              </li>
-            ))}
-          </ul>]}
-        </div>
-        <ul className="footer-btn-list">
-          <li>
-            <Link className="btn-secondary btn-block" to={`teams/${id}`}>
-              Close
-            </Link>
-          </li>
-        </ul>
-      </main>
+                <fieldset className={ emailError ? 'input-error' : '' }>
+                  <label className="input-label" htmlFor="email">Invitee email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="jane.doe@gmail.com"
+                    className="form-control"
+                    maxLength={50}
+                    value={this.state.email}
+                    autoComplete="off"
+                    onChange={this.onChange}
+                  />
+                  {emailError &&
+                  <p className="input-error-msg">
+                    {emailError === 'invalid' && 'Please provide a valid email.'}
+                    {emailError === 'empty' && 'Please provide an email.'}
+                    {emailError === 'exists' && 'This email has already been invited.'}
+                  </p>
+                  }
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="isAdmin">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      name="isAdmin"
+                      checked={this.state.isAdmin}
+                      onChange={this.onCheckboxChange}
+                    /> Admin
+                  </label>
+                </fieldset>
+                <fieldset>
+                  <button
+                    type="submit"
+                    className="btn-primary-inverse btn-block"
+                  >
+                    Send Invite
+                  </button>
+                </fieldset>
+              </form>
+              {invites.length > 0 && [
+              <h3>Pending invites</h3>,
+              <ul className="page-body-list pending-invite-list">
+                {invites.map(invite => (
+                  <li key={invite.id}>
+                    <InviteListItem
+                      inviteId={invite.id}
+                      teamId={id}
+                      inviteeEmail={invite.invitee_email}
+                      updatedAt={invite.updated_at}
+                      setInvites={this.props.setInvites}
+                    />
+                  </li>
+                ))}
+              </ul>]}
+            </div>
+          </section>
+          <ul className="footer-btn-list">
+            <li>
+              <Link className="btn-secondary btn-block" to={`teams/${id}`}>
+                Close
+              </Link>
+            </li>
+          </ul>
+        </main>
+      </div>
     );
   }
 }
