@@ -15,33 +15,39 @@ function QuestionAnswer({
   onChange,
   isUser,
   isHost,
-  isDone
+  isDone,
+  hostImageUrl,
+  userImageUrl
 }) {
   return (
     <div>
       <div className="team-member-detail-qa-list-item-input-group">
-        <b className="team-member-detail-qa-list-item-icon">Q:</b>
-        <TextareaAutosize
+        <div className="team-member-detail-qa-list-item-icon"
+          style={{backgroundImage: `url(${hostImageUrl})`}}
+        ></div>
+        {(isHost && !isDone) && <TextareaAutosize
           id={`question${index}`}
           name={`question${index}`}
           className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
           maxLength={300}
-          readOnly={!isHost || isDone}
           value={question}
           onChange={onChange}
-        />
+        />}
+        {(!isHost || isDone) && <p>{ question ? question : '💬'}</p>}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
-        <b className="team-member-detail-qa-list-item-icon">A:</b>
-        <TextareaAutosize
+        <div className="team-member-detail-qa-list-item-icon"
+          style={{backgroundImage: `url(${userImageUrl})`}}
+        ></div>
+        {(isUser && !isDone) && <TextareaAutosize
           id={`answer${index}`}
           name={`answer${index}`}
           className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
           maxLength={300}
-          readOnly={!isUser || isDone}
           value={answer}
           onChange={onChange}
-        />
+        />}
+        {(!isUser || isDone) && <p>{ answer ? answer : '💬'}</p>}
       </div>
     </div>
   );
@@ -51,7 +57,9 @@ class TeamMemberDetailMeeting extends Component {
   static propTypes = {
     meeting: PropTypes.object.isRequired,
     userId: PropTypes.string.isRequired,
-    updateMeeting: PropTypes.func.isRequired
+    updateMeeting: PropTypes.func.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    memberImageUrl: PropTypes.string.isRequired
   }
 
   state = {
@@ -78,6 +86,7 @@ class TeamMemberDetailMeeting extends Component {
       console.log('meeting is done!', res);
       this.props.updateMeeting(res.body.meeting);
     });
+
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -155,11 +164,14 @@ class TeamMemberDetailMeeting extends Component {
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
 
   render = () => {
-    const { meeting } = this.props;
+    const { meeting, imageUrl, memberImageUrl } = this.props;
     const { meeting_date, is_done } = meeting;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
+
+    const hostImageUrl = isHost ? imageUrl : memberImageUrl;
+    const userImageUrl = isHost ? memberImageUrl : imageUrl;
 
     return (
       <div>
@@ -181,12 +193,14 @@ class TeamMemberDetailMeeting extends Component {
                   isUser={isUser}
                   isHost={isHost}
                   isDone={is_done}
+                  hostImageUrl={hostImageUrl}
+                  userImageUrl={userImageUrl}
                 />
               </li>
             ))}
           </ul>
         </form>
-        <form className="form"
+        <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
           <label htmlFor="note" className="input-label">Notes</label>
@@ -202,7 +216,7 @@ class TeamMemberDetailMeeting extends Component {
         {isHost && !is_done &&
         <button
           type="button"
-          className="btn-secondary btn-block"
+          className="btn-secondary btn-block gutter-large-top"
           onClick={this.onCompleteMeeting}
         >
           Complete meeting

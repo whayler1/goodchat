@@ -22,7 +22,7 @@ class Home extends Component {
     const googleClientId = window.googleClientId;
     const { isLoggedIn } = this.props;
     return (
-      <main className="main main-home" role="main">
+      <main className="main-home" role="main">
         <Helmet
           title="Good Chat"
           meta={[{"name": "description", "content": "This thing me and Chris are building."}]}

@@ -30,7 +30,7 @@
 
     >a {
       display: block;
-      padding: @gutter 0;
+      padding: @gutter;
       color: @body-color;
 
       &:hover,
@@ -49,7 +49,7 @@
 .team-member-ui-image {
   position: absolute;
   top: @gutter;
-  left: 0;
+  left: @gutter;
   width: @team-member-ui-image-size;
   height: @team-member-ui-image-size;
   border-radius: @team-member-ui-image-size;
@@ -75,7 +75,7 @@
   >li {
     list-style: none;
     +li {
-      margin-top: @half-gutter;
+      margin-top: @gutter;
     }
   }
 }
@@ -83,15 +83,58 @@
 .team-member-detail-qa-list-item-input-group {
   display: block;
   position: relative;
-  padding-left: 25px;
-
-  .form-control {
-    padding-top: 0;
+  padding-left: 35px;
+  >p {
+    padding: 12px 0;
   }
 }
 
 .team-member-detail-qa-list-item-icon {
   position: absolute;
-  top: 0;
+  top: 12px;
   left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.team-header-title {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  color: @bluegrey-400;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+
+  input {
+    padding: 6px;
+    margin: -6px;
+    font-size: 1.5rem;
+    color: @bluegrey-400;
+    font-weight: 300;
+    border: 1px solid transparent;
+    border-radius: @border-radius;
+
+    &:hover,
+    &:focus {
+      color: darken(@bluegrey-400, 10%);
+      border-color: @bluegrey-50;
+    }
+    &:active {
+      color: darken(@bluegrey-400, 15%);
+    }
+  }
+}
+
+.team-member-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
