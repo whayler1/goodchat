@@ -109,10 +109,18 @@ textarea {
   box-shadow: @box-shadow-z1;
 }
 .card-padded-content {
-  padding: 20px;
+  padding: @gutter @half-gutter;
+
+  @media(min-width: @tablet-width) {
+    padding: @gutter;
+  }
 }
 
 .card-header {
-  padding: 20px;
+  padding: @gutter @half-gutter;
   border-bottom: 1px solid @bluegrey-50;
+
+  @media(min-width: @tablet-width) {
+    padding: @gutter;
+  }
 }

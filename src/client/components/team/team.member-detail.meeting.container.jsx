@@ -200,7 +200,7 @@ class TeamMemberDetailMeeting extends Component {
             ))}
           </ul>
         </form>
-        <form className="form"
+        <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
           <label htmlFor="note" className="input-label">Notes</label>
@@ -216,7 +216,7 @@ class TeamMemberDetailMeeting extends Component {
         {isHost && !is_done &&
         <button
           type="button"
-          className="btn-secondary btn-block"
+          className="btn-secondary btn-block gutter-large-top"
           onClick={this.onCompleteMeeting}
         >
           Complete meeting

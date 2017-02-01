@@ -25,7 +25,7 @@ class InviteAccept extends Component {
           return;
         }
         console.log('success accepting invite');
-        this.props.router.push(`teams/${team.id}`);
+        this.props.history.push(`teams/${team.id}`);
       });
   }
   onJoinClick = () => {
