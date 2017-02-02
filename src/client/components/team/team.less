@@ -49,13 +49,17 @@
 .team-member-ui-image {
   position: absolute;
   top: @gutter;
-  left: @gutter;
+  left: @half-gutter;
   width: @team-member-ui-image-size;
   height: @team-member-ui-image-size;
   border-radius: @team-member-ui-image-size;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+
+  @media(min-width: @tablet-width) {
+    left: @gutter;
+  }
 }
 
 .team-member-ui-content {

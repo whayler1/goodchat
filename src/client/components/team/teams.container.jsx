@@ -34,7 +34,7 @@ class Teams extends Component {
             <h3>My Teams</h3>
           </header>
           {teams.length > 0 &&
-          <ul className="page-body-list">
+          <ul className="card-body-list">
             {teams.map(team => (
               <li key={team.id}>
                 <Link to={`/teams/${team.id}`}>
@@ -52,21 +52,23 @@ class Teams extends Component {
             <p><b>You don&rsquo;t belong to any teams yet!</b></p>
             <p>But don&rsquo;t worry, there&rsquo;s hope 😀. Create your own team or join an existing one below.</p>
           </div>}
-          <ul className="footer-btn-list">
-            <li>
-              <button
-                className="btn-primary-inverse btn-block"
-                type="button"
-                onClick={this.onCreateTeam}>
-                Create a new team <i className="material-icons">add</i>
-              </button>
-            </li>
-            <li>
-              <button className="btn-secondary btn-block" type="button">
-                Join an existing team <i className="material-icons">group_add</i>
-              </button>
-            </li>
-          </ul>
+          <footer className="card-padded-content">
+            <ul className="card-footer-btn-list">
+              <li>
+                <button
+                  className="btn-primary-inverse btn-block"
+                  type="button"
+                  onClick={this.onCreateTeam}>
+                  Create a new team <i className="material-icons">add</i>
+                </button>
+              </li>
+              <li>
+                <button className="btn-secondary btn-block" type="button">
+                  Join an existing team <i className="material-icons">group_add</i>
+                </button>
+              </li>
+            </ul>
+          </footer>
         </section>
       </main>
     );

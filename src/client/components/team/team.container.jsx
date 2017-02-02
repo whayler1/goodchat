@@ -241,7 +241,8 @@ class Team extends Component {
             </header>
             {(is_owner || is_admin) && members.length < 1 &&
             <div className="card-padded-content"><p>This team has no members. Click below to invite team members.</p></div>}
-            {members.length > 0 && <ul className="team-member-list">
+            {members.length > 0 &&
+            <ul className="card-body-list">
               {members.map(member => <li key={member.id}>
                 <TeamMemberListItem
                   givenName={member.given_name}
@@ -253,20 +254,22 @@ class Team extends Component {
                 />
               </li>)}
             </ul>}
-            <ul className="footer-btn-list">
-              {(is_owner || is_admin) &&
-              <li>
-                <Link className="btn-secondary btn-block" to={`teams/${id}/invite`}>
-                  Invite team members <i className="material-icons">person_add</i>
-                </Link>
-              </li>}
-              {is_owner &&
-              <li>
-                <button className="btn-secondary btn-block" type="button" onClick={this.onDeleteClick}>
-                  Delete this team <i className="material-icons">delete</i>
-                </button>
-              </li>}
-            </ul>
+            <footer className="card-padded-content">
+              <ul className="card-footer-btn-list">
+                {(is_owner || is_admin) &&
+                <li>
+                  <Link className="btn-secondary btn-block" to={`teams/${id}/invite`}>
+                    Invite team members <i className="material-icons">person_add</i>
+                  </Link>
+                </li>}
+                {is_owner &&
+                <li>
+                  <button className="btn-secondary btn-block" type="button" onClick={this.onDeleteClick}>
+                    Delete this team <i className="material-icons">delete</i>
+                  </button>
+                </li>}
+              </ul>
+            </footer>
           </section>
         </main>
       </div>
