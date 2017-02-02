@@ -53,23 +53,25 @@ class TeamHeader extends Component {
 
     return (
       <header className="page-header">
-        <form
-          className="form"
-          name="team-name-form"
-          onSubmit={this.onTeamNameSubmit}
-        >
-          {is_owner && <InputAutosize
-            className="team-header-title"
-            type="text"
-            name="name"
-            placeholder="Untitled Team"
-            maxLength={50}
-            value={this.state.name}
-            autoComplete="off"
-            onChange={this.onChange}
-          />}
-          {!is_owner && <h2 className="team-header-title">{this.state.name}</h2>}
-        </form>
+        <div className="container">
+          <form
+            className="form"
+            name="team-name-form"
+            onSubmit={this.onTeamNameSubmit}
+          >
+            {is_owner && <InputAutosize
+              className="team-header-title"
+              type="text"
+              name="name"
+              placeholder="Untitled Team"
+              maxLength={50}
+              value={this.state.name}
+              autoComplete="off"
+              onChange={this.onChange}
+            />}
+            {!is_owner && <h2 className="team-header-title">{this.state.name}</h2>}
+          </form>
+        </div>
       </header>
     );
   }

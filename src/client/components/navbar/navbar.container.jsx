@@ -34,35 +34,37 @@ class Navbar extends Component {
     return (
       <header className="header">
         <nav className="header-nav">
-          {(() => {
-            if (shouldShowNav) {
+          <div className="container">
+            {(() => {
+              if (shouldShowNav) {
+                return <button className="btn-no-style header-nav-mobile-ui"
+                  onClick={this.props.hideNav}>
+                  <i className="material-icons">close</i>
+                </button>;
+              }
               return <button className="btn-no-style header-nav-mobile-ui"
-                onClick={this.props.hideNav}>
-                <i className="material-icons">close</i>
+                onClick={this.props.showNav}>
+                <i className="material-icons">menu</i>
               </button>;
-            }
-            return <button className="btn-no-style header-nav-mobile-ui"
-              onClick={this.props.showNav}>
-              <i className="material-icons">menu</i>
-            </button>;
-          })()}
-          {shouldShowHeroLink &&
-          <Link
-            to="/"
-            onClick={this.props.hideNav}
-            className="header-home-anchor">
-            Good Chat
-          </Link>}
-          {!this.props.isLoggedIn && <GoogleLogin
-            clientId={googleClientId}
-            scope="profile"
-            className="btn-no-style header-user-ui"
-            buttonText="Login"
-            onSuccess={this.props.setLoggedIn}
-            onFailure={this.props.setLoggedIn}
-            autoLoad={true}
-          />}
-          {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
+            })()}
+            {shouldShowHeroLink &&
+            <Link
+              to="/"
+              onClick={this.props.hideNav}
+              className="header-home-anchor">
+              Good Chat
+            </Link>}
+            {!this.props.isLoggedIn && <GoogleLogin
+              clientId={googleClientId}
+              scope="profile"
+              className="btn-no-style header-user-ui"
+              buttonText="Login"
+              onSuccess={this.props.setLoggedIn}
+              onFailure={this.props.setLoggedIn}
+              autoLoad={true}
+            />}
+            {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
+          </div>
         </nav>
         {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
