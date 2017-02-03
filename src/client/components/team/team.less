@@ -142,3 +142,24 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.main-team {
+  .col {
+    +.col {
+      padding-top: @gutter;
+    }
+
+    @media(min-width: @tablet-width) {
+      box-sizing: border-box;
+      vertical-align: top;
+      float: left;
+      display: inline-block;
+      width: 50%;
+      padding-right: @half-gutter;
+
+      +.col {
+        padding: 0 0 0 @half-gutter;
+      }
+    }
+  }
+}

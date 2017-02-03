@@ -9,6 +9,7 @@ html, body {
   color: @bluegrey-400;
   box-sizing: border-box;
   background: #f7fcfc;
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -78,12 +79,12 @@ textarea {
   }
 }
 .page-header {
-  position: relative;
-  z-index: 4;
+  // position: relative;
+  // z-index: 4;
   padding: @half-gutter @gutter;
-  background: white;
-  border-bottom: 1px solid @bluegrey-50;
-  box-shadow: @box-shadow-z1;
+  // background: white;
+  // border-bottom: 1px solid @bluegrey-50;
+  // box-shadow: @box-shadow-z1;
 
   +.page-body {
     padding-top: 0;
@@ -92,17 +93,14 @@ textarea {
 
 .main {
   position: relative;
-  padding: 10px;
+  padding: @half-gutter;
+
+  @media(min-width: @tablet-width) {
+    padding: @half-gutter @gutter;
+  }
 }
 
 .container {
   max-width: @netbook-width;
   margin: 0 auto;
-}
-
-.col {
-  display: inline-block;
-  width: 350px;
-  padding: 10px;
-  vertical-align: top;
 }
