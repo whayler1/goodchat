@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import moment from 'moment';
 import superagent from 'superagent';
 import _ from 'lodash';
@@ -117,57 +118,65 @@ class TeamMemberDetail extends Component {
 
     return (
       <Modal closeFunc={this.modalCloseFunc}>
-          <Helmet title={`Meetings with ${this.props.givenName} ${this.props.familyName}`} />
-          <section className="card">
-            <header className="card-header">
-              <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
-            </header>
-            {canCreateNewMeeting &&
-            <div className="card-padded-content">
-              <form className="form" onSubmit={this.onSubmit}>
-                <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
-                  <label
-                    htmlFor="newMeetingDateTime"
-                    className="input-label"
-                  >New meeting date and time</label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="newMeetingDateTime"
-                    name="newMeetingDateTime"
-                    value={newMeetingDateTime}
-                    onChange={this.onChange}
-                  />
-                  {newMeetingDateTimeError &&
-                  <p className="input-error-msg">
-                    {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
-                    {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
-                  </p>
-                  }
-                </fieldset>
-                <fieldset>
-                  <button
-                    type="submit"
-                    className="btn-primary-inverse btn-block"
-                  >
-                    Create New Meeting <i className="material-icons">note_add</i>
-                  </button>
-                </fieldset>
-              </form>
+        <Helmet title={`Meetings with ${this.props.givenName} ${this.props.familyName}`} />
+        <section className="card">
+          <header className="card-header">
+            <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
+            <div className="card-header-close">
+              <Link to={`teams/${team.id}`}>
+                <i className="material-icons">close</i>
+              </Link>
             </div>
-            }
-            <ul className="page-body-list">
-              {meetings.map(meeting => (
-                <li key={meeting.id}>
-                  <TeamMemberDetailMeeting
-                    meeting={meeting}
-                    imageUrl={imageUrl}
-                    memberImageUrl={member.picture}
-                  />
-                </li>
-              ))}
-            </ul>
-          </section>
+          </header>
+          {canCreateNewMeeting &&
+          <div className="card-padded-content">
+            <form className="form" onSubmit={this.onSubmit}>
+              <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
+                <label
+                  htmlFor="newMeetingDateTime"
+                  className="input-label"
+                >New meeting date and time</label>
+                <input
+                  type="datetime-local"
+                  className="form-control"
+                  id="newMeetingDateTime"
+                  name="newMeetingDateTime"
+                  value={newMeetingDateTime}
+                  onChange={this.onChange}
+                />
+                {newMeetingDateTimeError &&
+                <p className="input-error-msg">
+                  {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
+                  {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
+                </p>
+                }
+              </fieldset>
+              <fieldset>
+                <button
+                  type="submit"
+                  className="btn-primary-inverse btn-block"
+                >
+                  Create New Meeting <i className="material-icons">note_add</i>
+                </button>
+              </fieldset>
+            </form>
+          </div>
+          }
+          <ul className="page-body-list">
+            {meetings.map(meeting => (
+              <li key={meeting.id}>
+                <TeamMemberDetailMeeting
+                  meeting={meeting}
+                  imageUrl={imageUrl}
+                  memberImageUrl={member.picture}
+                />
+              </li>
+            ))}
+          </ul>
+          <footer className="card-padded-content">
+            <Link to={`teams/${team.id}`} className="btn-secondary btn-block">Close</Link>
+          </footer>
+        </section>
       </Modal>
     );
   }

@@ -13,6 +13,7 @@
 }
 
 .card-header {
+  position: relative;
   padding: @gutter @half-gutter;
   border-bottom: 1px solid @bluegrey-100;
 
@@ -22,6 +23,28 @@
 
   @media(min-width: @tablet-width) {
     padding: @gutter;
+  }
+}
+
+.card-header-close {
+  position: absolute;
+  top: @gutter;
+  right: @half-gutter;
+
+  a {
+    color: @bluegrey-400;
+
+    &:hover,
+    &:focus {
+      color: darken(@bluegrey-400, 10%);
+    }
+    &:active {
+      color: darken(@bluegrey-400, 15%);
+    }
+  }
+
+  @media(min-width: @tablet-width) {
+    right: @gutter;
   }
 }
 
