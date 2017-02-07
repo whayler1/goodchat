@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { setMeetings } from '../meeting/meeting.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
+import Modal from '../modal/modal.container.jsx';
 import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
 import Helmet from "react-helmet";
@@ -100,6 +101,8 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
+  modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
+
   render = () => {
     const { team, meetings, imageUrl } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError } = this.state;
@@ -113,64 +116,59 @@ class TeamMemberDetail extends Component {
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
 
     return (
-      <div>
-        <TeamHeader/>
-        <main className="main" role="main">
+      <Modal closeFunc={this.modalCloseFunc}>
           <Helmet title={`Meetings with ${this.props.givenName} ${this.props.familyName}`} />
-          <div className="container">
-            <section className="card">
-              <header className="card-header">
-                <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
-              </header>
-              {canCreateNewMeeting &&
-              <div className="card-padded-content">
-                <form className="form" onSubmit={this.onSubmit}>
-                  <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
-                    <label
-                      htmlFor="newMeetingDateTime"
-                      className="input-label"
-                    >New meeting date and time</label>
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      id="newMeetingDateTime"
-                      name="newMeetingDateTime"
-                      value={newMeetingDateTime}
-                      onChange={this.onChange}
-                    />
-                    {newMeetingDateTimeError &&
-                    <p className="input-error-msg">
-                      {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
-                      {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
-                    </p>
-                    }
-                  </fieldset>
-                  <fieldset>
-                    <button
-                      type="submit"
-                      className="btn-primary-inverse btn-block"
-                    >
-                      Create New Meeting <i className="material-icons">note_add</i>
-                    </button>
-                  </fieldset>
-                </form>
-              </div>
-              }
-              <ul className="page-body-list">
-                {meetings.map(meeting => (
-                  <li key={meeting.id}>
-                    <TeamMemberDetailMeeting
-                      meeting={meeting}
-                      imageUrl={imageUrl}
-                      memberImageUrl={member.picture}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </div>
-        </main>
-      </div>
+          <section className="card">
+            <header className="card-header">
+              <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
+            </header>
+            {canCreateNewMeeting &&
+            <div className="card-padded-content">
+              <form className="form" onSubmit={this.onSubmit}>
+                <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
+                  <label
+                    htmlFor="newMeetingDateTime"
+                    className="input-label"
+                  >New meeting date and time</label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    id="newMeetingDateTime"
+                    name="newMeetingDateTime"
+                    value={newMeetingDateTime}
+                    onChange={this.onChange}
+                  />
+                  {newMeetingDateTimeError &&
+                  <p className="input-error-msg">
+                    {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
+                    {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
+                  </p>
+                  }
+                </fieldset>
+                <fieldset>
+                  <button
+                    type="submit"
+                    className="btn-primary-inverse btn-block"
+                  >
+                    Create New Meeting <i className="material-icons">note_add</i>
+                  </button>
+                </fieldset>
+              </form>
+            </div>
+            }
+            <ul className="page-body-list">
+              {meetings.map(meeting => (
+                <li key={meeting.id}>
+                  <TeamMemberDetailMeeting
+                    meeting={meeting}
+                    imageUrl={imageUrl}
+                    memberImageUrl={member.picture}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+      </Modal>
     );
   }
 }

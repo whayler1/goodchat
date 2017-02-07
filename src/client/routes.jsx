@@ -121,8 +121,7 @@ class Routes extends Component {
         <Route path="/" component={App}>
           <IndexRoute component={Home}/>
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
-          <Route path="/teams/:teamId" onEnter={this.onTeamEnter}>
-            <IndexRoute component={Team}/>
+          <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
             <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
           </Route>

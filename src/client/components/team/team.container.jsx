@@ -278,6 +278,7 @@ class Team extends Component {
             </div>
           </div>
         </main>
+        {this.props.children}
       </div>
     );
   }
