@@ -7,6 +7,7 @@ import superagent from 'superagent';
 import { setInvites } from '../invite/invite.dux';
 import TeamHeader from './team.header.container.jsx';
 import Helmet from "react-helmet";
+import Modal from '../modal/modal.container.jsx';
 
 class InviteListItem extends Component {
   static propTypes = {
@@ -121,6 +122,7 @@ class TeamInvite extends Component {
         }
       });
   }
+
   onSubmit = e => {
     e.preventDefault();
     if (!this.state.isInFlight) {
@@ -128,98 +130,99 @@ class TeamInvite extends Component {
     }
     return false;
   }
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
+
   onCheckboxChange = e => this.setState({ [e.target.name]: e.target.checked });
+
+  closeFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
+
   render() {
     const { name, id } = this.props.team;
     const { invites } = this.props;
     const { emailError } = this.state;
     console.log('%cteam invite\nstate:', 'background:pink', this.state);
     return (
-      <div>
-        <TeamHeader/>
-        <main className="main" role="main">
-          <Helmet title={`${name} invites`} />
-          <div className="container">
-            <section className="card">
-              <header className="card-header">
-                <h3>Invite a team member</h3>
-              </header>
-              <div className="card-padded-content">
-                <form
-                  name="invite-team-member-form"
-                  onSubmit={this.onSubmit}
-                  className="form"
-                  noValidate
+      <Modal closeFunc={this.closeFunc}>
+        <Helmet title={`${name} invites`} />
+        <section className="card">
+          <header className="card-header">
+            <h3>Invite a team member</h3>
+            <div className="card-header-close">
+              <Link to={`teams/${id}`}>
+                <i className="material-icons">close</i>
+              </Link>
+            </div>
+          </header>
+          <div className="card-padded-content">
+            <form
+              name="invite-team-member-form"
+              onSubmit={this.onSubmit}
+              className="form"
+              noValidate
+            >
+              <fieldset className={ emailError ? 'input-error' : '' }>
+                <label className="input-label" htmlFor="email">Invitee email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="jane.doe@gmail.com"
+                  className="form-control"
+                  maxLength={50}
+                  value={this.state.email}
+                  autoComplete="off"
+                  onChange={this.onChange}
+                />
+                {emailError &&
+                <p className="input-error-msg">
+                  {emailError === 'invalid' && 'Please provide a valid email.'}
+                  {emailError === 'empty' && 'Please provide an email.'}
+                  {emailError === 'exists' && 'This email has already been invited.'}
+                </p>
+                }
+              </fieldset>
+              <fieldset>
+                <label htmlFor="isAdmin">
+                  <input
+                    type="checkbox"
+                    id="isAdmin"
+                    name="isAdmin"
+                    checked={this.state.isAdmin}
+                    onChange={this.onCheckboxChange}
+                  /> Admin
+                </label>
+              </fieldset>
+              <fieldset>
+                <button
+                  type="submit"
+                  className="btn-primary-inverse btn-block"
                 >
-                  <fieldset className={ emailError ? 'input-error' : '' }>
-                    <label className="input-label" htmlFor="email">Invitee email</label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="jane.doe@gmail.com"
-                      className="form-control"
-                      maxLength={50}
-                      value={this.state.email}
-                      autoComplete="off"
-                      onChange={this.onChange}
-                    />
-                    {emailError &&
-                    <p className="input-error-msg">
-                      {emailError === 'invalid' && 'Please provide a valid email.'}
-                      {emailError === 'empty' && 'Please provide an email.'}
-                      {emailError === 'exists' && 'This email has already been invited.'}
-                    </p>
-                    }
-                  </fieldset>
-                  <fieldset>
-                    <label htmlFor="isAdmin">
-                      <input
-                        type="checkbox"
-                        id="isAdmin"
-                        name="isAdmin"
-                        checked={this.state.isAdmin}
-                        onChange={this.onCheckboxChange}
-                      /> Admin
-                    </label>
-                  </fieldset>
-                  <fieldset>
-                    <button
-                      type="submit"
-                      className="btn-primary-inverse btn-block"
-                    >
-                      Send Invite
-                    </button>
-                  </fieldset>
-                </form>
-                {invites.length > 0 && [
-                <h3>Pending invites</h3>,
-                <ul className="page-body-list pending-invite-list">
-                  {invites.map(invite => (
-                    <li key={invite.id}>
-                      <InviteListItem
-                        inviteId={invite.id}
-                        teamId={id}
-                        inviteeEmail={invite.invitee_email}
-                        updatedAt={invite.updated_at}
-                        setInvites={this.props.setInvites}
-                      />
-                    </li>
-                  ))}
-                </ul>]}
-              </div>
-            </section>
-            <ul className="footer-btn-list">
-              <li>
-                <Link className="btn-secondary btn-block" to={`teams/${id}`}>
-                  Close
-                </Link>
-              </li>
-            </ul>
+                  Send Invite
+                </button>
+              </fieldset>
+            </form>
+            {invites.length > 0 && [
+            <h3>Pending invites</h3>,
+            <ul className="page-body-list pending-invite-list">
+              {invites.map(invite => (
+                <li key={invite.id}>
+                  <InviteListItem
+                    inviteId={invite.id}
+                    teamId={id}
+                    inviteeEmail={invite.invitee_email}
+                    updatedAt={invite.updated_at}
+                    setInvites={this.props.setInvites}
+                  />
+                </li>
+              ))}
+            </ul>]}
           </div>
-        </main>
-      </div>
+          <footer className="card-padded-content">
+            <Link className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
+          </footer>
+        </section>
+      </Modal>
     );
   }
 }
