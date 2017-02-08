@@ -55,9 +55,16 @@ export default function reducer(state = defaultState, action) {
         teams: action.teams
       };
     case SET_TEAM:
+      const index = state.teams.findIndex(team => team.id === action.team.id);
+
       return {
         ...state,
-        team: action.team
+        team: action.team,
+        teams: [
+          ...state.teams.slice(0, index),
+          action.team,
+          ...state.teams.slice(index + 1)
+        ]
       };
     case SET_MEMBERS:
       return {

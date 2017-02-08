@@ -300,8 +300,12 @@ router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
         },
         _.isNil)
       )
-      .then(teams => {
-        res.json({ team: teams[0] });
+      .then(() => {
+        knex('memberships').where({ user_id: userId, team_id: id })
+        .join('teams', { 'memberships.team_id': 'teams.id' })
+        .first()
+        .then(team => res.json({ team }))
+        .catch(err => res.sendStatus(500));
       })
       .catch(err => res.sendStatus(500));
     }

@@ -2,12 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import superagent from 'superagent';
+import { setTeam } from './team.dux.js';
 
 import InputAutosize from 'react-input-autosize';
 
 class TeamHeader extends Component {
   static propTypes = {
-    team: PropTypes.object.isRequired
+    team: PropTypes.object.isRequired,
+    setTeam: PropTypes.func.isRequired
   }
   state = {
     name: this.props.team.name || ''
@@ -19,6 +21,7 @@ class TeamHeader extends Component {
     .then(
       res => {
         console.log('success updating', res);
+        this.props.setTeam(res.body.team);
       },
       err => console.log('error updating team name')
     );
@@ -80,5 +83,7 @@ class TeamHeader extends Component {
 export default connect(
   state => ({
     team: state.team.team
-  })
+  }), {
+    setTeam
+  }
 )(TeamHeader);
