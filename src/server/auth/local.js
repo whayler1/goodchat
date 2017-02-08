@@ -42,11 +42,13 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       .returning('*')
       .then(userres => {
         console.log('\n\nuserres:', userres);
-        return done(null, userres);
-      });
+        return done(null, userres[0]);
+      })
+      .catch((err) => done(err));
     } else {
       console.log('\n\nthere is user', user);
-      knex('users').where({ google_id: profile.id }).update({
+      knex('users').where({ google_id: profile.id })
+      .update({
         family_name: profile.familyName,
         given_name: profile.givenName,
         picture: profile.picture
@@ -55,10 +57,11 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       .then(userres => {
         console.log('updated user:', userres[0]);
         return done(null, userres[0]);
-      });
+      })
+      .catch((err) => done(err));
     }
   })
-  .catch((err) => { return done(err); });
+  .catch((err) => done(err));
 }));
 
 module.exports = passport;
