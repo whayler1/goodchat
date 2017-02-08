@@ -14,7 +14,7 @@ class TeamHeader extends Component {
   }
 
   submit = _.debounce(() => {
-    superagent.put(`team/${this.props.params.teamId}`)
+    superagent.put(`team/${this.props.team.id}`)
     .send({ name: this.state.name })
     .then(
       res => {
