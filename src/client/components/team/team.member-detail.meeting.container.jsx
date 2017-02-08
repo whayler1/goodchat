@@ -200,6 +200,7 @@ class TeamMemberDetailMeeting extends Component {
             ))}
           </ul>
         </form>
+        {!is_done &&
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
@@ -212,7 +213,13 @@ class TeamMemberDetailMeeting extends Component {
             onChange={this.onNoteChange}
             value={this.state.note}
           />
-        </form>
+        </form>}
+        {is_done &&
+        <div className="gutter-large-top">
+          <div className="input-label">Notes</div>
+          <p>{meeting.note}</p>
+        </div>
+        }
         {isHost && !is_done &&
         <button
           type="button"
