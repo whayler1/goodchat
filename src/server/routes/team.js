@@ -6,6 +6,40 @@ const passport = require('../auth/local');
 const uuid = require('node-uuid');
 const membershipHelpers = require('../membership/_helpers');
 const _ = require('lodash');
+const nodemailer = require('nodemailer');
+
+const sendMeetingEmail = (guestId, hostId, teamId) => {
+  // create reusable transporter object using the default SMTP transport
+
+  knex('users').where({ id: hostId }).orWhere({ id: guestId })
+  .then(users => {
+    const host = users.find(user => user.id === hostId);
+    const guest = users.find(user => user.id === guestId);
+    const hostName = `${host.given_name} ${host.family_name}`;
+
+    const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
+
+    const link = `http://www.goodchat.io/#/teams/${teamId}/members/${hostId}`;
+    const mailOptions = {
+      from: '"Justin at Good Chat" <justin@goodchat.io>',
+      to: guest.email,
+      subject: `You have a new meeting with ${hostName} on Good Chat.`,
+      text: `You have a new meeting with ${hostName} on Good Chat. Go to ${link} to see the meeting.`,
+      html: `<p>You have a new meeting with ${hostName} on Good Chat. <a href="${link}">Click here</a> or go to ${link} to see the meeting.</p>`
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error){
+        console.log(error);
+      } else {
+        console.log('Message sent: ' + info.response);
+      }
+      transporter.close();
+    });
+  })
+  .catch(err => console.log('\n\nerr sending meeting email', err))
+};
 
 router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   const { id } = req.user;
@@ -147,7 +181,10 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
       user_id: insertObj.host_id,
       meeting_id
     })
-    .then(() => res.json({ meeting }))
+    .then(() => {
+      sendMeetingEmail(user_id, host_id, team_id);
+      return res.json({ meeting });
+    })
     .catch(err => res.status(500).json({ msg: 'error-creating-host-note' }))
     )
     .catch(err => res.status(500).json({ msg: 'error-creating-user-note' }));

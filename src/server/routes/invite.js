@@ -18,11 +18,11 @@ const sendInvite = (inviteeEmail, teamId, inviteId) => {
     const link = `${process.env.INVITE_EMAIL_PATH}${inviteId}`;
 
     const mailOptions = {
-        from: '"Justin at Good Chat" <goochat.test@gmail.com>',
-        to: inviteeEmail,
-        subject: `Your invite to join "${name}" on Good Chat!`,
-        text: `You've been invited to join the team "${name}" on goodchat.io. Go to ${link} to join!`,
-        html: `<p>You've been invited to join the team "${name}" on goodchat.io. <a href="${link}">Click here</a> or go to ${link} to join!</p>`
+      from: '"Justin at Good Chat" <goochat.test@gmail.com>',
+      to: inviteeEmail,
+      subject: `Your invite to join "${name}" on Good Chat!`,
+      text: `You've been invited to join the team "${name}" on goodchat.io. Go to ${link} to join!`,
+      html: `<p>You've been invited to join the team "${name}" on goodchat.io. <a href="${link}">Click here</a> or go to ${link} to join!</p>`
     };
 
     // send mail with defined transport object
