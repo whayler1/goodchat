@@ -202,9 +202,11 @@ class TeamInvite extends Component {
                 </button>
               </fieldset>
             </form>
-            {invites.length > 0 && [
-            <h3>Pending invites</h3>,
-            <ul className="page-body-list pending-invite-list">
+          </div>
+          {invites.length > 0 &&
+          <div className="card-padded-content">
+            <h3>Pending invites</h3>
+            <ul className="card-body-list pending-invite-list">
               {invites.map(invite => (
                 <li key={invite.id}>
                   <InviteListItem
@@ -216,8 +218,8 @@ class TeamInvite extends Component {
                   />
                 </li>
               ))}
-            </ul>]}
-          </div>
+            </ul>
+          </div>}
           <footer className="card-padded-content">
             <Link className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
           </footer>

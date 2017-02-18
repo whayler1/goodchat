@@ -63,17 +63,18 @@ class InviteAccept extends Component {
   render() {
     const { invite, team } = this.props;
     const { error } = this.state;
+    const teamName = team.name ? team.name : 'Untitled team';
     return (
       <main role="main">
         <header className="page-header">
-          <h1>{(!invite.id || !team.id || invite.is_used) ? 'Invite invalid' : 'Accept your invite'}</h1>
+          <h1>{(!invite.id || !team.id || invite.is_used) ? <span>Whoops 😬</span> : <span>You've been invited to join {teamName}!</span>}</h1>
         </header>
         <div className="page-body">
           {error === 'server-error'  && <p className="danger-text">There was a server error while attempting to accept the invite. If the problem persist please email <a href="mailto:support@goodchat.io">support@goodchat.io</a></p>}
           {(!invite.id || !team.id) && <p className="danger-text">This invite is invalid. Please reach out to your team admin to send a new invite. If the problem persist please email <a href="mailto:support@goodchat.io">support@goodchat.io</a></p>}
           {invite.is_used === true && <p className="danger-text">This invite is no longer valid. Please reach out to your team admin to send a new invite. If the problem persist please email <a href="mailto:support@goodchat.io">support@goodchat.io</a></p>}
           {!invite.is_used && invite.id && team.id && [
-          <p>Congratulations! You&rsquo;ve been invited to join <b>{team.name ? team.name : 'Untitled team'}</b>!</p>,
+          <p>Congratulations! You&rsquo;ve been invited to join <b>{teamName}</b>!</p>,
           this.getLoginView()
           ]}
         </div>

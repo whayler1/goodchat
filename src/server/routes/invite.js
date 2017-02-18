@@ -92,7 +92,10 @@ router.get('/invite/:invite_id', (req, res) => {
   const { invite_id } = req.params;
   console.log('\n\ninvite_id:', invite_id);
 
-  knex('invites').where({ id: invite_id })
+  knex('invites')
+  .select(['invites.*', 'users.family_name as host_family_name', 'users.given_name as host_given_name'])
+  .join('users', {'invites.host_id': 'users.id'})
+  .where({ id: invite_id })
   .first()
   .then(invite => {
     console.log('\n\ninvite', invite);
