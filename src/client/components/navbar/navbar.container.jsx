@@ -36,6 +36,9 @@ class Navbar extends Component {
         <nav className="header-nav">
           <div className="container">
             {(() => {
+              if (!isLoggedIn) {
+                return;
+              }
               if (shouldShowNav) {
                 return <button className="btn-no-style header-nav-mobile-ui"
                   onClick={this.props.hideNav}>

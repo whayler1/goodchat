@@ -95,11 +95,10 @@ router.get('/invite/:invite_id', (req, res) => {
   knex('invites')
   .select(['invites.*', 'users.family_name as host_family_name', 'users.given_name as host_given_name'])
   .join('users', {'invites.host_id': 'users.id'})
-  .where({ id: invite_id })
-  .first()
-  .then(invite => {
-    console.log('\n\ninvite', invite);
-    res.json({ invite });
+  .where({ 'invites.id': invite_id })
+  .then(invites => {
+    console.log('\n\ninvites', invites);
+    res.json({ invite: invites[0] });
   })
   .catch(err => res.sendStatus(500));
 });
