@@ -55,7 +55,6 @@ class InviteAccept extends Component {
         <p>Please login with Google to accept.</p>,
         <GoogleLogin
           clientId={googleClientId}
-          scope="profile"
           className="btn-primary-inverse btn-large invite-accept-login-btn"
           onSuccess={(res) => {
             console.log('wtf res:', res);

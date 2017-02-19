@@ -32,7 +32,6 @@ class Home extends Component {
           <p className="main-home-copy">A tool for managers to<br/><strong>make the most<br/>out of 1on1&rsquo;s</strong></p>
           {!isLoggedIn && <GoogleLogin
             clientId={googleClientId}
-            scope="profile"
             className="btn-inverse btn-inverse-google"
             onSuccess={this.props.setLoggedIn}
             onFailure={this.props.setLoggedIn}

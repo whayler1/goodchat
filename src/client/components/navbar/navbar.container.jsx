@@ -59,7 +59,6 @@ class Navbar extends Component {
             </Link>}
             {!this.props.isLoggedIn && <GoogleLogin
               clientId={googleClientId}
-              scope="profile"
               className="btn-no-style header-user-ui"
               buttonText="Login"
               onSuccess={this.props.setLoggedIn}
