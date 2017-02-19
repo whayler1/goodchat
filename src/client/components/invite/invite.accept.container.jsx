@@ -4,6 +4,8 @@ import GoogleLogin from 'react-google-login';
 import superagent from 'superagent';
 import Helmet from 'react-helmet';
 
+import { setLoggedIn } from '../user/user.dux.js';
+
 class InviteAccept extends Component {
   static propTypes = {
     invite: PropTypes.object,
@@ -41,7 +43,7 @@ class InviteAccept extends Component {
       return ([
         <p>You are logged in as <b>{email}</b>.</p>,
         <button
-          className="btn-primary-inverse btn-block"
+          className="btn-primary-inverse btn-large invite-accept-login-btn"
           type="button"
           onClick={this.onJoinClick}
         >
@@ -55,8 +57,10 @@ class InviteAccept extends Component {
           clientId={googleClientId}
           scope="profile"
           className="btn-primary-inverse btn-large invite-accept-login-btn"
-          onSuccess={this.props.setLoggedIn}
-          onFailure={this.props.setLoggedIn}
+          onSuccess={(res) => {
+            console.log('wtf res:', res);
+            this.props.setLoggedIn();
+          }}
         >
           <span>
             <svg style={{width: '30px', height: '30px', verticalAlign: 'top'}} viewBox="0 0 24 24">
@@ -99,5 +103,7 @@ export default connect(
     team: state.team.team,
     isLoggedIn: state.user.isLoggedIn,
     email: state.user.email
-  })
+  }), {
+    setLoggedIn
+  }
 )(InviteAccept);

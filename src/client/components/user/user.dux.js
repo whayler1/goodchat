@@ -16,25 +16,27 @@ const LOGOUT = 'user/logout';
 export const setLoggedIn = res => (dispatch) => {
   console.log('res:', res);
   // console.log('--', res.tokenId);
-  const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
-  superagent.post('auth/google')
-  .send({ idToken: res.tokenId })
-  .then(
-    res => {
-      const { id } = res.body;
-      console.log('got it', res)
-      dispatch({
-        type: SET_LOGGED_IN,
-        id,
-        email,
-        familyName,
-        givenName,
-        googleId,
-        imageUrl
-      });
-    },
-    err => alert('error with google auth on server')
-  )
+  if (!res.error) {
+    const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
+    superagent.post('auth/google')
+    .send({ idToken: res.tokenId })
+    .then(
+      res => {
+        const { id } = res.body;
+        console.log('got it', res)
+        dispatch({
+          type: SET_LOGGED_IN,
+          id,
+          email,
+          familyName,
+          givenName,
+          googleId,
+          imageUrl
+        });
+      },
+      err => alert('error with google auth on server')
+    );
+  }
 }
 
 export const logout = () => (dispatch) => superagent.get('auth/logout')
