@@ -58,10 +58,6 @@ class Navbar extends Component {
               Good Chat
             </Link>}
             {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
-            {!this.props.isLoggedIn && <GoogleLoginButton
-              googleClientId={window.googleClientId}
-              onSuccess={(res) => console.log('on GoogleLoginButton success', res)}
-            />}
           </div>
         </nav>
         {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}

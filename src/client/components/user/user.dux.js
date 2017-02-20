@@ -13,30 +13,24 @@ const defaultState = {
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
-export const setLoggedIn = res => (dispatch) => {
-  console.log('res:', res);
-  if (!res.error) {
-    const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
-    superagent.post('auth/google')
-    .send({ idToken: res.tokenId })
-    .then(
-      res => {
-        const { id } = res.body;
-        console.log('got it', res)
-        dispatch({
-          type: SET_LOGGED_IN,
-          id,
-          email,
-          familyName,
-          givenName,
-          googleId,
-          imageUrl
-        });
-      },
-      err => alert('error with google auth on server')
-    );
-  }
-}
+export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google')
+  .send({ idToken })
+  .then(
+    res => {
+      const { id, email, family_name, given_name, google_id, picture } = res.body;
+      console.log('got it', res.body)
+      dispatch({
+        type: SET_LOGGED_IN,
+        id,
+        email,
+        familyName: family_name,
+        givenName: given_name,
+        googleId: google_id,
+        imageUrl: picture
+      });
+    },
+    err => alert('error with google auth on server')
+  );
 
 export const logout = () => (dispatch) => superagent.get('auth/logout')
   .then(
