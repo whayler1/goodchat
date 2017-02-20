@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { setLoggedIn, login, logout } from '../user/user.dux';
 import { showNav, hideNav } from './navbar.dux';
 import { getTeams } from '../team/team.dux';
-import GoogleLoginButton from '../googleLoginButton/GoogleLoginButton.jsx'
 
 class Navbar extends Component {
   static propTypes = {
