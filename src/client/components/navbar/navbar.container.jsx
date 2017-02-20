@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import GoogleLogin from 'react-google-login';
 import { setLoggedIn } from '../user/user.dux';
 import { showNav, hideNav } from './navbar.dux';
 import { getTeams } from '../team/team.dux';
+import GoogleLoginButton from '../googleLoginButton/GoogleLoginButton.jsx'
 
 class Navbar extends Component {
   static propTypes = {
@@ -57,15 +57,11 @@ class Navbar extends Component {
               className="header-home-anchor">
               Good Chat
             </Link>}
-            {!this.props.isLoggedIn && <GoogleLogin
-              clientId={googleClientId}
-              className="btn-no-style header-user-ui"
-              buttonText="Login"
-              onSuccess={this.props.setLoggedIn}
-              onFailure={this.props.setLoggedIn}
-              autoLoad={true}
-            />}
             {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
+            {!this.props.isLoggedIn && <GoogleLoginButton
+              googleClientId={window.googleClientId}
+              onSuccess={(res) => console.log('on GoogleLoginButton success', res)}
+            />}
           </div>
         </nav>
         {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}

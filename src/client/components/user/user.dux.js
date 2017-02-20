@@ -15,7 +15,6 @@ const LOGOUT = 'user/logout';
 
 export const setLoggedIn = res => (dispatch) => {
   console.log('res:', res);
-  // console.log('--', res.tokenId);
   if (!res.error) {
     const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
     superagent.post('auth/google')
