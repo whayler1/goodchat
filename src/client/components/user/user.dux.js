@@ -13,6 +13,11 @@ const defaultState = {
 const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
+export const login = () => dispatch => window.gapi.auth2.getAuthInstance().signIn().then(
+  res => dispatch(setLoggedIn(res.getAuthResponse().id_token)),
+  err => console.log('login err:', err)
+)
+
 export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google')
   .send({ idToken })
   .then(
@@ -32,16 +37,17 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
     err => alert('error with google auth on server')
   );
 
-export const logout = () => (dispatch) => superagent.get('auth/logout')
-  .then(
-    res => {
-      console.log('logout success');
-      dispatch({
-        type: LOGOUT
-      });
-    },
-    err => console.log('logout fail')
-  )
+export const logout = () => dispatch => window.gapi.auth2.getAuthInstance().signOut().then(
+  res => superagent.get('auth/logout')
+    .then(
+      res => {
+        dispatch({
+          type: LOGOUT
+        });
+      },
+      err => console.log('logout fail')
+    )
+);
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
