@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import superagent from 'superagent';
 import Helmet from 'react-helmet';
 
-import { setLoggedIn } from '../user/user.dux.js';
+import { setLoggedIn, login } from '../user/user.dux.js';
 
 class InviteAccept extends Component {
   static propTypes = {
@@ -50,9 +50,18 @@ class InviteAccept extends Component {
         </button>
       ]);
     } else {
-      return (
-        <p>Please login with Google to accept.</p>
-      );
+      return ([
+        <p>Please login with Google to accept.</p>,
+        <button
+          type="button"
+          className="btn-primary-inverse btn-large invite-accept-login-btn"
+          onClick={this.props.login}
+        >
+          <svg style={{ width: '30px', height: '30px', verticalAlign: 'top' }} viewBox="0 0 24 24">
+              <path d="M23,11H21V9H19V11H17V13H19V15H21V13H23M8,11V13.4H12C11.8,14.4 10.8,16.4 8,16.4C5.6,16.4 3.7,14.4 3.7,12C3.7,9.6 5.6,7.6 8,7.6C9.4,7.6 10.3,8.2 10.8,8.7L12.7,6.9C11.5,5.7 9.9,5 8,5C4.1,5 1,8.1 1,12C1,15.9 4.1,19 8,19C12,19 14.7,16.2 14.7,12.2C14.7,11.7 14.7,11.4 14.6,11H8Z" />
+          </svg> Login with Google
+        </button>
+      ]);
     }
   }
   render() {
@@ -88,6 +97,7 @@ export default connect(
     isLoggedIn: state.user.isLoggedIn,
     email: state.user.email
   }), {
-    setLoggedIn
+    setLoggedIn,
+    login
   }
 )(InviteAccept);
