@@ -40,11 +40,7 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
 export const logout = () => dispatch => window.gapi.auth2.getAuthInstance().signOut().then(
   res => superagent.get('auth/logout')
     .then(
-      res => {
-        dispatch({
-          type: LOGOUT
-        });
-      },
+      res => dispatch({ type: LOGOUT }),
       err => console.log('logout fail')
     )
 );

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import { setLoggedIn, login, logout } from '../user/user.dux';
 import { showNav, hideNav } from './navbar.dux';
 import { getTeams } from '../team/team.dux';
@@ -23,7 +23,6 @@ class Navbar extends Component {
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.isLoggedIn !== this.props.isLoggedIn) {
       if (nextProps.isLoggedIn) {
-        console.log('getting teams from nav');
         this.props.getTeams()
       }
     }
@@ -32,6 +31,7 @@ class Navbar extends Component {
   onLogoutClick = () => {
     this.props.hideNav();
     this.props.logout();
+    hashHistory.push('/');
   }
 
   render() {
