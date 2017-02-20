@@ -12,12 +12,21 @@ class Home extends Component {
     showHeroLink: PropTypes.func.isRequired,
     hideHeroLink: PropTypes.func.isRequired
   }
-  componentWillMount() {
+
+  componentWillMount = () => {
     this.props.hideHeroLink();
   }
-  componentWillUnmount() {
+
+  componentWillUnmount = () => {
     this.props.showHeroLink();
   }
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.props.history.push('/teams');
+    }
+  }
+
   render() {
     const { isLoggedIn } = this.props;
     return (

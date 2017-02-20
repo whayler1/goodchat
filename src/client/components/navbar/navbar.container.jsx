@@ -56,9 +56,16 @@ class Navbar extends Component {
                 <i className="material-icons">menu</i>
               </button>;
             })()}
-            {shouldShowHeroLink &&
+            {shouldShowHeroLink && !isLoggedIn &&
             <Link
               to="/"
+              onClick={this.props.hideNav}
+              className="header-home-anchor">
+              Good Chat
+            </Link>}
+            {shouldShowHeroLink && isLoggedIn &&
+            <Link
+              to="/teams"
               onClick={this.props.hideNav}
               className="header-home-anchor">
               Good Chat
