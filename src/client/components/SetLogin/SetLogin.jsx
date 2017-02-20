@@ -20,6 +20,7 @@ export default class SetLogin extends Component {
         if (auth2.isSignedIn.get()) {
           this.props.onSuccess(auth2.currentUser.get().getAuthResponse().id_token);
         }
+        this.setState({ isLoginStateSet: true });
       });
     });
   }
@@ -27,7 +28,7 @@ export default class SetLogin extends Component {
   render() {
     return (
       <div>
-        {this.props.children}
+        {this.state.isLoginStateSet && this.props.children}
       </div>
     );
   }
