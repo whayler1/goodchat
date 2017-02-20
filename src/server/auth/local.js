@@ -26,11 +26,11 @@ const options = {};
 
 passport.use(new GoogleStrategy(function(token, profile, done) {
   console.log('\n\n google strategy profile:', profile, '\n\n');
-  knex('users').where({ google_id: profile.id }).first()
+  return knex('users').where({ google_id: profile.id }).first()
   .then(user => {
     if (!user) {
       console.log('\n\nnot user');
-      knex('users')
+      return knex('users')
       .insert({
         id: uuid.v1(),
         email: profile.email,
@@ -47,7 +47,7 @@ passport.use(new GoogleStrategy(function(token, profile, done) {
       .catch((err) => done(err));
     } else {
       console.log('\n\nthere is user', user);
-      knex('users').where({ google_id: profile.id })
+      return knex('users').where({ google_id: profile.id })
       .update({
         family_name: profile.familyName,
         given_name: profile.givenName,

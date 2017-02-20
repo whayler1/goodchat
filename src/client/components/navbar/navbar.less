@@ -5,6 +5,7 @@
   z-index: 10;
   background: white;
   border-bottom: 1px solid @bluegrey-50;
+  min-height: 42px;
 
   a,
   button {
@@ -34,9 +35,14 @@
   }
 }
 
+.header-nav-mobile-ui {
+  +.header-home-anchor {
+    margin-left: @half-gutter;
+  }
+}
+
 .header-home-anchor {
   display: inline-block;
-  margin-left: 10px;
   width: 79px;
   height: 20px;
   background: url(../../images/logo-menu-sprite.png) 0 0 no-repeat transparent;

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import GoogleLogin from 'react-google-login';
-import { setLoggedIn } from '../user/user.dux';
+import { setLoggedIn, login, logout } from '../user/user.dux';
 import { showNav, hideNav } from './navbar.dux';
 import { getTeams } from '../team/team.dux';
+import GoogleLoginButton from '../googleLoginButton/GoogleLoginButton.jsx'
 
 class Navbar extends Component {
   static propTypes = {
@@ -12,6 +12,8 @@ class Navbar extends Component {
     shouldShowNav: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     setLoggedIn: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     showNav: PropTypes.func.isRequired,
     hideNav: PropTypes.func.isRequired,
     givenName: PropTypes.string,
@@ -28,6 +30,11 @@ class Navbar extends Component {
     }
   }
 
+  onLogoutClick = () => {
+    this.props.hideNav();
+    this.props.logout();
+  }
+
   render() {
     const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName, teams } = this.props;
     const teamsForNav = teams.map(team => ({ title: team.name || 'Untitled team', to: `/teams/${team.id}`, isSecondary: true }));
@@ -36,6 +43,9 @@ class Navbar extends Component {
         <nav className="header-nav">
           <div className="container">
             {(() => {
+              if (!isLoggedIn) {
+                return;
+              }
               if (shouldShowNav) {
                 return <button className="btn-no-style header-nav-mobile-ui"
                   onClick={this.props.hideNav}>
@@ -54,16 +64,8 @@ class Navbar extends Component {
               className="header-home-anchor">
               Good Chat
             </Link>}
-            {!this.props.isLoggedIn && <GoogleLogin
-              clientId={googleClientId}
-              scope="profile"
-              className="btn-no-style header-user-ui"
-              buttonText="Login"
-              onSuccess={this.props.setLoggedIn}
-              onFailure={this.props.setLoggedIn}
-              autoLoad={true}
-            />}
             {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
+            {!this.props.isLoggedIn && <button className="btn-no-style header-user-ui" onClick={this.props.login}>Login</button>}
           </div>
         </nav>
         {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}
@@ -79,10 +81,22 @@ class Navbar extends Component {
             </li>)}
           </ul>}
           <ul className="footer-btn-list">
+            {isLoggedIn &&
             <li>
-              <button className="btn-primary-inverse btn-block"
+              <button
+                className="btn-secondary btn-block"
                 type="button"
-                onClick={this.props.hideNav}>
+                onClick={this.onLogoutClick}
+              >
+                Logout
+              </button>
+            </li>}
+            <li>
+              <button
+                className="btn-primary-inverse btn-block"
+                type="button"
+                onClick={this.props.hideNav}
+              >
                 Close
               </button>
             </li>
@@ -103,6 +117,8 @@ export default connect(
   }),
   {
     setLoggedIn,
+    login,
+    logout,
     showNav,
     hideNav,
     getTeams

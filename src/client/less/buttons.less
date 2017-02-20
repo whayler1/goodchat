@@ -12,6 +12,11 @@
   }
 }
 
+.btn-large {
+  font-size: 1.5em;
+  padding: 16px 36px;
+}
+
 .btn-block {
   display: block;
   width: 100%;
@@ -110,18 +115,37 @@ a.btn-block {
   }
 }
 
+.btn-primary {
+  border: 1px solid @link-color;
+  background: @link-color;
+  color: white;
+
+  &:hover,
+  &:focus {
+    border-color: @link-color-hover;
+    background-color: @link-color-hover;
+  }
+  &:active {
+    border-color: @link-color-active;
+    background: @link-color-active;
+  }
+}
+
 .btn-primary-inverse {
   border: 1px solid @link-color;
   color: @link-color;
   background: transparent;
+  fill: @link-color;
 
   &:hover,
   &:focus {
     border-color: @link-color-hover;
     color: @link-color-hover;
+    fill: @link-color-hover;
   }
   &:active {
     border-color: @link-color-active;
     color: @link-color-active;
+    fill: @link-color-active;
   }
 }

@@ -52,7 +52,6 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-facebook-login": "^3.4.1",
-    "react-google-login": "^2.5.8",
     "react-helmet": "^3.2.2",
     "react-input-autosize": "^1.1.0",
     "react-redux": "^4.4.5",
