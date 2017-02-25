@@ -22,8 +22,8 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
   .send({ idToken })
   .then(
     res => {
+      console.log('got it', res.body);
       const { id, email, family_name, given_name, google_id, picture } = res.body;
-      console.log('got it', res.body)
       dispatch({
         type: SET_LOGGED_IN,
         id,

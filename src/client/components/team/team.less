@@ -1,6 +1,6 @@
 .pending-invite-list {
   margin-top: @gutter;
-  
+
   li {
     position: relative;
   }
@@ -145,6 +145,79 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.team-set-name-label {
+  display: block;
+  font-size: 1.6rem;
+  color: @bluegrey-600;
+  margin-top: @gutter;
+  margin-bottom: @gutter;
+
+  @media( min-width: @tablet-width ) {
+    margin-top: @gutter * 2;
+    font-size: 2.5rem;
+  }
+}
+
+.team-set-name-input {
+  max-width: 100%;
+  
+  >input {
+    border-bottom: 2px solid @bluegrey-400;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    color: @bluegrey-400;
+    font-size: 1.3rem;
+    font-weight: 300;
+    background: transparent;
+    padding: 12px 0;
+    text-align: center;
+    min-width: 200px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+
+    &::input-placeholder {
+      color: @cyan-a400;
+    }
+    &::-webkit-input-placeholder {
+      color: @cyan-a400;
+    }
+
+    @media( min-width: @tablet-width ) {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+@keyframes team-set-name-submit {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  } 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.team-set-name-submit {
+  margin-top: @gutter * 3;
+  animation: team-set-name-submit .5s;
+  color: @link-color;
+  font-weight: 300;
+
+  &:hover,
+  &:focus {
+    color: @link-color-hover;
+  }
+  &:active {
+    color: @link-color-active;
+  }
+}
+
+.main-team-set-name {
+  text-align: center;
 }
 
 .main-team {
