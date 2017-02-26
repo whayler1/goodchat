@@ -21,3 +21,8 @@ server forked from [node passport postgres](http://mherman.org/blog/2016/09/25/n
 1. Start the node server `npm start`
 1. -- If you want to recompile front end on changes run `webpack --watch`
 1. Go to http://localhost:3000
+
+## Deployment
+1. Install the Heroku cli tools `brew install heroku`
+1. Deploy to Heroku - `git push heroku master`
+1. Run any required migrations - `heroku run knex migrate:latest`
