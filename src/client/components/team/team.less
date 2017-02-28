@@ -162,7 +162,7 @@
 
 .team-set-name-input {
   max-width: 100%;
-  
+
   >input {
     border-bottom: 2px solid @bluegrey-400;
     border-left: 0;
@@ -202,10 +202,14 @@
 }
 
 .team-set-name-submit {
-  margin-top: @gutter * 3;
+  margin-top: @gutter * 2;
   animation: team-set-name-submit .5s;
   color: @link-color;
   font-weight: 300;
+
+  .main-team-set-questions & {
+    animation: none;
+  }
 
   &:hover,
   &:focus {
@@ -213,6 +217,10 @@
   }
   &:active {
     color: @link-color-active;
+  }
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter * 3;
   }
 }
 
@@ -237,5 +245,81 @@
         padding: 0 0 0 @half-gutter;
       }
     }
+  }
+}
+
+.main-team-set-questions {
+  margin-top: @gutter;
+  margin-bottom: @gutter * 2;
+  text-align: center;
+
+  >.container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-control {
+    background: transparent;
+  }
+
+  .dropdown-list {
+    text-align: left;
+  }
+
+  h1 {
+    color: @bluegrey-600;
+    line-height: 1.3em;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
+
+  @media( min-width: @tablet-width ) {
+    margin-top: @gutter * 3;
+    margin-bottom: @gutter * 3;
+
+    .form-control {
+      font-size: 1.3em;
+    }
+    .input-group-addon {
+      font-size: 1.3em;
+    }
+    .dropdown-list {
+      a {
+        font-size: 1.3em;
+      }
+    }
+
+    h1 {
+      font-size: 3em;
+    }
+
+    p {
+      font-size: 1.5em;
+    }
+  }
+}
+
+p.main-team-set-questions-footnote {
+  font-size: 0.9rem;
+  margin-bottom: @gutter * 2;
+
+  @media(min-width: @tablet-width) {
+    font-size: 1rem;
+    margin-bottom: @gutter * 3;
+  }
+}
+
+.btn-team-skip {
+  margin-top: @gutter * 2;
+  color: lighten(@body-color, 10%);
+  &:hover,
+  &:focus {
+    color: @body-color-hover;
+  }
+  &:active {
+    color: @body-color-active;
   }
 }

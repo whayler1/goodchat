@@ -87,6 +87,7 @@ class Team extends Component {
           return console.log('%cerr putting team', 'background:pink', res);
         }
         console.log('%csuccess updating team!', 'background:yellowgreen', res);
+        this.props.setTeam(res.body.team);
       });
   }, 750);
 
@@ -141,6 +142,113 @@ class Team extends Component {
     elRef: null
   });
 
+  areQuestionsSet = () => [
+    this.props.team.question1,
+    this.props.team.question2,
+    this.props.team.question3,
+    this.props.team.question4,
+    this.props.team.question5
+  ].every(question => question !== null)
+
+  getQuestionsForm = shouldHavSubmit => {
+    const {
+      question1,
+      question2,
+      question3,
+      question4,
+      question5
+    } = this.props;
+    const questionValues = [
+      question1,
+      question2,
+      question3,
+      question4,
+      question5
+    ];
+
+    return (
+      <form
+        id="team-questions"
+        name="team-questions"
+        className="form"
+        onSubmit={this.onQuestionFormSubmit}
+      >
+        {questionValues.map((question, index) => {
+          const qId = `question${index + 1}`;
+          const elRef = `${qId}El`;
+          const stateName = `isQuestion${index + 1}DropdownVisible`;
+          const onDropdownToggle = () => {
+            const isVisible = this.state[stateName];
+            if (!isVisible) {
+              this.setState({
+                [stateName]: true,
+                elRef: this[elRef]
+              });
+            } else {
+              this.closeDropdowns();
+            }
+          };
+          return (
+            <fieldset>
+              <div className="input-group" ref={el => this[elRef] = el}>
+                <input
+                  id={qId}
+                  name={qId}
+                  type="text"
+                  className="form-control"
+                  value={this.state[qId]}
+                  onChange={this.onQuestionChange}
+                />
+              <span className="input-group-addon input-group-addon-divided">
+                  <button
+                    type="button"
+                    className="btn-no-style"
+                    onClick={onDropdownToggle}
+                  >
+                    <i className="material-icons">keyboard_arrow_down</i>
+                  </button>
+                </span>
+                <div className={`dropdown-container${this.state[stateName] ? ' dropdown-container-show' : ''}`}>
+                  <div className="dropdown">
+                    <ul className="dropdown-list">
+                      {questionDefaults[index].map((question, innerIndex) => {
+                        const onDropdownItemClick = () => this.setState({
+                          [qId]: question,
+                          isQuestion1DropdownVisible: false,
+                          isQuestion2DropdownVisible: false,
+                          isQuestion3DropdownVisible: false,
+                          isQuestion4DropdownVisible: false,
+                          isQuestion5DropdownVisible: false,
+                          elRef: null
+                        }, this.questionFormSubmit);
+                        return (
+                          <li key={`${index}${innerIndex}`}>
+                            <a onClick={onDropdownItemClick}>
+                              {question}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          )
+        })}
+        {shouldHavSubmit &&
+        <fieldset>
+          <button
+            type="submit"
+            className="btn-no-style btn-large team-set-name-submit"
+          >
+            Save questions <i className="material-icons">add_circle_outline</i>
+          </button>
+        </fieldset>}
+      </form>
+    );
+  }
+
   componentWillReceiveProps = nextProps => {
     const { team } = nextProps;
 
@@ -165,20 +273,8 @@ class Team extends Component {
   render = () => {
     const {
       team,
-      members,
-      question1,
-      question2,
-      question3,
-      question4,
-      question5
+      members
     } = this.props;
-    const questionValues = [
-      question1,
-      question2,
-      question3,
-      question4,
-      question5
-    ];
     const { is_owner, is_admin, id } = this.props.team;
     const { isNameSet } = this.state;
 
@@ -214,6 +310,24 @@ class Team extends Component {
           </div>
         </main>
       );
+    } else if ((is_owner || is_admin) && !this.areQuestionsSet()) {
+      return (
+        <main className="main main-team-set-questions" role="main">
+          <div className="container">
+            <h1 className="vanity-font">Questions</h1>
+            <p>What do you want to ask members of <b>{this.state.name}</b>{'?'}</p>
+            <p className="main-team-set-questions-footnote">Don't worry, you can continue to update these as your team evolves!</p>
+            {this.getQuestionsForm(true)}
+            <button
+              type="button"
+              className="btn-no-style btn-team-skip"
+              onClick={this.questionFormSubmit}
+            >
+              Skip
+            </button>
+          </div>
+        </main>
+      );
     } else {
       return (
         <div>
@@ -229,76 +343,7 @@ class Team extends Component {
                     <h3>Questions</h3>
                   </header>
                   <div className="card-padded-content">
-                    <form
-                      id="team-questions"
-                      name="team-questions"
-                      className="form"
-                      onSubmit={this.onQuestionFormSubmit}
-                    >
-                      {questionValues.map((question, index) => {
-                        const qId = `question${index + 1}`;
-                        const elRef = `${qId}El`;
-                        const stateName = `isQuestion${index + 1}DropdownVisible`;
-                        const onDropdownToggle = () => {
-                          const isVisible = this.state[stateName];
-                          if (!isVisible) {
-                            this.setState({
-                              [stateName]: true,
-                              elRef: this[elRef]
-                            });
-                          } else {
-                            this.closeDropdowns();
-                          }
-                        };
-                        return (
-                          <fieldset>
-                            <div className="input-group" ref={el => this[elRef] = el}>
-                              <input
-                                id={qId}
-                                name={qId}
-                                type="text"
-                                className="form-control"
-                                value={this.state[qId]}
-                                onChange={this.onQuestionChange}
-                              />
-                            <span className="input-group-addon input-group-addon-divided">
-                                <button
-                                  type="button"
-                                  className="btn-no-style"
-                                  onClick={onDropdownToggle}
-                                >
-                                  <i className="material-icons">keyboard_arrow_down</i>
-                                </button>
-                              </span>
-                              <div className={`dropdown-container${this.state[stateName] ? ' dropdown-container-show' : ''}`}>
-                                <div className="dropdown">
-                                  <ul className="dropdown-list">
-                                    {questionDefaults[index].map((question, innerIndex) => {
-                                      const onDropdownItemClick = () => this.setState({
-                                        [qId]: question,
-                                        isQuestion1DropdownVisible: false,
-                                        isQuestion2DropdownVisible: false,
-                                        isQuestion3DropdownVisible: false,
-                                        isQuestion4DropdownVisible: false,
-                                        isQuestion5DropdownVisible: false,
-                                        elRef: null
-                                      }, this.questionFormSubmit);
-                                      return (
-                                        <li key={`${index}${innerIndex}`}>
-                                          <a onClick={onDropdownItemClick}>
-                                            {question}
-                                          </a>
-                                        </li>
-                                      );
-                                    })}
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </fieldset>
-                        )
-                      })}
-                    </form>
+                    {this.getQuestionsForm()}
                   </div>
                 </section>
               </div>
@@ -353,7 +398,7 @@ export default connect(
   state => {
     return {
       team: state.team.team,
-      members: state.team.members.filter(member => member.id !== state.user.id),
+      members: state.team.members.filter(member => member.id !== state.user.id)
     };
   },
   {
