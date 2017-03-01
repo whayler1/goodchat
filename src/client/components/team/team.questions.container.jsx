@@ -69,15 +69,28 @@ class TeamQuestions extends Component {
       });
   }, 750);
 
+  singleQuestionSubmit = _.debounce((question) => {
+    console.log('question', question);
+    superagent.put(`team/${this.props.team.id}`)
+      .send({ [question]: this.state[question] })
+      .end((err, res) => {
+        if (err) {
+          return console.log('%cerr putting team', 'background:pink', res);
+        }
+        console.log('%csuccess updating team!', 'background:yellowgreen', res);
+        this.props.setTeam(res.body.team);
+      });
+  }, 750);
+
   onQuestionFormSubmit = e => {
     e.preventDefault();
-
-    this.questionFormSubmit();
-
     return false;
   }
 
-  onQuestionChange = e => this.setState({ [e.target.name]: e.target.value }, this.questionFormSubmit);
+  onQuestionChange = e => {
+    const { name } = e.target;
+    this.setState({ [name]: e.target.value }, () => this.singleQuestionSubmit(name));
+  };
 
   onBodyClick = e => {
     const { elRef } = this.state;
@@ -186,7 +199,7 @@ class TeamQuestions extends Component {
                           isQuestion4DropdownVisible: false,
                           isQuestion5DropdownVisible: false,
                           elRef: null
-                        }, this.questionFormSubmit);
+                        }, () => this.singleQuestionSubmit(qId));
                         return (
                           <li key={`${index}${innerIndex}`}>
                             <a onClick={onDropdownItemClick}>
@@ -202,15 +215,25 @@ class TeamQuestions extends Component {
             </fieldset>
           )
         })}
-        {shouldHaveSubmit &&
+        {shouldHaveSubmit && [
         <fieldset>
           <button
-            type="submit"
+            type="button"
             className="btn-no-style btn-large team-set-name-submit"
+            onClick={this.questionFormSubmit}
           >
             Save questions <i className="material-icons">add_circle_outline</i>
           </button>
-        </fieldset>}
+        </fieldset>,
+        <fieldset>
+          <button
+            type="button"
+            className="btn-no-style btn-team-skip"
+            onClick={this.questionFormSubmit}
+          >
+            Skip
+          </button>
+        </fieldset>]}
       </form>
     );
   }
@@ -218,7 +241,5 @@ class TeamQuestions extends Component {
 
 export default connect(
   null,
-  {
-    setTeam
-  }
+  { setTeam }
 )(TeamQuestions);

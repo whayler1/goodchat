@@ -134,13 +134,6 @@ class Team extends Component {
               shouldHaveSubmit={true}
               team={team}
             />
-            <button
-              type="button"
-              className="btn-no-style btn-team-skip"
-              onClick={this.questionFormSubmit}
-            >
-              Skip
-            </button>
           </div>
         </main>
       );
