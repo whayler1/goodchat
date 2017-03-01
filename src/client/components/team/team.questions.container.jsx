@@ -89,7 +89,7 @@ class TeamQuestions extends Component {
 
   onQuestionChange = e => {
     const { name } = e.target;
-    this.setState({ [name]: e.target.value }, () => this.singleQuestionSubmit(name));
+    this.setState({ [name]: e.target.value }, () => !this.props.shouldHaveSubmit && this.singleQuestionSubmit(name));
   };
 
   onBodyClick = e => {
