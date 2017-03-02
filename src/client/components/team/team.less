@@ -229,20 +229,23 @@
 }
 
 .main-team {
-  .col {
-    +.col {
-      padding-top: @gutter;
+  margin-top: @gutter * 2;
+  >.container {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    h1 {
+      text-align: center;
+
+      @media(min-width: @tablet-width) {
+        font-size: 2.5em;
+        color: @bluegrey-600;
+      }
     }
-
-    @media(min-width: @tablet-width) {
-      box-sizing: border-box;
-      vertical-align: top;
-      display: inline-block;
-      width: 50%;
-      padding-right: @half-gutter;
-
-      +.col {
-        padding: 0 0 0 @half-gutter;
+    p {
+      text-align: center;
+      @media(min-width: @tablet-width) {
+        font-size: 1.3em;
       }
     }
   }
@@ -257,6 +260,7 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
   }
 
   .form-control {
