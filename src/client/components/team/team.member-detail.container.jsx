@@ -118,7 +118,7 @@ class TeamMemberDetail extends Component {
 
     return (
       <Modal closeFunc={this.modalCloseFunc}>
-        <Helmet title={`Meetings with ${this.props.givenName} ${this.props.familyName}`} />
+        <Helmet title={`Meetings with ${member.given_name} ${member.family_name}`} />
         <section className="card">
           <header className="card-header">
             <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>

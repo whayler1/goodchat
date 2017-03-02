@@ -150,9 +150,9 @@ class Team extends Component {
           <div className="container">
             <h1>{this.state.name}</h1>
             {(is_owner || is_admin) && members.length < 1 &&
-            <p>This team has no members. Click below to invite team members.</p>}
+            <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>}
             {members.length > 0 &&
-            <ul className="card-body-list">
+            <ul className="team-member-list">
               {members.map(member => <li key={member.id}>
                 <TeamMemberListItem
                   givenName={member.given_name}
@@ -161,6 +161,7 @@ class Team extends Component {
                   picture={member.picture}
                   id={member.id}
                   teamId={team.id}
+                  nextMeetingDate={member.next_meeting_date}
                 />
               </li>)}
             </ul>}
@@ -168,13 +169,13 @@ class Team extends Component {
               <ul className="card-footer-btn-list">
                 {(is_owner || is_admin) &&
                 <li>
-                  <Link className="btn-secondary btn-block" to={`teams/${id}/invite`}>
+                  <Link className="btn-no-style btn-no-style-primary btn-large btn-block" to={`teams/${id}/invite`}>
                     Invite team members <i className="material-icons">person_add</i>
                   </Link>
                 </li>}
                 {is_owner &&
                 <li>
-                  <button className="btn-secondary btn-block" type="button" onClick={this.onDeleteClick}>
+                  <button className="btn-no-style btn-no-style-secondary btn-block" type="button" onClick={this.onDeleteClick}>
                     Delete this team <i className="material-icons">delete</i>
                   </button>
                 </li>}

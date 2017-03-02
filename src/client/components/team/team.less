@@ -1,7 +1,8 @@
 .pending-invite-list {
   margin-top: @gutter;
 
-  li {
+  >li {
+    padding: @gutter 0;
     position: relative;
   }
 }
@@ -32,7 +33,7 @@
 
     >a {
       display: block;
-      padding: @gutter;
+      padding: @gutter 0;
       color: @body-color;
 
       &:hover,
@@ -42,16 +43,21 @@
       &:active {
         color: @body-color-active;
       }
+
+      @media(min-width: @tablet-width) {
+        font-size: 1.3em;
+      }
     }
   }
 }
 
 @team-member-ui-image-size: 40px;
+@team-member-ui-image-size-tablet: 50px;
 
 .team-member-ui-image {
   position: absolute;
   top: @gutter;
-  left: @half-gutter;
+  left: 0;
   width: @team-member-ui-image-size;
   height: @team-member-ui-image-size;
   border-radius: @team-member-ui-image-size;
@@ -60,12 +66,18 @@
   background-repeat: no-repeat;
 
   @media(min-width: @tablet-width) {
-    left: @gutter;
+    width: @team-member-ui-image-size-tablet;
+    height: @team-member-ui-image-size-tablet;
+    border-radius: @team-member-ui-image-size-tablet;
   }
 }
 
 .team-member-ui-content {
   margin-left: @team-member-ui-image-size + @gutter;
+
+  @media(min-width: @tablet-width) {
+    margin-left: @team-member-ui-image-size-tablet + @gutter;
+  }
 }
 
 .team-member-ui-wrapper {

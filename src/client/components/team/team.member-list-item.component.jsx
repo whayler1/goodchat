@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 export default function TeamMemberListItem({
   givenName,
@@ -7,7 +8,8 @@ export default function TeamMemberListItem({
   email,
   picture,
   id,
-  teamId
+  teamId,
+  nextMeetingDate
 }) {
   return (
     <Link to={`teams/${teamId}/members/${id}`}>
@@ -17,6 +19,10 @@ export default function TeamMemberListItem({
       <div className="team-member-ui-content">
         <div>{givenName} {familyName}</div>
         <div>{email}</div>
+        {nextMeetingDate &&
+        <div>
+          {moment(nextMeetingDate).fromNow()}
+        </div>}
       </div>
     </Link>
   );
