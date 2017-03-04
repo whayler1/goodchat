@@ -172,6 +172,7 @@ class TeamInvite extends Component {
                   maxLength={50}
                   value={this.state.email}
                   autoComplete="off"
+                  autoFocus
                   onChange={this.onChange}
                 />
                 {emailError &&

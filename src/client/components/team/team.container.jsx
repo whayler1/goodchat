@@ -193,7 +193,17 @@ export default connect(
   state => {
     return {
       team: state.team.team,
-      members: state.team.members.filter(member => member.id !== state.user.id)
+      members: state.team.members.filter(member => member.id !== state.user.id).sort((a, b) => {
+        const nextMeetingA = a.next_meeting_date || '';
+        const nextMeetingB = b.next_meeting_date || '';
+        if (nextMeetingA < nextMeetingB) {
+          return -1;
+        }
+        if (nextMeetingA > nextMeetingB) {
+          return 1;
+        }
+        return 0;
+      })
     };
   },
   {
