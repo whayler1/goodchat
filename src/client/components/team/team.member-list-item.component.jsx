@@ -19,10 +19,17 @@ export default function TeamMemberListItem({
       <div className="team-member-ui-content">
         <div>{givenName} {familyName}</div>
         <div>{email}</div>
-        {nextMeetingDate &&
-        <div>
-          {moment(nextMeetingDate).fromNow()}
-        </div>}
+        <div className="team-member-ui-content-info">
+          {(() => {
+            if (nextMeetingDate) {
+              console.log('has next meeting');
+              return <span><i className="material-icons">timer</i> {moment(nextMeetingDate).fromNow(true)}</span>;
+            } else {
+              console.log('-- does not has next mtg');
+              return <i className="material-icons">timer_off</i>;
+            }
+          })()}
+        </div>
       </div>
     </Link>
   );

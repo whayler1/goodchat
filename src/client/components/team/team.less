@@ -20,7 +20,7 @@
 
 .team-member-list {
   padding: 0;
-  margin: 0;
+  margin: @gutter * 2 0 0;
 
   >li {
     position: relative;
@@ -46,6 +46,18 @@
 
       @media(min-width: @tablet-width) {
         font-size: 1.3em;
+      }
+
+      &.btn-no-style-primary {
+        color: @link-color;
+
+        &:hover,
+        &:focus {
+          color: @link-color-hover;
+        }
+        &:active {
+          color: @link-color-active;
+        }
       }
     }
   }
@@ -338,4 +350,11 @@ p.main-team-set-questions-footnote {
   &:active {
     color: @body-color-active;
   }
+}
+
+.team-member-ui-content-info {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
 }

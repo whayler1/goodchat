@@ -164,15 +164,14 @@ class Team extends Component {
                   nextMeetingDate={member.next_meeting_date}
                 />
               </li>)}
+              {(is_owner || is_admin) &&
+              <li>
+                <Link className="btn-no-style btn-no-style-primary btn-large btn-block" to={`teams/${id}/invite`}>
+                  Invite team members <i className="material-icons">person_add</i>
+                </Link>
+              </li>}
             </ul>}
-            <footer className="card-padded-content">
               <ul className="card-footer-btn-list">
-                {(is_owner || is_admin) &&
-                <li>
-                  <Link className="btn-no-style btn-no-style-primary btn-large btn-block" to={`teams/${id}/invite`}>
-                    Invite team members <i className="material-icons">person_add</i>
-                  </Link>
-                </li>}
                 {is_owner &&
                 <li>
                   <button className="btn-no-style btn-no-style-secondary btn-block" type="button" onClick={this.onDeleteClick}>
@@ -180,7 +179,6 @@ class Team extends Component {
                   </button>
                 </li>}
               </ul>
-            </footer>
           </div>
           {this.props.children}
         </main>
