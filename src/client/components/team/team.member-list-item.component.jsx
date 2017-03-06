@@ -17,13 +17,13 @@ export default function TeamMemberListItem({
         style={{backgroundImage: `url(${picture})`}}
       ></div>
       <div className="team-member-ui-content">
-        <div>{givenName} {familyName}</div>
+        <div className="team-member-ui-content-name">{givenName} {familyName}</div>
         <div>{email}</div>
         <div className="team-member-ui-content-info">
           {(() => {
             if (nextMeetingDate) {
               console.log('has next meeting');
-              return <span><i className="material-icons">timer</i> {moment(nextMeetingDate).fromNow(true)}</span>;
+              return <span>{moment(nextMeetingDate).fromNow(true)} <i className="material-icons">timer</i></span>;
             } else {
               console.log('-- does not has next mtg');
               return <i className="material-icons">timer_off</i>;

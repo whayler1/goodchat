@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import superagent from 'superagent';
 import TeamMemberListItem from './team.member-list-item.component.jsx';
 import TeamQuestions from './team.questions.container.jsx';
+import Dropdown from '../dropdown/dropdown.component.jsx';
 import { setTeam } from './team.dux.js';
 
 import TeamHeader from './team.header.container.jsx';
@@ -29,6 +30,18 @@ class Team extends Component {
     isNameSet: team.name ? true : false,
     isInFlight: false
   });
+
+  getDropdownContent = () => {
+    return (
+      <ul className="dropdown-list">
+        <li>
+          <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+            Delete this team <i className="material-icons">delete</i>
+          </button>
+        </li>
+      </ul>
+    );
+  };
 
   onDeleteClick = () => {
     superagent.delete(`team/${this.props.params.teamId}`)
@@ -148,7 +161,16 @@ class Team extends Component {
             title={this.state.name}
           />
           <div className="container">
-            <h1>{this.state.name}</h1>
+            <div className="main-team-header">
+              <h1>{this.state.name}</h1>
+              {is_owner &&
+              <Dropdown
+                label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
+                content={this.getDropdownContent()}
+                isRightAligned={true}
+              />}
+            </div>
+
             {(is_owner || is_admin) && members.length < 1 &&
             <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>}
             {members.length > 0 &&
@@ -164,21 +186,11 @@ class Team extends Component {
                   nextMeetingDate={member.next_meeting_date}
                 />
               </li>)}
-              {(is_owner || is_admin) &&
-              <li>
-                <Link className="btn-no-style btn-no-style-primary btn-large btn-block" to={`teams/${id}/invite`}>
-                  Invite team members <i className="material-icons">person_add</i>
-                </Link>
-              </li>}
             </ul>}
-              <ul className="card-footer-btn-list">
-                {is_owner &&
-                <li>
-                  <button className="btn-no-style btn-no-style-secondary btn-block" type="button" onClick={this.onDeleteClick}>
-                    Delete this team <i className="material-icons">delete</i>
-                  </button>
-                </li>}
-              </ul>
+            {(is_owner || is_admin) &&
+            <Link className="btn-no-style btn-no-style-primary btn-block btn-team-invite" to={`teams/${id}/invite`}>
+              Invite team members <i className="material-icons">person_add</i>
+            </Link>}
           </div>
           {this.props.children}
         </main>

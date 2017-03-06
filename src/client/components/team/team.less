@@ -20,7 +20,11 @@
 
 .team-member-list {
   padding: 0;
-  margin: @gutter * 2 0 0;
+  margin: @gutter 0 0;
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter;
+  }
 
   >li {
     position: relative;
@@ -46,18 +50,6 @@
 
       @media(min-width: @tablet-width) {
         font-size: 1.3em;
-      }
-
-      &.btn-no-style-primary {
-        color: @link-color;
-
-        &:hover,
-        &:focus {
-          color: @link-color-hover;
-        }
-        &:active {
-          color: @link-color-active;
-        }
       }
     }
   }
@@ -89,6 +81,18 @@
 
   @media(min-width: @tablet-width) {
     margin-left: @team-member-ui-image-size-tablet + @gutter;
+  }
+}
+
+.team-member-ui-content-name {
+  color: @bluegrey-600;
+
+  a:hover &,
+  a:focus & {
+    color: darken(@bluegrey-600, 10%);
+  }
+  a:active & {
+    color: darken(@bluegrey-600, 15%);
   }
 }
 
@@ -259,7 +263,9 @@
     margin-left: auto;
     margin-right: auto;
     h1 {
+      display: inline-block;
       text-align: center;
+      vertical-align: middle;
 
       @media(min-width: @tablet-width) {
         font-size: 2.5em;
@@ -272,6 +278,27 @@
         font-size: 1.3em;
       }
     }
+  }
+}
+
+.main-team-header {
+  text-align: center;
+}
+
+.btn-main-team-more {
+  padding: 0;
+  margin-left: @gutter;
+  border: 1px solid @bluegrey-100;
+  color: @bluegrey-400;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  background: transparent;
+  border-radius: 30px;
+  vertical-align: middle;
+
+  >i {
+    line-height: 30px;
   }
 }
 
@@ -357,4 +384,22 @@ p.main-team-set-questions-footnote {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+  color: mix(@black-squeeze, @bluegrey-400, 20%);
+
+  a:hover &,
+  a:focus & {
+    color: mix(@black-squeeze, @bluegrey-400, 10%);
+  }
+  a:active & {
+    color: mix(@black-squeeze, @bluegrey-400, 5%);
+  }
+}
+
+.btn-team-invite {
+  margin-top: @gutter;
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter * 2;
+    font-size: 1.3em;
+  }
 }
