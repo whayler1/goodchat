@@ -44,14 +44,16 @@ class Team extends Component {
   };
 
   onDeleteClick = () => {
-    superagent.delete(`team/${this.props.params.teamId}`)
-    .then(
-      res => {
-        console.log('delete success', res);
-        this.props.history.push(`teams`);
-      },
-      err => console.log('error deleting team', err)
-    );
+    if (window.confirm(`Are you sure you want to delete ${this.state.name}? This can not be undone.`)) {
+      superagent.delete(`team/${this.props.params.teamId}`)
+      .then(
+        res => {
+          console.log('delete success', res);
+          this.props.history.push(`teams`);
+        },
+        err => console.log('error deleting team', err)
+      );
+    }
   }
 
   onNameSubmit = e => {
@@ -103,6 +105,8 @@ class Team extends Component {
     } = this.props;
     const { is_owner, is_admin, id } = this.props.team;
     const { isNameSet } = this.state;
+    const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
+    const upcomingMembers = members.filter(member => 'next_meeting_date' in member);
 
     console.log('members:', members);
     if (!isNameSet) {
@@ -170,10 +174,13 @@ class Team extends Component {
                 isRightAligned={true}
               />}
             </div>
+          </div>
+          <div className="main-team-container">
 
             {(is_owner || is_admin) && members.length < 1 &&
             <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>}
-            {members.length > 0 &&
+            {members.length > 0 && [
+            <h3 className="team-member-list-title vanity-font">Meetings</h3>,
             <ul className="team-member-list">
               {members.map(member => <li key={member.id}>
                 <TeamMemberListItem
@@ -186,7 +193,7 @@ class Team extends Component {
                   nextMeetingDate={member.next_meeting_date}
                 />
               </li>)}
-            </ul>}
+            </ul>]}
             {(is_owner || is_admin) &&
             <Link className="btn-no-style btn-no-style-primary btn-block btn-team-invite" to={`teams/${id}/invite`}>
               Invite team members <i className="material-icons">person_add</i>
