@@ -1,7 +1,8 @@
 .pending-invite-list {
   margin-top: @gutter;
 
-  li {
+  >li {
+    padding: @gutter 0;
     position: relative;
   }
 }
@@ -17,9 +18,25 @@
   }
 }
 
+.team-member-list-title {
+  text-align: center;
+  color: @bluegrey-600;
+  margin-top: @gutter * 2;
+  font-size: 2rem;
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter * 3;
+    font-size: 2.5rem;
+  }
+}
+
 .team-member-list {
   padding: 0;
-  margin: 0;
+  margin: @gutter 0 0;
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter;
+  }
 
   >li {
     position: relative;
@@ -32,7 +49,7 @@
 
     >a {
       display: block;
-      padding: @gutter;
+      padding: @gutter 0;
       color: @body-color;
 
       &:hover,
@@ -42,16 +59,21 @@
       &:active {
         color: @body-color-active;
       }
+
+      @media(min-width: @tablet-width) {
+        font-size: 1.3em;
+      }
     }
   }
 }
 
 @team-member-ui-image-size: 40px;
+@team-member-ui-image-size-tablet: 50px;
 
 .team-member-ui-image {
   position: absolute;
   top: @gutter;
-  left: @half-gutter;
+  left: 0;
   width: @team-member-ui-image-size;
   height: @team-member-ui-image-size;
   border-radius: @team-member-ui-image-size;
@@ -60,12 +82,30 @@
   background-repeat: no-repeat;
 
   @media(min-width: @tablet-width) {
-    left: @gutter;
+    width: @team-member-ui-image-size-tablet;
+    height: @team-member-ui-image-size-tablet;
+    border-radius: @team-member-ui-image-size-tablet;
   }
 }
 
 .team-member-ui-content {
   margin-left: @team-member-ui-image-size + @gutter;
+
+  @media(min-width: @tablet-width) {
+    margin-left: @team-member-ui-image-size-tablet + @gutter;
+  }
+}
+
+.team-member-ui-content-name {
+  color: @bluegrey-600;
+
+  a:hover &,
+  a:focus & {
+    color: darken(@bluegrey-600, 10%);
+  }
+  a:active & {
+    color: darken(@bluegrey-600, 15%);
+  }
 }
 
 .team-member-ui-wrapper {
@@ -229,22 +269,60 @@
 }
 
 .main-team {
-  .col {
-    +.col {
-      padding-top: @gutter;
-    }
 
+  // margin-top: @gutter * 2;
+}
+
+.main-team-container {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+
+  p {
+    text-align: center;
     @media(min-width: @tablet-width) {
-      box-sizing: border-box;
-      vertical-align: top;
-      display: inline-block;
-      width: 50%;
-      padding-right: @half-gutter;
-
-      +.col {
-        padding: 0 0 0 @half-gutter;
-      }
+      font-size: 1.3em;
     }
+  }
+}
+
+.main-team-header {
+  margin-left: -@gutter;
+  margin-right: -@gutter;
+  padding-left: @gutter;
+  padding-right: @gutter;
+  padding-bottom: @half-gutter;
+  border-bottom: 1px solid @bluegrey-50;
+
+  @media(min-width: @tablet-width) {
+    border-bottom: 0;
+  }
+
+  h1 {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    line-height: 30px;
+    font-weight: 400;
+  }
+  .dropdown-wrapper {
+    float: right;
+  }
+}
+
+.btn-main-team-more {
+  padding: 0;
+  border: 1px solid @bluegrey-100;
+  color: @bluegrey-400;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  background: transparent;
+  border-radius: 30px;
+  vertical-align: middle;
+
+  >i {
+    line-height: 30px;
   }
 }
 
@@ -257,6 +335,7 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
   }
 
   .form-control {
@@ -321,5 +400,30 @@ p.main-team-set-questions-footnote {
   }
   &:active {
     color: @body-color-active;
+  }
+}
+
+.team-member-ui-content-info {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  color: mix(@black-squeeze, @bluegrey-400, 20%);
+
+  a:hover &,
+  a:focus & {
+    color: mix(@black-squeeze, @bluegrey-400, 10%);
+  }
+  a:active & {
+    color: mix(@black-squeeze, @bluegrey-400, 5%);
+  }
+}
+
+.btn-team-invite {
+  margin-top: @gutter;
+
+  @media(min-width: @tablet-width) {
+    margin-top: @gutter * 2;
+    font-size: 1.3em;
   }
 }

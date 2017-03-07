@@ -6,6 +6,7 @@ import superagent from 'superagent';
 import _ from 'lodash';
 
 import { setMeetings } from '../meeting/meeting.dux.js';
+import { updateTeamMembers } from '../team/team.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import Modal from '../modal/modal.container.jsx';
@@ -20,6 +21,7 @@ class TeamMemberDetail extends Component {
     members: PropTypes.array,
     member: PropTypes.object,
     setMeetings: PropTypes.func.isRequired,
+    setMembers: PropTypes.func.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
     imageUrl: PropTypes.string.isRequired
@@ -85,6 +87,7 @@ class TeamMemberDetail extends Component {
       }
       console.log('SUCCESS creating new meeting', res);
       this.updateMeetings();
+      this.props.updateTeamMembers(this.props.team.id);
     });
   }
 
@@ -118,7 +121,7 @@ class TeamMemberDetail extends Component {
 
     return (
       <Modal closeFunc={this.modalCloseFunc}>
-        <Helmet title={`Meetings with ${this.props.givenName} ${this.props.familyName}`} />
+        <Helmet title={`Meetings with ${member.given_name} ${member.family_name}`} />
         <section className="card">
           <header className="card-header">
             <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
@@ -192,6 +195,7 @@ export default connect(
     imageUrl: state.user.imageUrl
   }),
   {
-    setMeetings
+    setMeetings,
+    updateTeamMembers
   }
 )(TeamMemberDetail);

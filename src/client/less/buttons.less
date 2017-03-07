@@ -71,6 +71,42 @@ a.btn-block {
   background: transparent;
 }
 
+.btn-no-style-primary {
+  color: @link-color;
+
+  &:hover,
+  &:focus {
+    color: @link-color-hover;
+  }
+  &:active {
+    color: @link-color-active;
+  }
+}
+
+.btn-no-style-danger {
+  color: @bluegrey-400;
+
+  &:hover,
+  &:focus {
+    color: @danger-color-hover;
+  }
+  &:active {
+    color: @danger-color-active;
+  }
+}
+
+.btn-no-style-secondary {
+  color: @body-color;
+
+  &:hover,
+  &:focus {
+    color: @body-color-hover;
+  }
+  &:active {
+    color: @body-color-active;
+  }
+}
+
 @btn-icon-radius: 2rem;
 
 .btn-icon {

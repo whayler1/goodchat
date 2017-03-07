@@ -71,7 +71,6 @@ class Routes extends Component {
     });
   }
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
-    console.log('team member detail enter', 'background:yellow');
     const { teamId, memberId } = nextState.params;
     superagent.get(`team/${teamId}/meetings/${memberId}`)
       .end((err, res) => {

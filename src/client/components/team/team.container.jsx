@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import superagent from 'superagent';
 import TeamMemberListItem from './team.member-list-item.component.jsx';
 import TeamQuestions from './team.questions.container.jsx';
+import Dropdown from '../dropdown/dropdown.component.jsx';
 import { setTeam } from './team.dux.js';
 
 import TeamHeader from './team.header.container.jsx';
@@ -30,15 +31,29 @@ class Team extends Component {
     isInFlight: false
   });
 
-  onDeleteClick = () => {
-    superagent.delete(`team/${this.props.params.teamId}`)
-    .then(
-      res => {
-        console.log('delete success', res);
-        this.props.history.push(`teams`);
-      },
-      err => console.log('error deleting team', err)
+  getDropdownContent = () => {
+    return (
+      <ul className="dropdown-list">
+        <li>
+          <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+            Delete this team <i className="material-icons">delete</i>
+          </button>
+        </li>
+      </ul>
     );
+  };
+
+  onDeleteClick = () => {
+    if (window.confirm(`Are you sure you want to delete ${this.state.name}? This can not be undone.`)) {
+      superagent.delete(`team/${this.props.params.teamId}`)
+      .then(
+        res => {
+          console.log('delete success', res);
+          this.props.history.push(`teams`);
+        },
+        err => console.log('error deleting team', err)
+      );
+    }
   }
 
   onNameSubmit = e => {
@@ -90,11 +105,39 @@ class Team extends Component {
     } = this.props;
     const { is_owner, is_admin, id } = this.props.team;
     const { isNameSet } = this.state;
+    const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
+    const upcomingMembers = members.filter(member => 'next_meeting_date' in member);
 
-    console.log('members:', members);
+    if (is_owner || is_admin) {
+      members.sort((a, b) => {
+        const nextMeetingA = a.next_meeting_date || '';
+        const nextMeetingB = b.next_meeting_date || '';
+        if (nextMeetingA < nextMeetingB) {
+          return -1;
+        }
+        if (nextMeetingA > nextMeetingB) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      members.sort((a, b) => {
+        const nextMeetingA = a.next_meeting_date;
+        const nextMeetingB = b.next_meeting_date;
+        if (!nextMeetingA || (nextMeetingA > nextMeetingB)) {
+          return 1
+        }
+        if (nextMeetingA < nextMeetingB) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+
     if (!isNameSet) {
       return  (
         <main className="main main-team-set-name" role="main">
+          <Helmet title="Name your new team"/>
           <div className="container">
             <form
               id="team-name"
@@ -126,6 +169,9 @@ class Team extends Component {
     } else if ((is_owner || is_admin) && !this.areQuestionsSet()) {
       return (
         <main className="main main-team-set-questions" role="main">
+          <Helmet
+            title={`Set Questions for ${this.state.name}`}
+          />
           <div className="container">
             <h1 className="vanity-font">Questions</h1>
             <p>What do you want to ask members of <b>{this.state.name}</b>{'?'}</p>
@@ -139,67 +185,48 @@ class Team extends Component {
       );
     } else {
       return (
-        <div>
-          <TeamHeader/>
-          <main className="main main-team" role="main">
-            <Helmet
-              title={this.state.name}
-            />
-            <div className="container">
-              <div className="col">
-                <section className="card">
-                  <header className="card-header">
-                    <h3>Questions</h3>
-                  </header>
-                  <div className="card-padded-content">
-                    <TeamQuestions
-                      team={team}
-                    />
-                  </div>
-                </section>
-              </div>
-              <div className="col">
-                <section className="card">
-                  <header className="card-header">
-                  <h3>Team members</h3>
-                  </header>
-                  {(is_owner || is_admin) && members.length < 1 &&
-                  <div className="card-padded-content"><p>This team has no members. Click below to invite team members.</p></div>}
-                  {members.length > 0 &&
-                  <ul className="card-body-list">
-                    {members.map(member => <li key={member.id}>
-                      <TeamMemberListItem
-                        givenName={member.given_name}
-                        familyName={member.family_name}
-                        email={member.email}
-                        picture={member.picture}
-                        id={member.id}
-                        teamId={team.id}
-                      />
-                    </li>)}
-                  </ul>}
-                  <footer className="card-padded-content">
-                    <ul className="card-footer-btn-list">
-                      {(is_owner || is_admin) &&
-                      <li>
-                        <Link className="btn-secondary btn-block" to={`teams/${id}/invite`}>
-                          Invite team members <i className="material-icons">person_add</i>
-                        </Link>
-                      </li>}
-                      {is_owner &&
-                      <li>
-                        <button className="btn-secondary btn-block" type="button" onClick={this.onDeleteClick}>
-                          Delete this team <i className="material-icons">delete</i>
-                        </button>
-                      </li>}
-                    </ul>
-                  </footer>
-                </section>
-              </div>
+        <main className="main main-team" role="main">
+          <Helmet
+            title={`${this.state.name} | Good Chat`}
+          />
+          <div className="container">
+            <div className="main-team-header">
+              <h1>{this.state.name}</h1>
+              {is_owner &&
+              <Dropdown
+                label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
+                content={this.getDropdownContent()}
+                isRightAligned={true}
+              />}
             </div>
-          </main>
+          </div>
+          <div className="main-team-container">
+
+            {(is_owner || is_admin) && members.length < 1 && [
+            <h3 className="team-member-list-title vanity-font">Create your team</h3>,
+            <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>]}
+            {members.length > 0 && [
+            <h3 className="team-member-list-title vanity-font">Meetings</h3>,
+            <ul className="team-member-list">
+              {members.map(member => <li key={member.id}>
+                <TeamMemberListItem
+                  givenName={member.given_name}
+                  familyName={member.family_name}
+                  email={member.email}
+                  picture={member.picture}
+                  id={member.id}
+                  teamId={team.id}
+                  nextMeetingDate={member.next_meeting_date}
+                />
+              </li>)}
+            </ul>]}
+            {(is_owner || is_admin) &&
+            <Link className="btn-no-style btn-no-style-primary btn-block btn-team-invite" to={`teams/${id}/invite`}>
+              Invite team members <i className="material-icons">person_add</i>
+            </Link>}
+          </div>
           {this.props.children}
-        </div>
+        </main>
       );
     }
   }

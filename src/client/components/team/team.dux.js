@@ -12,7 +12,6 @@ const SET_TEAM = 'team/set-team';
 const SET_MEMBERS = 'team/set-members';
 
 export const getTeams = (success, fail) => (dispatch, getState) => {
-  console.log('get teams');
   superagent.get('team')
   .end((err, res) => {
     if (err) {
@@ -41,6 +40,17 @@ export const setTeam = team => ({
   type: SET_TEAM,
   team
 });
+
+export const updateTeamMembers = teamId => dispatch => superagent.get(`team/${teamId}/membership`)
+  .end((err, res) => {
+    if (err) {
+      return console.log('--update team members fail', res);
+    }
+    dispatch({
+      type: SET_MEMBERS,
+      members: res.body.members
+    });
+  });
 
 export const setMembers = members => ({
   type: SET_MEMBERS,

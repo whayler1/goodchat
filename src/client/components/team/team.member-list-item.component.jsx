@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 export default function TeamMemberListItem({
   givenName,
@@ -7,7 +8,8 @@ export default function TeamMemberListItem({
   email,
   picture,
   id,
-  teamId
+  teamId,
+  nextMeetingDate
 }) {
   return (
     <Link to={`teams/${teamId}/members/${id}`}>
@@ -15,8 +17,17 @@ export default function TeamMemberListItem({
         style={{backgroundImage: `url(${picture})`}}
       ></div>
       <div className="team-member-ui-content">
-        <div>{givenName} {familyName}</div>
+        <div className="team-member-ui-content-name">{givenName} {familyName}</div>
         <div>{email}</div>
+        <div className="team-member-ui-content-info">
+          {(() => {
+            if (nextMeetingDate) {
+              return <span>{moment(nextMeetingDate).fromNow(true)} <i className="material-icons">timer</i></span>;
+            } else {
+              return <i className="material-icons">timer_off</i>;
+            }
+          })()}
+        </div>
       </div>
     </Link>
   );
