@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Helmet from "react-helmet";
 import { setLoggedIn, login } from '../user/user.dux';
 import { showHeroLink, hideHeroLink } from '../navbar/navbar.dux';
+import { getTeams } from '../team/team.dux';
 
 class Home extends Component {
   static propTypes = {
@@ -10,7 +11,8 @@ class Home extends Component {
     setLoggedIn: PropTypes.func.isRequired,
     login: PropTypes.func.isRequired,
     showHeroLink: PropTypes.func.isRequired,
-    hideHeroLink: PropTypes.func.isRequired
+    hideHeroLink: PropTypes.func.isRequired,
+    getTeams: PropTypes.func.isRequired
   }
 
   componentWillMount = () => {
@@ -21,9 +23,32 @@ class Home extends Component {
     this.props.showHeroLink();
   }
 
+  goToTeams = id => this.props.history.push(`/teams${id ? '/' + id : ''}`);
+
   componentWillReceiveProps = nextProps => {
+    const { goToTeams } = this;
     if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
-      this.props.history.push('/teams');
+      if ('localStorage' in window) {
+        const lastTeam = window.localStorage.getItem('goodchat.last-team');
+        if (lastTeam) {
+          this.props.getTeams(
+            teams => {
+              const isTeamInTeams = teams.findIndex(team => team.id === lastTeam) > -1
+
+              if (isTeamInTeams) {
+                goToTeams(lastTeam);
+              } else {
+                goToTeams();
+              }
+            },
+            () => goToTeams()
+          )
+        } else {
+          goToTeams()
+        }
+      } else {
+        goToTeams()
+      }
     }
   }
 
@@ -60,6 +85,7 @@ export default connect(
     setLoggedIn,
     login,
     showHeroLink,
-    hideHeroLink
+    hideHeroLink,
+    getTeams
   }
 )(Home);

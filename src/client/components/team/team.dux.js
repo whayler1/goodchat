@@ -25,7 +25,7 @@ export const getTeams = (success, fail) => (dispatch, getState) => {
         teams: res.body.teams
       });
       if (_.isFunction(success)) {
-        success();
+        success(res.body.teams);
       }
     }
   });

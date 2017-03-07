@@ -94,9 +94,18 @@ class Team extends Component {
 
     if (team.id !== this.props.team.id) {
       console.log('nextprops.team.id !== this.props.team.id');
+      if ('localStorage' in window) {
+        window.localStorage.setItem('goodchat.last-team', team.id)
+      }
       this.resetState(team);
     }
-  }
+  };
+
+  componentDidMount = () => {
+    if ('localStorage' in window) {
+      window.localStorage.setItem('goodchat.last-team', this.props.team.id)
+    }
+  };
 
   render = () => {
     const {
@@ -175,7 +184,7 @@ class Team extends Component {
           <div className="container">
             <h1 className="vanity-font">Questions</h1>
             <p>What do you want to ask members of <b>{this.state.name}</b>{'?'}</p>
-            <p className="main-team-set-questions-footnote">Don't worry, you can continue to update these as your team evolves!</p>
+            <p className="main-team-set-questions-footnote">Don't worry, you can change these in the future!</p>
             <TeamQuestions
               shouldHaveSubmit={true}
               team={team}
