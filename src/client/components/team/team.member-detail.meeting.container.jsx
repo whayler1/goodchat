@@ -176,8 +176,6 @@ class TeamMemberDetailMeeting extends Component {
     const hostImageUrl = isHost ? imageUrl : memberImageUrl;
     const userImageUrl = isHost ? memberImageUrl : imageUrl;
 
-    console.log('teamid', this.props.teamId);
-
     return (
       <div>
         <p>

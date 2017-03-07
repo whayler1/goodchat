@@ -134,7 +134,6 @@ class Team extends Component {
       });
     }
 
-    console.log('members:', members);
     if (!isNameSet) {
       return  (
         <main className="main main-team-set-name" role="main">
