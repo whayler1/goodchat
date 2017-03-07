@@ -7,6 +7,7 @@ import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { updateMeeting } from '../meeting/meeting.dux.js';
+import { updateTeamMembers } from '../team/team.dux.js';
 
 function QuestionAnswer({
   index,
@@ -57,7 +58,9 @@ class TeamMemberDetailMeeting extends Component {
   static propTypes = {
     meeting: PropTypes.object.isRequired,
     userId: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
     updateMeeting: PropTypes.func.isRequired,
+    updateTeamMembers: PropTypes.func.isRequired,
     imageUrl: PropTypes.string.isRequired,
     memberImageUrl: PropTypes.string.isRequired
   }
@@ -85,6 +88,7 @@ class TeamMemberDetailMeeting extends Component {
       }
       console.log('meeting is done!', res);
       this.props.updateMeeting(res.body.meeting);
+      this.props.updateTeamMembers(this.props.teamId);
     });
 
   submit = _.debounce(() => {
@@ -156,7 +160,6 @@ class TeamMemberDetailMeeting extends Component {
     if (e) {
       e.preventDefault();
     }
-    console.log('onNoteSubmit');
     this.noteSubmit();
     return false;
   }
@@ -172,6 +175,8 @@ class TeamMemberDetailMeeting extends Component {
 
     const hostImageUrl = isHost ? imageUrl : memberImageUrl;
     const userImageUrl = isHost ? memberImageUrl : imageUrl;
+
+    console.log('teamid', this.props.teamId);
 
     return (
       <div>
@@ -235,9 +240,11 @@ class TeamMemberDetailMeeting extends Component {
 
 export default connect (
   state => ({
-      userId: state.user.id
+    userId: state.user.id,
+    teamId: state.team.team.id
   }),
   {
-    updateMeeting
+    updateMeeting,
+    updateTeamMembers
   }
 )(TeamMemberDetailMeeting);

@@ -108,6 +108,32 @@ class Team extends Component {
     const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
     const upcomingMembers = members.filter(member => 'next_meeting_date' in member);
 
+    if (is_owner || is_admin) {
+      members.sort((a, b) => {
+        const nextMeetingA = a.next_meeting_date || '';
+        const nextMeetingB = b.next_meeting_date || '';
+        if (nextMeetingA < nextMeetingB) {
+          return -1;
+        }
+        if (nextMeetingA > nextMeetingB) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      members.sort((a, b) => {
+        const nextMeetingA = a.next_meeting_date;
+        const nextMeetingB = b.next_meeting_date;
+        if (!nextMeetingA || (nextMeetingA > nextMeetingB)) {
+          return 1
+        }
+        if (nextMeetingA < nextMeetingB) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+
     console.log('members:', members);
     if (!isNameSet) {
       return  (
@@ -210,17 +236,7 @@ export default connect(
   state => {
     return {
       team: state.team.team,
-      members: state.team.members.filter(member => member.id !== state.user.id).sort((a, b) => {
-        const nextMeetingA = a.next_meeting_date || '';
-        const nextMeetingB = b.next_meeting_date || '';
-        if (nextMeetingA < nextMeetingB) {
-          return -1;
-        }
-        if (nextMeetingA > nextMeetingB) {
-          return 1;
-        }
-        return 0;
-      })
+      members: state.team.members.filter(member => member.id !== state.user.id)
     };
   },
   {

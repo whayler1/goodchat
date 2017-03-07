@@ -297,12 +297,13 @@ router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHel
   .join('users', { 'memberships.user_id': 'users.id'})
   .where({ team_id })
   .then(members => {
-    // res.json({ members });
+
     Promise.all(members.map(member => new Promise((resolve, reject) => {
       knex('meetings')
       .select('*')
       .orderBy('meeting_date', 'desc')
       .where({ team_id, 'host_id': user_id, user_id: member.id, is_done: false })
+      .orWhere({ team_id, 'host_id': member.id, user_id, is_done: false })
       .first()
       .then(meeting => {
         console.log('\n-----meeting', meeting);
