@@ -187,7 +187,7 @@ class Team extends Component {
       return (
         <main className="main main-team" role="main">
           <Helmet
-            title={this.state.name}
+            title={`${this.state.name} | Good Chat`}
           />
           <div className="container">
             <div className="main-team-header">
@@ -202,8 +202,9 @@ class Team extends Component {
           </div>
           <div className="main-team-container">
 
-            {(is_owner || is_admin) && members.length < 1 &&
-            <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>}
+            {(is_owner || is_admin) && members.length < 1 && [
+            <h3 className="team-member-list-title vanity-font">Create your team</h3>,
+            <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>]}
             {members.length > 0 && [
             <h3 className="team-member-list-title vanity-font">Meetings</h3>,
             <ul className="team-member-list">
