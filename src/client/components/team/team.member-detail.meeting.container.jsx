@@ -26,29 +26,35 @@ function QuestionAnswer({
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${hostImageUrl})`}}
         ></div>
-        {(isHost && !isDone) && <TextareaAutosize
-          id={`question${index}`}
-          name={`question${index}`}
-          className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
-          maxLength={300}
-          value={question}
-          onChange={onChange}
-        />}
-        {(!isHost || isDone) && <p>{ question ? question : '💬'}</p>}
+        {(isHost && !isDone) &&
+        <div className="team-member-detail-qa-list-item-input-wrap">
+          <TextareaAutosize
+            id={`question${index}`}
+            name={`question${index}`}
+            className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
+            maxLength={300}
+            value={question}
+            onChange={onChange}
+          />
+        </div>}
+        {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? question : <i className="material-icons">more_horiz</i>}</p>}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${userImageUrl})`}}
         ></div>
-        {(isUser && !isDone) && <TextareaAutosize
-          id={`answer${index}`}
-          name={`answer${index}`}
-          className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
-          maxLength={300}
-          value={answer}
-          onChange={onChange}
-        />}
-        {(!isUser || isDone) && <p>{ answer ? answer : '💬'}</p>}
+        {(isUser && !isDone) &&
+        <div className="team-member-detail-qa-list-item-input-wrap">
+          <TextareaAutosize
+            id={`answer${index}`}
+            name={`answer${index}`}
+            className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
+            maxLength={300}
+            value={answer}
+            onChange={onChange}
+          />
+        </div>}
+        {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
     </div>
   );
