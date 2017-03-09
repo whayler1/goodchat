@@ -232,7 +232,7 @@ class TeamMemberDetailMeeting extends Component {
         {isHost && !is_done &&
         <button
           type="button"
-          className="btn-secondary btn-block gutter-large-top"
+          className="btn-primary-inverse btn-block gutter-large-top"
           onClick={this.onCompleteMeeting}
         >
           Complete meeting
