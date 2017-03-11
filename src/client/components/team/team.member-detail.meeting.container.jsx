@@ -35,6 +35,7 @@ function QuestionAnswer({
             maxLength={300}
             value={question}
             onChange={onChange}
+            autoFocus={index < 2}
           />
         </div>}
         {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? question : <i className="material-icons">more_horiz</i>}</p>}
@@ -52,6 +53,7 @@ function QuestionAnswer({
             maxLength={300}
             value={answer}
             onChange={onChange}
+            autoFocus={index < 2}
           />
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}

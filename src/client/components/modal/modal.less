@@ -7,14 +7,34 @@
   z-index: 20;
 }
 
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  } 100% {
+    opacity: 1;
+  }
+}
+
 .modal-close-scrim {
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.5);
   z-index: 5;
+
+  animation: fadein .25s;
+}
+
+@keyframes modal-card {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  } 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .modal-card-container {
@@ -31,10 +51,12 @@
     position: relative;
     text-align: left;
     z-index: 10;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
 
     @media(min-width: @tablet-width) {
       width: 550px;
       margin: @gutter auto;
+      animation: modal-card .25s;
     }
   }
 }
