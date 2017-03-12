@@ -1,5 +1,4 @@
 import superagent from 'superagent';
-import superagentIntercept from 'superagent-intercept';
 import _ from 'underscore';
 
 import { logout } from '../user/user.dux.js';
@@ -13,12 +12,6 @@ const defaultState = {
 const SET_TEAMS = 'team/set-teams';
 const SET_TEAM = 'team/set-team';
 const SET_MEMBERS = 'team/set-members';
-
-const errorIntercept = superagentIntercept((err, res) => {
-  if (err && res.status === 401) {
-    console.log('%c401 error in errorIntercept!', 'background:pink', res);
-  }
-});
 
 export const getTeams = (success, fail) => (dispatch, getState) => {
   superagent.get('team')

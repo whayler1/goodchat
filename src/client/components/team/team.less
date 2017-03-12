@@ -21,7 +21,6 @@
 .team-member-list-title {
   text-align: center;
   color: @bluegrey-600;
-  margin-top: @gutter * 2;
   font-size: 2rem;
 
   @media(min-width: @tablet-width) {
@@ -343,12 +342,7 @@
 }
 
 .main-team-header {
-  margin-left: -@gutter;
-  margin-right: -@gutter;
-  padding-left: @gutter;
-  padding-right: @gutter;
   padding-bottom: @half-gutter;
-  border-bottom: 1px solid @bluegrey-50;
 
   @media(min-width: @tablet-width) {
     border-bottom: 0;
@@ -357,9 +351,13 @@
   h1 {
     display: inline-block;
     vertical-align: middle;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 30px;
     font-weight: 400;
+
+    @media(min-width: @tablet-width) {
+      font-size: 1.2rem;
+    }
   }
   .dropdown-wrapper {
     float: right;
