@@ -1,9 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import superagentIntercept from 'superagent-intercept';
+import Modal from '../modal/modal.container.jsx';
+import { clearLoginError } from './SetLogin.dux.js';
 
-export default class SetLogin extends Component {
+class SetLogin extends Component {
   static propTypes = {
     googleClientId: PropTypes.string.isRequired,
-    onSuccess: PropTypes.func.isRequired
+    onSuccess: PropTypes.func.isRequired,
+    loginError: PropTypes.object.isRequired,
+    clearLoginError: PropTypes.func.isRequired
   }
   state = {
     isLoginStateSet: false
@@ -11,7 +17,6 @@ export default class SetLogin extends Component {
 
   componentWillMount = () => {
     gapi.load('auth2', () => {
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
       gapi.auth2.init({
         client_id: this.props.googleClientId,
         cookiepolicy: 'single_host_origin'
@@ -26,10 +31,22 @@ export default class SetLogin extends Component {
   }
 
   render() {
+    console.log('this.props.loginError', this.props.loginError);
     return (
       <div>
         {this.state.isLoginStateSet && this.props.children}
+        {this.props.loginError.status &&
+        <Modal closeFunc={this.props.clearLoginError}><h1>You must log in</h1></Modal>}
       </div>
     );
   }
 }
+
+export default connect(
+  state => ({
+    loginError: state.login.loginError
+  }),
+  {
+    clearLoginError
+  }
+)(SetLogin);

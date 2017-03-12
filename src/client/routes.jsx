@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import superagent from 'superagent';
+import superagentIntercept from 'superagent-intercept';
 import { getTeams, setTeams, setTeam, setMembers } from './components/team/team.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import { setMeetings } from './components/meeting/meeting.dux';
@@ -13,6 +14,7 @@ import TeamInvite from './components/team/team.invite.container.jsx';
 import TeamMemberDetail from './components/team/team.member-detail.container.jsx';
 import InviteAccept from './components/invite/invite.accept.container.jsx';
 import User from './components/user/user.container.jsx';
+import { setLoginError } from './components/SetLogin/SetLogin.dux.js';
 
 class Routes extends Component {
   static propTypes = {
@@ -21,8 +23,15 @@ class Routes extends Component {
     setTeam: PropTypes.func.isRequired,
     setMembers: PropTypes.func.isRequired,
     setInvites: PropTypes.func.isRequired,
-    setInvite: PropTypes.func.isRequired
+    setInvite: PropTypes.func.isRequired,
+    setLoginError: PropTypes.func.isRequired
   }
+  errorIntercept = superagentIntercept((err, res) => {
+    console.log('%c --> err:', 'background:aqua', res);
+    if (err && res.status === 401 && res.body.status === 'Please log in') {
+      this.props.setLoginError(err);
+    }
+  });
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
     res => {
       console.log('success getting team');
@@ -44,6 +53,7 @@ class Routes extends Component {
   });
   setTeam = teamId => new Promise((resolve, reject) => {
     superagent.get(`team/${teamId}`)
+    .use(this.errorIntercept)
     .end((err, res) => {
       if (err) {
         reject();
@@ -143,6 +153,7 @@ export default connect(
     setMembers,
     setInvites,
     setInvite,
-    setMeetings
+    setMeetings,
+    setLoginError
   }
 )(Routes);
