@@ -1,5 +1,8 @@
 import superagent from 'superagent';
+import superagentIntercept from 'superagent-intercept';
 import _ from 'underscore';
+
+import { logout } from '../user/user.dux.js';
 
 const defaultState = {
   teams: [],
@@ -10,6 +13,12 @@ const defaultState = {
 const SET_TEAMS = 'team/set-teams';
 const SET_TEAM = 'team/set-team';
 const SET_MEMBERS = 'team/set-members';
+
+const errorIntercept = superagentIntercept((err, res) => {
+  if (err && res.status === 401) {
+    console.log('%c401 error in errorIntercept!', 'background:pink', res);
+  }
+});
 
 export const getTeams = (success, fail) => (dispatch, getState) => {
   superagent.get('team')
@@ -31,6 +40,25 @@ export const getTeams = (success, fail) => (dispatch, getState) => {
   });
 }
 
+export const getTeam = (teamId) => (dispatch, getState) => new Promise((resolve, reject) => {
+  superagent.get(`team/${teamId}`)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+      dispatch(logout);
+      console.log('err retrieving team', res)
+    } else {
+      const { team } = res.body;
+      dispatch({
+        type: SET_TEAM,
+        team
+      })
+      resolve(team);
+      console.log('%cteam success', 'background:yellowgreen', res.body.team);
+    }
+  });
+})
+
 export const setTeams = teams => ({
   type: SET_TEAMS,
   teams
@@ -41,16 +69,20 @@ export const setTeam = team => ({
   team
 });
 
-export const updateTeamMembers = teamId => dispatch => superagent.get(`team/${teamId}/membership`)
+export const updateTeamMembers = teamId => dispatch => new Promise((resolve, reject) => superagent.get(`team/${teamId}/membership`)
   .end((err, res) => {
     if (err) {
-      return console.log('--update team members fail', res);
+      reject(res);
+      console.log('--update team members fail', res);
+    } else {
+      const { members } = res.body;
+      dispatch({
+        type: SET_MEMBERS,
+        members
+      });
+      resolve(members)
     }
-    dispatch({
-      type: SET_MEMBERS,
-      members: res.body.members
-    });
-  });
+  }));
 
 export const setMembers = members => ({
   type: SET_MEMBERS,

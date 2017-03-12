@@ -16,7 +16,7 @@ const LOGOUT = 'user/logout';
 export const login = () => dispatch => window.gapi.auth2.getAuthInstance().signIn().then(
   res => dispatch(setLoggedIn(res.getAuthResponse().id_token)),
   err => console.log('login err:', err)
-)
+);
 
 export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google')
   .send({ idToken })

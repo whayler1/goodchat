@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from "react-helmet";
 import { setLoggedIn, login } from '../user/user.dux';
+import { clearRedirect } from '../login/login.dux';
 import { showHeroLink, hideHeroLink } from '../navbar/navbar.dux';
 import { getTeams } from '../team/team.dux';
 
@@ -12,7 +13,9 @@ class Home extends Component {
     login: PropTypes.func.isRequired,
     showHeroLink: PropTypes.func.isRequired,
     hideHeroLink: PropTypes.func.isRequired,
-    getTeams: PropTypes.func.isRequired
+    getTeams: PropTypes.func.isRequired,
+    clearRedirect: PropTypes.func.isRequired,
+    redirect: PropTypes.string
   }
 
   componentWillMount = () => {
@@ -26,9 +29,17 @@ class Home extends Component {
   goToTeams = id => this.props.history.push(`/teams${id ? '/' + id : ''}`);
 
   componentWillReceiveProps = nextProps => {
+    /**
+     * JW: Forward user to the "right" place once they've logged in. If a redirect is defined
+     * go there. Otherwise check to see if a most recent team is in local storage. If not then
+     * forward them to their teams landing page.
+     */
     const { goToTeams } = this;
+    const { redirect } = this.props;
     if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
-      if ('localStorage' in window) {
+      if (redirect) {
+        this.props.history.push(redirect);
+      } else if ('localStorage' in window) {
         const lastTeam = window.localStorage.getItem('goodchat.last-team');
         if (lastTeam) {
           this.props.getTeams(
@@ -79,7 +90,8 @@ class Home extends Component {
 
 export default connect(
   state => ({
-    isLoggedIn: state.user.isLoggedIn
+    isLoggedIn: state.user.isLoggedIn,
+    redirect: state.login.redirect
   }),
   {
     setLoggedIn,
