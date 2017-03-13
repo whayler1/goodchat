@@ -38,8 +38,8 @@ class Home extends Component {
     const { redirect } = this.props;
     if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
       if (redirect) {
-        this.props.clearRedirect();
         this.props.history.push(redirect);
+        this.props.clearRedirect();
       } else if ('localStorage' in window) {
         const lastTeam = window.localStorage.getItem('goodchat.last-team');
         if (lastTeam) {
@@ -99,6 +99,7 @@ export default connect(
     login,
     showHeroLink,
     hideHeroLink,
-    getTeams
+    getTeams,
+    clearRedirect
   }
 )(Home);
