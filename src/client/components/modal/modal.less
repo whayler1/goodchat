@@ -22,9 +22,11 @@
   right: 0;
   bottom: 0;
   background: rgba(255,255,255,0.5);
-  z-index: 5;
 
-  animation: fadein .25s;
+  @media(min-width: @tablet-width) {
+    animation: fadein .25s;
+    z-index: 5;
+  }
 }
 
 @keyframes modal-card {
