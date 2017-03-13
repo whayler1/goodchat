@@ -5,7 +5,7 @@ import superagent from 'superagent';
 import { getTeams, setTeams, setTeam, getTeam, setMembers, updateTeamMembers } from './components/team/team.dux';
 import { setRedirect } from './components/login/login.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
-import { setMeetings } from './components/meeting/meeting.dux';
+import { getMeetings } from './components/meeting/meeting.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -25,7 +25,8 @@ class Routes extends Component {
     setInvites: PropTypes.func.isRequired,
     setInvite: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
-    setRedirect: PropTypes.func.isRequired
+    setRedirect: PropTypes.func.isRequired,
+    getMeetings: PropTypes.func.isRequired
   }
 
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
@@ -56,10 +57,11 @@ class Routes extends Component {
   }
 
   onTeamInviteEnter = (nextState, replace, callback) => {
-    console.log('on team invite enter', 'background:yellow');
     superagent.get(`team/${nextState.params.teamId}/invite`)
     .end((err, res) => {
       if (err) {
+        replace('/');
+        callback();
         return console.log('err retrieving invites', err);
       }
       this.props.setInvites(res.body.invites);
@@ -69,19 +71,23 @@ class Routes extends Component {
 
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
     const { teamId, memberId } = nextState.params;
-    superagent.get(`team/${teamId}/meetings/${memberId}`)
-      .end((err, res) => {
-        if (err) {
-          console.log('err retrieving meetings', res);
+    const { getMeetings, setRedirect } = this.props;
+
+    getMeetings(teamId, memberId).then(
+      () => callback(),
+      err => {
+        if (err.status === 401) {
+          setRedirect(`/teams/${teamId}/members/${memberId}`);
+          replace('/');
           callback();
-          return;
+        } else {
+          replace('/teams');
+          callback();
         }
-        console.log('team members res', res);
-        const { meetings } = res.body;
-        this.props.setMeetings(res.body.meetings);
-        callback();
-      });
-  }
+      }
+    );
+  };
+
   onInviteAcceptEnter = (nextState, replace, callback) => {
     console.log('invite accept enter', 'background:yellow');
     superagent.get(`invite/${nextState.params.inviteId}`).then(
@@ -141,7 +147,7 @@ export default connect(
     setMembers,
     setInvites,
     setInvite,
-    setMeetings,
+    getMeetings,
     updateTeamMembers,
     setRedirect
   }

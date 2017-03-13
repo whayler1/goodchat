@@ -120,7 +120,7 @@ class TeamMemberDetail extends Component {
         <Helmet title={`Meetings with ${member.given_name} ${member.family_name}`} />
         <section className="card">
           <header className="card-header">
-            <h3>Meetings with {member.givenName} {member.familyName}</h3>
+            <h3>Meetings with {member.given_name} {member.family_name}</h3>
             <div className="card-header-close">
               <Link to={`teams/${team.id}`}>
                 <i className="material-icons">close</i>
