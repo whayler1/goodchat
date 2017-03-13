@@ -19,7 +19,6 @@ class TeamMemberDetail extends Component {
     team: PropTypes.object.isRequired,
     meetings: PropTypes.array.isRequired,
     members: PropTypes.array,
-    member: PropTypes.object,
     setMeetings: PropTypes.func.isRequired,
     setMembers: PropTypes.func.isRequired,
     givenName: PropTypes.string.isRequired,
@@ -34,10 +33,7 @@ class TeamMemberDetail extends Component {
     newMeetingDateTimeError: ''
   }
 
-  onChange = e => {
-    console.log('onChange', e.target.value);
-    this.setState({ [e.target.name]: e.target.value });
-  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   validate = () => new Promise((resolve, reject) => {
     const { newMeetingDateTime, now } = this.state;
@@ -124,7 +120,7 @@ class TeamMemberDetail extends Component {
         <Helmet title={`Meetings with ${member.given_name} ${member.family_name}`} />
         <section className="card">
           <header className="card-header">
-            <h3>Meetings with {this.props.givenName} {this.props.familyName}</h3>
+            <h3>Meetings with {member.givenName} {member.familyName}</h3>
             <div className="card-header-close">
               <Link to={`teams/${team.id}`}>
                 <i className="material-icons">close</i>
