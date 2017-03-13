@@ -27,12 +27,16 @@ class Routes extends Component {
     updateTeamMembers: PropTypes.func.isRequired,
     setRedirect: PropTypes.func.isRequired
   }
+
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
     res => {
-      console.log('success getting team');
       callback();
     },
-    err => console.log('error getting teams')
+    err => {
+      this.props.setRedirect(`/teams`);
+      replace('/');
+      callback();
+    }
   );
 
   onTeamEnter = (nextState, replace, callback) => {
