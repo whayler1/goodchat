@@ -8,14 +8,11 @@ const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 
 export const getMeetings = (teamId, memberId) => dispatch => new Promise((resolve, reject) => {
-  console.log('getMeetings');
   superagent.get(`team/${teamId}/meetings/${memberId}`)
     .end((err, res) => {
       if (err) {
-        console.log('ERR', res);
         reject(res);
       } else {
-        console.log('SUCCESS', res);
         const { meetings } = res.body;
 
         dispatch({
