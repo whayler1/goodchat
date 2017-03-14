@@ -49,8 +49,6 @@ export const updateMeeting = (meetingId, updateObj) => dispatch => new Promise((
       });
       resolve(meeting);
     }
-    console.log('success putting meeting!', res.body.meeting);
-    this.props.updateMeeting(res.body.meeting);
   }));
 
 export const setMeetings = meetings => ({
