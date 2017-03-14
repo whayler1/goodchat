@@ -6,7 +6,7 @@ import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { updateMeeting } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 
 function QuestionAnswer({
@@ -68,9 +68,12 @@ class TeamMemberDetailMeeting extends Component {
     userId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     updateMeeting: PropTypes.func.isRequired,
+    completeMeeting: PropTypes.func.isRequired,
+    getMeetings: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     imageUrl: PropTypes.string.isRequired,
-    memberImageUrl: PropTypes.string.isRequired
+    memberImageUrl: PropTypes.string.isRequired,
+    memberId: PropTypes.string.isRequired
   }
 
   state = {
@@ -87,17 +90,16 @@ class TeamMemberDetailMeeting extends Component {
     note: this.props.meeting.note
   }
 
-  onCompleteMeeting = () => superagent.put(`meeting/${this.props.meeting.id}`)
-    .send({ is_done: true })
-    .end((err, res) => {
-      if (err) {
-        console.log('err finishing meeting', res);
-        return;
+  onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
+    .then(
+      () => this.props.getMeetings(this.props.teamId, this.props.memberId),
+      (err) => {
+        if (err.status === 401) {
+          // make user login
+        }
+        console.log('completeMeeting err', err);
       }
-      console.log('meeting is done!', res);
-      this.props.updateMeeting(res.body.meeting);
-      this.props.updateTeamMembers(this.props.teamId);
-    });
+    );
 
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
@@ -220,7 +222,7 @@ class TeamMemberDetailMeeting extends Component {
             className="form-control"
             id="note"
             name="note"
-            placeholder="Write your private meeting notes here"
+            placeholder="Write your private meeting notes here. Only you can see these."
             onChange={this.onNoteChange}
             value={this.state.note}
           />
@@ -251,6 +253,8 @@ export default connect (
   }),
   {
     updateMeeting,
+    completeMeeting,
+    getMeetings,
     updateTeamMembers
   }
 )(TeamMemberDetailMeeting);

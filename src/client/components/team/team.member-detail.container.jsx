@@ -168,6 +168,7 @@ class TeamMemberDetail extends Component {
                   meeting={meeting}
                   imageUrl={imageUrl}
                   memberImageUrl={member.picture}
+                  memberId={member.id}
                 />
               </li>
             ))}

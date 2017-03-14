@@ -7,7 +7,19 @@ const defaultState = {
 const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 
+export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
+  .send({ is_done: true })
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      const { meeting } = res.body;
+      resolve(meeting);
+    }
+  }));
+
 export const getMeetings = (teamId, memberId) => dispatch => new Promise((resolve, reject) => {
+  console.log('getMeetings', teamId, '\n memberId', memberId);
   superagent.get(`team/${teamId}/meetings/${memberId}`)
     .end((err, res) => {
       if (err) {
