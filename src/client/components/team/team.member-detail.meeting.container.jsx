@@ -37,6 +37,7 @@ function QuestionAnswer({
             value={question}
             onChange={onChange}
             autoFocus={index < 2}
+            placeholder="Ask a question"
           />
         </div>}
         {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? question : <i className="material-icons">more_horiz</i>}</p>}
@@ -55,6 +56,7 @@ function QuestionAnswer({
             value={answer}
             onChange={onChange}
             autoFocus={index < 2}
+            placeholder="Click here to answer"
           />
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
