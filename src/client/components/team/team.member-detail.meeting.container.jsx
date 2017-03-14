@@ -8,6 +8,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { updateMeeting, completeMeeting, getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
+import { setRedirect } from '../login/login.dux.js';
 
 function QuestionAnswer({
   index,
@@ -73,7 +74,9 @@ class TeamMemberDetailMeeting extends Component {
     updateTeamMembers: PropTypes.func.isRequired,
     imageUrl: PropTypes.string.isRequired,
     memberImageUrl: PropTypes.string.isRequired,
-    memberId: PropTypes.string.isRequired
+    memberId: PropTypes.string.isRequired,
+    setRedirect: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   state = {
@@ -127,15 +130,11 @@ class TeamMemberDetailMeeting extends Component {
       ));
     }
 
-    superagent.put(`meeting/${this.props.meeting.id}`)
-    .send(sendObj)
-    .end((err, res) => {
-      if (err) {
-        console.log('error putting to meeting', res);
-        return;
+    this.props.updateMeeting(this.props.meeting.id, sendObj).catch(err => {
+      if (err.status === 401) {
+        this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
+        this.props.history.push('/');
       }
-      console.log('success putting meeting!', res.body.meeting);
-      this.props.updateMeeting(res.body.meeting);
     });
   }, 750)
 
@@ -255,6 +254,7 @@ export default connect (
     updateMeeting,
     completeMeeting,
     getMeetings,
-    updateTeamMembers
+    updateTeamMembers,
+    setRedirect
   }
 )(TeamMemberDetailMeeting);

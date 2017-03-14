@@ -104,7 +104,7 @@ class TeamMemberDetail extends Component {
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
 
   render = () => {
-    const { team, meetings, imageUrl } = this.props;
+    const { team, meetings, imageUrl, history } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError } = this.state;
     const {
       question1,
@@ -169,6 +169,7 @@ class TeamMemberDetail extends Component {
                   imageUrl={imageUrl}
                   memberImageUrl={member.picture}
                   memberId={member.id}
+                  history={history}
                 />
               </li>
             ))}

@@ -36,15 +36,32 @@ export const getMeetings = (teamId, memberId) => dispatch => new Promise((resolv
     });
 });
 
+export const updateMeeting = (meetingId, updateObj) => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
+  .send(updateObj)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      const { meeting } = res.body;
+      dispatch({
+        type: UPDATE_MEETING,
+        meeting
+      });
+      resolve(meeting);
+    }
+    console.log('success putting meeting!', res.body.meeting);
+    this.props.updateMeeting(res.body.meeting);
+  }));
+
 export const setMeetings = meetings => ({
   type: SET_MEETINGS,
   meetings
 });
 
-export const updateMeeting = (meeting) => ({
-  type: UPDATE_MEETING,
-  meeting
-});
+// export const updateMeeting = (meeting) => ({
+//   type: UPDATE_MEETING,
+//   meeting
+// });
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
