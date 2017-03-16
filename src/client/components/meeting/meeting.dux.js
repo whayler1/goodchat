@@ -1,4 +1,5 @@
 import superagent from 'superagent';
+import moment from 'moment';
 
 const defaultState = {
   meetings: []
@@ -8,7 +9,7 @@ const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
-  .send({ is_done: true })
+  .send({ is_done: true, finished_at: moment().format() })
   .end((err, res) => {
     if (err) {
       reject(res);

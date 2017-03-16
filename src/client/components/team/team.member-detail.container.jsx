@@ -81,7 +81,6 @@ class TeamMemberDetail extends Component {
         console.log('error creating new meeting', res);
         return;
       }
-      console.log('SUCCESS creating new meeting', res);
       this.updateMeetings();
       this.props.updateTeamMembers(this.props.team.id);
     });
@@ -91,10 +90,7 @@ class TeamMemberDetail extends Component {
     e.preventDefault();
 
     this.validate().then(
-      () => {
-        console.log('resolved validated');
-        this.submit();
-      },
+      () => this.submit(),
       () => console.log('rejected validation', this.state)
     );
 
@@ -186,7 +182,17 @@ class TeamMemberDetail extends Component {
 export default connect(
   state => ({
     team: state.team.team,
-    meetings: state.meeting.meetings,
+    meetings: state.meeting.meetings.sort((a, b) => {
+      const createdAtA = a.created_at;
+      const createdAtB = b.created_at;
+      if (createdAtA < createdAtB) {
+        return 1;
+      }
+      if (createdAtA > createdAtB) {
+        return -1;
+      }
+      return 0;
+    }),
     members: state.team.members,
     givenName: state.user.givenName,
     familyName: state.user.familyName,
