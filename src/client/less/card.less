@@ -15,11 +15,13 @@
 .card-header {
   position: relative;
   padding: @gutter @half-gutter;
-  border-bottom: 1px solid @bluegrey-100;
+  // border-bottom: 1px solid @bluegrey-100;
+  background: @bluegrey-600;
+  color: white;
 
-  h3 {
-    color: @card-header-title-color;
-  }
+  // h3 {
+  //   color: @card-header-title-color;
+  // }
 
   @media(min-width: @tablet-width) {
     padding: @gutter;
@@ -32,14 +34,14 @@
   right: @half-gutter;
 
   a {
-    color: @bluegrey-400;
+    color: mix(white, @bluegrey-600, 80%);
 
     &:hover,
     &:focus {
-      color: darken(@bluegrey-400, 10%);
+      color: mix(white, @bluegrey-600, 90%);
     }
     &:active {
-      color: darken(@bluegrey-400, 15%);
+      color: white;
     }
   }
 

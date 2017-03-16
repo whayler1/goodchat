@@ -180,6 +180,7 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl } = this.props;
     const { meeting_date, is_done, finished_at } = meeting;
+    console.log('meeting', meeting);
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -190,11 +191,23 @@ class TeamMemberDetailMeeting extends Component {
     return (
       <section>
 
-        {finished_at &&
-        <div className="meeting-header">
-          <span className="meeting-header-date"><i className="material-icons">date_range</i> <b>{ moment(finished_at).format('MMM Do YYYY, h:mm a') }</b></span>
+        {is_done &&
+        <div className="meeting-header meeting-header-finished">
+          <i className="material-icons meeting-header-lg-icon">date_range</i>
+          {finished_at &&
+          <div className="meeting-header-lg-content">
+            <h1 className="meeting-header-title">Finished { moment(finished_at).fromNow() }</h1>
+            <span className="meeting-header-date">{ moment(finished_at).format('MMM Do YYYY, h:mm a') }</span>
+          </div>
+          }
+          {!finished_at &&
+          <div className="meeting-header-lg-content">
+            <h1 className="meeting-header-title">Finished { moment(meeting_date).fromNow() }</h1>
+            <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+          </div>
+          }
         </div>}
-        {!finished_at &&
+        {!is_done &&
         <div className="meeting-header">
           <i className="material-icons meeting-header-lg-icon">date_range</i>
           <div className="meeting-header-lg-content">

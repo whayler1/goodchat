@@ -124,13 +124,19 @@ class TeamMemberDetail extends Component {
             </div>
           </header>
           {canCreateNewMeeting &&
-          <div className="card-padded-content">
+          <div className="team-card-subheader">
+            <div className="meeting-header">
+              <i className="material-icons meeting-header-lg-icon">note_add</i>
+              <div className="meeting-header-lg-content">
+                <h1 className="meeting-header-title">Create meeting</h1>
+              </div>
+            </div>
             <form className="form" onSubmit={this.onSubmit}>
               <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
                 <label
                   htmlFor="newMeetingDateTime"
                   className="input-label"
-                >New meeting date and time</label>
+                >Meeting date and time</label>
                 <input
                   type="datetime-local"
                   className="form-control"
@@ -149,15 +155,15 @@ class TeamMemberDetail extends Component {
               <fieldset>
                 <button
                   type="submit"
-                  className="btn-primary-inverse btn-block"
+                  className="btn-primary btn-block"
                 >
-                  Create New Meeting <i className="material-icons">note_add</i>
+                  Create meeting
                 </button>
               </fieldset>
             </form>
           </div>
           }
-          <ul className="page-body-list">
+          <ul className="team-card-body-list">
             {meetings.map(meeting => (
               <li key={meeting.id}>
                 <TeamMemberDetailMeeting

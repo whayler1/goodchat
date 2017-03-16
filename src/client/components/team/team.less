@@ -170,6 +170,7 @@
     min-height: 40px;
     border: 1px solid @bluegrey-100;
     border-radius: 2px;
+    font-weight: 400;
 
     &::before {
       content: ' ';
@@ -484,25 +485,74 @@ p.main-team-set-questions-footnote {
 
 .meeting-header {
   position: relative;
-  padding: @gutter;
-  margin: 0 -@gutter @gutter;
+  padding: @gutter @half-gutter;
+  margin: 0 -@half-gutter @gutter;
   color: white;
   background: @bluegrey-400;
+
+  &.meeting-header-finished {
+    border-top: 1px solid @bluegrey-100;
+    border-bottom: 1px solid @bluegrey-50;
+    background: @black-squeeze;
+    color: @bluegrey-500;
+  }
+
+  @media(min-width: @tablet-width) {
+    padding: @gutter;
+    margin: 0 -@gutter @gutter;
+  }
 }
 
 .meeting-header-lg-icon {
   position: absolute;
   top: 24px;
-  left: 16px;
+  left: 5px;
   font-size: 50px;
+
+  @media(min-width: @tablet-width) {
+    left: 16px;
+  }
 }
 
 .meeting-header-lg-content {
-  margin-left: 40px + @gutter;
+  margin-left: 40px + @half-gutter;
+
+  @media(min-width: @tablet-width) {
+    margin-left: 40px + @gutter;
+  }
 }
 
 .meeting-header-title {
+  .team-card-subheader & {
+    padding: 9px 0;
+  }
 }
 
 .meeting-header-date {
+  font-weight: 400;
+}
+
+.team-card-body-list {
+  padding: 0;
+  margin: 0 @half-gutter @gutter;
+  li {
+    list-style: none;
+    margin-top: @gutter * 2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  @media(min-width: @tablet-width) {
+    margin: 0 @gutter @gutter;
+  }
+}
+
+.team-card-subheader {
+  padding: 0 @half-gutter @gutter * 2;
+
+  @media(min-width: @tablet-width) {
+    padding: 0 @gutter @gutter * 2;
+  }
 }
