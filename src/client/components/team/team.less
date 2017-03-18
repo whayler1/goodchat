@@ -509,6 +509,10 @@ p.main-team-set-questions-footnote {
   @media(min-width: @tablet-width) {
     left: 16px;
   }
+
+  .team-card-subheader-create-meeting & {
+    font-size: 35px;
+  }
 }
 
 .meeting-header-lg-content {
@@ -517,11 +521,19 @@ p.main-team-set-questions-footnote {
   @media(min-width: @tablet-width) {
     margin-left: 40px + @gutter;
   }
+
+  .team-card-subheader-create-meeting & {
+    margin-left: 20px + @half-gutter;
+
+    @media(min-width: @tablet-width) {
+      margin-left: 20px + @gutter;
+    }
+  }
 }
 
 .meeting-header-title {
-  .team-card-subheader & {
-    padding: 9px 0;
+  .team-card-subheader-create-meeting & {
+    padding: 2px 0;
   }
 }
 

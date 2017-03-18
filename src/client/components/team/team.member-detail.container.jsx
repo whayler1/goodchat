@@ -126,7 +126,7 @@ class TeamMemberDetail extends Component {
             </div>
           </header>
           {canCreateNewMeeting &&
-          <div className="team-card-subheader">
+          <div className="team-card-subheader team-card-subheader-create-meeting">
             <div className="meeting-header">
               <i className="material-icons meeting-header-lg-icon">note_add</i>
               <div className="meeting-header-lg-content">
