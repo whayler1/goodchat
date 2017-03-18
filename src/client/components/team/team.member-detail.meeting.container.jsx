@@ -149,10 +149,7 @@ class TeamMemberDetailMeeting extends Component {
     return false;
   }
 
-  onChange = e => {
-    console.log('on change', e.target);
-    this.setState({ [e.target.name]: e.target.value }, this.submit);
-  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value }, this.submit);
 
   noteSubmit = _.debounce(() => {
     console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
@@ -180,7 +177,6 @@ class TeamMemberDetailMeeting extends Component {
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
 
   onDeleteClick = () => {
-    console.log('meeting id', this.props.meeting.id);
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
       this.props.deleteMeeting(this.props.meeting.id);
     }
@@ -189,13 +185,21 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl } = this.props;
     const { meeting_date, is_done, finished_at } = meeting;
-    console.log('meeting', meeting);
+    const { answer1, answer2, answer3, answer4, answer5, } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
 
     const hostImageUrl = isHost ? imageUrl : memberImageUrl;
     const userImageUrl = isHost ? memberImageUrl : imageUrl;
+
+    const isEverythingAnswered = [
+      answer1,
+      answer2,
+      answer3,
+      answer4,
+      answer5
+    ].every(answer => answer && answer.length > 0)
 
     return (
       <section>
@@ -229,7 +233,7 @@ class TeamMemberDetailMeeting extends Component {
                 content={<ul className="dropdown-list">
                           <li>
                             <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
-                              Delete this meeting <i className="material-icons">delete</i>
+                              Cancel meeting <i className="material-icons">delete</i>
                             </button>
                           </li>
                         </ul>}
@@ -237,7 +241,16 @@ class TeamMemberDetailMeeting extends Component {
               />}
           </div>
         </div>}
-
+        {(() => {
+          if (!is_done && !isHost) {
+            if (isEverythingAnswered) {
+              return <p>Feel free to update your answers at any time.</p>
+            }
+            return <p>Answer these questions before the meeting begins to get a head start!</p>
+          } else if (!is_done && isHost) {
+            return <p>You can update your questions at any time.</p>
+          }
+        })()}
         <form
           className="form"
           onSubmit={this.onSubmit}
@@ -260,7 +273,6 @@ class TeamMemberDetailMeeting extends Component {
             ))}
           </ul>
         </form>
-        {!is_done &&
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
@@ -273,13 +285,7 @@ class TeamMemberDetailMeeting extends Component {
             onChange={this.onNoteChange}
             value={this.state.note}
           />
-        </form>}
-        {is_done &&
-        <div className="gutter-large-top">
-          <div className="input-label">Notes</div>
-          <p>{meeting.note}</p>
-        </div>
-        }
+        </form>
         {isHost && !is_done &&
         <button
           type="button"

@@ -97,6 +97,8 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
+  onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment() }, this.submit);
+
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
 
   render = () => {
@@ -113,7 +115,7 @@ class TeamMemberDetail extends Component {
 
     return (
       <Modal closeFunc={this.modalCloseFunc}>
-        <Helmet title={`Meetings with ${member.given_name} ${member.family_name}`} />
+        <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
         <section className="card">
           <header className="card-header">
             <h3>Meetings with {member.given_name} {member.family_name}</h3>
@@ -155,9 +157,18 @@ class TeamMemberDetail extends Component {
               <fieldset>
                 <button
                   type="submit"
-                  className="btn-primary btn-block"
+                  className="btn-primary-inverse btn-block"
                 >
-                  Create meeting
+                  Schedule meeting
+                </button>
+              </fieldset>
+              <fieldset>
+                <button
+                  type="button"
+                  className="btn-primary btn-block"
+                  onClick={this.onStartMeetingNow}
+                >
+                  Start meeting now
                 </button>
               </fieldset>
             </form>
