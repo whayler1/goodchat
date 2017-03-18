@@ -102,4 +102,13 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
   .catch(err => res.sendStatus(500));
 });
 
+router.delete('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res) => {
+  const { id } = req.params;
+  console.log('\n\ndeleting team', id);
+
+  knex('meetings').del().where({ id })
+  .then(() => res.sendStatus(200))
+  .catch((err) => res.sendStatus(500));
+});
+
 module.exports = router;

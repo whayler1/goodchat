@@ -5,8 +5,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
+import Dropdown from '../dropdown/dropdown.component.jsx';
 
-import { updateMeeting, completeMeeting, getMeetings } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 
@@ -74,6 +75,7 @@ class TeamMemberDetailMeeting extends Component {
     completeMeeting: PropTypes.func.isRequired,
     getMeetings: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
+    deleteMeeting: PropTypes.func.isRequired,
     imageUrl: PropTypes.string.isRequired,
     memberImageUrl: PropTypes.string.isRequired,
     memberId: PropTypes.string.isRequired,
@@ -177,6 +179,13 @@ class TeamMemberDetailMeeting extends Component {
 
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
 
+  onDeleteClick = () => {
+    console.log('meeting id', this.props.meeting.id);
+    if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
+      this.props.deleteMeeting(this.props.meeting.id);
+    }
+  }
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl } = this.props;
     const { meeting_date, is_done, finished_at } = meeting;
@@ -213,6 +222,19 @@ class TeamMemberDetailMeeting extends Component {
           <div className="meeting-header-lg-content">
             <h1 className="meeting-header-title">Current meeting</h1>
             <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+            {isHost &&
+              <Dropdown
+                className="team-meeting-header-dropdown-wrapper"
+                label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
+                content={<ul className="dropdown-list">
+                          <li>
+                            <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+                              Delete this meeting <i className="material-icons">delete</i>
+                            </button>
+                          </li>
+                        </ul>}
+                isRightAligned={true}
+              />}
           </div>
         </div>}
 
@@ -281,6 +303,7 @@ export default connect (
     completeMeeting,
     getMeetings,
     updateTeamMembers,
+    deleteMeeting,
     setRedirect
   }
 )(TeamMemberDetailMeeting);

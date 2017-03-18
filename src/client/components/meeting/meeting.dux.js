@@ -7,6 +7,7 @@ const defaultState = {
 
 const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
+const DELETE_MEETING = 'meeting/delete-meeting';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
   .send({ is_done: true, finished_at: moment().format() })
@@ -52,15 +53,25 @@ export const updateMeeting = (meetingId, updateObj) => dispatch => new Promise((
     }
   }));
 
+export const deleteMeeting = id => dispatch => new Promise(
+  (resolve, reject) => superagent.delete(`meeting/${ id }`)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      dispatch({
+        type: DELETE_MEETING,
+        id
+      });
+      resolve();
+    }
+  })
+);
+
 export const setMeetings = meetings => ({
   type: SET_MEETINGS,
   meetings
 });
-
-// export const updateMeeting = (meeting) => ({
-//   type: UPDATE_MEETING,
-//   meeting
-// });
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
@@ -69,17 +80,29 @@ export default function reducer(state = defaultState, action) {
         ...state,
         meetings: action.meetings
       }
-    case UPDATE_MEETING:
+    case UPDATE_MEETING: {
       const index = state.meetings.findIndex(meeting => meeting.id === action.meeting.id);
       const meetings = [
         ...state.meetings.slice(0, index),
         action.meeting,
         ...state.meetings.slice(index + 1)
-      ]
+      ];
       return {
         ...state,
         meetings
-      }
+      };
+    }
+    case DELETE_MEETING: {
+      const index = state.meetings.findIndex(meeting => meeting.id === action.id);
+      const meetings = [
+        ...state.meetings.slice(0, index),
+        ...state.meetings.slice(index + 1)
+      ];
+      return {
+        ...state,
+        meetings
+      };
+    }
     default:
       return state;
   }

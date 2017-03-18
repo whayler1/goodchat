@@ -550,9 +550,24 @@ p.main-team-set-questions-footnote {
 }
 
 .team-card-subheader {
+  position: relative;
   padding: 0 @half-gutter @gutter * 2;
 
   @media(min-width: @tablet-width) {
     padding: 0 @gutter @gutter * 2;
+  }
+}
+
+.team-meeting-header-dropdown-wrapper {
+  &.dropdown-wrapper {
+    position: absolute;
+  }
+  top: 50%;
+  transform: translateY(-50%);
+  right: @gutter;
+  .btn-main-team-more {
+    i {
+      color: white;
+    }
   }
 }
