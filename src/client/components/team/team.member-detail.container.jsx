@@ -30,7 +30,8 @@ class TeamMemberDetail extends Component {
     member: this.props.members.find(member => member.id === this.props.params.memberId),
     now: moment(),
     newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`,
-    newMeetingDateTimeError: ''
+    newMeetingDateTimeError: '',
+    isScheduleMeetingSelected: false
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -103,7 +104,7 @@ class TeamMemberDetail extends Component {
 
   render = () => {
     const { team, meetings, imageUrl, history } = this.props;
-    const { member, newMeetingDateTime, newMeetingDateTimeError } = this.state;
+    const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
       question1,
       question2,
@@ -134,6 +135,7 @@ class TeamMemberDetail extends Component {
               </div>
             </div>
             <form className="form" onSubmit={this.onSubmit}>
+              {isScheduleMeetingSelected && [
               <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
                 <label
                   htmlFor="newMeetingDateTime"
@@ -153,15 +155,21 @@ class TeamMemberDetail extends Component {
                   {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
                 </p>
                 }
-              </fieldset>
+              </fieldset>,
               <fieldset>
                 <button
                   type="submit"
-                  className="btn-primary-inverse btn-block"
-                >
-                  Schedule meeting
-                </button>
-              </fieldset>
+                  className="btn-primary btn-block"
+                >Schedule meeting</button>
+              </fieldset>,
+              <fieldset className="center">
+                <button
+                  type="button"
+                  className="btn-no-style btn-no-style-secondary"
+                  onClick={() => this.setState({ isScheduleMeetingSelected: false })}
+                >Cancel</button>
+              </fieldset>]}
+              {!isScheduleMeetingSelected && [
               <fieldset>
                 <button
                   type="button"
@@ -170,7 +178,17 @@ class TeamMemberDetail extends Component {
                 >
                   Start meeting now
                 </button>
+              </fieldset>,
+              <fieldset>
+                <button
+                  type="button"
+                  className="btn-primary-inverse btn-block"
+                  onClick={() => this.setState({ newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`, isScheduleMeetingSelected: true })}
+                >
+                  Schedule meeting
+                </button>
               </fieldset>
+              ]}
             </form>
           </div>
           }
