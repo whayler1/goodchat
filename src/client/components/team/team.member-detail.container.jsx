@@ -192,23 +192,31 @@ class TeamMemberDetail extends Component {
             </form>
           </div>
           }
+          {!meetings[0].is_done &&
           <ul className="team-card-body-list">
-            {meetings.map(meeting => (
-              <li key={meeting.id}>
-                <TeamMemberDetailMeeting
-                  meeting={meeting}
-                  imageUrl={imageUrl}
-                  memberImageUrl={member.picture}
-                  memberId={member.id}
-                  history={history}
-                />
-              </li>
-            ))}
-          </ul>
-          <footer className="card-padded-content">
-            <Link to={`teams/${team.id}`} className="btn-secondary btn-block">Close</Link>
-          </footer>
+            <li key={meetings[0].id}>
+              <TeamMemberDetailMeeting
+                meeting={meetings[0]}
+                imageUrl={imageUrl}
+                memberImageUrl={member.picture}
+                memberId={member.id}
+                history={history}
+              />
+            </li>
+          </ul>}
         </section>
+        {meetings.length > 1 && <h3 className="meeting-subhead">Previous meetings</h3>}
+        {meetings.filter(meeting => meeting.is_done).map(meeting => (
+        <TeamMemberDetailMeeting
+          key={meeting.id}
+          className="card meeting-card"
+          meeting={meeting}
+          imageUrl={imageUrl}
+          memberImageUrl={member.picture}
+          memberId={member.id}
+          history={history}
+        />
+        ))}
       </Modal>
     );
   }

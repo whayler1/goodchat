@@ -81,6 +81,7 @@ class TeamMemberDetailMeeting extends Component {
     memberId: PropTypes.string.isRequired,
     setRedirect: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+    className: PropTypes.string
   }
 
   state = {
@@ -183,7 +184,7 @@ class TeamMemberDetailMeeting extends Component {
   }
 
   render = () => {
-    const { meeting, imageUrl, memberImageUrl } = this.props;
+    const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, } = this.state;
 
@@ -202,7 +203,7 @@ class TeamMemberDetailMeeting extends Component {
     ].every(answer => answer && answer.length > 0)
 
     return (
-      <section>
+      <section className={className ? className : ''}>
 
         {is_done &&
         <div className="meeting-header meeting-header-finished">
