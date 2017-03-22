@@ -198,16 +198,14 @@ class Team extends Component {
           <Helmet
             title={`${this.state.name} | Good Chat`}
           />
-          <div className="container">
-            <div className="main-team-header">
-              <h1>{this.state.name}</h1>
-              {is_owner &&
-              <Dropdown
-                label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
-                content={this.getDropdownContent()}
-                isRightAligned={true}
-              />}
-            </div>
+          <div className="main-team-header">
+            <h1>{this.state.name}</h1>
+            {is_owner &&
+            <Dropdown
+              label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
+              content={this.getDropdownContent()}
+              isRightAligned={true}
+            />}
           </div>
           <div className="main-team-container">
 

@@ -40,39 +40,37 @@ class Navbar extends Component {
     return (
       <header className="header">
         <nav className="header-nav">
-          <div className="container">
-            {(() => {
-              if (!isLoggedIn) {
-                return;
-              }
-              if (shouldShowNav) {
-                return <button className="btn-no-style header-nav-mobile-ui"
-                  onClick={this.props.hideNav}>
-                  <i className="material-icons">close</i>
-                </button>;
-              }
+          {(() => {
+            if (!isLoggedIn) {
+              return;
+            }
+            if (shouldShowNav) {
               return <button className="btn-no-style header-nav-mobile-ui"
-                onClick={this.props.showNav}>
-                <i className="material-icons">menu</i>
+                onClick={this.props.hideNav}>
+                <i className="material-icons">close</i>
               </button>;
-            })()}
-            {shouldShowHeroLink && !isLoggedIn &&
-            <Link
-              to="/"
-              onClick={this.props.hideNav}
-              className="header-home-anchor">
-              Good Chat
-            </Link>}
-            {shouldShowHeroLink && isLoggedIn &&
-            <Link
-              to="/teams"
-              onClick={this.props.hideNav}
-              className="header-home-anchor">
-              Good Chat
-            </Link>}
-            {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
-            {!this.props.isLoggedIn && <button className="btn-no-style header-user-ui" onClick={this.props.login}>Login</button>}
-          </div>
+            }
+            return <button className="btn-no-style header-nav-mobile-ui"
+              onClick={this.props.showNav}>
+              <i className="material-icons">menu</i>
+            </button>;
+          })()}
+          {shouldShowHeroLink && !isLoggedIn &&
+          <Link
+            to="/"
+            onClick={this.props.hideNav}
+            className="header-home-anchor">
+            Good Chat
+          </Link>}
+          {shouldShowHeroLink && isLoggedIn &&
+          <Link
+            to="/teams"
+            onClick={this.props.hideNav}
+            className="header-home-anchor">
+            Good Chat
+          </Link>}
+          {this.props.isLoggedIn && <Link to="/user" className="header-user-ui">{givenName}</Link>}
+          {!this.props.isLoggedIn && <button className="btn-no-style header-user-ui" onClick={this.props.login}>Login</button>}
         </nav>
         {shouldShowNav && <a className="header-app-nav-scrim" onClick={this.props.hideNav} />}
         <nav className={`header-app-nav${ shouldShowNav ? ' header-app-nav-show': '' }`}>
