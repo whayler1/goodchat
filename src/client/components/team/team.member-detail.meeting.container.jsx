@@ -287,6 +287,7 @@ class TeamMemberDetailMeeting extends Component {
             className="form-control"
             id="note"
             name="note"
+            rows={3}
             placeholder="Write your private meeting notes here. Only you can see these."
             onChange={this.onNoteChange}
             value={this.state.note}
