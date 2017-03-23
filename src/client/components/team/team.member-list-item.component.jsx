@@ -22,9 +22,19 @@ export default function TeamMemberListItem({
         <div className="team-member-ui-content-info">
           {(() => {
             if (nextMeetingDate) {
-              return <span>{moment(nextMeetingDate).fromNow(true)} <i className="material-icons">timer</i></span>;
+              const now = moment();
+              const nextMeetingDateMoment = moment(nextMeetingDate);
+              // const nextMeetingDateMoment = moment().add(1, 'minutes');
+
+              if (nextMeetingDateMoment.isAfter(now)) {
+                return <span>{nextMeetingDateMoment.fromNow(true)} <i className="material-icons">alarm</i></span>;
+              }
+              if (nextMeetingDateMoment.isBefore(now) && now.diff(nextMeetingDateMoment, 'h') > 2) {
+                return <span className="danger-text">{nextMeetingDateMoment.fromNow()} <i className="material-icons">alarm_off</i></span>;
+              }
+              return <span className="success-text">Now <i className="material-icons">alarm_on</i></span>;
             } else {
-              return <i className="material-icons">timer_off</i>;
+              return <span>Shedule <i className="material-icons">alarm_add</i></span>;
             }
           })()}
         </div>
