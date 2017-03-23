@@ -100,7 +100,12 @@ class TeamMemberDetailMeeting extends Component {
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
     .then(
-      () => this.props.getMeetings(this.props.teamId, this.props.memberId),
+      () => {
+        Promise.all([
+          this.props.getMeetings(this.props.teamId, this.props.memberId),
+          this.props.updateTeamMembers(this.props.teamId)
+        ]).then(() => this.props.history.push(`/teams/${this.props.teamId}`))
+      },
       (err) => {
         if (err.status === 401) {
           // make user login
@@ -179,7 +184,7 @@ class TeamMemberDetailMeeting extends Component {
 
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
-      this.props.deleteMeeting(this.props.meeting.id);
+      this.props.deleteMeeting(this.props.meeting.id).then(() => this.props.updateTeamMembers(this.props.teamId));
     }
   }
 

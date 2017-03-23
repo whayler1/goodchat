@@ -24,7 +24,6 @@ export default function TeamMemberListItem({
             if (nextMeetingDate) {
               const now = moment();
               const nextMeetingDateMoment = moment(nextMeetingDate);
-              // const nextMeetingDateMoment = moment().add(1, 'minutes');
 
               if (nextMeetingDateMoment.isAfter(now)) {
                 return <span>{nextMeetingDateMoment.fromNow(true)} <i className="material-icons">alarm</i></span>;
