@@ -112,7 +112,7 @@ class TeamMemberDetail extends Component {
       question4,
       question5,
     } = team;
-    const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings.length > 0 && meetings[0].is_done);
+    const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
 
     return (
       <Modal closeFunc={this.modalCloseFunc}>

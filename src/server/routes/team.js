@@ -307,7 +307,7 @@ router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHel
       .first()
       .then(meeting => {
         console.log('\n-----meeting', meeting);
-        if (meeting && meeting.next_meeting_date) {
+        if (meeting && meeting.meeting_date) {
           member.next_meeting_date = meeting.meeting_date;
         }
         resolve();
