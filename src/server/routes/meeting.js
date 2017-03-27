@@ -5,6 +5,40 @@ const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 const uuid = require('node-uuid');
 const _ = require('lodash');
+const nodemailer = require('nodemailer');
+
+const sendMeetingAnsweredEmail = (guestId, hostId, teamId) => {
+  // create reusable transporter object using the default SMTP transport
+
+  knex('users').where({ id: hostId }).orWhere({ id: guestId })
+  .then(users => {
+    const host = users.find(user => user.id === hostId);
+    const guest = users.find(user => user.id === guestId);
+    const hostName = `${host.given_name} ${host.family_name}`;
+    const guestName = `${guest.given_name} ${guest.family_name}`
+
+    const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
+
+    const link = `http://www.goodchat.io/#/teams/${teamId}/members/${guestId}`;
+    const mailOptions = {
+      from: '"Justin at Good Chat" <justin@goodchat.io>',
+      to: host.email,
+      subject: `${guestName} answered your questions on Good Chat.`,
+      text: `${guestName} has finished answering your questions on Good Chat. Go to ${link} to see the meeting.`,
+      html: `<p>${guestName} has finished answering your questions on Good Chat. <a href="${link}">Click here</a> or go to ${link} to see the meeting.</p>`
+    };
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error){
+        console.log(error);
+      } else {
+        console.log('Message sent: ' + info.response);
+      }
+      transporter.close();
+    });
+  })
+  .catch(err => console.log('\n\nerr sending meeting email', err))
+};
 
 router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
   const hostId = req.user.id;
@@ -87,6 +121,7 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'answer4',
       'answer5',
       'is_done',
+      'are_answers_ready',
       'meeting_date',
       'finished_at'
     ),
@@ -98,7 +133,14 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
   knex('meetings').where({ id })
   .update(updateObj)
   .returning('*')
-  .then(meeting => res.json({ meeting: meeting[0] }))
+  .then(meetings => {
+    const meeting = meetings[0];
+    console.log('\n\n --> meeting', meeting);
+    if (updateObj.are_answers_ready) {
+      sendMeetingAnsweredEmail(meeting.user_id, meeting.host_id, meeting.team_id);
+    }
+    res.json({ meeting: meeting });
+  })
   .catch(err => res.sendStatus(500));
 });
 

@@ -8,7 +8,7 @@ const membershipHelpers = require('../membership/_helpers');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
 
-const sendMeetingEmail = (guestId, hostId, teamId) => {
+const sendMeetingEmail = (guestId, hostId, teamId, isAnsweredEmail) => {
   // create reusable transporter object using the default SMTP transport
 
   knex('users').where({ id: hostId }).orWhere({ id: guestId })

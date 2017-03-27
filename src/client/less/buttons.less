@@ -184,4 +184,9 @@ a.btn-block {
     color: @link-color-active;
     fill: @link-color-active;
   }
+
+  &[disabled] {
+    color: mix(@link-color, @bluegrey-50, 30%);
+    border-color: mix(@link-color, @bluegrey-50, 30%);
+  }
 }

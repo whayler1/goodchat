@@ -95,7 +95,8 @@ class TeamMemberDetailMeeting extends Component {
     answer3: this.props.meeting.answer3,
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5,
-    note: this.props.meeting.note
+    note: this.props.meeting.note,
+    isAnswerReadyInFlight: false
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -188,10 +189,13 @@ class TeamMemberDetailMeeting extends Component {
     }
   }
 
+  onAnswersReady = () => this.setState({ isAnswerReadyInFlight: true }, () =>
+    this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }));
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
-    const { meeting_date, is_done, finished_at } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, } = this.state;
+    const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -279,15 +283,25 @@ class TeamMemberDetailMeeting extends Component {
             ))}
           </ul>
         </form>
+        {!isHost && !is_done && !are_answers_ready &&
+        <button
+          type="button"
+          className="btn-primary-inverse btn-block gutter-large-top"
+          onClick={this.onAnswersReady}
+          disabled={isAnswerReadyInFlight}
+        >
+          My answers are ready
+        </button>}
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
-          <label htmlFor="note" className="input-label">Notes</label>
+          <label htmlFor="note" className="input-label">Take meeting notes here</label>
           <TextareaAutosize
             className="form-control"
             id="note"
             name="note"
             rows={3}
+            maxLength={1500}
             placeholder="Write your private meeting notes here. Only you can see these."
             onChange={this.onNoteChange}
             value={this.state.note}
