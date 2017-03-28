@@ -117,9 +117,14 @@ class Routes extends Component {
     }
     callback();
   }
+
+  // JW: This debounce is to account for the double update on async onEnter.
+  // This is not good, ha.
+  onRouterUpdate = _.debounce(() => analytics.page(), 500);
+
   render() {
     return (
-      <Router history={hashHistory}>
+      <Router onUpdate={this.onRouterUpdate} history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={Home}/>
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>

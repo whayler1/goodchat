@@ -33,6 +33,12 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
         googleId: google_id,
         imageUrl: picture
       });
+      analytics.identify(id, {
+        name: `${given_name} ${family_name}`,
+        firstName: given_name,
+        lastName: family_name,
+        email
+      });
     },
     err => alert('error with google auth on server')
   );
