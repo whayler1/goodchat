@@ -202,6 +202,19 @@ class TeamMemberDetailMeeting extends Component {
       teamId: this.props.teamId
     })));
 
+  getLiveMeetingTitle = () => {
+    const meetingDate = moment(this.props.meeting.meeting_date);
+    const now = moment();
+
+    if (now.isBefore(meetingDate, 'day') || now.isAfter(meetingDate, 'day')) {
+      return meetingDate.fromNow();
+    }
+    if (now.isBefore(meetingDate) || now.isAfter(meetingDate.add(2, 'hour'))) {
+      return 'Todays meeting';
+    }
+    return 'Current meeting';
+  };
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
@@ -209,6 +222,11 @@ class TeamMemberDetailMeeting extends Component {
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
+
+    let isOverdue = false;
+    if (!is_done) {
+      isOverdue = moment().isAfter(moment(meeting_date).add(2, 'hour'));
+    }
 
     const hostImageUrl = isHost ? imageUrl : memberImageUrl;
     const userImageUrl = isHost ? memberImageUrl : imageUrl;
@@ -242,9 +260,9 @@ class TeamMemberDetailMeeting extends Component {
         </div>}
         {!is_done &&
         <div className="meeting-header">
-          <i className="material-icons meeting-header-lg-icon">date_range</i>
+          <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
           <div className="meeting-header-lg-content">
-            <h1 className="meeting-header-title">Current meeting</h1>
+            <h1 className="meeting-header-title">{ this.getLiveMeetingTitle() }</h1>
             <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
             {isHost &&
               <Dropdown
@@ -320,7 +338,7 @@ class TeamMemberDetailMeeting extends Component {
         {isHost && !is_done &&
         <button
           type="button"
-          className="btn-primary-inverse btn-block gutter-large-top"
+          className="btn-primary btn-block gutter-large-top"
           onClick={this.onCompleteMeeting}
         >
           Complete meeting
