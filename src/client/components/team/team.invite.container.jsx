@@ -114,6 +114,10 @@ class TeamInvite extends Component {
           console.log('invite success!', res);
           superagent.get(`team/${this.props.team.id}/invite`).then(
             res => {
+              analytics.track('send-invite', {
+                category: 'team',
+                teamId: this.props.team.id
+              })
               this.props.setInvites(res.body.invites);
               this.setState({ isInFlight: false, email: '', emailError: '' });
             },

@@ -16,6 +16,10 @@ export const completeMeeting = meetingId => dispatch => new Promise((resolve, re
       reject(res);
     } else {
       const { meeting } = res.body;
+      analytics.track('complete-meeting', {
+        category: 'meeting',
+        meetingId
+      })
       resolve(meeting);
     }
   }));

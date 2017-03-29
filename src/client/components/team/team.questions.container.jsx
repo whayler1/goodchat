@@ -51,8 +51,9 @@ class TeamQuestions extends Component {
       question4,
       question5
     } = this.state;
+    const teamId = this.props.team.id;
 
-    superagent.put(`team/${this.props.team.id}`)
+    superagent.put(`team/${teamId}`)
       .send({
         question1,
         question2,
@@ -64,6 +65,10 @@ class TeamQuestions extends Component {
         if (err) {
           return console.log('%cerr putting team', 'background:pink', res);
         }
+        analytics.track('questions-set', {
+          category: 'team',
+          teamId
+        });
         console.log('%csuccess updating team!', 'background:yellowgreen', res);
         this.props.setTeam(res.body.team);
       });
@@ -77,7 +82,6 @@ class TeamQuestions extends Component {
         if (err) {
           return console.log('%cerr putting team', 'background:pink', res);
         }
-        console.log('%csuccess updating team!', 'background:yellowgreen', res);
         this.props.setTeam(res.body.team);
       });
   }, 750);

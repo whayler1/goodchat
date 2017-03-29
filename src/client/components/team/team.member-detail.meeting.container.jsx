@@ -186,11 +186,21 @@ class TeamMemberDetailMeeting extends Component {
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
       this.props.deleteMeeting(this.props.meeting.id).then(() => this.props.updateTeamMembers(this.props.teamId));
+      analytics.track('delete-meeting', {
+        category: 'meeting',
+        meetingId: this.props.meeting.id,
+        teamId: this.props.teamId
+      })
     }
   }
 
   onAnswersReady = () => this.setState({ isAnswerReadyInFlight: true }, () =>
-    this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }));
+    this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }).then(() =>
+    analytics.track('answers-ready', {
+      category: 'meeting',
+      meetingId: this.props.meeting.id,
+      teamId: this.props.teamId
+    })));
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;

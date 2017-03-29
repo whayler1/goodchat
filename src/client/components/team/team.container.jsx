@@ -49,6 +49,10 @@ class Team extends Component {
       .then(
         res => {
           console.log('delete success', res);
+          analytics.track('delete-team', {
+            category: 'team',
+            teamId: this.props.params.teamId
+          });
           this.props.history.push(`teams`);
         },
         err => console.log('error deleting team', err)
@@ -67,6 +71,10 @@ class Team extends Component {
       .then(
         res => {
           console.log('success updating', res);
+          analytics.track('set-team-name', {
+            category: 'team',
+            teamId: this.props.team.id
+          });
           this.props.setTeam(res.body.team);
           this.setState({
             isInFlight: false,

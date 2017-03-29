@@ -15,6 +15,10 @@ class Teams extends Component {
     superagent.post('team').then(
       res => {
         console.log('on create team', this.props);
+        analytics.track('create-team', {
+          category: 'team',
+          teamId: res.body.team.id
+        });
         this.props.history.push(`teams/${res.body.team.id}`);
       },
       err => {

@@ -91,14 +91,26 @@ class TeamMemberDetail extends Component {
     e.preventDefault();
 
     this.validate().then(
-      () => this.submit(),
+      () => {
+        analytics.track('schedule-meeting', {
+          category: 'meeting',
+          teamId: this.props.team.id
+        });
+        this.submit()
+      },
       () => console.log('rejected validation', this.state)
     );
 
     return false;
   }
 
-  onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment() }, this.submit);
+  onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment() }, () => {
+    analytics.track('start-meeting-now', {
+      category: 'meeting',
+      teamId: this.props.team.id
+    });
+    this.submit();
+  });
 
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
 
