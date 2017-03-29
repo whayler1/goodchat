@@ -6,6 +6,7 @@ const indexController = require('../controllers/index');
 router.get('/', function (req, res, next) {
   const renderObject = {};
   renderObject.googleClientId = process.env.GOOGLE_CLIENT_ID;
+  renderObject.segmentId = process.env.SEGMENT_ID
   res.render('index', renderObject);
 });
 

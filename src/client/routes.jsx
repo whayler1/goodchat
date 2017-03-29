@@ -120,7 +120,7 @@ class Routes extends Component {
 
   // JW: This debounce is to account for the double update on async onEnter.
   // This is not good, ha.
-  onRouterUpdate = _.debounce(() => analytics.page(), 500);
+  onRouterUpdate = _.debounce(() => analytics.page(window.location.hash), 500);
 
   render() {
     return (
