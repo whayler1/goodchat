@@ -219,7 +219,7 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   .then(membership => {
 
     if (!membership) {
-      res.sendStatus(403);
+      res.status(403).json({msg: 'not-a-member'});
     } else {
       knex('memberships').where({ user_id: userId, team_id: id })
       .join('teams', {

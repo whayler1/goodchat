@@ -10,6 +10,7 @@ import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
 import Team from './components/team/team.container.jsx';
+import TeamError from './components/team/team.error.container.jsx';
 import TeamInvite from './components/team/team.invite.container.jsx';
 import TeamMemberDetail from './components/team/team.member-detail.container.jsx';
 import InviteAccept from './components/invite/invite.accept.container.jsx';
@@ -47,6 +48,9 @@ class Routes extends Component {
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${teamId}`);
         replace('/');
+        callback();
+      } else if (err.status === 403) {
+        replace(`/teams-error/not-a-member`);
         callback();
       } else {
         replace('/teams');
@@ -145,6 +149,7 @@ class Routes extends Component {
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
             <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
           </Route>
+          <Route path="/teams-error/:reason" component={TeamError}/>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
           <Route path="/user" onEnter={this.onUserEnter} component={User}/>
         </Route>

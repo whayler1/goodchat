@@ -206,8 +206,11 @@ class TeamMemberDetailMeeting extends Component {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
 
-    if (now.isBefore(meetingDate, 'day') || now.isAfter(meetingDate, 'day')) {
-      return meetingDate.fromNow();
+    if (now.isBefore(meetingDate, 'day')) {
+      return `Meeting ${meetingDate.fromNow()}`;
+    }
+    if (now.isAfter(meetingDate, 'day')) {
+      return 'Overdue meeting';
     }
     if (now.isBefore(meetingDate) || now.isAfter(meetingDate.add(2, 'hour'))) {
       return 'Todays meeting';
