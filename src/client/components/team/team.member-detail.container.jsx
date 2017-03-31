@@ -59,6 +59,7 @@ class TeamMemberDetail extends Component {
     });
 
   submit = () => {
+    const { team } = this.props;
     const {
       question1,
       question2,
@@ -68,15 +69,20 @@ class TeamMemberDetail extends Component {
       newMeetingDateTime
     } = this.state;
 
+    const sendObj = { meeting_date: moment(newMeetingDateTime).toISOString() }
+
+    if (team.is_admin || team.is_owner) {
+      Object.assign(sendObj, {
+        question1: question1 || questionDefaults[0][0],
+        question2: question2 || questionDefaults[1][0],
+        question3: question3 || questionDefaults[2][0],
+        question4: question4 || questionDefaults[3][0],
+        question5: question5 || questionDefaults[4][0]
+      });
+    }
+
     superagent.post(`team/${this.props.team.id}/meeting/${this.state.member.id}`)
-    .send({
-      question1: question1 || questionDefaults[0][0],
-      question2: question2 || questionDefaults[1][0],
-      question3: question3 || questionDefaults[2][0],
-      question4: question4 || questionDefaults[3][0],
-      question5: question5 || questionDefaults[4][0],
-      meeting_date: moment(newMeetingDateTime).toISOString()
-    })
+    .send(sendObj)
     .end((err, res) => {
       if (err) {
         console.log('error creating new meeting', res);
