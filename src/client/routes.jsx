@@ -92,6 +92,13 @@ class Routes extends Component {
     );
   };
 
+  onTeamErrorEnter = (nextState, replace, callback) => {
+    if (!this.props.isLoggedIn) {
+      replace('/');
+    }
+    callback();
+  }
+
   onInviteAcceptEnter = (nextState, replace, callback) => {
     console.log('invite accept enter', 'background:yellow');
     superagent.get(`invite/${nextState.params.inviteId}`).then(
@@ -149,7 +156,7 @@ class Routes extends Component {
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
             <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
           </Route>
-          <Route path="/teams-error/:reason" component={TeamError}/>
+          <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
           <Route path="/user" onEnter={this.onUserEnter} component={User}/>
         </Route>

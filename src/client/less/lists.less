@@ -51,3 +51,34 @@
     }
   }
 }
+
+.stacked-to-inline-list {
+  margin: 0;
+  padding: 0;
+
+  >li {
+    list-style: none;
+    margin-top: @gutter;
+
+    &:first-child {
+      margin-top: 0;
+    }
+    button {
+      width: 100%;
+    }
+
+    @media(min-width: @tablet-width) {
+      display: inline-block;
+      margin-top: 0;
+      margin-left: @gutter;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      button {
+        width: auto
+      }
+    }
+  }
+}

@@ -65,6 +65,18 @@ a, button {
   box-sizing: border-box;
 }
 
+a {
+  color: @link-color;
+
+  &:hover,
+  &:focus {
+    color: @link-color-hover;
+  }
+  &:active {
+    color: @link-color-active;
+  }
+}
+
 input, textarea, select {
   font-family: @font-family;
   font-size: 1rem;
@@ -104,4 +116,50 @@ textarea {
 .container {
   max-width: @netbook-width;
   margin: 0 auto;
+}
+
+.container-slim {
+  margin-top: @gutter;
+  max-width: 500px;
+
+  h1 {
+    color: @bluegrey-600;
+    line-height: 1.3em;
+  }
+
+  p {
+    font-size: 1.2em;
+    a {
+      color: @bluegrey-400;
+      font-weight: 300;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        color: @link-color-hover;
+      }
+      &:active {
+        color: @link-color-active;
+      }
+    }
+  }
+
+  @media( min-width: @tablet-width ) {
+    margin-top: @gutter * 3;
+
+    h1 {
+      font-size: 3em;
+    }
+
+    p {
+      font-size: 1.5rem;
+      a {
+        font-size: 1.5rem;
+      }
+    }
+
+    .invite-accept-login-btn {
+      margin-top: @gutter + 3;
+    }
+  }
 }
