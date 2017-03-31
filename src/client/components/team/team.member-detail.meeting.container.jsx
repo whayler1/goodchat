@@ -16,6 +16,7 @@ function QuestionAnswer({
   question,
   answer,
   onChange,
+  onDeleteQA,
   isUser,
   isHost,
   isDone,
@@ -202,6 +203,14 @@ class TeamMemberDetailMeeting extends Component {
       teamId: this.props.teamId
     })));
 
+  onDeleteQA = index => {
+    console.log('onDeleteQA', index);
+    this.props.updateMeeting(this.props.meeting.id, { [`question${index}`]: null }).then(
+      res => console.log('delete note success', res),
+      err => console.log('delete note fail', err)
+    );
+  }
+
   getLiveMeetingTitle = () => {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
@@ -304,6 +313,7 @@ class TeamMemberDetailMeeting extends Component {
                   question={this.state[`question${n + 1}`]}
                   answer={this.state[`answer${n + 1}`]}
                   onChange={this.onChange}
+                  onDeleteQA={this.onDeleteQA}
                   isUser={isUser}
                   isHost={isHost}
                   isDone={is_done}
