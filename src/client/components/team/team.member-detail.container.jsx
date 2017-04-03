@@ -79,6 +79,8 @@ class TeamMemberDetail extends Component {
         question4: question4 || questionDefaults[3][0],
         question5: question5 || questionDefaults[4][0]
       });
+    } else {
+      Object.assign(sendObj, { qa_length: 1 });
     }
 
     superagent.post(`team/${this.props.team.id}/meeting/${this.state.member.id}`)

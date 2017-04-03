@@ -137,7 +137,8 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
     answer4,
     answer5,
     is_done,
-    meeting_date
+    meeting_date,
+    qa_length
   } = req.body;
 
   const host_id = req.user.id;
@@ -163,7 +164,8 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
     answer4,
     answer5,
     is_done,
-    meeting_date
+    meeting_date,
+    qa_length
   },
   _.isNil);
 

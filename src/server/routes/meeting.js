@@ -51,7 +51,8 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
     question3,
     question4,
     question5,
-    meeting_date
+    meeting_date,
+    qa_length
   } = req.params;
 
   if (!(teamId || userId)) {
@@ -66,6 +67,7 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
       question3,
       question4,
       question5,
+      qa_length,
       meeting_date: meetingDate
     })
     .returning('*')

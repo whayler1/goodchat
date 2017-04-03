@@ -366,7 +366,7 @@ class TeamMemberDetailMeeting extends Component {
         >
           <ul className="team-member-detail-qa-list">
             {_(qa_length || 5).times(n => (
-              <li key={n}>
+              <li key={n} className={(!isHost && n > 0) ? 'gutter-top' : ''}>
                 <QuestionAnswer
                   index={n + 1}
                   question={this.state[`question${n + 1}`]}
