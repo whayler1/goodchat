@@ -63,6 +63,18 @@ function QuestionAnswer({
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
+      {isHost && !isDone &&
+      <ul className="pull-right inline-list meeting-qa-foot">
+        <li>
+          <button
+            className="btn-no-style"
+            type="button"
+            onClick={() => onDeleteQA(index)}
+          >
+            Delete <i className="material-icons">close</i>
+          </button>
+        </li>
+      </ul>}
     </div>
   );
 }
@@ -204,9 +216,27 @@ class TeamMemberDetailMeeting extends Component {
     })));
 
   onDeleteQA = index => {
-    console.log('onDeleteQA', index);
-    this.props.updateMeeting(this.props.meeting.id, { [`question${index}`]: null }).then(
-      res => console.log('delete note success', res),
+    const qas = [1,2,3,4,5].map(n => ({
+      q: this.state[`question${n}`],
+      a: this.state[`answer${n}`]
+    }));
+    qas.splice(index - 1, 1);
+    qas.push({
+      q: null,
+      a: null
+    });
+    const updateObj = {}
+    qas.forEach((obj, i) => Object.assign(updateObj, {
+      [`question${i + 1}`]: obj.q,
+      [`answer${i + 1}`]: obj.a
+    }));
+    console.log('updateObj:', updateObj);
+
+    this.props.updateMeeting(this.props.meeting.id, updateObj).then(
+      res => {
+        console.log('delete note success', res);
+        this.setState(updateObj);
+      },
       err => console.log('delete note fail', err)
     );
   }
