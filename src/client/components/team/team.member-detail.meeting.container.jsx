@@ -21,7 +21,8 @@ function QuestionAnswer({
   isHost,
   isDone,
   hostImageUrl,
-  userImageUrl
+  userImageUrl,
+  qaLength
 }) {
   return (
     <div>
@@ -63,7 +64,7 @@ function QuestionAnswer({
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
-      {isHost && !isDone &&
+      {isHost && !isDone && qaLength > 1 &&
       <ul className="pull-right inline-list meeting-qa-foot">
         <li>
           <button
@@ -109,7 +110,8 @@ class TeamMemberDetailMeeting extends Component {
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
-    isAnswerReadyInFlight: false
+    isAnswerReadyInFlight: false,
+    isUpdateInFlight: null
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -154,7 +156,9 @@ class TeamMemberDetailMeeting extends Component {
       ));
     }
 
-    this.props.updateMeeting(this.props.meeting.id, sendObj).catch(err => {
+    this.props.updateMeeting(this.props.meeting.id, sendObj).then(
+      res => this.setState({ isUpdateInFlight: false })
+    ).catch(err => {
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
         this.props.history.push('/');
@@ -164,15 +168,15 @@ class TeamMemberDetailMeeting extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    this.setState({ isUpdateInFlight: true });
     console.log('onSubmit');
     this.submit();
     return false;
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value }, this.submit);
+  onChange = e => this.setState({ [e.target.name]: e.target.value, isUpdateInFlight: true }, this.submit);
 
   noteSubmit = _.debounce(() => {
-    console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
     superagent.put(`note/${this.props.meeting.note_id}`)
     .send({
       note: this.state.note
@@ -182,6 +186,7 @@ class TeamMemberDetailMeeting extends Component {
         console.log('error updating note', res);
         return;
       }
+      this.setState({ isNoteUpdateInFlight: false });
       console.log('notes updated', res);
     });
   }, 750);
@@ -194,7 +199,7 @@ class TeamMemberDetailMeeting extends Component {
     return false;
   }
 
-  onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
+  onNoteChange = e => this.setState({ [e.target.name]: e.target.value, isNoteUpdateInFlight: true }, this.noteSubmit)
 
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
@@ -216,25 +221,30 @@ class TeamMemberDetailMeeting extends Component {
     })));
 
   onDeleteQA = index => {
+    let { qa_length } = this.props.meeting;
+    if (typeof qa_length === 'number') {
+      qa_length--;
+    } else {
+      qa_length = 4;
+    }
+    const updateObj = {};
+
     const qas = [1,2,3,4,5].map(n => ({
       q: this.state[`question${n}`],
       a: this.state[`answer${n}`]
     }));
     qas.splice(index - 1, 1);
     qas.push({
-      q: null,
-      a: null
+      q: '',
+      a: ''
     });
-    const updateObj = {}
     qas.forEach((obj, i) => Object.assign(updateObj, {
       [`question${i + 1}`]: obj.q,
       [`answer${i + 1}`]: obj.a
     }));
-    console.log('updateObj:', updateObj);
 
-    this.props.updateMeeting(this.props.meeting.id, updateObj).then(
+    this.props.updateMeeting(this.props.meeting.id, Object.assign({}, updateObj, { qa_length })).then(
       res => {
-        console.log('delete note success', res);
         this.setState(updateObj);
       },
       err => console.log('delete note fail', err)
@@ -259,8 +269,8 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
-    const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight } = this.state;
+    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length } = meeting;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight, isNoteUpdateInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -322,21 +332,35 @@ class TeamMemberDetailMeeting extends Component {
           </div>
         </div>}
         {(() => {
-          if (!is_done && !isHost) {
-            if (isEverythingAnswered) {
-              return <p>Feel free to update your answers at any time.</p>
+          if (!is_done) {
+            if (!isHost) {
+              if (isEverythingAnswered) {
+                return <p>Feel free to update your answers at any time.</p>
+              }
+              return <p>Answer these questions before the meeting begins to get a head start!</p>
+            } else {
+              return <p>You can update your questions at any time.</p>
             }
-            return <p>Answer these questions before the meeting begins to get a head start!</p>
-          } else if (!is_done && isHost) {
-            return <p>You can update your questions at any time.</p>
           }
         })()}
+        <span className="input-label">
+          Questions &amp; Answers
+          {(() => {
+            if (typeof isUpdateInFlight === 'boolean') {
+              if (isUpdateInFlight) {
+                return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
+              } else {
+                return <span className="muted-text">&nbsp;&nbsp;Saved</span>
+              }
+            }
+          })()}
+        </span>
         <form
           className="form"
           onSubmit={this.onSubmit}
         >
           <ul className="team-member-detail-qa-list">
-            {_(5).times(n => (
+            {_(qa_length || 5).times(n => (
               <li key={n}>
                 <QuestionAnswer
                   index={n + 1}
@@ -349,6 +373,7 @@ class TeamMemberDetailMeeting extends Component {
                   isDone={is_done}
                   hostImageUrl={hostImageUrl}
                   userImageUrl={userImageUrl}
+                  qaLength={qa_length}
                 />
               </li>
             ))}
@@ -366,7 +391,18 @@ class TeamMemberDetailMeeting extends Component {
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
-          <label htmlFor="note" className="input-label">Take meeting notes here</label>
+          <label htmlFor="note" className="input-label">
+            Meeting notes
+            {(() => {
+              if (typeof isNoteUpdateInFlight === 'boolean') {
+                if (isNoteUpdateInFlight) {
+                  return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
+                } else {
+                  return <span className="muted-text">&nbsp;&nbsp;Saved</span>
+                }
+              }
+            })()}
+          </label>
           <TextareaAutosize
             className="form-control"
             id="note"

@@ -88,7 +88,8 @@ export default function reducer(state = defaultState, action) {
       const index = state.meetings.findIndex(meeting => meeting.id === action.meeting.id);
       const meetings = [
         ...state.meetings.slice(0, index),
-        action.meeting,
+        // JW: BOO BOO :/ Using object assign here since some items like `note_id` don't always come with the meeting object
+        Object.assign({}, state.meetings[index], action.meeting),
         ...state.meetings.slice(index + 1)
       ];
       return {

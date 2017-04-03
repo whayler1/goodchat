@@ -123,7 +123,8 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'is_done',
       'are_answers_ready',
       'meeting_date',
-      'finished_at'
+      'finished_at',
+      'qa_length'
     ),
     _.isUndefined
   ), { updated_at: knex.fn.now() });
