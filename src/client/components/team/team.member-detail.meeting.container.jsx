@@ -25,7 +25,7 @@ function QuestionAnswer({
   qaLength
 }) {
   return (
-    <div>
+    <div className="clearfix">
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${hostImageUrl})`}}
@@ -251,6 +251,10 @@ class TeamMemberDetailMeeting extends Component {
     );
   }
 
+  onAddQAClick = () => this.setState({ isAddQAInFlight: true }, () =>
+    this.props.updateMeeting(this.props.meeting.id, { qa_length: this.props.meeting.qa_length + 1 })
+    .then(res => this.setState({ isAddQAInFlight: false })));
+
   getLiveMeetingTitle = () => {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
@@ -270,7 +274,8 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight, isNoteUpdateInFlight } = this.state;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
+      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -379,6 +384,17 @@ class TeamMemberDetailMeeting extends Component {
             ))}
           </ul>
         </form>
+        {isHost && !is_done && qa_length && qa_length < 5 &&
+        <div className="align-right">
+          <button
+            type="button"
+            className="btn-no-style team-member-detail-add-qa-btn"
+            onClick={this.onAddQAClick}
+            disabled={isAddQAInFlight}
+          >
+            Add question <i className="material-icons">add_circle_outline</i>
+          </button>
+        </div>}
         {!isHost && !is_done && !are_answers_ready &&
         <button
           type="button"
