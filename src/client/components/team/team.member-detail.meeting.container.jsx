@@ -163,7 +163,6 @@ class TeamMemberDetailMeeting extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value, isUpdateInFlight: true }, this.submit);
 
   noteSubmit = _.debounce(() => {
-    console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
     superagent.put(`note/${this.props.meeting.note_id}`)
     .send({
       note: this.state.note
@@ -173,6 +172,7 @@ class TeamMemberDetailMeeting extends Component {
         console.log('error updating note', res);
         return;
       }
+      this.setState({ isNoteUpdateInFlight: false });
       console.log('notes updated', res);
     });
   }, 750);
@@ -185,7 +185,7 @@ class TeamMemberDetailMeeting extends Component {
     return false;
   }
 
-  onNoteChange = e => this.setState({ [e.target.name]: e.target.value }, this.noteSubmit)
+  onNoteChange = e => this.setState({ [e.target.name]: e.target.value, isNoteUpdateInFlight: true }, this.noteSubmit)
 
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
@@ -225,7 +225,7 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight } = this.state;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight, isNoteUpdateInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -288,13 +288,7 @@ class TeamMemberDetailMeeting extends Component {
         </div>}
         {(() => {
           if (!is_done) {
-            if (typeof isUpdateInFlight === 'boolean') {
-              if (isUpdateInFlight) {
-                return <p>Saving...</p>
-              } else {
-                return <p>All changes saved</p>
-              }
-            } else if (!isHost) {
+            if (!isHost) {
               if (isEverythingAnswered) {
                 return <p>Feel free to update your answers at any time.</p>
               }
@@ -304,6 +298,18 @@ class TeamMemberDetailMeeting extends Component {
             }
           }
         })()}
+        <span className="input-label">
+          Questions &amp; Answers
+          {(() => {
+            if (typeof isUpdateInFlight === 'boolean') {
+              if (isUpdateInFlight) {
+                return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
+              } else {
+                return <span className="muted-text">&nbsp;&nbsp;Saved</span>
+              }
+            }
+          })()}
+        </span>
         <form
           className="form"
           onSubmit={this.onSubmit}
@@ -338,7 +344,18 @@ class TeamMemberDetailMeeting extends Component {
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
-          <label htmlFor="note" className="input-label">Take meeting notes here</label>
+          <label htmlFor="note" className="input-label">
+            Meeting notes
+            {(() => {
+              if (typeof isNoteUpdateInFlight === 'boolean') {
+                if (isNoteUpdateInFlight) {
+                  return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
+                } else {
+                  return <span className="muted-text">&nbsp;&nbsp;Saved</span>
+                }
+              }
+            })()}
+          </label>
           <TextareaAutosize
             className="form-control"
             id="note"
