@@ -16,7 +16,6 @@ function QuestionAnswer({
   question,
   answer,
   onChange,
-  onDeleteQA,
   isUser,
   isHost,
   isDone,
@@ -97,7 +96,8 @@ class TeamMemberDetailMeeting extends Component {
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
-    isAnswerReadyInFlight: false
+    isAnswerReadyInFlight: false,
+    isUpdateInFlight: null
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -142,7 +142,9 @@ class TeamMemberDetailMeeting extends Component {
       ));
     }
 
-    this.props.updateMeeting(this.props.meeting.id, sendObj).catch(err => {
+    this.props.updateMeeting(this.props.meeting.id, sendObj).then(
+      res => this.setState({ isUpdateInFlight: false })
+    ).catch(err => {
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
         this.props.history.push('/');
@@ -152,12 +154,13 @@ class TeamMemberDetailMeeting extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    this.setState({ isUpdateInFlight: true });
     console.log('onSubmit');
     this.submit();
     return false;
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value }, this.submit);
+  onChange = e => this.setState({ [e.target.name]: e.target.value, isUpdateInFlight: true }, this.submit);
 
   noteSubmit = _.debounce(() => {
     console.log('note submit', this.state.note, '\nthis.props.meeting.note_id', this.props.meeting.note_id);
@@ -203,14 +206,6 @@ class TeamMemberDetailMeeting extends Component {
       teamId: this.props.teamId
     })));
 
-  onDeleteQA = index => {
-    console.log('onDeleteQA', index);
-    this.props.updateMeeting(this.props.meeting.id, { [`question${index}`]: null }).then(
-      res => console.log('delete note success', res),
-      err => console.log('delete note fail', err)
-    );
-  }
-
   getLiveMeetingTitle = () => {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
@@ -230,7 +225,7 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight } = this.state;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -292,13 +287,21 @@ class TeamMemberDetailMeeting extends Component {
           </div>
         </div>}
         {(() => {
-          if (!is_done && !isHost) {
-            if (isEverythingAnswered) {
-              return <p>Feel free to update your answers at any time.</p>
+          if (!is_done) {
+            if (typeof isUpdateInFlight === 'boolean') {
+              if (isUpdateInFlight) {
+                return <p>Saving...</p>
+              } else {
+                return <p>All changes saved</p>
+              }
+            } else if (!isHost) {
+              if (isEverythingAnswered) {
+                return <p>Feel free to update your answers at any time.</p>
+              }
+              return <p>Answer these questions before the meeting begins to get a head start!</p>
+            } else {
+              return <p>You can update your questions at any time.</p>
             }
-            return <p>Answer these questions before the meeting begins to get a head start!</p>
-          } else if (!is_done && isHost) {
-            return <p>You can update your questions at any time.</p>
           }
         })()}
         <form
@@ -313,7 +316,6 @@ class TeamMemberDetailMeeting extends Component {
                   question={this.state[`question${n + 1}`]}
                   answer={this.state[`answer${n + 1}`]}
                   onChange={this.onChange}
-                  onDeleteQA={this.onDeleteQA}
                   isUser={isUser}
                   isHost={isHost}
                   isDone={is_done}

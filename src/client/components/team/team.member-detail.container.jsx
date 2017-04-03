@@ -48,7 +48,7 @@ class TeamMemberDetail extends Component {
     }
   })
 
-  updateMeetings = () => superagent.get(`team/${this.props.team.id}/meetings/${this.state.member.id}`)
+  getMeetings = () => superagent.get(`team/${this.props.team.id}/meetings/${this.state.member.id}`)
     .end((err, res) => {
       if (err) {
         console.log('err updating meetings', res);
@@ -88,7 +88,7 @@ class TeamMemberDetail extends Component {
         console.log('error creating new meeting', res);
         return;
       }
-      this.updateMeetings();
+      this.getMeetings();
       this.props.updateTeamMembers(this.props.team.id);
     });
   }
