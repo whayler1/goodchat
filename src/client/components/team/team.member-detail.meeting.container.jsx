@@ -16,14 +16,16 @@ function QuestionAnswer({
   question,
   answer,
   onChange,
+  onDeleteQA,
   isUser,
   isHost,
   isDone,
   hostImageUrl,
-  userImageUrl
+  userImageUrl,
+  qaLength
 }) {
   return (
-    <div>
+    <div className="clearfix">
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
           style={{backgroundImage: `url(${hostImageUrl})`}}
@@ -62,6 +64,18 @@ function QuestionAnswer({
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
+      {isHost && !isDone && qaLength > 1 &&
+      <ul className="pull-right inline-list meeting-qa-foot">
+        <li>
+          <button
+            className="btn-no-style"
+            type="button"
+            onClick={() => onDeleteQA(index)}
+          >
+            Delete <i className="material-icons">close</i>
+          </button>
+        </li>
+      </ul>}
     </div>
   );
 }
@@ -206,6 +220,41 @@ class TeamMemberDetailMeeting extends Component {
       teamId: this.props.teamId
     })));
 
+  onDeleteQA = index => {
+    let { qa_length } = this.props.meeting;
+    if (typeof qa_length === 'number') {
+      qa_length--;
+    } else {
+      qa_length = 4;
+    }
+    const updateObj = {};
+
+    const qas = [1,2,3,4,5].map(n => ({
+      q: this.state[`question${n}`],
+      a: this.state[`answer${n}`]
+    }));
+    qas.splice(index - 1, 1);
+    qas.push({
+      q: '',
+      a: ''
+    });
+    qas.forEach((obj, i) => Object.assign(updateObj, {
+      [`question${i + 1}`]: obj.q,
+      [`answer${i + 1}`]: obj.a
+    }));
+
+    this.props.updateMeeting(this.props.meeting.id, Object.assign({}, updateObj, { qa_length })).then(
+      res => {
+        this.setState(updateObj);
+      },
+      err => console.log('delete note fail', err)
+    );
+  }
+
+  onAddQAClick = () => this.setState({ isAddQAInFlight: true }, () =>
+    this.props.updateMeeting(this.props.meeting.id, { qa_length: this.props.meeting.qa_length + 1 })
+    .then(res => this.setState({ isAddQAInFlight: false })));
+
   getLiveMeetingTitle = () => {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
@@ -224,8 +273,9 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
-    const { meeting_date, is_done, finished_at, are_answers_ready } = meeting;
-    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight, isUpdateInFlight, isNoteUpdateInFlight } = this.state;
+    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length } = meeting;
+    const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
+      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -315,23 +365,36 @@ class TeamMemberDetailMeeting extends Component {
           onSubmit={this.onSubmit}
         >
           <ul className="team-member-detail-qa-list">
-            {_(5).times(n => (
-              <li key={n}>
+            {_(qa_length || 5).times(n => (
+              <li key={n} className={(!isHost && n > 0) ? 'gutter-top' : ''}>
                 <QuestionAnswer
                   index={n + 1}
                   question={this.state[`question${n + 1}`]}
                   answer={this.state[`answer${n + 1}`]}
                   onChange={this.onChange}
+                  onDeleteQA={this.onDeleteQA}
                   isUser={isUser}
                   isHost={isHost}
                   isDone={is_done}
                   hostImageUrl={hostImageUrl}
                   userImageUrl={userImageUrl}
+                  qaLength={qa_length}
                 />
               </li>
             ))}
           </ul>
         </form>
+        {isHost && !is_done && qa_length && qa_length < 5 &&
+        <div className="align-right">
+          <button
+            type="button"
+            className="btn-no-style team-member-detail-add-qa-btn"
+            onClick={this.onAddQAClick}
+            disabled={isAddQAInFlight}
+          >
+            Add question <i className="material-icons">add_circle_outline</i>
+          </button>
+        </div>}
         {!isHost && !is_done && !are_answers_ready &&
         <button
           type="button"

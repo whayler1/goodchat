@@ -51,7 +51,8 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
     question3,
     question4,
     question5,
-    meeting_date
+    meeting_date,
+    qa_length
   } = req.params;
 
   if (!(teamId || userId)) {
@@ -66,6 +67,7 @@ router.post('/meeting', authHelpers.loginRequired, (req, res, next) => {
       question3,
       question4,
       question5,
+      qa_length,
       meeting_date: meetingDate
     })
     .returning('*')
@@ -123,7 +125,8 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'is_done',
       'are_answers_ready',
       'meeting_date',
-      'finished_at'
+      'finished_at',
+      'qa_length'
     ),
     _.isUndefined
   ), { updated_at: knex.fn.now() });

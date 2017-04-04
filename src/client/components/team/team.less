@@ -120,7 +120,7 @@
   >li {
     list-style: none;
     +li {
-      margin-top: @gutter;
+      margin-top: 0;
     }
   }
 }
@@ -592,7 +592,7 @@ p.main-team-set-questions-footnote {
 
   .btn-no-style {
     font-size: 14px;
-    color: @bluegrey-200;
+    color: @bluegrey-100;
 
     i {
       font-size: 14px;
@@ -605,6 +605,35 @@ p.main-team-set-questions-footnote {
     }
     &:active {
       color: @bluegrey-500;
+    }
+  }
+}
+
+.team-member-detail-add-qa-btn {
+  display: inline-block;
+  margin: @gutter 0 0;
+  color: @bluegrey-100;
+  >i {
+    color: @bluegrey-400;
+  }
+
+  &:hover,
+  &:focus {
+    color: darken(@bluegrey-100, 10%);
+    >i {
+      color: @link-color;
+    }
+  }
+  &:active {
+    color: darken(@bluegrey-100, 15%);
+    >i {
+      color: @link-color-active;
+    }
+  }
+  &:disabled {
+    color: @bluegrey-50;
+    >i {
+      color: @bluegrey-100;
     }
   }
 }
