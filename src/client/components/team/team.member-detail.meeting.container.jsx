@@ -110,8 +110,7 @@ class TeamMemberDetailMeeting extends Component {
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
-    isAnswerReadyInFlight: false,
-    isUpdateInFlight: null
+    isAnswerReadyInFlight: false
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -273,7 +272,7 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
-    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length } = meeting;
+    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight } = this.state;
 
@@ -319,7 +318,18 @@ class TeamMemberDetailMeeting extends Component {
         <div className="meeting-header">
           <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
           <div className="meeting-header-lg-content">
-            <h1 className="meeting-header-title">{ this.getLiveMeetingTitle() }</h1>
+            {isHost &&
+            <form>
+              <AutosizeInput
+                type="submit"
+                className="meeting-header-title"
+                placeholder={this.getLiveMeetingTitle()}
+                value={this.state.title}
+                onChange={this.onTitleChange}
+              />
+            </form>
+            {!isHost &&
+            <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
             <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
             {isHost &&
               <Dropdown
