@@ -64,7 +64,7 @@ function QuestionAnswer({
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
-      {isHost && !isDone && qaLength > 1 &&
+      {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
       <ul className="pull-right inline-list meeting-qa-foot">
         <li>
           <button
