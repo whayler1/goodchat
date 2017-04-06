@@ -36,7 +36,7 @@ function QuestionAnswer({
             id={`question${index}`}
             name={`question${index}`}
             className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
-            maxLength={300}
+            maxLength={5000}
             value={question}
             onChange={onChange}
             autoFocus={index < 2}
@@ -55,7 +55,7 @@ function QuestionAnswer({
             id={`answer${index}`}
             name={`answer${index}`}
             className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
-            maxLength={300}
+            maxLength={5000}
             value={answer}
             onChange={onChange}
             autoFocus={index < 2}
@@ -424,7 +424,7 @@ class TeamMemberDetailMeeting extends Component {
             id="note"
             name="note"
             rows={3}
-            maxLength={1500}
+            maxLength={5000}
             placeholder="Write your private meeting notes here. Only you can see these."
             onChange={this.onNoteChange}
             value={this.state.note}
