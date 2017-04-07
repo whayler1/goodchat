@@ -527,9 +527,69 @@ p.main-team-set-questions-footnote {
 }
 
 .meeting-header-title {
+
   .team-card-subheader-create-meeting & {
     padding: 2px 0;
   }
+
+  >input {
+    font-size: 32px;
+    font-weight: 300;
+    border: none;
+    border-radius: 2px;
+    color: @bluegrey-700;
+    padding: 3px 6px;
+    margin: -3px -6px 0;
+    max-width: 100%;
+
+    &::-webkit-input-placeholder {
+      color: @bluegrey-400;
+    }
+    &::-moz-placeholder {
+      color: @bluegrey-400;
+    }
+    &:-ms-input-placeholder {
+      color: @bluegrey-400;
+    }
+    &:-moz-placeholder {
+      color: @bluegrey-400;
+    }
+    &:hover {
+      &::-webkit-input-placeholder {
+        color: @bluegrey-600;
+      }
+      &::-moz-placeholder {
+        color: @bluegrey-600;
+      }
+      &:-ms-input-placeholder {
+        color: @bluegrey-600;
+      }
+      &:-moz-placeholder {
+        color: @bluegrey-600;
+      }
+    }
+    &:focus,
+    &:active {
+      &::-webkit-input-placeholder {
+        color: @bluegrey-700;
+      }
+      &::-moz-placeholder {
+        color: @bluegrey-700;
+      }
+      &:-ms-input-placeholder {
+        color: @bluegrey-700;
+      }
+      &:-moz-placeholder {
+        color: @bluegrey-700;
+      }
+    }
+  }
+}
+
+.meeting-header-title-input-icon {
+  color: @bluegrey-200;
+  margin-left: @quarter-gutter;
+  vertical-align: text-bottom;
 }
 
 .meeting-header-date {

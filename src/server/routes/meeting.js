@@ -126,9 +126,10 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'are_answers_ready',
       'meeting_date',
       'finished_at',
-      'qa_length'
+      'qa_length',
+      'title'
     ),
-    _.isUndefined
+    _.isNil
   ), { updated_at: knex.fn.now() });
 
   console.log('\n\nput meeting', id, '\n updateObj:', updateObj);

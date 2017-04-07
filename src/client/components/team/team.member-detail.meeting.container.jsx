@@ -6,6 +6,7 @@ import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 import Dropdown from '../dropdown/dropdown.component.jsx';
+import AutosizeInput from 'react-input-autosize';
 
 import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
@@ -111,7 +112,7 @@ class TeamMemberDetailMeeting extends Component {
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
     isAnswerReadyInFlight: false,
-    isUpdateInFlight: null
+    title: this.props.meeting.title
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -152,7 +153,8 @@ class TeamMemberDetailMeeting extends Component {
         'question2',
         'question3',
         'question4',
-        'question5'
+        'question5',
+        'title'
       ));
     }
 
@@ -200,6 +202,11 @@ class TeamMemberDetailMeeting extends Component {
   }
 
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value, isNoteUpdateInFlight: true }, this.noteSubmit)
+
+  onTitleChange = e => this.setState({ title: e.target.value }, this.submit)
+
+  setTitleIconVisible = () => this.setState({ isTitleIconVisible: true })
+  setTitleIconInvisible = () => this.setState({ isTitleIconVisible: false })
 
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
@@ -273,7 +280,7 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
-    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length } = meeting;
+    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight } = this.state;
 
@@ -319,7 +326,23 @@ class TeamMemberDetailMeeting extends Component {
         <div className="meeting-header">
           <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
           <div className="meeting-header-lg-content">
-            <h1 className="meeting-header-title">{ this.getLiveMeetingTitle() }</h1>
+            {!is_done && isHost &&
+            <form onSubmit={this.onSubmit}>
+              <AutosizeInput
+                type="text"
+                id="title"
+                name="title"
+                className="meeting-header-title"
+                placeholder={this.getLiveMeetingTitle()}
+                value={this.state.title}
+                onChange={this.onTitleChange}
+                autoComplete="off"
+                maxLength={25}
+              />
+              {this.state.title && this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
+            </form>}
+            {(is_done || !isHost) &&
+            <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
             <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
             {isHost &&
               <Dropdown
