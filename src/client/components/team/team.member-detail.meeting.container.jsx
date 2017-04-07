@@ -112,7 +112,7 @@ class TeamMemberDetailMeeting extends Component {
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
     isAnswerReadyInFlight: false,
-    title: this.props.meeting.title
+    title: this.props.meeting.title || ''
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -331,7 +331,7 @@ class TeamMemberDetailMeeting extends Component {
                 autoComplete="off"
                 maxLength={25}
               />
-              {this.state.title && this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
+              {this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
             </form>}
             {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
