@@ -159,8 +159,9 @@ class TeamMemberDetailMeeting extends Component {
     }
 
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
-      res => this.setState({ isUpdateInFlight: false })
+      res => this.setState({ isUpdateInFlight: false, isUpdateError: false })
     ).catch(err => {
+      this.setState({ isUpdateError: true })
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
         this.props.history.push('/');
@@ -186,9 +187,10 @@ class TeamMemberDetailMeeting extends Component {
     .end((err, res) => {
       if (err) {
         console.log('error updating note', res);
+        this.setState({ isNoteUpdateError: true });
         return;
       }
-      this.setState({ isNoteUpdateInFlight: false });
+      this.setState({ isNoteUpdateInFlight: false, isNoteUpdateError: false });
       console.log('notes updated', res);
     });
   }, 750);
@@ -282,7 +284,7 @@ class TeamMemberDetailMeeting extends Component {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
-      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight } = this.state;
+      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError, isNoteUpdateError } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -366,7 +368,9 @@ class TeamMemberDetailMeeting extends Component {
         <span className="input-label">
           Questions &amp; Answers
           {(() => {
-            if (typeof isUpdateInFlight === 'boolean') {
+            if (isUpdateError) {
+              return <span className="danger-text-text">Error saving your changes.<br/>If the problem persists please contact <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</span>
+            } else if (typeof isUpdateInFlight === 'boolean') {
               if (isUpdateInFlight) {
                 return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
               } else {
@@ -425,7 +429,9 @@ class TeamMemberDetailMeeting extends Component {
           <label htmlFor="note" className="input-label">
             Meeting notes
             {(() => {
-              if (typeof isNoteUpdateInFlight === 'boolean') {
+              if (isNoteUpdateError) {
+                return <span className="danger-text">Error saving your note.<br/>If the problem persists please contact <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</span>
+              } else if (typeof isNoteUpdateInFlight === 'boolean') {
                 if (isNoteUpdateInFlight) {
                   return <span className="muted-text">&nbsp;&nbsp;Saving...</span>
                 } else {
