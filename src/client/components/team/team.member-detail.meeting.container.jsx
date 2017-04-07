@@ -309,18 +309,10 @@ class TeamMemberDetailMeeting extends Component {
         {is_done &&
         <div className="meeting-header meeting-header-finished">
           <i className="material-icons meeting-header-lg-icon">date_range</i>
-          {finished_at &&
           <div className="meeting-header-lg-content">
-            <h1 className="meeting-header-title">Finished { moment(finished_at).fromNow() }</h1>
-            <span className="meeting-header-date">{ moment(finished_at).format('MMM Do YYYY, h:mm a') }</span>
+            <h1 className="meeting-header-title">{ title || `Finished ${moment(finished_at || meeting_date).fromNow()}` }</h1>
+            <span className="meeting-header-date">{ moment(finished_at || meeting_date).format('MMM Do YYYY, h:mm a') }</span>
           </div>
-          }
-          {!finished_at &&
-          <div className="meeting-header-lg-content">
-            <h1 className="meeting-header-title">Finished { moment(meeting_date).fromNow() }</h1>
-            <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
-          </div>
-          }
         </div>}
         {!is_done &&
         <div className="meeting-header">
