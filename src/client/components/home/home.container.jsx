@@ -18,17 +18,9 @@ class Home extends Component {
     redirect: PropTypes.string
   }
 
-  componentWillMount = () => {
-    this.props.hideHeroLink();
-  }
-
-  componentWillUnmount = () => {
-    this.props.showHeroLink();
-  }
-
   goToTeams = id => this.props.history.push(`/teams${id ? '/' + id : ''}`);
 
-  componentWillReceiveProps = nextProps => {
+  redirect = () => {
     /**
      * JW: Forward user to the "right" place once they've logged in. If a redirect is defined
      * go there. Otherwise check to see if a most recent team is in local storage. If not then
@@ -36,31 +28,46 @@ class Home extends Component {
      */
     const { goToTeams } = this;
     const { redirect } = this.props;
-    if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
-      if (redirect) {
-        this.props.history.push(redirect);
-        this.props.clearRedirect();
-      } else if ('localStorage' in window) {
-        const lastTeam = window.localStorage.getItem('goodchat.last-team');
-        if (lastTeam) {
-          this.props.getTeams(
-            teams => {
-              const isTeamInTeams = teams.findIndex(team => team.id === lastTeam) > -1
+    if (redirect) {
+      this.props.history.push(redirect);
+      this.props.clearRedirect();
+    } else if ('localStorage' in window) {
+      const lastTeam = window.localStorage.getItem('goodchat.last-team');
+      if (lastTeam) {
+        this.props.getTeams(
+          teams => {
+            const isTeamInTeams = teams.findIndex(team => team.id === lastTeam) > -1
 
-              if (isTeamInTeams) {
-                goToTeams(lastTeam);
-              } else {
-                goToTeams();
-              }
-            },
-            () => goToTeams()
-          )
-        } else {
-          goToTeams()
-        }
+            if (isTeamInTeams) {
+              goToTeams(lastTeam);
+            } else {
+              goToTeams();
+            }
+          },
+          () => goToTeams()
+        )
       } else {
         goToTeams()
       }
+    } else {
+      goToTeams()
+    }
+  }
+
+  componentWillMount = () => {
+    if (this.props.isLoggedIn) {
+      this.redirect();
+    }
+    this.props.hideHeroLink();
+  }
+
+  componentWillUnmount = () => {
+    this.props.showHeroLink();
+  }
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.isLoggedIn && !this.props.isLoggedIn) {
+      this.redirect();
     }
   }
 
