@@ -495,10 +495,20 @@ p.main-team-set-questions-footnote {
   }
 }
 
-.meeting-header-lg-icon {
+.meeting-header-lg-icon-wrapper {
   position: absolute;
-  top: 24px;
+  display: inline-block;
+  top: 18px;
   left: 5px;
+  text-align: center;
+}
+
+.meeting-header-lg-icon-sub {
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.meeting-header-lg-icon {
   font-size: 50px;
 
   @media(min-width: @tablet-width) {
@@ -593,6 +603,8 @@ p.main-team-set-questions-footnote {
 }
 
 .meeting-header-date {
+  display: inline-block;
+  padding-top: 4px;
   font-weight: 400;
 }
 

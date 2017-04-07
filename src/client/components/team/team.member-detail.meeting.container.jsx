@@ -187,7 +187,6 @@ class TeamMemberDetailMeeting extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.setState({ isUpdateInFlight: true });
-    console.log('onSubmit');
     this.submit();
     return false;
   }
@@ -206,7 +205,6 @@ class TeamMemberDetailMeeting extends Component {
         return;
       }
       this.setState({ isNoteUpdateInFlight: false, isNoteUpdateError: false });
-      console.log('notes updated', res);
     });
   }, 750);
 
@@ -279,18 +277,30 @@ class TeamMemberDetailMeeting extends Component {
     this.props.updateMeeting(this.props.meeting.id, { qa_length: this.props.meeting.qa_length + 1 })
     .then(res => this.setState({ isAddQAInFlight: false })));
 
-  getLiveMeetingTitle = () => {
+  getLiveMeetingTitle = (isShort) => {
     const meetingDate = moment(this.props.meeting.meeting_date);
     const now = moment();
 
     if (now.isBefore(meetingDate, 'day')) {
+      if (isShort) {
+        return 'Upcoming';
+      }
       return `Meeting ${meetingDate.fromNow()}`;
     }
-    if (now.isAfter(meetingDate, 'day')) {
+    if (now.isAfter(meetingDate.add(2, 'hour'))) {
+      if (isShort) {
+        return 'Overdue';
+      }
       return 'Overdue meeting';
     }
-    if (now.isBefore(meetingDate) || now.isAfter(meetingDate.add(2, 'hour'))) {
+    if (now.isBefore(meetingDate, 'second')) {
+      if (isShort) {
+        return 'Today';
+      }
       return 'Todays meeting';
+    }
+    if (isShort) {
+      return 'Current';
     }
     return 'Current meeting';
   };
@@ -325,7 +335,10 @@ class TeamMemberDetailMeeting extends Component {
 
         {is_done &&
         <div className="meeting-header meeting-header-finished">
-          <i className="material-icons meeting-header-lg-icon">date_range</i>
+          <div className="meeting-header-lg-icon-wrapper">
+            <i className="material-icons meeting-header-lg-icon">date_range</i>
+            <div className="meeting-header-lg-icon-sub">Finished</div>
+          </div>
           <div className="meeting-header-lg-content">
             <h1 className="meeting-header-title">{ title || `Finished ${moment(finished_at || meeting_date).fromNow()}` }</h1>
             <span className="meeting-header-date">{ moment(finished_at || meeting_date).format('MMM Do YYYY, h:mm a') }</span>
@@ -333,7 +346,10 @@ class TeamMemberDetailMeeting extends Component {
         </div>}
         {!is_done &&
         <div className="meeting-header">
-          <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
+          <div className={`meeting-header-lg-icon-wrapper${isOverdue ? ' danger-text' : ''}`}>
+            <i className="material-icons meeting-header-lg-icon">date_range</i>
+            <div className="meeting-header-lg-icon-sub">{ this.getLiveMeetingTitle(true) }</div>
+          </div>
           <div className="meeting-header-lg-content">
             {!is_done && isHost &&
             <form onSubmit={this.onSubmit}>

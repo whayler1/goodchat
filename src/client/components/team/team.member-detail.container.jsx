@@ -112,7 +112,7 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
-  onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment() }, () => {
+  onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
     analytics.track('start-meeting-now', {
       category: 'meeting',
       teamId: this.props.team.id
