@@ -18,9 +18,13 @@ export default class SetLogin extends Component {
       }).then(() => {
         const auth2 = gapi.auth2.getAuthInstance();
         if (auth2.isSignedIn.get()) {
-          this.props.onSuccess(auth2.currentUser.get().getAuthResponse().id_token);
+          this.props.onSuccess(auth2.currentUser.get().getAuthResponse().id_token).then(
+            () => this.setState({ isLoginStateSet: true }),
+            () => this.setState({ isLoginStateSet: true })
+          );
+        } else {
+          this.setState({ isLoginStateSet: true });
         }
-        this.setState({ isLoginStateSet: true });
       });
     });
   }

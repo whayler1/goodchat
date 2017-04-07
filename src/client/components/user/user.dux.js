@@ -18,7 +18,7 @@ export const login = () => dispatch => window.gapi.auth2.getAuthInstance().signI
   err => console.log('login err:', err)
 );
 
-export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google')
+export const setLoggedIn = idToken => (dispatch) => new Promise((resolve, reject) => superagent.post('auth/google')
   .send({ idToken })
   .then(
     res => {
@@ -33,6 +33,7 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
         googleId: google_id,
         imageUrl: picture
       });
+      resolve();
       analytics.identify(id, {
         name: `${given_name} ${family_name}`,
         firstName: given_name,
@@ -40,8 +41,11 @@ export const setLoggedIn = idToken => (dispatch) => superagent.post('auth/google
         email
       });
     },
-    err => alert('error with google auth on server')
-  );
+    err => {
+      reject();
+      alert('error with google auth on server');
+    }
+  ));
 
 export const logout = () => dispatch => window.gapi.auth2.getAuthInstance().signOut().then(
   res => superagent.get('auth/logout')
