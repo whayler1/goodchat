@@ -112,8 +112,7 @@ class TeamMemberDetailMeeting extends Component {
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
     isAnswerReadyInFlight: false,
-    title: this.props.meeting.title || '',
-    isTitleIconVisible: false
+    title: this.props.meeting.title
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -154,9 +153,11 @@ class TeamMemberDetailMeeting extends Component {
         'question2',
         'question3',
         'question4',
-        'question5'
+        'question5',
+        'title'
       ));
     }
+    console.log('title', this.state.title, '\n\nsendObj', sendObj);
 
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
       res => this.setState({ isUpdateInFlight: false })
@@ -203,7 +204,7 @@ class TeamMemberDetailMeeting extends Component {
 
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value, isNoteUpdateInFlight: true }, this.noteSubmit)
 
-  onTitleChange = e => this.setState({ title: e.target.value })
+  onTitleChange = e => this.setState({ title: e.target.value }, this.submit)
 
   setTitleIconVisible = () => this.setState({ isTitleIconVisible: true })
   setTitleIconInvisible = () => this.setState({ isTitleIconVisible: false })
@@ -327,7 +328,7 @@ class TeamMemberDetailMeeting extends Component {
           <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
           <div className="meeting-header-lg-content">
             {!is_done && isHost &&
-            <form>
+            <form onSubmit={this.onSubmit}>
               <AutosizeInput
                 type="text"
                 id="title"
@@ -336,11 +337,10 @@ class TeamMemberDetailMeeting extends Component {
                 placeholder={this.getLiveMeetingTitle()}
                 value={this.state.title}
                 onChange={this.onTitleChange}
-                onMouseOver={this.setTitleIconVisible}
-                onMouseOut={this.setTitleIconInvisible}
+                autoComplete="off"
                 maxLength={25}
               />
-              <i className="material-icons meeting-header-title-input-icon" style={{ visibility: this.state.isTitleIconVisible ? 'visible' : 'hidden' }}>create</i>
+            {this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
             </form>}
             {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
