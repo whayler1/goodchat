@@ -12,6 +12,21 @@ import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../m
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 
+const getStringAsHtml = str => {
+  const splitStr = str.split(/\r|\n/g);
+
+  return splitStr.map((split, index) => {
+      if (index > 1) {
+        return [
+          <br/>,
+          split
+        ];
+      } else {
+        return split;
+      }
+    });
+}
+
 function QuestionAnswer({
   index,
   question,
@@ -44,7 +59,7 @@ function QuestionAnswer({
             placeholder="Ask a question"
           />
         </div>}
-        {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? question : <i className="material-icons">more_horiz</i>}</p>}
+        {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? getStringAsHtml(question) : <i className="material-icons">more_horiz</i>}</p>}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
@@ -63,7 +78,7 @@ function QuestionAnswer({
             placeholder="Click here to answer"
           />
         </div>}
-        {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
+        {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? getStringAsHtml(answer) : <i className="material-icons">more_horiz</i>}</p>}
       </div>
       {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
       <ul className="pull-right inline-list meeting-qa-foot">
