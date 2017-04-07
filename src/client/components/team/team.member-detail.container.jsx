@@ -12,7 +12,7 @@ import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx'
 import Modal from '../modal/modal.container.jsx';
 import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
-import Helmet from "react-helmet";
+import Helmet from 'react-helmet';
 
 class TeamMemberDetail extends Component {
   static propTypes = {
