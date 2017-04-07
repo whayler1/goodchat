@@ -6,6 +6,7 @@ import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 import Dropdown from '../dropdown/dropdown.component.jsx';
+import AutosizeInput from 'react-input-autosize';
 
 import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
@@ -36,7 +37,7 @@ function QuestionAnswer({
             id={`question${index}`}
             name={`question${index}`}
             className={`form-control${ (!isHost || isDone) ? ' form-control-cosmetic' : '' }`}
-            maxLength={300}
+            maxLength={5000}
             value={question}
             onChange={onChange}
             autoFocus={index < 2}
@@ -55,7 +56,7 @@ function QuestionAnswer({
             id={`answer${index}`}
             name={`answer${index}`}
             className={`form-control${ (!isUser || isDone) ? ' form-control-cosmetic' : ''}`}
-            maxLength={300}
+            maxLength={5000}
             value={answer}
             onChange={onChange}
             autoFocus={index < 2}
@@ -64,7 +65,7 @@ function QuestionAnswer({
         </div>}
         {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? answer : <i className="material-icons">more_horiz</i>}</p>}
       </div>
-      {isHost && !isDone && qaLength > 1 &&
+      {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
       <ul className="pull-right inline-list meeting-qa-foot">
         <li>
           <button
@@ -110,7 +111,9 @@ class TeamMemberDetailMeeting extends Component {
     answer4: this.props.meeting.answer4,
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
-    isAnswerReadyInFlight: false
+    isAnswerReadyInFlight: false,
+    title: this.props.meeting.title || '',
+    isTitleIconVisible: false
   }
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
@@ -199,6 +202,11 @@ class TeamMemberDetailMeeting extends Component {
   }
 
   onNoteChange = e => this.setState({ [e.target.name]: e.target.value, isNoteUpdateInFlight: true }, this.noteSubmit)
+
+  onTitleChange = e => this.setState({ title: e.target.value })
+
+  setTitleIconVisible = () => this.setState({ isTitleIconVisible: true })
+  setTitleIconInvisible = () => this.setState({ isTitleIconVisible: false })
 
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
@@ -318,17 +326,23 @@ class TeamMemberDetailMeeting extends Component {
         <div className="meeting-header">
           <i className={`material-icons meeting-header-lg-icon${isOverdue ? ' danger-text' : ''}`}>date_range</i>
           <div className="meeting-header-lg-content">
-            {isHost &&
+            {!is_done && isHost &&
             <form>
               <AutosizeInput
-                type="submit"
+                type="text"
+                id="title"
+                name="title"
                 className="meeting-header-title"
                 placeholder={this.getLiveMeetingTitle()}
                 value={this.state.title}
                 onChange={this.onTitleChange}
+                onMouseOver={this.setTitleIconVisible}
+                onMouseOut={this.setTitleIconInvisible}
+                maxLength={25}
               />
-            </form>
-            {!isHost &&
+              <i className="material-icons meeting-header-title-input-icon" style={{ visibility: this.state.isTitleIconVisible ? 'visible' : 'hidden' }}>create</i>
+            </form>}
+            {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
             <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
             {isHost &&
@@ -434,7 +448,7 @@ class TeamMemberDetailMeeting extends Component {
             id="note"
             name="note"
             rows={3}
-            maxLength={1500}
+            maxLength={5000}
             placeholder="Write your private meeting notes here. Only you can see these."
             onChange={this.onNoteChange}
             value={this.state.note}

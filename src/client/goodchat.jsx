@@ -15,6 +15,23 @@ const store = createStore(
 );
 
 class GoodChat extends Component {
+
+  componentWillMount = () => {
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+      if ('analytics' in window) {
+        window.analytics.track('error', {
+          msg,
+          url,
+          lineNo,
+          columnNo,
+          error
+        });
+      }
+
+      return false;
+    }
+  };
+
   render() {
     return (
       <Provider store={store}>
