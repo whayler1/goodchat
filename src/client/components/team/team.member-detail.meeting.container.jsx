@@ -157,7 +157,6 @@ class TeamMemberDetailMeeting extends Component {
         'title'
       ));
     }
-    console.log('title', this.state.title, '\n\nsendObj', sendObj);
 
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
       res => this.setState({ isUpdateInFlight: false })
@@ -340,7 +339,7 @@ class TeamMemberDetailMeeting extends Component {
                 autoComplete="off"
                 maxLength={25}
               />
-            {this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
+              {this.state.title && this.state.title.length < 1 && <label htmlFor="title"><i className="material-icons meeting-header-title-input-icon">create</i></label>}
             </form>}
             {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
