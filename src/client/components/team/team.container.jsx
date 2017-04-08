@@ -35,6 +35,9 @@ class Team extends Component {
     return (
       <ul className="dropdown-list">
         <li>
+          <link to={`teams/${this.props.team.id}/update-questions`}></link>
+        </li>
+        <li>
           <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
             Delete this team <i className="material-icons">delete</i>
           </button>
