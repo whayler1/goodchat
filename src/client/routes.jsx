@@ -13,6 +13,7 @@ import Team from './components/team/team.container.jsx';
 import TeamError from './components/team/team.error.container.jsx';
 import TeamInvite from './components/team/team.invite.container.jsx';
 import TeamMemberDetail from './components/team/team.member-detail.container.jsx';
+import TeamUpdateQuestions from './components/team/team.update-questions.container.jsx';
 import InviteAccept from './components/invite/invite.accept.container.jsx';
 import User from './components/user/user.container.jsx';
 
@@ -155,6 +156,7 @@ class Routes extends Component {
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
             <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
+            <Route path="update-questions" component={TeamUpdateQuestions}/>
           </Route>
           <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
