@@ -234,13 +234,19 @@ class TeamMemberDetailMeeting extends Component {
     }
   }
 
-  onAnswersReady = () => this.setState({ isAnswerReadyInFlight: true }, () =>
-    this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }).then(() =>
-    analytics.track('answers-ready', {
-      category: 'meeting',
-      meetingId: this.props.meeting.id,
-      teamId: this.props.teamId
-    })));
+  onAnswersReady = () => this.setState({ isAnswerReadyInFlight: true }, () => {
+    if (this.isEverythingAnswered()) {
+      this.setState({ answerReadyError: '' }, () =>
+        this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }).then(() =>
+          analytics.track('answers-ready', {
+            category: 'meeting',
+            meetingId: this.props.meeting.id,
+            teamId: this.props.teamId
+          })));
+    } else  {
+      this.setState({ answerReadyError: 'everything-not-answered', isAnswerReadyInFlight: false });
+    }
+  })
 
   onDeleteQA = index => {
     let { qa_length } = this.props.meeting;
@@ -305,11 +311,17 @@ class TeamMemberDetailMeeting extends Component {
     return 'Current meeting';
   };
 
+  isEverythingAnswered = () =>
+    [1,2,3,4,5].map(n => `answer${n}`).every((key, index) =>
+      (this.props.meeting.qa_length && index >= this.props.meeting.qa_length) ||
+      (this.state[key] && this.state[key].length > 0));
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
-      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError, isNoteUpdateError } = this.state;
+      isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
+      isNoteUpdateError, answerReadyError } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -321,14 +333,6 @@ class TeamMemberDetailMeeting extends Component {
 
     const hostImageUrl = isHost ? imageUrl : memberImageUrl;
     const userImageUrl = isHost ? memberImageUrl : imageUrl;
-
-    const isEverythingAnswered = [
-      answer1,
-      answer2,
-      answer3,
-      answer4,
-      answer5
-    ].every(answer => answer && answer.length > 0)
 
     return (
       <section className={className ? className : ''}>
@@ -387,7 +391,7 @@ class TeamMemberDetailMeeting extends Component {
         {(() => {
           if (!is_done) {
             if (!isHost) {
-              if (isEverythingAnswered) {
+              if (this.isEverythingAnswered()) {
                 return <p>Feel free to update your answers at any time.</p>
               }
               return <p>Answer these questions before the meeting begins to get a head start!</p>
@@ -454,6 +458,7 @@ class TeamMemberDetailMeeting extends Component {
         >
           My answers are ready
         </button>}
+        {answerReadyError === 'everything-not-answered' && <div className="danger-text half-gutter-top">Please answer every question</div>}
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
