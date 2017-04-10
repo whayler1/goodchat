@@ -22,7 +22,7 @@ export const setLoggedIn = idToken => (dispatch) => new Promise((resolve, reject
   .send({ idToken })
   .then(
     res => {
-      console.log('got it', res.body);
+      console.log('got it', res);
       const { id, email, family_name, given_name, google_id, picture } = res.body;
       dispatch({
         type: SET_LOGGED_IN,
