@@ -7,7 +7,8 @@
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
     "start": "babel-node --presets es2015,stage-0 ./src/server/server",
-    "test": "./node_modules/mocha/bin/_mocha"
+    "test": "./node_modules/mocha/bin/_mocha",
+    "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
@@ -81,6 +82,7 @@
     "mocha-jscs": "^5.0.1",
     "mocha-jshint": "^2.3.1",
     "run-sequence": "^1.2.2",
+    "selenium-standalone": "^6.2.0",
     "tiny-lr": "^0.2.1"
   },
   "name": "goodchat"
