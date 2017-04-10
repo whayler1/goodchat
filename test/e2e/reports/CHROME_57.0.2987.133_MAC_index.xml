@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites errors="0"
-            failures="1"
+            failures="0"
             tests="1">
 
   <testsuite name="index"
-    errors="0" failures="1" hostname="" id="" package="index" skipped="0"
-    tests="1" time="11.57" timestamp="Mon, 10 Apr 2017 23:30:23 GMT">
+    errors="0" failures="0" hostname="" id="" package="index" skipped="0"
+    tests="1" time="8.761" timestamp="Mon, 10 Apr 2017 23:45:40 GMT">
   
-    <testcase name="Demo test Google" classname="index" time="11.57" assertions="3">
-
-    
-
-      <failure message="Testing if element &lt;#main&gt; contains text: &quot;Night Watch&quot;.">    at Object.Demo test Google (/Users/justin/work/goodchat/test/e2e/index.js:10:15)
-    at _combinedTickCallback (internal/process/next_tick.js:67:7)</failure>
+    <testcase name="Home Page" classname="index" time="8.761" assertions="1">
 
     
     </testcase>
