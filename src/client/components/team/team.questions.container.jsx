@@ -181,6 +181,7 @@ class TeamQuestions extends Component {
                   className="form-control"
                   value={this.state[qId]}
                   onChange={this.onQuestionChange}
+                  autoFocus={index === 0}
                 />
               <span className="input-group-addon input-group-addon-divided">
                   <button

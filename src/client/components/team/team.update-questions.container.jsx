@@ -15,8 +15,9 @@ class TeamUpdateQuestions extends Component {
   render() {
     const { team } = this.props
     const { name } = team;
+    const closeFunc = this.modalCloseFunc;
     return (
-      <Modal closeFunc={this.modalCloseFunc}>
+      <Modal closeFunc={closeFunc}>
         <Helmet title={`Update default questions for ${name} | Good Chat`}/>
         <section className="card">
           <header className="card-header">
@@ -27,6 +28,25 @@ class TeamUpdateQuestions extends Component {
               </Link>
             </div>
           </header>
+          <div className="card-padded-content">
+            <p>These are the default questions any time you start a meeting. You can update these at any time, or change them ad-hoc when you start a meeting.</p>
+          </div>
+          <div className="card-padded-content">
+            <TeamQuestions
+              team={team}
+            />
+          </div>
+          <div className="card-padded-content align-right">
+            <ul className="stacked-to-inline-list">
+              <li>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={closeFunc}
+                >Close</button>
+              </li>
+            </ul>
+          </div>
         </section>
       </Modal>
     );

@@ -16,7 +16,7 @@ const getStringAsHtml = str => {
   const splitStr = str.split(/\r|\n/g);
 
   return splitStr.map((split, index) => {
-      if (index > 1) {
+      if (index > 0) {
         return [
           <br/>,
           split
