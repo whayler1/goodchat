@@ -65,7 +65,9 @@ class TeamMemberDetail extends Component {
       question2,
       question3,
       question4,
-      question5,
+      question5
+    } = team;
+    const {
       newMeetingDateTime
     } = this.state;
 

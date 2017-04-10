@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { setTeam } from './team.dux.js';
+import { updateTeam } from './team.dux.js';
 import questionDefaults from '../../questions/questions.js';
 import _ from 'lodash';
-import superagent from 'superagent';
 
 class TeamQuestions extends Component {
   static propTypes = {
     team: PropTypes.object.isDefined,
     shouldHaveSubmit: PropTypes.bool,
-    setTeam: PropTypes.func.isRequired
+    shouldShowSaveUI: PropTypes.bool,
+    updateTeam: PropTypes.func.isRequired
   };
 
   state = {
@@ -23,8 +23,7 @@ class TeamQuestions extends Component {
     isQuestion3DropdownVisible: false,
     isQuestion4DropdownVisible: false,
     isQuestion5DropdownVisible: false,
-    elRef: null,
-    isInFlight: false
+    elRef: null
   };
 
   resetState = team => this.setState({
@@ -38,52 +37,29 @@ class TeamQuestions extends Component {
     isQuestion3DropdownVisible: false,
     isQuestion4DropdownVisible: false,
     isQuestion5DropdownVisible: false,
-    elRef: null,
-    isInFlight: false
+    elRef: null
   });
 
   questionFormSubmit = _.debounce(() => {
     console.log('%cquestion form submit', 'background:lightblue');
-    const {
-      question1,
-      question2,
-      question3,
-      question4,
-      question5
-    } = this.state;
     const teamId = this.props.team.id;
 
-    superagent.put(`team/${teamId}`)
-      .send({
-        question1,
-        question2,
-        question3,
-        question4,
-        question5
-      })
-      .end((err, res) => {
-        if (err) {
-          return console.log('%cerr putting team', 'background:pink', res);
-        }
+    this.props.updateTeam(teamId, _.pick(this.state, [1,2,3,4,5].map(n => `question${n}`)))
+      .then(res => {
+        this.setState({ isInFlight: false })
         analytics.track('questions-set', {
           category: 'team',
           teamId
         });
-        console.log('%csuccess updating team!', 'background:yellowgreen', res);
-        this.props.setTeam(res.body.team);
-      });
+      })
+      .catch(err => console.log('err updating team', err));
   }, 750);
 
   singleQuestionSubmit = _.debounce((question) => {
     console.log('question', question);
-    superagent.put(`team/${this.props.team.id}`)
-      .send({ [question]: this.state[question] })
-      .end((err, res) => {
-        if (err) {
-          return console.log('%cerr putting team', 'background:pink', res);
-        }
-        this.props.setTeam(res.body.team);
-      });
+    this.props.updateTeam(this.props.team.id, { [question]: this.state[question] }).then(
+      res => this.setState({ isInFlight: false })
+    );
   }, 750);
 
   onQuestionFormSubmit = e => {
@@ -93,7 +69,7 @@ class TeamQuestions extends Component {
 
   onQuestionChange = e => {
     const { name } = e.target;
-    this.setState({ [name]: e.target.value }, () => !this.props.shouldHaveSubmit && this.singleQuestionSubmit(name));
+    this.setState({ [name]: e.target.value, isInFlight: true }, () => !this.props.shouldHaveSubmit && this.singleQuestionSubmit(name));
   };
 
   onBodyClick = e => {
@@ -156,6 +132,21 @@ class TeamQuestions extends Component {
         className="form"
         onSubmit={shouldHaveSubmit ? e => {e.preventDefault(); return false;} : this.onQuestionFormSubmit}
       >
+        {(() => {
+          const { isInFlight } = this.state;
+          
+          if (this.props.shouldShowSaveUI) {
+            if (typeof isInFlight === 'boolean') {
+              if (isInFlight) {
+                return <span className="muted-text">Saving...</span>;
+              } else {
+                return <span className="muted-text">Saved</span>;
+              }
+            } else {
+              return <span>&nbsp;</span>;
+            }
+          }
+        })()}
         {questionValues.map((question, index) => {
           const qId = `question${index + 1}`;
           const elRef = `${qId}El`;
@@ -246,5 +237,5 @@ class TeamQuestions extends Component {
 
 export default connect(
   null,
-  { setTeam }
+  { updateTeam }
 )(TeamQuestions);

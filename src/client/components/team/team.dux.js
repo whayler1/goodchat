@@ -52,6 +52,25 @@ export const getTeam = (teamId) => (dispatch, getState) => new Promise((resolve,
   });
 })
 
+export const updateTeam = (teamId, updateObj) => dispatch => new Promise((resolve, reject) => {
+  superagent.put(`team/${teamId}`)
+    .send(updateObj)
+    .end((err, res) => {
+      if (err) {
+        reject();
+        console.log('%cerr putting team', 'background:pink', res);
+      } else {
+        const { team } = res.body;
+        console.log('%csuccess updating team!', 'background:yellowgreen', res);
+        dispatch({
+          type: SET_TEAM,
+          team
+        })
+        resolve(res.body.team)
+      }
+    });
+});
+
 export const setTeams = teams => ({
   type: SET_TEAMS,
   teams

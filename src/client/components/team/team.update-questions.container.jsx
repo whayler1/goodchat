@@ -30,10 +30,9 @@ class TeamUpdateQuestions extends Component {
           </header>
           <div className="card-padded-content">
             <p>These are the default questions any time you start a meeting. You can update these at any time, or change them ad-hoc when you start a meeting.</p>
-          </div>
-          <div className="card-padded-content">
             <TeamQuestions
               team={team}
+              shouldShowSaveUI={true}
             />
           </div>
           <div className="card-padded-content align-right">
