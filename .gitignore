@@ -6,3 +6,4 @@ dist
 echo
 test/e2e/log
 test/e2e/reports
+test/e2e/globals
