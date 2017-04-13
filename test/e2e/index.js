@@ -1,7 +1,10 @@
 module.exports = {
   'Login': function (client) {
-    console.log('env', client.globals);
-    var home = client.page.home();
+    const home = client.page.home();
+    const teams = client.page.teams();
+    const team = client.page.team();
+    const teamInvite = client.page.teamInvite();
+
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
       .click('@loginCta');
@@ -19,9 +22,28 @@ module.exports = {
           .waitForElementVisible('#Passwd', 1000)
           .setValue('#Passwd', client.globals.TEST_PASSWORD)
           .click('#signIn')
-          .end();
+          .switchWindow(result.value[0]);
       });
     });
+
+    teams.waitForElementVisible('@teamPageContent', 1000)
+      .click('@createTeamBtn');
+
+    team.waitForElementVisible('@nameInput', 1000)
+      .setValue('@nameInput', 'test team')
+      .waitForElementVisible('@createTeamBtn', 1000)
+      .click('@createTeamBtn')
+      .waitForElementVisible('@saveQuestionsBtn', 1000)
+      .click('@saveQuestionsBtn')
+      .waitForElementVisible('@inviteTeamMembersLink', 1000)
+      .click('@inviteTeamMembersLink');
+
+    teamInvite.waitForElementVisible('@emailInput', 1000)
+      .setValue('@emailInput', 'foo')
+      .click('@sendInviteBtn')
+      .assert.containsText('.input-error-msg', 'Please provide a valid email.')
+
+    client.end();
   }
   // 'Home Page' : function (browser) {
   //   browser

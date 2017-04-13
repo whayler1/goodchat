@@ -177,7 +177,7 @@ class Team extends Component {
               />
               {this.state.name && this.state.name.length > 1 &&
               <div>
-                <button type="submit" disabled={this.state.isInFlight} className="btn-no-style btn-large team-set-name-submit">Create Team <i className="material-icons">add_circle_outline</i></button>
+                <button type="submit" id="btn-create-team" disabled={this.state.isInFlight} className="btn-no-style btn-large team-set-name-submit">Create Team <i className="material-icons">add_circle_outline</i></button>
               </div>}
             </form>
           </div>
@@ -236,7 +236,11 @@ class Team extends Component {
               </li>)}
             </ul>]}
             {(is_owner || is_admin) &&
-            <Link className="btn-no-style btn-no-style-primary btn-block btn-team-invite" to={`teams/${id}/invite`}>
+            <Link
+              id="link-invite-team-members"
+              className="btn-no-style btn-no-style-primary btn-block btn-team-invite"
+              to={`teams/${id}/invite`}
+            >
               Invite team members <i className="material-icons">person_add</i>
             </Link>}
           </div>

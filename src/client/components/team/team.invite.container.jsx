@@ -200,6 +200,7 @@ class TeamInvite extends Component {
               </fieldset>
               <fieldset>
                 <button
+                  id="btn-send-invite"
                   type="submit"
                   className="btn-primary-inverse btn-block"
                 >
