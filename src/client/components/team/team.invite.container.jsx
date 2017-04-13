@@ -11,6 +11,7 @@ import Modal from '../modal/modal.container.jsx';
 
 class InviteListItem extends Component {
   static propTypes = {
+    index: PropTypes.number.isRequired,
     inviteId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     inviteeEmail: PropTypes.string.isRequired,
@@ -41,10 +42,10 @@ class InviteListItem extends Component {
     }
   }
   render() {
-    const { inviteeEmail, updatedAt } = this.props;
+    const { inviteeEmail, updatedAt, index } = this.props;
     return (
       <div>
-        <div>{inviteeEmail}</div>
+        <div id={`invitee-${index}-email`}>{inviteeEmail}</div>
         {/* subtract a few seconds from updatedAt because server time is slightly ahead */}
         <Time
           className="font-small"
@@ -213,9 +214,10 @@ class TeamInvite extends Component {
           <div className="card-padded-content">
             <h3>Pending invites</h3>
             <ul className="card-body-list pending-invite-list">
-              {invites.map(invite => (
+              {invites.map((invite, index) => (
                 <li key={invite.id}>
                   <InviteListItem
+                    index={index}
                     inviteId={invite.id}
                     teamId={id}
                     inviteeEmail={invite.invitee_email}

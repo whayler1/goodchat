@@ -5,9 +5,13 @@
 
   <testsuite name="index"
     errors="0" failures="0" hostname="" id="" package="index" skipped="0"
-    tests="1" time="11.78" timestamp="Thu, 13 Apr 2017 22:48:00 GMT">
+    tests="1" time="12.91" timestamp="Thu, 13 Apr 2017 23:02:48 GMT">
   
-    <testcase name="Login" classname="index" time="11.78" assertions="11">
+    <testcase name="Basic app usage" classname="index" time="12.91" assertions="13">
+
+    
+
+    
 
     
 
