@@ -11,6 +11,9 @@ import Modal from '../modal/modal.container.jsx';
 
 class InviteListItem extends Component {
   static propTypes = {
+    id: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
     inviteId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     inviteeEmail: PropTypes.string.isRequired,
@@ -41,10 +44,21 @@ class InviteListItem extends Component {
     }
   }
   render() {
-    const { inviteeEmail, updatedAt } = this.props;
+    const { inviteeEmail, updatedAt, index, id, teamId } = this.props;
     return (
       <div>
-        <div>{inviteeEmail}</div>
+        <div id={`invitee-${index}-email`}>{inviteeEmail}</div>
+        {/* JW: I'm using these hidden inputs to help with e2e tests */}
+        <input
+          type="hidden"
+          value={id}
+          id={`invitee-${index}-invite-id`}
+        />
+        <input
+          type="hidden"
+          value={teamId}
+          id={`invitee-${index}-team-id`}
+        />
         {/* subtract a few seconds from updatedAt because server time is slightly ahead */}
         <Time
           className="font-small"
@@ -200,6 +214,7 @@ class TeamInvite extends Component {
               </fieldset>
               <fieldset>
                 <button
+                  id="btn-send-invite"
                   type="submit"
                   className="btn-primary-inverse btn-block"
                 >
@@ -212,9 +227,12 @@ class TeamInvite extends Component {
           <div className="card-padded-content">
             <h3>Pending invites</h3>
             <ul className="card-body-list pending-invite-list">
-              {invites.map(invite => (
+              {invites.map((invite, index) => (
                 <li key={invite.id}>
                   <InviteListItem
+                    id={invite.id}
+                    teamId={invite.team_id}
+                    index={index}
                     inviteId={invite.id}
                     teamId={id}
                     inviteeEmail={invite.invitee_email}
@@ -226,7 +244,7 @@ class TeamInvite extends Component {
             </ul>
           </div>}
           <footer className="card-padded-content">
-            <Link className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
+            <Link id="btn-close-invite-modal" className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
           </footer>
         </section>
       </Modal>

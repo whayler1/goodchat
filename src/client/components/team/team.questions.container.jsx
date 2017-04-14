@@ -215,6 +215,7 @@ class TeamQuestions extends Component {
         <fieldset>
           <button
             type="button"
+            id="btn-save-questions"
             className="btn-no-style btn-large team-set-name-submit"
             onClick={this.questionFormSubmit}
           >

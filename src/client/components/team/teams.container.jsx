@@ -29,7 +29,7 @@ class Teams extends Component {
   render() {
     const { teams } = this.props;
     return (
-      <main className="main" role="main">
+      <main className="main" role="main" id="main-teams">
         <Helmet
           title="My teams"
         />
@@ -63,6 +63,7 @@ class Teams extends Component {
                   <button
                     className="btn-primary-inverse btn-block"
                     type="button"
+                    id="btn-create-team"
                     onClick={this.onCreateTeam}>
                     Create a new team <i className="material-icons">add</i>
                   </button>
