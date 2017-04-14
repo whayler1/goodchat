@@ -35,7 +35,7 @@ class Team extends Component {
     return (
       <ul className="dropdown-list">
         <li>
-          <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+          <button id="btn-delete-team" type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
             Delete this team <i className="material-icons">delete</i>
           </button>
         </li>
@@ -177,7 +177,7 @@ class Team extends Component {
               />
               {this.state.name && this.state.name.length > 1 &&
               <div>
-                <button type="submit" disabled={this.state.isInFlight} className="btn-no-style btn-large team-set-name-submit">Create Team <i className="material-icons">add_circle_outline</i></button>
+                <button type="submit" id="btn-create-team" disabled={this.state.isInFlight} className="btn-no-style btn-large team-set-name-submit">Create Team <i className="material-icons">add_circle_outline</i></button>
               </div>}
             </form>
           </div>
@@ -210,7 +210,7 @@ class Team extends Component {
             <h1>{this.state.name}</h1>
             {is_owner &&
             <Dropdown
-              label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
+              label={<button id="btn-main-team-more" type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
               content={this.getDropdownContent()}
               isRightAligned={true}
             />}
@@ -222,7 +222,7 @@ class Team extends Component {
             <p>This team has no members.<br/><b>Click below</b> to invite team members.</p>]}
             {members.length > 0 && [
             <h3 className="team-member-list-title vanity-font">Meetings</h3>,
-            <ul className="team-member-list">
+            <ul id="team-member-list" className="team-member-list">
               {members.map(member => <li key={member.id}>
                 <TeamMemberListItem
                   givenName={member.given_name}
@@ -236,7 +236,11 @@ class Team extends Component {
               </li>)}
             </ul>]}
             {(is_owner || is_admin) &&
-            <Link className="btn-no-style btn-no-style-primary btn-block btn-team-invite" to={`teams/${id}/invite`}>
+            <Link
+              id="link-invite-team-members"
+              className="btn-no-style btn-no-style-primary btn-block btn-team-invite"
+              to={`teams/${id}/invite`}
+            >
               Invite team members <i className="material-icons">person_add</i>
             </Link>}
           </div>

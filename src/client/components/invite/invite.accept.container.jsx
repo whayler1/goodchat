@@ -42,6 +42,7 @@ class InviteAccept extends Component {
       return ([
         <p>You are logged in as <b>{email}</b>.</p>,
         <button
+          id="btn-join-team"
           className="btn-primary-inverse btn-large invite-accept-login-btn"
           type="button"
           onClick={this.onJoinClick}

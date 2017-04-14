@@ -85,6 +85,7 @@ class Home extends Component {
           {!isLoggedIn &&
           <button
             type="button"
+            id="home-hero-google"
             className="btn-inverse btn-inverse-google"
             onClick={this.props.login}
           >
