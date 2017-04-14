@@ -12,6 +12,7 @@ import Modal from '../modal/modal.container.jsx';
 class InviteListItem extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     inviteId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
@@ -43,14 +44,20 @@ class InviteListItem extends Component {
     }
   }
   render() {
-    const { inviteeEmail, updatedAt, index, id } = this.props;
+    const { inviteeEmail, updatedAt, index, id, teamId } = this.props;
     return (
       <div>
         <div id={`invitee-${index}-email`}>{inviteeEmail}</div>
+        {/* JW: I'm using these hidden inputs to help with e2e tests */}
         <input
           type="hidden"
           value={id}
           id={`invitee-${index}-invite-id`}
+        />
+        <input
+          type="hidden"
+          value={teamId}
+          id={`invitee-${index}-team-id`}
         />
         {/* subtract a few seconds from updatedAt because server time is slightly ahead */}
         <Time
@@ -224,6 +231,7 @@ class TeamInvite extends Component {
                 <li key={invite.id}>
                   <InviteListItem
                     id={invite.id}
+                    teamId={invite.team_id}
                     index={index}
                     inviteId={invite.id}
                     teamId={id}

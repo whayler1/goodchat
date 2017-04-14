@@ -194,6 +194,7 @@ class TeamMemberDetail extends Component {
               {!isScheduleMeetingSelected && [
               <fieldset>
                 <button
+                  id="btn-start-meeting-now"
                   type="button"
                   className="btn-primary btn-block"
                   onClick={this.onStartMeetingNow}
