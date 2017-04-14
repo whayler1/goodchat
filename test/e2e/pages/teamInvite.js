@@ -5,6 +5,9 @@ module.exports = {
     },
     sendInviteBtn: {
       selector: '#btn-send-invite'
+    },
+    closeBtn: {
+      selector: '#btn-close-invite-modal'
     }
   }
 };

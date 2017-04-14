@@ -50,8 +50,11 @@ class Navbar extends Component {
                 <i className="material-icons">close</i>
               </button>;
             }
-            return <button className="btn-no-style header-nav-mobile-ui"
-              onClick={this.props.showNav}>
+            return <button
+              className="btn-no-style header-nav-mobile-ui"
+              onClick={this.props.showNav}
+              id="navbar-hamburger"
+            >
               <i className="material-icons">menu</i>
             </button>;
           })()}
@@ -88,6 +91,7 @@ class Navbar extends Component {
             {isLoggedIn &&
             <li>
               <button
+                id="btn-logout"
                 className="btn-secondary btn-block"
                 type="button"
                 onClick={this.onLogoutClick}

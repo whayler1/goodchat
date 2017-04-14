@@ -11,6 +11,7 @@ import Modal from '../modal/modal.container.jsx';
 
 class InviteListItem extends Component {
   static propTypes = {
+    id: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     inviteId: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
@@ -42,10 +43,15 @@ class InviteListItem extends Component {
     }
   }
   render() {
-    const { inviteeEmail, updatedAt, index } = this.props;
+    const { inviteeEmail, updatedAt, index, id } = this.props;
     return (
       <div>
         <div id={`invitee-${index}-email`}>{inviteeEmail}</div>
+        <input
+          type="hidden"
+          value={id}
+          id={`invitee-${index}-invite-id`}
+        />
         {/* subtract a few seconds from updatedAt because server time is slightly ahead */}
         <Time
           className="font-small"
@@ -217,6 +223,7 @@ class TeamInvite extends Component {
               {invites.map((invite, index) => (
                 <li key={invite.id}>
                   <InviteListItem
+                    id={invite.id}
                     index={index}
                     inviteId={invite.id}
                     teamId={id}
@@ -229,7 +236,7 @@ class TeamInvite extends Component {
             </ul>
           </div>}
           <footer className="card-padded-content">
-            <Link className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
+            <Link id="btn-close-invite-modal" className="btn-secondary btn-block" to={`teams/${id}`}>Close</Link>
           </footer>
         </section>
       </Modal>
