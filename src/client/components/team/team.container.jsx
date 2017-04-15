@@ -205,7 +205,7 @@ class Team extends Component {
       );
     } else {
       return (
-        <main className="main main-team" role="main">
+        <main id="main-team" className="main main-team" role="main">
           <Helmet
             title={`${this.state.name} | Good Chat`}
           />

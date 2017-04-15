@@ -122,7 +122,7 @@ module.exports = {
     });
     client.waitForElementVisible('#btn-join-team', 1000)
       .click('#btn-join-team')
-    client.pause(3000);
+      .waitForElementVisible('#main-team', 1000)
 
     client.end();
   },
@@ -217,7 +217,6 @@ module.exports = {
       .click('#btn-delete-team')
       .pause(1000)
       .acceptAlert()
-      .pause(3000)
       .end()
   }
 };
