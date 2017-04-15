@@ -10,4 +10,6 @@ env:
 sudo: required
 
 before_install:
-  - "npm install nightwatch selenium-standalone@6.2.0 babel-core babel-preset-stage-0 babel-preset-es2015"
+  - "npm install nightwatch babel-core babel-preset-stage-0 babel-preset-es2015"
+  - "npm install -g selenium-standalone@6.2.0"
+  - "selenium-standalone install"
