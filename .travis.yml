@@ -1,7 +1,15 @@
-language: node_js
+language: java
 
-node_js:
-  - "7"
+jdk:
+  - oraclejdk8
+
+env:
+  - NODE_VERSION=7
+
+# language: node_js
+#
+# node_js:
+#   - "7"
 
 env:
   global:
