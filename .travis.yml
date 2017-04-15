@@ -10,4 +10,4 @@ env:
 sudo: required
 
 before_install:
-  - "npm install"
+  - "npm install nightwatch"

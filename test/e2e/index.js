@@ -5,6 +5,7 @@ const question1Value = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit
 
 module.exports = {
   'Create a team and invite someone': client => {
+    console.log('process.env', process.env);
     const home = client.page.home();
     const teams = client.page.teams();
     const team = client.page.team();
@@ -15,7 +16,7 @@ module.exports = {
       TEST_PASSWORD,
       INVITEE_EMAIL,
       INVITEE_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -89,7 +90,7 @@ module.exports = {
     const {
       INVITEE_EMAIL,
       INVITEE_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -136,7 +137,7 @@ module.exports = {
     const {
       TEST_EMAIL,
       TEST_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -185,7 +186,7 @@ module.exports = {
     const {
       TEST_EMAIL,
       TEST_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
