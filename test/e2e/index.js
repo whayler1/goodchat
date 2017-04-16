@@ -5,7 +5,8 @@ const question1Value = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit
 
 module.exports = {
   'Create a team and invite someone': client => {
-    console.log('process.env', process.env);
+    // console.log('process.env', process.env);
+    console.log('%c starting tests', 'background: green');
     const home = client.page.home();
     const teams = client.page.teams();
     const team = client.page.team();
@@ -18,13 +19,17 @@ module.exports = {
       INVITEE_PASSWORD
     } = process.env;
 
+    console.log('about to navigate to home');
+
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
       .click('@loginCta');
 
+    console.log('navigated to home');
+
     client.pause(1000);
     client.window_handles(function(result) {
-      console.log('result:', result);
+      console.log('switching windows:', result);
       var handle = result.value[1];
       client.switchWindow(handle, function() {
         client.waitForElementVisible('body', 1000)
@@ -41,6 +46,8 @@ module.exports = {
       });
     });
 
+    console.log('switched windows');
+
     teams.waitForElementVisible('@teamPageContent', 1000)
       .click('@createTeamBtn');
 
@@ -52,6 +59,8 @@ module.exports = {
       .click('@saveQuestionsBtn')
       .waitForElementVisible('@inviteTeamMembersLink', 1000)
       .click('@inviteTeamMembersLink');
+
+    console.log('creating invite');
 
     teamInvite.waitForElementVisible('@emailInput', 1000)
       .setValue('@emailInput', 'foo')
@@ -72,10 +81,14 @@ module.exports = {
       })
       .click('@closeBtn');
 
+    console.log('invite created');
+
     client.waitForElementVisible('#navbar-hamburger', 1000)
       .click('#navbar-hamburger')
       .waitForElementVisible('#btn-logout', 1000)
       .click('#btn-logout');
+
+    console.log('done 🎉');
 
     client.end();
   },
