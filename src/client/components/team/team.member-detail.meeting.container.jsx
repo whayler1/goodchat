@@ -59,7 +59,7 @@ function QuestionAnswer({
             placeholder="Ask a question"
           />
         </div>}
-        {(!isHost || isDone) && <p className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? getStringAsHtml(question) : <i className="material-icons">more_horiz</i>}</p>}
+        {(!isHost || isDone) && <p id={`question${index}`} className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? getStringAsHtml(question) : <i className="material-icons">more_horiz</i>}</p>}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
@@ -78,7 +78,7 @@ function QuestionAnswer({
             placeholder="Click here to answer"
           />
         </div>}
-        {(!isUser || isDone) && <p className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? getStringAsHtml(answer) : <i className="material-icons">more_horiz</i>}</p>}
+        {(!isUser || isDone) && <p id={`answer${index}`} className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? getStringAsHtml(answer) : <i className="material-icons">more_horiz</i>}</p>}
       </div>
       {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
       <ul className="pull-right inline-list meeting-qa-foot">
@@ -451,6 +451,7 @@ class TeamMemberDetailMeeting extends Component {
         </div>}
         {!isHost && !is_done && !are_answers_ready &&
         <button
+          id="btn-answers-ready"
           type="button"
           className="btn-primary-inverse btn-block gutter-large-top"
           onClick={this.onAnswersReady}
