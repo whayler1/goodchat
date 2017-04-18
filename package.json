@@ -7,7 +7,7 @@
   "scripts": {
     "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
     "start": "babel-node --presets es2015,stage-0 ./src/server/server",
-    "test": "nightwatch",
+    "test": "./node_modules/nightwatch/bin/nightwatch",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "material-design-icons": "^3.0.1",
     "moment": "^2.17.1",
     "morgan": "~1.7.0",
+    "nightwatch": "^0.9.14",
     "node-uuid": "^1.4.7",
     "nodemailer": "^2.7.0",
     "nunjucks": "^2.4.2",

@@ -1,7 +1,20 @@
-language:
-- node_js
+language: node_js
+
 node_js:
-- '6'
+  - "7"
+
 env:
   global:
   - NODE_ENV=test
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-set-default
+
+sudo: required
+
+before_install:
+  - "npm install selenium-standalone"
+  - "./node_modules/selenium-standalone/bin/selenium-standalone install"
+  - "./node_modules/selenium-standalone/bin/selenium-standalone start &"

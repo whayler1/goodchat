@@ -5,6 +5,8 @@ const question1Value = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit
 
 module.exports = {
   'Create a team and invite someone': client => {
+    // console.log('process.env', process.env);
+    console.log('%c starting tests', 'background: green');
     const home = client.page.home();
     const teams = client.page.teams();
     const team = client.page.team();
@@ -15,7 +17,7 @@ module.exports = {
       TEST_PASSWORD,
       INVITEE_EMAIL,
       INVITEE_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -23,7 +25,7 @@ module.exports = {
 
     client.pause(1000);
     client.window_handles(function(result) {
-      console.log('result:', result);
+      console.log('switching windows:', result);
       var handle = result.value[1];
       client.switchWindow(handle, function() {
         client.waitForElementVisible('body', 1000)
@@ -89,7 +91,7 @@ module.exports = {
     const {
       INVITEE_EMAIL,
       INVITEE_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -136,7 +138,7 @@ module.exports = {
     const {
       TEST_EMAIL,
       TEST_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
@@ -185,7 +187,7 @@ module.exports = {
     const {
       TEST_EMAIL,
       TEST_PASSWORD
-    } = client.globals;
+    } = process.env;
 
     home.navigate()
       .waitForElementVisible('@loginCta', 1000)
