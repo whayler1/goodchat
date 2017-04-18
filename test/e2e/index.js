@@ -1,10 +1,16 @@
+const _ = require('lodash');
+
 let inviteId;
 let teamId;
 
 const question1Value = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+const question2Value = 'Success isn\'t about the end result, it\'s about what you learn along the way.';
+const question3Value = 'It\'s sometimes said that I\'m rebellious and I do things to push people\'s buttons, but I just like the challenge. Over the years I have learned that what is important in a dress is the woman who is wearing it. There is always an emotional element to anything that you make. I never look at other people\'s work. My mind has to be completely focused on my own illusions. Fashions fade, style is eternal.';
+const question4Value = 'I feel that things happen for a reason and open up new opportunities. I am no longer concerned with sensation and innovation, but with the perfection of my style. You have to stay true to your heritage; that\'s what your brand is about. The key to my collections is sensuality. I love the 2000s because everyone started to love haute couture.';
+const question5Value = 'I think it\'s the responsibility of a designer to try to break rules and barriers. All I did my first year at Vogue was Xerox. Fashion is always of the time in which you live. It is not something standing alone. But the grand problem, the most important problem, is to rejeuvenate women. To make women look young. Then their outlook changes. They feel more joyous. It\'s really easy to get colors right. It\'s really hard to get black - and neutrals - right. Black is certainly a color but it\'s also an illusion. The key to my collections is sensuality.';
 const answer1Value = 'This is Answer one';
 const answer2Value = 'This is Answer two';
-const answer3Value = 'This is Answer three';
+const answer3Value = _.repeat('abcd ef gh', 501);
 const answer4Value = 'This is Answer four';
 const answer5Value = 'This is Answer five';
 
@@ -177,7 +183,16 @@ module.exports = {
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
       .waitForElementVisible('#question1', 1000)
+      .clearValue('#question1')
       .setValue('#question1', question1Value)
+      .clearValue('#question2')
+      .setValue('#question2', question2Value)
+      .clearValue('#question3')
+      .setValue('#question3', question3Value)
+      .clearValue('#question4')
+      .setValue('#question4', question4Value)
+      .clearValue('#question5')
+      .setValue('#question5', question5Value)
       // #JW: Need to pause to allow value to sumbit
       .pause(1500);
 
@@ -229,6 +244,10 @@ module.exports = {
       .click('#team-member-list > li > a')
       .waitForElementVisible('#answer1', 1000)
       .assert.containsText('#question1', question1Value)
+      .assert.containsText('#question2', question2Value)
+      .assert.containsText('#question3', question3Value)
+      .assert.containsText('#question4', question4Value)
+      .assert.containsText('#question5', question5Value)
       .setValue('#answer1', answer1Value)
       .setValue('#answer2', answer2Value)
       .setValue('#answer3', answer3Value)
@@ -284,7 +303,7 @@ module.exports = {
       .waitForElementVisible('#answer1', 1000)
       .assert.containsText('#answer1', answer1Value)
       .assert.containsText('#answer2', answer2Value)
-      .assert.containsText('#answer3', answer3Value)
+      .assert.containsText('#answer3', answer3Value.substr(0, 5000))
       .assert.containsText('#answer4', answer4Value)
       .assert.containsText('#answer5', answer5Value)
       .click('.card-header-close')
@@ -294,6 +313,8 @@ module.exports = {
       .click('#btn-delete-team')
       .pause(1000)
       .acceptAlert()
+      // JW: pause to allow team to be deleted
+      .pause(1500)
       .end()
   }
 };
