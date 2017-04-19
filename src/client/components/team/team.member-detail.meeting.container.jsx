@@ -7,6 +7,7 @@ import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
+import ReactMarkdown from 'react-markdown';
 
 import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
@@ -59,7 +60,15 @@ function QuestionAnswer({
             placeholder="Ask a question"
           />
         </div>}
-        {(!isHost || isDone) && <p id={`question${index}`} className={question ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ question ? getStringAsHtml(question) : <i className="material-icons">more_horiz</i>}</p>}
+        {(() => {
+          if (!isHost || isDone) {
+            if (question) {
+              return <ReactMarkdown id={`question${index}`} className="team-member-detail-qa-list-item" source={question}/>;
+            } else {
+              return <section id={`question${index}`} className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"><i className="material-icons">more_horiz</i></section>;
+            }
+          }
+        })()}
       </div>
       <div className="team-member-detail-qa-list-item-input-group">
         <div className="team-member-detail-qa-list-item-icon"
@@ -78,7 +87,15 @@ function QuestionAnswer({
             placeholder="Click here to answer"
           />
         </div>}
-        {(!isUser || isDone) && <p id={`answer${index}`} className={answer ? '' : 'team-member-detail-qa-list-item-no-comment'}>{ answer ? getStringAsHtml(answer) : <i className="material-icons">more_horiz</i>}</p>}
+        {(() => {
+          if (!isUser || isDone) {
+            if (answer) {
+              return <ReactMarkdown id={`answer${index}`} className="team-member-detail-qa-list-item" source={answer}/>;
+            } else {
+              return <section id={`answer${index}`} className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"><i className="material-icons">more_horiz</i></section>;
+            }
+          }
+        })()}
       </div>
       {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
       <ul className="pull-right inline-list meeting-qa-foot">

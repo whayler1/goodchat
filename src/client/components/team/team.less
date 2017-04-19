@@ -163,7 +163,7 @@
       background: white;
     }
   }
-  >p {
+  >.team-member-detail-qa-list-item {
     position: relative;
     padding: @half-gutter @gutter;
     margin: 0;
@@ -171,6 +171,44 @@
     border: 1px solid @bluegrey-100;
     border-radius: 2px;
     font-weight: 400;
+
+    >*:first-child {
+      margin-top: 0;
+    }
+    >*:last-child {
+      margin-bottom: 0;
+    }
+
+    ul, ol, p, h1, h2, h3, h4, h5, h6 {
+      margin: @half-gutter 0;
+    }
+
+    ul {
+      padding-left: @gutter;
+      >li {
+        list-style: disc;
+        li {
+          list-style: circle;
+        }
+      }
+    }
+    ol {
+      padding-left: @gutter;
+      >li {
+        list-style: decimal;
+      }
+    }
+    strong {
+      color: @bluegrey-700;
+    }
+
+    li {
+      margin-top: @quarter-gutter;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
 
     &::before {
       content: ' ';
