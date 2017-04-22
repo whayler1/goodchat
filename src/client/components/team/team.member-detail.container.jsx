@@ -137,7 +137,7 @@ class TeamMemberDetail extends Component {
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
 
     return (
-      <Modal closeFunc={this.modalCloseFunc}>
+      <Modal className="modal-container-team-meeting" closeFunc={this.modalCloseFunc}>
         <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
         <section className="card">
           <header className="card-header">
