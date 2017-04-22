@@ -106,15 +106,26 @@ export default class QuestionAnswer extends Component {
         <ul className="pull-right inline-list meeting-qa-foot">
           {!isDone && isUserInput &&
           <li>
+            {!isPreview &&
             <button
               id={`btn-preview-${index}`}
               className="btn-no-style"
               type="button"
               onClick={this.togglePreview}
             >
-              {!isPreview && <span>Preview <i className="material-icons">remove_red_eye</i></span>}
-              {isPreview && <span>Edit <i className="material-icons">create</i></span>}
+              Preview <i className="material-icons">remove_red_eye</i>
             </button>
+            }
+            {isPreview &&
+            <button
+              id={`btn-edit-${index}`}
+              className="btn-no-style"
+              type="button"
+              onClick={this.togglePreview}
+            >
+              Edit <i className="material-icons">create</i>
+            </button>
+            }
           </li>}
           <li>
             <button
