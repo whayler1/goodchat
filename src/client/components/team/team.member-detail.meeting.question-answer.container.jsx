@@ -107,6 +107,7 @@ export default class QuestionAnswer extends Component {
           {!isDone && isUserInput &&
           <li>
             <button
+              id={`btn-preview-${index}`}
               className="btn-no-style"
               type="button"
               onClick={this.togglePreview}

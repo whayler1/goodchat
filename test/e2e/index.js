@@ -190,6 +190,8 @@ module.exports = {
       .setValue('#question1', question1Value)
       .clearValue('#question2')
       .setValue('#question2', question2Value)
+      .click('#btn-preview-2')
+      .assert.containsText('#question2 >ul >li:first-child', 'item one')
       .clearValue('#question3')
       .setValue('#question3', question3Value)
       .clearValue('#question4')
