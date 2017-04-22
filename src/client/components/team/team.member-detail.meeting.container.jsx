@@ -48,7 +48,7 @@ function QuestionAnswer({
         {(() => {
           if (!isHost || isDone) {
             if (question) {
-              return <ReactMarkdown id={`question${index}`} className="team-member-detail-qa-list-item" source={question}/>;
+              return <ReactMarkdown containerProps={{id: `question${index}`}} className={`team-member-detail-qa-list-item`} source={question}/>;
             } else {
               return <section id={`question${index}`} className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"><i className="material-icons">more_horiz</i></section>;
             }
@@ -75,7 +75,7 @@ function QuestionAnswer({
         {(() => {
           if (!isUser || isDone) {
             if (answer) {
-              return <ReactMarkdown id={`answer${index}`} className="team-member-detail-qa-list-item" source={answer}/>;
+              return <ReactMarkdown containerProps={{id: `answer${index}`}} className="team-member-detail-qa-list-item" source={answer}/>;
             } else {
               return <section id={`answer${index}`} className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"><i className="material-icons">more_horiz</i></section>;
             }
