@@ -180,40 +180,54 @@ class TeamMemberDetail extends Component {
                 </p>
                 }
               </fieldset>,
-              <fieldset>
-                <button
-                  type="submit"
-                  className="btn-primary btn-block"
-                >Schedule meeting</button>
-              </fieldset>,
-              <fieldset className="center">
-                <button
-                  type="button"
-                  className="btn-no-style btn-no-style-secondary"
-                  onClick={() => this.setState({ isScheduleMeetingSelected: false })}
-                >Cancel</button>
+              <fieldset className="align-right">
+                <ul className="stacked-to-inline-list">
+                  <li className="hide-handheld">
+                    <button
+                      type="button"
+                      className="btn-no-style btn-no-style-secondary"
+                      onClick={() => this.setState({ isScheduleMeetingSelected: false })}
+                    >Cancel</button>
+                  </li>
+                  <li>
+                    <button
+                      type="submit"
+                      className="btn-primary btn-block"
+                    >Schedule meeting</button>
+                  </li>
+                  <li className="hide-tablet">
+                    <button
+                      type="button"
+                      className="btn-no-style btn-no-style-secondary"
+                      onClick={() => this.setState({ isScheduleMeetingSelected: false })}
+                    >Cancel</button>
+                  </li>
+                </ul>
               </fieldset>]}
-              {!isScheduleMeetingSelected && [
-              <fieldset>
-                <button
-                  id="btn-start-meeting-now"
-                  type="button"
-                  className="btn-primary btn-block"
-                  onClick={this.onStartMeetingNow}
-                >
-                  Start meeting now
-                </button>
-              </fieldset>,
-              <fieldset>
-                <button
-                  type="button"
-                  className="btn-primary-inverse btn-block"
-                  onClick={() => this.setState({ newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`, isScheduleMeetingSelected: true })}
-                >
-                  Schedule meeting
-                </button>
+              {!isScheduleMeetingSelected &&
+              <fieldset className="align-right">
+                <ul className="stacked-to-inline-list">
+                  <li>
+                    <button
+                      type="button"
+                      className="btn-primary-inverse btn-block"
+                      onClick={() => this.setState({ newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`, isScheduleMeetingSelected: true })}
+                    >
+                      Schedule meeting
+                    </button>
+                  </li><li>
+                    <button
+                      id="btn-start-meeting-now"
+                      type="button"
+                      className="btn-primary btn-block"
+                      onClick={this.onStartMeetingNow}
+                    >
+                      Start meeting now
+                    </button>
+                  </li>
+                </ul>
               </fieldset>
-              ]}
+              }
             </form>
           </div>
           }

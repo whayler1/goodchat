@@ -75,3 +75,16 @@
 .text-center {
   text-align: center;
 }
+
+.hide-handheld {
+  display: none !important;
+  @media(min-width: @tablet-width) {
+    display: inline-block !important;
+  }
+}
+
+.hide-tablet {
+  @media(min-width: @tablet-width) {
+    display: none !important;
+  }
+}

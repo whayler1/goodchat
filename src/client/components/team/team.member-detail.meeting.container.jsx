@@ -452,16 +452,23 @@ class TeamMemberDetailMeeting extends Component {
           </button>
         </div>}
         {!isHost && !is_done && !are_answers_ready &&
-        <button
-          id="btn-answers-ready"
-          type="button"
-          className="btn-primary-inverse btn-block gutter-large-top"
-          onClick={this.onAnswersReady}
-          disabled={isAnswerReadyInFlight}
-        >
-          My answers are ready
-        </button>}
-        {answerReadyError === 'everything-not-answered' && <div className="danger-text half-gutter-top">Please answer every question</div>}
+        <div className="gutter-large-top align-right">
+          <ul className="stacked-to-inline-list">
+            <li>
+              <button
+                id="btn-answers-ready"
+                type="button"
+                className="btn-primary-inverse"
+                onClick={this.onAnswersReady}
+                disabled={isAnswerReadyInFlight}
+              >
+                My answers are ready
+              </button>
+            </li>
+          </ul>
+          {answerReadyError === 'everything-not-answered' && <div className="danger-text half-gutter-top">Please answer every question</div>}
+        </div>
+        }
         <form className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
@@ -491,13 +498,20 @@ class TeamMemberDetailMeeting extends Component {
           />
         </form>
         {isHost && !is_done &&
-        <button
-          type="button"
-          className="btn-primary btn-block gutter-large-top"
-          onClick={this.onCompleteMeeting}
-        >
-          Complete meeting
-        </button>}
+        <div className="gutter-large-top align-right">
+          <ul className="stacked-to-inline-list">
+            <li>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={this.onCompleteMeeting}
+              >
+                Complete meeting
+              </button>
+            </li>
+          </ul>
+        </div>
+        }
       </section>
     );
   }
