@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-// import { connect } from 'react-redux';
 
 export default class Modal extends Component {
   static propTypes = {
-    closeFunc: PropTypes.func.isRequired
+    closeFunc: PropTypes.func.isRequired,
+    className: PropTypes.string
   }
 
   componentWillMount = () => document.body.classList.add('no-scroll')
@@ -11,11 +11,13 @@ export default class Modal extends Component {
   componentWillUnmount = () => document.body.classList.remove('no-scroll')
 
   render() {
+    const { className, closeFunc, children } = this.props;
+
     return (
-      <div className="modal-container">
-        <a className="modal-close-scrim" onClick={this.props.closeFunc}></a>
+      <div className={`modal-container${ className ? ' ' + className : '' }`}>
+        <a className="modal-close-scrim" onClick={closeFunc}></a>
         <div className="modal-card-container">
-          {this.props.children}
+          {children}
         </div>
       </div>
     );

@@ -13,21 +13,6 @@ import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../m
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 
-const getStringAsHtml = str => {
-  const splitStr = str.split(/\r|\n/g);
-
-  return splitStr.map((split, index) => {
-      if (index > 0) {
-        return [
-          <br/>,
-          split
-        ];
-      } else {
-        return split;
-      }
-    });
-}
-
 function QuestionAnswer({
   index,
   question,

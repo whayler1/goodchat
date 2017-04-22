@@ -181,6 +181,35 @@
 
     ul, ol, p, h1, h2, h3, h4, h5, h6 {
       margin: @half-gutter 0;
+      line-height: 1.3em;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: @bluegrey-700;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    code {
+      padding: 2px 3px;
+    }
+
+    pre {
+      padding: @quarter-gutter;
+    }
+
+    pre,
+    code {
+      border-radius: 2px;
+      background: @black-squeeze;
+      border: 1px solid darken(@black-squeeze, 10%);
+
+      code {
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+      }
     }
 
     ul {
