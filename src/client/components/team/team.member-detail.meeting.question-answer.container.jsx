@@ -50,6 +50,7 @@ function QAListItemInputGroup({
               className={`team-member-detail-qa-list-item`}
               source={value}
               containerProps={textAreaConatinerProps}
+              escapeHtml={true}
             />;
           } else {
             return <section
