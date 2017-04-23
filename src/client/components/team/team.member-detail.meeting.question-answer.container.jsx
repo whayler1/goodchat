@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
 
+import _ from 'lodash';
+
 function QAListItemInputGroup({
   value,
   isEditable,
@@ -10,8 +12,18 @@ function QAListItemInputGroup({
   prefix,
   imgUrl,
   onChange,
-  placeholder
+  placeholder,
+  togglePreview
 }) {
+  const textAreaConatinerProps = {};
+
+  if (_.isFunction(togglePreview)) {
+    Object.assign(textAreaConatinerProps, {
+      onClick: togglePreview,
+      style: { cursor: 'pointer' }
+    })
+  }
+
   return (
     <div className="team-member-detail-qa-list-item-input-group">
       <div className="team-member-detail-qa-list-item-icon"
@@ -33,9 +45,19 @@ function QAListItemInputGroup({
       {(() => {
         if (!isEditable) {
           if (value) {
-            return <ReactMarkdown containerProps={{id: `${prefix}${index}`}} className={`team-member-detail-qa-list-item`} source={value}/>;
+            return <ReactMarkdown
+              containerProps={{id: `${prefix}${index}`}}
+              className={`team-member-detail-qa-list-item`}
+              source={value}
+              containerProps={textAreaConatinerProps}
+            />;
           } else {
-            return <section id={`${prefix}${index}`} className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"><i className="material-icons">more_horiz</i></section>;
+            return <section
+              id={`${prefix}${index}`}
+              className="team-member-detail-qa-list-item team-member-detail-qa-list-item-no-comment"
+            >
+              <i className="material-icons">more_horiz</i>
+            </section>;
           }
         }
       })()}
@@ -98,6 +120,7 @@ export default class QuestionAnswer extends Component {
           imgUrl={hostImageUrl}
           onChange={onChange}
           placeholder="Ask a question"
+          togglePreview={!isDone && isHost && this.togglePreview}
         />
         <QAListItemInputGroup
           value={answer}
@@ -107,6 +130,7 @@ export default class QuestionAnswer extends Component {
           imgUrl={userImageUrl}
           onChange={onChange}
           placeholder="Click here to answer"
+          togglePreview={!isDone && !isHost && this.togglePreview}
         />
         {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
         <ul className="pull-right inline-list meeting-qa-foot">
