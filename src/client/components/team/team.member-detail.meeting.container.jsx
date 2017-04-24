@@ -8,6 +8,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import QuestionAnswer from './team.member-detail.meeting.question-answer.container.jsx';
 import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
+import ReactMarkdown from 'react-markdown';
 
 import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
@@ -44,6 +45,8 @@ class TeamMemberDetailMeeting extends Component {
     answer5: this.props.meeting.answer5,
     note: this.props.meeting.note,
     isAnswerReadyInFlight: false,
+    isNoteMarkdown: (_.isString(this.props.meeting.note) && this.props.meeting.note.length > 0),
+    isNoteAutofocus: false,
     title: this.props.meeting.title || ''
   }
 
@@ -233,12 +236,17 @@ class TeamMemberDetailMeeting extends Component {
       (this.props.meeting.qa_length && index >= this.props.meeting.qa_length) ||
       (this.state[key] && this.state[key].length > 0));
 
+  toggleIsNoteMarkdown = () => this.setState({
+    isNoteMarkdown: !this.state.isNoteMarkdown,
+    isNoteAutofocus: true
+  });
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
-      isNoteUpdateError, answerReadyError } = this.state;
+      isNoteUpdateError, answerReadyError, isNoteMarkdown, isNoteAutofocus } = this.state;
 
     const isUser = this.props.meeting.user_id === this.props.userId;
     const isHost = this.props.meeting.host_id === this.props.userId;
@@ -401,16 +409,29 @@ class TeamMemberDetailMeeting extends Component {
               }
             })()}
           </label>
-          <TextareaAutosize
-            className="form-control"
-            id="note"
-            name="note"
-            rows={3}
-            maxLength={5000}
-            placeholder="Write your private meeting notes here. Only you can see these."
-            onChange={this.onNoteChange}
-            value={this.state.note}
-          />
+          {(() => {
+            if (isNoteMarkdown) {
+              return <ReactMarkdown
+                className="team-markdown team-markdown-note half-gutter-top"
+                source={this.state.note}
+                containerProps={{ id: 'note', onClick: this.toggleIsNoteMarkdown }}
+                escapeHtml={true}
+              />;
+            } else {
+              return <TextareaAutosize
+                className="form-control"
+                id="note"
+                name="note"
+                rows={3}
+                maxLength={5000}
+                placeholder="Write your private meeting notes here. Only you can see these."
+                onChange={this.onNoteChange}
+                onBlur={_.isString(this.state.note) && this.state.note.length && this.toggleIsNoteMarkdown}
+                autoFocus={isNoteAutofocus}
+                value={this.state.note}
+              />;
+            }
+          })()}
         </form>
         {isHost && !is_done &&
         <div className="gutter-large-top align-right">
