@@ -15,7 +15,9 @@ function QAListItemInputGroup({
   placeholder,
   togglePreview
 }) {
-  const textAreaConatinerProps = {};
+  const textAreaConatinerProps = {
+    id: `${prefix}${index}`
+  };
 
   if (_.isFunction(togglePreview)) {
     Object.assign(textAreaConatinerProps, {
@@ -46,8 +48,7 @@ function QAListItemInputGroup({
         if (!isEditable) {
           if (value) {
             return <ReactMarkdown
-              containerProps={{id: `${prefix}${index}`}}
-              className={`team-member-detail-qa-list-item`}
+              className="team-member-detail-qa-list-item team-markdown"
               source={value}
               containerProps={textAreaConatinerProps}
               escapeHtml={true}
