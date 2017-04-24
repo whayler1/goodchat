@@ -186,6 +186,7 @@ module.exports = {
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
       .waitForElementVisible('#question1', 1000)
+      .setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
       .clearValue('#question1')
       .setValue('#question1', question1Value)
       .clearValue('#question2')
@@ -198,7 +199,13 @@ module.exports = {
       .setValue('#question4', question4Value)
       .clearValue('#question5')
       .setValue('#question5', question5Value)
-      // #JW: Need to pause to allow value to sumbit
+      // JW: Test note/markdown behavior
+      .assert.containsText('.team-markdown-note >p >code', 'bar_baz')
+      .assert.containsText('.team-markdown-note >p >em', 'italic')
+      .assert.containsText('.team-markdown-note >p >strong', 'strong n bold')
+      .click('.team-markdown-note')
+      .waitForElementVisible('textarea[name="note"]', 1000)
+      // JW: Need to pause to allow value to sumbit
       .pause(1500);
 
     client.end();
@@ -255,18 +262,16 @@ module.exports = {
       .assert.containsText('#question3 >p', question3Value)
       .assert.containsText('#question4 >p', question4Value)
       .assert.containsText('#question5 >p', question5Value)
-      .setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
+      .setValue('textarea[name="note"]', 'lorem ipsum')
       .setValue('#answer1', answer1Value)
       .setValue('#answer2', answer2Value)
       .setValue('#answer3', answer3Value)
       .setValue('#answer4', answer4Value)
-      .assert.containsText('.team-markdown-note >p >code', 'bar_baz')
-      .assert.containsText('.team-markdown-note >p >em', 'italic')
-      .assert.containsText('.team-markdown-note >p >strong', 'strong n bold')
       .click('#btn-answers-ready')
       .waitForElementVisible('.danger-text', 1000)
       .assert.containsText('.danger-text', 'Please answer every question')
       .setValue('#answer5', answer5Value)
+      .assert.containsText('.team-markdown-note >p', 'lorem ipsum')
       .click('#btn-answers-ready')
       // #JW: Need to pause to allow value to sumbit
       .pause(1500);
