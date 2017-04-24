@@ -414,13 +414,13 @@ class TeamMemberDetailMeeting extends Component {
               return <ReactMarkdown
                 className="team-markdown team-markdown-note half-gutter-top"
                 source={this.state.note}
-                containerProps={{ id: 'note', onClick: this.toggleIsNoteMarkdown }}
+                containerProps={{ id: `note-${meeting.id}`, onClick: this.toggleIsNoteMarkdown }}
                 escapeHtml={true}
               />;
             } else {
               return <TextareaAutosize
                 className="form-control"
-                id="note"
+                id={`note-${meeting.id}`}
                 name="note"
                 rows={3}
                 maxLength={5000}
