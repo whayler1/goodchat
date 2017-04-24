@@ -410,7 +410,6 @@ class TeamMemberDetailMeeting extends Component {
             })()}
           </label>
           {(() => {
-            console.log('isNoteMarkdown', isNoteMarkdown);
             if (isNoteMarkdown) {
               return <ReactMarkdown
                 className="team-markdown team-markdown-note half-gutter-top"
@@ -427,7 +426,7 @@ class TeamMemberDetailMeeting extends Component {
                 maxLength={5000}
                 placeholder="Write your private meeting notes here. Only you can see these."
                 onChange={this.onNoteChange}
-                onBlur={this.toggleIsNoteMarkdown}
+                onBlur={_.isString(this.state.note) && this.state.note.length && this.toggleIsNoteMarkdown}
                 autoFocus={isNoteAutofocus}
                 value={this.state.note}
               />;
