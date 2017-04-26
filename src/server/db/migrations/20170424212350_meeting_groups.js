@@ -14,7 +14,7 @@ exports.up = (knex, Promise) => {
       table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
       table.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'));
     })).then(() => knex.select('*').from('teams').then(teams => {
-      const teamPromises = teams.map(team => {
+      const teamPromises = teams.map(team => new Promise(teamResolve => {
         knex('memberships').select([
           'users.id',
           'users.given_name',
@@ -43,11 +43,11 @@ exports.up = (knex, Promise) => {
               team_id: team.id
             }).returning('*').then(() => {
               const promises = pair.map(member => knex('meeting_group_memberships').insert({ id: uuid.v1(), meeting_group_id, user_id: member.id }));
-              // Promise.all(promises).then(() => resolve());
+              Promise.all(promises).then(() => teamResolve());
             });
           });
         });
-      });
+      }));
 
       Promises.all(teamPromises).then(() => resolve());
     }));
