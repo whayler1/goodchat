@@ -223,16 +223,38 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
     if (!membership) {
       res.status(403).json({msg: 'not-a-member'});
     } else {
-      knex('memberships').where({ user_id: userId, team_id: id })
-      .join('teams', {
-        'memberships.team_id': 'teams.id'
-      })
-      .first()
-      .then(team => {
-        console.log('\n\nteam:', team);
-        res.json({ team });
+      const meetingGroupsPromise = knex('meeting_groups').where({ team_id: id }).then(meetingGroups => {
+        const promises = meetingGroups.map(meetingGroup =>
+          knex('meeting_group_memberships').where({ meeting_group_id: meetingGroup.id })
+            .then(memberships => Object.assign(meetingGroup, { memberships }))
+            .catch(err => res.sendStatus(500))
+        );
+
+        return Promise.all(promises);
       })
       .catch(err => res.sendStatus(500));
+
+      // const memberships = knex('memberships').where({ user_id: userId, team_id: id })
+      // .join('teams', {
+      //   'memberships.team_id': 'teams.id'
+      // })
+      // .first()
+      const teamPromise = knex('teams').where({ id })
+      .first()
+      .then(team => {
+        // console.log('\n\nteam:', team);
+        // res.json({ team });
+        return team;
+      })
+      .catch(err => res.sendStatus(500));
+
+      Promise.all([teamPromise, meetingGroupsPromise]).then(responses => {
+        console.log('\n\nresponses', responses);
+        res.json({
+          team: responses[0],
+          meetingGroups: responses[1]
+        })
+      })
     }
   })
   .catch(err => res.sendStatus(500));
