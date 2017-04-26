@@ -28,6 +28,7 @@ exports.up = (knex, Promise) => {
         .then(members => {
           const pairs = [];
 
+          // JW: Generate every combination of pairs
           members.forEach((member, index, ary) => {
             const subAry = ary.slice(index, ary.length)
             return subAry.forEach(subMember =>{
@@ -35,17 +36,19 @@ exports.up = (knex, Promise) => {
             });
           });
 
-          pairs.forEach(pair => {
+          const pairPromises = pairs.map(pair => new Promise(pairResolve => {
             const meeting_group_id = uuid.v1();
 
             knex('meeting_groups').insert({
               id: meeting_group_id,
               team_id: team.id
-            }).returning('*').then(() => {
+            }).then(() => {
               const promises = pair.map(member => knex('meeting_group_memberships').insert({ id: uuid.v1(), meeting_group_id, user_id: member.id }));
-              Promise.all(promises).then(() => teamResolve());
+              Promise.all(promises).then(() => pairResolve());
             });
-          });
+          }));
+
+          Promise.all(pairPromises).then(() => teamResolve());
         });
       }));
 
