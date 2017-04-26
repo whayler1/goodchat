@@ -9,8 +9,8 @@ exports.up = (knex, Promise) => {
       table.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'));
     }).then(() => knex.schema.createTable('meeting_group_memberships', (table) => {
       table.uuid('id').unique().notNullable();
-      table.uuid('meeting_group_id').unique().notNullable();
-      table.uuid('user_id').unique().notNullable();
+      table.uuid('meeting_group_id').notNullable();
+      table.uuid('user_id').notNullable();
       table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
       table.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'));
     })).then(() => knex.select('*').from('teams').then(teams => {
@@ -32,7 +32,7 @@ exports.up = (knex, Promise) => {
           members.forEach((member, index, ary) => {
             const subAry = ary.slice(index, ary.length)
             return subAry.forEach(subMember =>{
-              if (item !== subMember) pairs.push([member, subMember]);
+              if (member !== subMember) pairs.push([member, subMember]);
             });
           });
 
@@ -52,7 +52,7 @@ exports.up = (knex, Promise) => {
         });
       }));
 
-      Promises.all(teamPromises).then(() => resolve());
+      Promise.all(teamPromises).then(() => resolve());
     }));
   });
 };
