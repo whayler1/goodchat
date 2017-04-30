@@ -6,6 +6,7 @@ import { getTeams, setTeams, setTeam, getTeam, setMembers, updateTeamMembers } f
 import { setRedirect } from './components/login/login.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import { getMeetings } from './components/meeting/meeting.dux';
+import { logout } from './components/user/user.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -28,7 +29,8 @@ class Routes extends Component {
     setInvite: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     setRedirect: PropTypes.func.isRequired,
-    getMeetings: PropTypes.func.isRequired
+    getMeetings: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired
   }
 
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
@@ -48,6 +50,7 @@ class Routes extends Component {
     promises.forEach(promise => promise.catch(err => {
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${teamId}`);
+        this.props.logout();
         replace('/');
         callback();
       } else if (err.status === 403) {
@@ -83,6 +86,7 @@ class Routes extends Component {
       err => {
         if (err.status === 401) {
           setRedirect(`/teams/${teamId}/members/${memberId}`);
+          this.props.logout();
           replace('/');
           callback();
         } else {
@@ -181,6 +185,7 @@ export default connect(
     setInvite,
     getMeetings,
     updateTeamMembers,
-    setRedirect
+    setRedirect,
+    logout
   }
 )(Routes);

@@ -13,6 +13,7 @@ import ReactMarkdown from 'react-markdown';
 import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
+import { logout } from '../user/user.dux.js';
 
 class TeamMemberDetailMeeting extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class TeamMemberDetailMeeting extends Component {
     memberImageUrl: PropTypes.string.isRequired,
     memberId: PropTypes.string.isRequired,
     setRedirect: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     className: PropTypes.string
   }
@@ -61,6 +63,9 @@ class TeamMemberDetailMeeting extends Component {
       (err) => {
         if (err.status === 401) {
           // make user login
+          this.props.logout();
+          this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
+          this.props.history.push('/');
         }
         console.log('completeMeeting err', err);
       }
@@ -98,6 +103,7 @@ class TeamMemberDetailMeeting extends Component {
     ).catch(err => {
       this.setState({ isUpdateError: true })
       if (err.status === 401) {
+        this.props.logout();
         this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
         this.props.history.push('/');
       }
@@ -464,6 +470,7 @@ export default connect (
     getMeetings,
     updateTeamMembers,
     deleteMeeting,
-    setRedirect
+    setRedirect,
+    logout
   }
 )(TeamMemberDetailMeeting);

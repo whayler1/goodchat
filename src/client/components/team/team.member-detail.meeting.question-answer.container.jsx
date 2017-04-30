@@ -134,7 +134,7 @@ export default class QuestionAnswer extends Component {
           placeholder="Click here to answer"
           togglePreview={!isDone && !isHost && this.togglePreview}
         />
-        {isHost && !isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
+        {!isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
         <ul className="pull-right inline-list meeting-qa-foot">
           {!isDone && isUserInput &&
           <li>
