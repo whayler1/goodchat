@@ -6,8 +6,7 @@ import { logout } from '../user/user.dux.js';
 const defaultState = {
   teams: [],
   team: {},
-  members: [],
-  meetingGroups: []
+  members: []
 };
 
 const SET_TEAMS = 'team/set-teams';
@@ -43,14 +42,10 @@ export const getTeam = (teamId) => (dispatch, getState) => new Promise((resolve,
       dispatch(logout);
       console.log('err retrieving team', res)
     } else {
-      const { team, meeting_groups } = res.body;
+      const { team } = res.body;
       dispatch({
         type: SET_TEAM,
         team
-      });
-      dispatch({
-        type: SET_MEETING_GROUPS,
-        meetingGroups: meeting_groups
       });
       resolve(team);
       console.log('%cteam success', 'background:yellowgreen', res.body.team);
@@ -113,11 +108,6 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         teams: action.teams
-      };
-    case SET_MEETING_GROUPS:
-      return {
-        ...state,
-        meetingGroups: action.meetingGroups
       };
     case SET_TEAM:
       const index = state.teams.findIndex(team => team.id === action.team.id);
