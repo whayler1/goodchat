@@ -253,21 +253,36 @@ router.get('/team/:team_id/invite', authHelpers.loginRequired, (req, res) => {
   .catch(err => res.sendStatus(500));
 });
 
-router.get('/team/:team_id/meetings/:user_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
-  const { team_id, user_id } = req.params;
+router.get('/team/:team_id/meetings/:meeting_group_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const { team_id, meeting_group_id } = req.params;
   const currentUserId = req.user.id;
 
-  knex('meetings')
-  .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
-  .join('notes', { 'meetings.id': 'notes.meeting_id' })
-  .orderBy('meeting_date', 'desc')
-  .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
-  .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
-  .then(meetings => {
-    console.log('\n\ngot meetings success!', meetings);
-    res.json({ meetings });
-  })
-  .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
+  knex('meeting_groups').where({ id: meeting })
+  .first()
+  .then(meeting => knex('meeting_group_memberships').where({ meeting_group_id: meeting.id })
+    .then(memberships => {
+      if (memberships.some(membership => membership.user_id === currentUserId)) {
+        // JW: This feels flimsy, but gets us what we need for now
+        const user_id = memberships.find(membership => membership.user_id !== currentUserId).user_id;
+
+        knex('meetings')
+        .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
+        .join('notes', { 'meetings.id': 'notes.meeting_id' })
+        .orderBy('meeting_date', 'desc')
+        .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
+        .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
+        .then(meetings => {
+          console.log('\n\ngot meetings success!', meetings);
+          res.json({ meetings });
+        })
+        .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
+      } else {
+        res.status(401).json({ msg: 'User not in this meeting' });
+      }
+    })
+    .catch(err => res.sendStatus(500))
+  )
+  .catch(err => res.status(500).json({ msg: 'error-retrieving-meeting-groups-with-teamid-and-meeting-group-id'}));
 });
 
 router.get('/team/:team_id/notes',authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
