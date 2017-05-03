@@ -14,8 +14,10 @@ import InputAutosize from 'react-input-autosize';
 
 class Team extends Component {
   static propTypes = {
+    userId: PropTypes.string.isRequired,
     team: PropTypes.object.isRequired,
     members: PropTypes.array.isRequired,
+    meetingGroups: PropTypes.array.isRequired,
     setTeam: PropTypes.func.isRequired
   };
 
@@ -112,17 +114,29 @@ class Team extends Component {
     }
   };
 
-  componentDidMount = () => {
+  componentWillMount = () => {
+    const { team, userId, members, meetingGroups } = this.props;
+    const userMeetingGroups = meetingGroups.filter(meetingGroup => meetingGroup.memberships.some(membership => membership.user_id === userId));
+
     if ('localStorage' in window) {
-      window.localStorage.setItem('goodchat.last-team', this.props.team.id)
+      window.localStorage.setItem('goodchat.last-team', team.id);
     }
-  };
+    console.log('%c userMeetingGroups', 'background:aqua', userMeetingGroups);
+
+    const membershipDictionary = members.map(member => ({
+      ...member,
+      meetingGroup: userMeetingGroups.find(meetingGroup => meetingGroup.memberships.some(membership => membership.user_id === member.id))
+    }));
+    console.log('%c membershipDictionary:', 'background:lightblue', membershipDictionary);
+  }
 
   render = () => {
     const {
       team,
-      members
+      members,
+      meetingGroups
     } = this.props;
+
     const { is_owner, is_admin, id } = this.props.team;
     const { isNameSet } = this.state;
     const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
@@ -257,8 +271,10 @@ class Team extends Component {
 export default connect(
   state => {
     return {
+      userId: state.user.id,
       team: state.team.team,
-      members: state.team.members.filter(member => member.id !== state.user.id)
+      members: state.team.members.filter(member => member.id !== state.user.id),
+      meetingGroups: state.team.meetingGroups
     };
   },
   {

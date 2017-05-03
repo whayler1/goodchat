@@ -234,25 +234,18 @@ router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
       })
       .catch(err => res.sendStatus(500));
 
-      // const memberships = knex('memberships').where({ user_id: userId, team_id: id })
-      // .join('teams', {
-      //   'memberships.team_id': 'teams.id'
-      // })
-      // .first()
       const teamPromise = knex('teams').where({ id })
       .first()
       .then(team => {
-        // console.log('\n\nteam:', team);
-        // res.json({ team });
         return team;
       })
       .catch(err => res.sendStatus(500));
 
       Promise.all([teamPromise, meetingGroupsPromise]).then(responses => {
-        console.log('\n\nresponses', responses);
+        // console.log('\n\nresponses', responses);
         res.json({
           team: responses[0],
-          meetingGroups: responses[1]
+          meeting_groups: responses[1]
         })
       })
     }
@@ -310,39 +303,54 @@ router.get('/team/:team_id/membership', authHelpers.loginRequired, membershipHel
   const { team_id } = req.params;
   const user_id = req.user.id;
 
-  knex('memberships').select([
-    'users.id',
-    'users.given_name',
-    'users.family_name',
-    'users.email',
-    'users.picture',
-    'memberships.is_owner',
-    'memberships.is_admin'])
-  .join('users', { 'memberships.user_id': 'users.id'})
-  .where({ team_id })
-  .then(members => {
+  knex('meeting_groups').where({ team_id }).then(meetingGroups => {
+    const promises = meetingGroups.map(meetingGroup =>
+      knex('meeting_group_memberships').where({ meeting_group_id: meetingGroup.id })
+        .then(memberships => Object.assign(meetingGroup, { memberships }))
+        .catch(err => res.sendStatus(500))
+    );
 
-    Promise.all(members.map(member => new Promise((resolve, reject) => {
-      knex('meetings')
-      .select('*')
-      .orderBy('meeting_date', 'desc')
-      .where({ team_id, 'host_id': user_id, user_id: member.id, is_done: false })
-      .orWhere({ team_id, 'host_id': member.id, user_id, is_done: false })
-      .first()
-      .then(meeting => {
-        console.log('\n-----meeting', meeting);
-        if (meeting && meeting.meeting_date) {
-          member.next_meeting_date = meeting.meeting_date;
-        }
-        resolve();
+    Promise.all(promises).then(() => {
+      const userMeetingGroups = meetingGroups.filter(meetingGroup => meetingGroup.memberships.some(membership => membership.user_id === user_id));
+
+      knex('memberships').select([
+        'users.id',
+        'users.given_name',
+        'users.family_name',
+        'users.email',
+        'users.picture',
+        'memberships.is_owner',
+        'memberships.is_admin'])
+      .join('users', { 'memberships.user_id': 'users.id'})
+      .where({ team_id })
+      .then(members => {
+
+        Promise.all(members.map(member => new Promise((resolve, reject) => {
+          member.meetingGroup = userMeetingGroups.find(meetingGroup => meetingGroup.memberships.some(membership => membership.user_id === member.id));
+
+          knex('meetings')
+          .select('*')
+          .orderBy('meeting_date', 'desc')
+          .where({ team_id, 'host_id': user_id, user_id: member.id, is_done: false })
+          .orWhere({ team_id, 'host_id': member.id, user_id, is_done: false })
+          .first()
+          .then(meeting => {
+            console.log('\n-----meeting', meeting);
+            if (meeting && meeting.meeting_date) {
+              member.next_meeting_date = meeting.meeting_date;
+            }
+            resolve();
+          })
+          .catch(err => {
+            console.log('\n-----meeting err', err);
+            resolve();
+          });
+        }))).then(() => res.json({ members }));
       })
-      .catch(err => {
-        console.log('\n-----meeting err', err);
-        resolve();
-      });
-    }))).then(() => res.json({ members }));
+      .catch(err => res.status(500).json({ msg: 'error-retrieving-membership-with-teamid' }));
+    });
   })
-  .catch(err => res.status(500).json({ msg: 'error-retrieving-membership-with-teamid' }));
+  .catch(err => res.sendStatus(500));
 });
 
 router.put('/team/:id', authHelpers.loginRequired, (req, res, next) => {
