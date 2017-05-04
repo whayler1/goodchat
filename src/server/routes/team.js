@@ -104,7 +104,42 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
             .returning('*')
             .then(newMembership => {
               console.log('\n\nnewMembership created', newMembership);
-              res.sendStatus(200);
+
+              knex('memberships').where({ team_id }).then(memberships => {
+                const pairs = []
+                memberships.forEach((item, index, ary) => {
+                  const subAry = ary.slice(index, ary.length)
+                  return subAry.forEach(subItem =>{
+                    if (item !== subItem) pairs.push([item, subItem])
+                  });
+                });
+
+                const pairsPromises = pairs.map(pair => new Promise(pairsResolve => {
+                  const meeting_group_id = uuid.v1();
+
+                  knex('meeting_groups').insert({
+                    id: meeting_group_id,
+                    team_id
+                  }).then(() => {
+                    const pairPromises = pair.map(membership => new Promise(pairResolve => {
+                      knex('meeting_group_memberships').insert({
+                        id: uuid.v1(),
+                        meeting_group_id,
+                        user_id: membership.user_id
+                      }).then(() => pairResolve())
+                      .catch(err => res.sendStatus(500));
+                    }));
+
+                    Promise.all(pairPromises).then(() => pairsResolve());
+                  })
+                  .catch(err => res.sendStatus(500));
+                }));
+
+                Promise.all(pairPromises).then(() => res.sendStatus(200));
+              })
+              .catch(err => res.sendStatus(500));
+
+              // res.sendStatus(200);
             })
             .catch(err => res.sendStatus(500));
           }
