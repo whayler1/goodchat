@@ -50,7 +50,6 @@ class Routes extends Component {
     promises.forEach(promise => promise.catch(err => {
       if (err.status === 401) {
         this.props.setRedirect(`/teams/${teamId}`);
-        this.props.logout();
         replace('/');
         callback();
       } else if (err.status === 403) {
@@ -86,7 +85,6 @@ class Routes extends Component {
       err => {
         if (err.status === 401) {
           setRedirect(`/teams/${teamId}/members/${meetingGroupId}`);
-          this.props.logout();
           replace('/');
           callback();
         } else {

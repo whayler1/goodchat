@@ -43,20 +43,18 @@ module.exports = {
       var handle = result.value[1];
       client.switchWindow(handle, function() {
         client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#Email', 1000)
-          .setValue('#Email', TEST_EMAIL)
-          .click('#next')
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', TEST_EMAIL)
+          .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('#PersistentCookie', 1000)
-          .click('#PersistentCookie')
-          .waitForElementVisible('#Passwd', 1000)
-          .setValue('#Passwd', TEST_PASSWORD)
-          .click('#signIn')
+          .waitForElementVisible('input[type="password"]', 1000)
+          .setValue('input[type="password"]', TEST_PASSWORD)
+          .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 1000)
+    teams.waitForElementVisible('@teamPageContent', 2000)
       .click('@createTeamBtn');
 
     team.waitForElementVisible('@nameInput', 1000)
@@ -116,20 +114,18 @@ module.exports = {
       var handle = result.value[1];
       client.switchWindow(handle, function() {
         client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#Email', 1000)
-          .setValue('#Email', INVITEE_EMAIL)
-          .click('#next')
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', INVITEE_EMAIL)
+          .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('#PersistentCookie', 1000)
-          .click('#PersistentCookie')
-          .waitForElementVisible('#Passwd', 1000)
-          .setValue('#Passwd', INVITEE_PASSWORD)
-          .click('#signIn')
+          .waitForElementVisible('input[type="password"]', 1000)
+          .setValue('input[type="password"]', INVITEE_PASSWORD)
+          .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 1000);
+    teams.waitForElementVisible('@teamPageContent', 2000);
 
     client.url(`http://localhost:3000/#/invites/accept/${inviteId}`);
     client.url(function (urltest) {
@@ -137,7 +133,7 @@ module.exports = {
     });
     client.waitForElementVisible('#btn-join-team', 1000)
       .click('#btn-join-team')
-      .waitForElementVisible('#main-team', 1000)
+      .waitForElementVisible('#main-team', 3000)
 
     client.end();
   },
@@ -161,20 +157,18 @@ module.exports = {
     client.window_handles(result => {
       client.switchWindow(result.value[1], () => {
         client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#Email', 1000)
-          .setValue('#Email', TEST_EMAIL)
-          .click('#next')
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', TEST_EMAIL)
+          .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('#PersistentCookie', 1000)
-          .click('#PersistentCookie')
-          .waitForElementVisible('#Passwd', 1000)
-          .setValue('#Passwd', TEST_PASSWORD)
-          .click('#signIn')
+          .waitForElementVisible('input[type="password"]', 1000)
+          .setValue('input[type="password"]', TEST_PASSWORD)
+          .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 1000);
+    teams.waitForElementVisible('@teamPageContent', 2000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
     client.url(function (urltest) {
@@ -232,20 +226,18 @@ module.exports = {
       var handle = result.value[1];
       client.switchWindow(handle, function() {
         client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#Email', 1000)
-          .setValue('#Email', INVITEE_EMAIL)
-          .click('#next')
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', INVITEE_EMAIL)
+          .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('#PersistentCookie', 1000)
-          .click('#PersistentCookie')
-          .waitForElementVisible('#Passwd', 1000)
-          .setValue('#Passwd', INVITEE_PASSWORD)
-          .click('#signIn')
+          .waitForElementVisible('input[type="password"]', 1000)
+          .setValue('input[type="password"]', INVITEE_PASSWORD)
+          .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 1000);
+    teams.waitForElementVisible('@teamPageContent', 2000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
     client.url(function (urltest) {
@@ -298,20 +290,18 @@ module.exports = {
     client.window_handles(result => {
       client.switchWindow(result.value[1], () => {
         client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#Email', 1000)
-          .setValue('#Email', TEST_EMAIL)
-          .click('#next')
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', TEST_EMAIL)
+          .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('#PersistentCookie', 1000)
-          .click('#PersistentCookie')
-          .waitForElementVisible('#Passwd', 1000)
-          .setValue('#Passwd', TEST_PASSWORD)
-          .click('#signIn')
+          .waitForElementVisible('input[type="password"]', 1000)
+          .setValue('input[type="password"]', TEST_PASSWORD)
+          .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 1000);
+    teams.waitForElementVisible('@teamPageContent', 2000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
