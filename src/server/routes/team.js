@@ -257,11 +257,12 @@ router.get('/team/:team_id/meetings/:meeting_group_id', authHelpers.loginRequire
   const { team_id, meeting_group_id } = req.params;
   const currentUserId = req.user.id;
 
-  knex('meeting_groups').where({ id: meeting })
+  knex('meeting_groups').where({ id: meeting_group_id })
   .first()
-  .then(meeting => knex('meeting_group_memberships').where({ meeting_group_id: meeting.id })
+  .then(meeting_group => knex('meeting_group_memberships').where({ meeting_group_id: meeting_group.id })
     .then(memberships => {
       if (memberships.some(membership => membership.user_id === currentUserId)) {
+        meeting_group.memberships = memberships;
         // JW: This feels flimsy, but gets us what we need for now
         const user_id = memberships.find(membership => membership.user_id !== currentUserId).user_id;
 
@@ -273,7 +274,7 @@ router.get('/team/:team_id/meetings/:meeting_group_id', authHelpers.loginRequire
         .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
         .then(meetings => {
           console.log('\n\ngot meetings success!', meetings);
-          res.json({ meetings });
+          res.json({ meetings, meeting_group });
         })
         .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
       } else {

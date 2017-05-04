@@ -78,14 +78,14 @@ class Routes extends Component {
   }
 
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
-    const { teamId, memberId } = nextState.params;
+    const { teamId, meetingGroupId } = nextState.params;
     const { getMeetings, setRedirect } = this.props;
 
-    getMeetings(teamId, memberId).then(
+    getMeetings(teamId, meetingGroupId).then(
       () => callback(),
       err => {
         if (err.status === 401) {
-          setRedirect(`/teams/${teamId}/members/${memberId}`);
+          setRedirect(`/teams/${teamId}/members/${meetingGroupId}`);
           this.props.logout();
           replace('/');
           callback();
@@ -159,7 +159,7 @@ class Routes extends Component {
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
-            <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
+            <Route path="members/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
             <Route path="update-questions" component={TeamUpdateQuestions}/>
           </Route>
           <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>

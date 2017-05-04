@@ -2,7 +2,8 @@ import superagent from 'superagent';
 import moment from 'moment';
 
 const defaultState = {
-  meetings: []
+  meetings: [],
+  meetingGroup: {}
 }
 
 const SET_MEETINGS = 'meeting/set-meetings';
@@ -24,18 +25,19 @@ export const completeMeeting = meetingId => dispatch => new Promise((resolve, re
     }
   }));
 
-export const getMeetings = (teamId, memberId) => dispatch => new Promise((resolve, reject) => {
-  console.log('getMeetings', teamId, '\n memberId', memberId);
-  superagent.get(`team/${teamId}/meetings/${memberId}`)
+export const getMeetings = (teamId, meetingGroupId) => dispatch => new Promise((resolve, reject) => {
+  console.log('getMeetings', teamId, '\n meetingGroupId', meetingGroupId);
+  superagent.get(`team/${teamId}/meetings/${meetingGroupId}`)
     .end((err, res) => {
       if (err) {
         reject(res);
       } else {
-        const { meetings } = res.body;
+        const { meetings, meeting_group } = res.body;
 
         dispatch({
           type: SET_MEETINGS,
-          meetings
+          meetings,
+          meetingGroup: meeting_group
         });
         resolve(meetings);
       }
@@ -72,18 +74,10 @@ export const deleteMeeting = id => dispatch => new Promise(
   })
 );
 
-export const setMeetings = meetings => ({
-  type: SET_MEETINGS,
-  meetings
-});
-
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_MEETINGS:
-      return {
-        ...state,
-        meetings: action.meetings
-      }
+      return Object.assign({}, state, _.pick(action, 'meetings', 'meetingGroup'));
     case UPDATE_MEETING: {
       const index = state.meetings.findIndex(meeting => meeting.id === action.meeting.id);
       const meetings = [

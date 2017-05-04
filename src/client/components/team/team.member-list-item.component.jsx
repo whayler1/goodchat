@@ -7,12 +7,12 @@ export default function TeamMemberListItem({
   familyName,
   email,
   picture,
-  id,
+  meetingGroupId,
   teamId,
   nextMeetingDate
 }) {
   return (
-    <Link to={`teams/${teamId}/members/${id}`}>
+    <Link to={`teams/${teamId}/members/${meetingGroupId}`}>
       <div className="team-member-ui-image"
         style={{backgroundImage: `url(${picture})`}}
       ></div>
@@ -47,6 +47,6 @@ TeamMemberListItem.propTypes = {
   familyName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   picture: PropTypes.string,
-  id: PropTypes.string.isRequired,
+  meetingGroupId: PropTypes.string.isRequired,
   teamId: PropTypes.string.isRequired
 };

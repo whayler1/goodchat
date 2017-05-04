@@ -232,7 +232,7 @@ class Team extends Component {
                   familyName={member.family_name}
                   email={member.email}
                   picture={member.picture}
-                  id={member.id}
+                  meetingGroupId={member.meeting_group.id}
                   teamId={team.id}
                   nextMeetingDate={member.next_meeting_date}
                 />
