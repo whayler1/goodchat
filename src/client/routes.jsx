@@ -84,7 +84,7 @@ class Routes extends Component {
       () => callback(),
       err => {
         if (err.status === 401) {
-          setRedirect(`/teams/${teamId}/members/${meetingGroupId}`);
+          setRedirect(`/teams/${teamId}/meetings/${meetingGroupId}`);
           replace('/');
           callback();
         } else {
@@ -157,7 +157,7 @@ class Routes extends Component {
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
-            <Route path="members/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
+            <Route path="meetings/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
             <Route path="update-questions" component={TeamUpdateQuestions}/>
           </Route>
           <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>

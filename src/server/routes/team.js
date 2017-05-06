@@ -8,7 +8,7 @@ const membershipHelpers = require('../membership/_helpers');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
 
-const sendMeetingEmail = (guestId, hostId, teamId, isAnsweredEmail) => {
+const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => {
   // create reusable transporter object using the default SMTP transport
 
   knex('users').where({ id: hostId }).orWhere({ id: guestId })
@@ -19,7 +19,7 @@ const sendMeetingEmail = (guestId, hostId, teamId, isAnsweredEmail) => {
 
     const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
 
-    const link = `http://www.goodchat.io/#/teams/${teamId}/members/${hostId}`;
+    const link = `http://www.goodchat.io/#/teams/${teamId}/meetings/${meetingId}`;
     const mailOptions = {
       from: '"Justin at Good Chat" <justin@goodchat.io>',
       to: guest.email,

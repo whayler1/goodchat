@@ -12,7 +12,7 @@ export default function TeamMemberListItem({
   nextMeetingDate
 }) {
   return (
-    <Link to={`teams/${teamId}/members/${meetingGroupId}`}>
+    <Link to={`teams/${teamId}/meetings/${meetingGroupId}`}>
       <div className="team-member-ui-image"
         style={{backgroundImage: `url(${picture})`}}
       ></div>

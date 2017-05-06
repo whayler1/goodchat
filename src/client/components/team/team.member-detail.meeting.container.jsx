@@ -64,7 +64,7 @@ class TeamMemberDetailMeeting extends Component {
         if (err.status === 401) {
           // make user login
           this.props.logout();
-          this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
+          this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
           this.props.history.push('/');
         }
         console.log('completeMeeting err', err);
@@ -104,7 +104,7 @@ class TeamMemberDetailMeeting extends Component {
       this.setState({ isUpdateError: true })
       if (err.status === 401) {
         this.props.logout();
-        this.props.setRedirect(`/teams/${this.props.teamId}/members/${this.props.memberId}`);
+        this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
         this.props.history.push('/');
       }
     });
