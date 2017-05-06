@@ -223,6 +223,7 @@ class TeamMemberDetail extends Component {
                       type="button"
                       className="btn-primary btn-block"
                       onClick={this.onStartMeetingNow}
+                      autoFocus
                     >
                       Start meeting now
                     </button>
