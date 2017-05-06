@@ -6,6 +6,7 @@ import { getTeams, setTeams, setTeam, getTeam, setMembers, updateTeamMembers } f
 import { setRedirect } from './components/login/login.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import { getMeetings } from './components/meeting/meeting.dux';
+import { logout } from './components/user/user.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -28,7 +29,8 @@ class Routes extends Component {
     setInvite: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     setRedirect: PropTypes.func.isRequired,
-    getMeetings: PropTypes.func.isRequired
+    getMeetings: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired
   }
 
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
@@ -75,14 +77,14 @@ class Routes extends Component {
   }
 
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
-    const { teamId, memberId } = nextState.params;
+    const { teamId, meetingGroupId } = nextState.params;
     const { getMeetings, setRedirect } = this.props;
 
-    getMeetings(teamId, memberId).then(
+    getMeetings(teamId, meetingGroupId).then(
       () => callback(),
       err => {
         if (err.status === 401) {
-          setRedirect(`/teams/${teamId}/members/${memberId}`);
+          setRedirect(`/teams/${teamId}/meetings/${meetingGroupId}`);
           replace('/');
           callback();
         } else {
@@ -155,7 +157,7 @@ class Routes extends Component {
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
-            <Route path="members/:memberId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
+            <Route path="meetings/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
             <Route path="update-questions" component={TeamUpdateQuestions}/>
           </Route>
           <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>
@@ -181,6 +183,7 @@ export default connect(
     setInvite,
     getMeetings,
     updateTeamMembers,
-    setRedirect
+    setRedirect,
+    logout
   }
 )(Routes);

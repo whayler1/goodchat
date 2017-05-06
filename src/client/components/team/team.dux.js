@@ -45,7 +45,7 @@ export const getTeam = (teamId) => (dispatch, getState) => new Promise((resolve,
       dispatch({
         type: SET_TEAM,
         team
-      })
+      });
       resolve(team);
       console.log('%cteam success', 'background:yellowgreen', res.body.team);
     }
@@ -93,6 +93,17 @@ export const updateTeamMembers = teamId => dispatch => new Promise((resolve, rej
         members
       });
       resolve(members)
+    }
+  }));
+
+export const createMeeting = (teamId, meetingGroupId, meeting_date) => dispatch => new Promise((resolve, reject) =>
+  superagent.post(`team/${teamId}/meeting/${meetingGroupId}`)
+  .send({ meeting_date })
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      resolve()
     }
   }));
 

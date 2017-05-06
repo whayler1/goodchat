@@ -1,4 +1,4 @@
-const databaseName = 'goodchat';
+const databaseName = 'goodchat2';
 
 module.exports = {
   production: {

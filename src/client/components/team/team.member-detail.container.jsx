@@ -5,8 +5,8 @@ import moment from 'moment';
 import superagent from 'superagent';
 import _ from 'lodash';
 
-import { setMeetings } from '../meeting/meeting.dux.js';
-import { updateTeamMembers } from '../team/team.dux.js';
+import { getMeetings } from '../meeting/meeting.dux.js';
+import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import Modal from '../modal/modal.container.jsx';
@@ -16,18 +16,22 @@ import Helmet from 'react-helmet';
 
 class TeamMemberDetail extends Component {
   static propTypes = {
+    userId: PropTypes.string.isRequired,
     team: PropTypes.object.isRequired,
     meetings: PropTypes.array.isRequired,
+    meetingGroup: PropTypes.object.isRequired,
     members: PropTypes.array,
-    setMeetings: PropTypes.func.isRequired,
+    getMeetings: PropTypes.func.isRequired,
     setMembers: PropTypes.func.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired
+    imageUrl: PropTypes.string.isRequired,
+    updateTeamMembers: PropTypes.func.isRequired,
+    createMeeting: PropTypes.func.isRequired
   }
 
   state = {
-    member: this.props.members.find(member => member.id === this.props.params.memberId),
+    member: {},
     now: moment(),
     newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`,
     newMeetingDateTimeError: '',
@@ -48,18 +52,10 @@ class TeamMemberDetail extends Component {
     }
   })
 
-  getMeetings = () => superagent.get(`team/${this.props.team.id}/meetings/${this.state.member.id}`)
-    .end((err, res) => {
-      if (err) {
-        console.log('err updating meetings', res);
-        return;
-      }
-      console.log('success! updating meetings', res);
-      this.props.setMeetings(res.body.meetings);
-    });
+  getMeetings = () => this.props.getMeetings(this.props.team.id, this.props.params.meetingGroupId);
 
   submit = () => {
-    const { team } = this.props;
+    const { team, createMeeting, params } = this.props;
     const {
       question1,
       question2,
@@ -71,7 +67,8 @@ class TeamMemberDetail extends Component {
       newMeetingDateTime
     } = this.state;
 
-    const sendObj = { meeting_date: moment(newMeetingDateTime).toISOString() }
+    const meeting_date = moment(newMeetingDateTime).toISOString();
+    const sendObj = { meeting_date };
 
     if (team.is_admin || team.is_owner) {
       Object.assign(sendObj, {
@@ -85,16 +82,13 @@ class TeamMemberDetail extends Component {
       Object.assign(sendObj, { qa_length: 1 });
     }
 
-    superagent.post(`team/${this.props.team.id}/meeting/${this.state.member.id}`)
-    .send(sendObj)
-    .end((err, res) => {
-      if (err) {
-        console.log('error creating new meeting', res);
-        return;
-      }
-      this.getMeetings();
-      this.props.updateTeamMembers(this.props.team.id);
-    });
+    createMeeting(team.id, params.meetingGroupId, meeting_date).then(
+      () => {
+        this.getMeetings();
+        this.props.updateTeamMembers(team.id);
+      },
+      err => console.log('error creating team')
+    );
   }
 
   onSubmit = e => {
@@ -122,7 +116,15 @@ class TeamMemberDetail extends Component {
     this.submit();
   });
 
-  modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`)
+  modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
+
+  componentWillMount = () => {
+    const { meetingGroup, userId, members } = this.props;
+    const memberId = meetingGroup.memberships.find(membership => membership.user_id !== userId).user_id;
+    const member = members.find(member => member.id === memberId);
+
+    this.setState({ member });
+  };
 
   render = () => {
     const { team, meetings, imageUrl, history } = this.props;
@@ -221,6 +223,7 @@ class TeamMemberDetail extends Component {
                       type="button"
                       className="btn-primary btn-block"
                       onClick={this.onStartMeetingNow}
+                      autoFocus
                     >
                       Start meeting now
                     </button>
@@ -263,6 +266,7 @@ class TeamMemberDetail extends Component {
 
 export default connect(
   state => ({
+    userId: state.user.id,
     team: state.team.team,
     meetings: state.meeting.meetings.sort((a, b) => {
       const createdAtA = a.created_at;
@@ -275,13 +279,15 @@ export default connect(
       }
       return 0;
     }),
+    meetingGroup: state.meeting.meetingGroup,
     members: state.team.members,
     givenName: state.user.givenName,
     familyName: state.user.familyName,
     imageUrl: state.user.imageUrl
   }),
   {
-    setMeetings,
-    updateTeamMembers
+    getMeetings,
+    updateTeamMembers,
+    createMeeting
   }
 )(TeamMemberDetail);

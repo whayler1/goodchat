@@ -19,7 +19,7 @@ const sendMeetingAnsweredEmail = (guestId, hostId, teamId) => {
 
     const transporter = nodemailer.createTransport(process.env.INVITE_EMAIL_TRANSPORTER);
 
-    const link = `http://www.goodchat.io/#/teams/${teamId}/members/${guestId}`;
+    const link = `http://www.goodchat.io/#/teams/${teamId}/meetings/${guestId}`;
     const mailOptions = {
       from: '"Justin at Good Chat" <justin@goodchat.io>',
       to: host.email,
