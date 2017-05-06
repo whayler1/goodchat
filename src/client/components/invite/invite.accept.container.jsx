@@ -81,7 +81,7 @@ class InviteAccept extends Component {
             {(!invite.id || !team.id) && <p className="danger-text">This invite is invalid. Please reach out to your team admin to send a new invite. If the problem persist please email <a href="mailto:support@goodchat.io">support@goodchat.io</a></p>}
             {invite.is_used === true && <p className="danger-text">This invite is no longer valid. Please reach out to your team admin to send a new invite. If the problem persist please email <a href="mailto:support@goodchat.io">support@goodchat.io</a></p>}
             {!invite.is_used && invite.id && team.id && [
-            <p>Congratulations! <b className="capitalize">{invite.host_given_name} {invite.host_family_name}</b> has invited you to join <b>{teamName}</b> on Good Chat.</p>,
+            <p>Congratulations! <b className="capitalize">{invite.host_given_name} {invite.host_family_name}</b> has invited you to join <b>{teamName}</b> on <span className="nowrap">Good Chat.</span></p>,
             this.getLoginView()
             ]}
           </div>

@@ -84,14 +84,18 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
   const user_id = req.user.id;
   const { team_id, invite_id } = req.params;
 
+  console.log('\n\ninvite endpoint hit');
+
   knex('invites').where({ id: invite_id }).first()
   .then(invite => {
+    console.log('\n >>>>invite part');
     const { is_admin } = invite;
     if (!invite.is_used && team_id === invite.team_id) {
       knex('invites').where({ id: invite_id }).update({ is_used: true })
       .then(() => {
         knex('memberships').where({ user_id, team_id })
         .then(memberships => {
+          console.log('\n >>>>membership part');
           if (memberships.length > 0) {
             res.json({ msg: 'membership-already-exists' });
           } else {
@@ -113,45 +117,77 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
                     if (item !== subItem) pairs.push([item, subItem])
                   });
                 });
+                console.log('\n >>>>pairs made', pairs);
 
-                const pairsPromises = pairs.map(pair => new Promise(pairsResolve => {
+                const pairsPromises = pairs.map(pair => new Promise((pairsResolve, pairsReject) => {
                   const meeting_group_id = uuid.v1();
 
                   knex('meeting_groups').insert({
                     id: meeting_group_id,
                     team_id
                   }).then(() => {
-                    const pairPromises = pair.map(membership => new Promise(pairResolve => {
+                    const pairPromises = pair.map(membership => new Promise((pairResolve, pairReject) => {
                       knex('meeting_group_memberships').insert({
                         id: uuid.v1(),
                         meeting_group_id,
                         user_id: membership.user_id
                       }).then(() => pairResolve())
-                      .catch(err => res.sendStatus(500));
+                      .catch(err => {
+                        pairReject();
+                        console.log('\n >-> meeting_group_memberships reject');
+                        res.sendStatus(500);
+                      });
                     }));
+                    console.log('\n >-> pairPromises');
 
-                    Promise.all(pairPromises).then(() => pairsResolve());
+                    Promise.all(pairPromises).then(() => {
+                      console.log('\n pairPromises resolve 😁');
+                      pairsResolve();
+                    });
                   })
-                  .catch(err => res.sendStatus(500));
+                  .catch(err => {
+                    pairsReject();
+                    console.log('\n >-> meeting_groups reject');
+                    res.sendStatus(500);
+                  });
                 }));
+                console.log('\n >>>> after pairs promises');
 
-                Promise.all(pairPromises).then(() => res.sendStatus(200));
+                Promise.all(pairsPromises).then(() => {
+                  console.log('\n >>>> pairs promises resolved ✅');
+                  res.sendStatus(200)
+                });
               })
-              .catch(err => res.sendStatus(500));
+              .catch(err => {
+                console.log('\nthis other err 😭🇨🇺', err);
+                res.sendStatus(500);
+              });
 
               // res.sendStatus(200);
             })
-            .catch(err => res.sendStatus(500));
+            .catch(err => {
+              console.log('\nthis other err 😭');
+              res.sendStatus(500);
+            });
           }
         })
-        .catch(err => res.sendStatus(500));
+        .catch(err => {
+          console.log('\nthis other err 🆒');
+          res.sendStatus(500);
+        });
       })
-      .catch(err => res.sendStatus(500));
+      .catch(err => {
+        console.log('\nthis other err 😬');
+        res.sendStatus(500);
+      });
     } else {
       res.sendStatus(400);
     }
   })
-  .catch(err => res.sendStatus(500));
+  .catch(err => {
+    console.log('\nthis other err 😭☯️');
+    res.sendStatus(500);
+  });
 });
 
 router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
