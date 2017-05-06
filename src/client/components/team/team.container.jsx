@@ -51,7 +51,6 @@ class Team extends Component {
       superagent.delete(`team/${this.props.params.teamId}`)
       .then(
         res => {
-          console.log('delete success', res);
           analytics.track('delete-team', {
             category: 'team',
             teamId: this.props.params.teamId
@@ -73,7 +72,6 @@ class Team extends Component {
       .send({ name })
       .then(
         res => {
-          console.log('success updating', res);
           analytics.track('set-team-name', {
             category: 'team',
             teamId: this.props.team.id
@@ -104,7 +102,6 @@ class Team extends Component {
     const { team } = nextProps;
 
     if (team.id !== this.props.team.id) {
-      console.log('nextprops.team.id !== this.props.team.id');
       if ('localStorage' in window) {
         window.localStorage.setItem('goodchat.last-team', team.id)
       }
@@ -124,7 +121,6 @@ class Team extends Component {
       members
     } = this.props;
     const { is_owner, is_admin, id } = this.props.team;
-    console.log('team', this.props.team, '\n', is_owner);
     const { isNameSet } = this.state;
     const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
     const upcomingMembers = members.filter(member => 'next_meeting_date' in member);
@@ -207,7 +203,6 @@ class Team extends Component {
     } else {
       return (
         <main id="main-team" className="main main-team" role="main">
-          {(() => console.log('GAAAAAA!!!', is_owner))()}
           <Helmet
             title={`${this.state.name} | Good Chat`}
           />

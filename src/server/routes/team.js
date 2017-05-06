@@ -156,10 +156,10 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
   .catch(err => res.sendStatus(500));
 });
 
-router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
   const {
     team_id,
-    user_id
+    meeting_group_id
   } = req.params;
 
   const {
@@ -185,61 +185,65 @@ router.post('/team/:team_id/meeting/:user_id/', authHelpers.loginRequired, membe
     res.status(400).json({ msg: 'meeting-date-required' });
   }
 
-  const insertObj = _.omitBy({
-    id: meeting_id,
-    team_id,
-    user_id,
-    host_id,
-    question1,
-    question2,
-    question3,
-    question4,
-    question5,
-    answer1,
-    answer2,
-    answer3,
-    answer4,
-    answer5,
-    is_done,
-    meeting_date,
-    qa_length
-  },
-  _.isNil);
+  knex('meeting_group_memberships').where({ meeting_group_id })
+  .then(meetingGroupMemberships => {
+    const userMembership = Object.assign({}, meetingGroupMemberships.find(meetingGroupMembership => meetingGroupMembership.user_id !== host_id));
+    const { user_id } = userMembership;
 
-  knex('meetings').insert(insertObj)
-  .returning('*')
-  .then(meeting => {
-    console.log('\n\nmeeting created', meeting);
-    knex('notes').insert({
-      id: uuid.v1(),
+    const insertObj = _.omitBy({
+      id: meeting_id,
+      team_id,
       user_id,
-      meeting_id
+      host_id,
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+      answer1,
+      answer2,
+      answer3,
+      answer4,
+      answer5,
+      is_done,
+      meeting_date,
+      qa_length
+    },
+    _.isNil);
+
+    knex('meetings').insert(insertObj)
+    .returning('*')
+    .then(meeting => {
+      knex('notes').insert({
+        id: uuid.v1(),
+        user_id,
+        meeting_id
+      })
+      .then(() => knex('notes').insert({
+        id: uuid.v1(),
+        user_id: insertObj.host_id,
+        meeting_id
+      })
+      .then(() => {
+        sendMeetingEmail(user_id, host_id, team_id, meeting_group_id);
+        return res.json({ meeting });
+      })
+      .catch(err => res.status(500).json({ msg: 'error-creating-host-note' }))
+      )
+      .catch(err => res.status(500).json({ msg: 'error-creating-user-note' }));
     })
-    .then(() => knex('notes').insert({
-      id: uuid.v1(),
-      user_id: insertObj.host_id,
-      meeting_id
-    })
-    .then(() => {
-      sendMeetingEmail(user_id, host_id, team_id);
-      return res.json({ meeting });
-    })
-    .catch(err => res.status(500).json({ msg: 'error-creating-host-note' }))
-    )
-    .catch(err => res.status(500).json({ msg: 'error-creating-user-note' }));
+    .catch(err => res.status(500).json({ msg: 'error inserting into meetings table' }));
   })
-  .catch(err => res.sendStatus(500));
+  .catch(err => res.status(500).json({ msg: 'error finding meeting group memberships'}));
 });
 
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
-  console.log('\n\nget team', req.user);
   const { id } = req.user;
 
   knex('memberships').where({ user_id: id }).join('teams', {
     'memberships.team_id': 'teams.id'
   })
   .then(teams => {
-    console.log('teams:', teams);
     res.json({ teams });
   })
   .catch(err => res.sendStatus(500));

@@ -6,7 +6,7 @@ import superagent from 'superagent';
 import _ from 'lodash';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
-import { updateTeamMembers } from '../team/team.dux.js';
+import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import Modal from '../modal/modal.container.jsx';
@@ -25,7 +25,9 @@ class TeamMemberDetail extends Component {
     setMembers: PropTypes.func.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired
+    imageUrl: PropTypes.string.isRequired,
+    updateTeamMembers: PropTypes.func.isRequired,
+    createMeeting: PropTypes.func.isRequired
   }
 
   state = {
@@ -53,7 +55,7 @@ class TeamMemberDetail extends Component {
   getMeetings = () => this.props.getMeetings(this.props.team.id, this.props.params.meetingGroupId);
 
   submit = () => {
-    const { team } = this.props;
+    const { team, createMeeting, params } = this.props;
     const {
       question1,
       question2,
@@ -65,7 +67,8 @@ class TeamMemberDetail extends Component {
       newMeetingDateTime
     } = this.state;
 
-    const sendObj = { meeting_date: moment(newMeetingDateTime).toISOString() }
+    const meeting_date = moment(newMeetingDateTime).toISOString();
+    const sendObj = { meeting_date };
 
     if (team.is_admin || team.is_owner) {
       Object.assign(sendObj, {
@@ -79,16 +82,13 @@ class TeamMemberDetail extends Component {
       Object.assign(sendObj, { qa_length: 1 });
     }
 
-    superagent.post(`team/${this.props.team.id}/meeting/${this.state.member.id}`)
-    .send(sendObj)
-    .end((err, res) => {
-      if (err) {
-        console.log('error creating new meeting', res);
-        return;
-      }
-      this.getMeetings();
-      this.props.updateTeamMembers(this.props.team.id);
-    });
+    createMeeting(team.id, params.meetingGroupId, meeting_date).then(
+      () => {
+        this.getMeetings();
+        this.props.updateTeamMembers(team.id);
+      },
+      err => console.log('error creating team')
+    );
   }
 
   onSubmit = e => {
@@ -287,6 +287,7 @@ export default connect(
   }),
   {
     getMeetings,
-    updateTeamMembers
+    updateTeamMembers,
+    createMeeting
   }
 )(TeamMemberDetail);

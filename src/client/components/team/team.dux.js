@@ -97,6 +97,17 @@ export const updateTeamMembers = teamId => dispatch => new Promise((resolve, rej
     }
   }));
 
+export const createMeeting = (teamId, meetingGroupId, meeting_date) => dispatch => new Promise((resolve, reject) =>
+  superagent.post(`team/${teamId}/meeting/${meetingGroupId}`)
+  .send({ meeting_date })
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      resolve()
+    }
+  }));
+
 export const setMembers = members => ({
   type: SET_MEMBERS,
   members
