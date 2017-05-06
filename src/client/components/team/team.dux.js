@@ -12,7 +12,6 @@ const defaultState = {
 const SET_TEAMS = 'team/set-teams';
 const SET_TEAM = 'team/set-team';
 const SET_MEMBERS = 'team/set-members';
-const SET_MEETING_GROUPS = 'team/set-meeting-groups';
 
 export const getTeams = (success, fail) => (dispatch, getState) => {
   superagent.get('team')
