@@ -124,6 +124,7 @@ class Team extends Component {
       members
     } = this.props;
     const { is_owner, is_admin, id } = this.props.team;
+    console.log('team', this.props.team, '\n', is_owner);
     const { isNameSet } = this.state;
     const unscheduledMembers = members.filter(member => !('next_meeting_date' in member));
     const upcomingMembers = members.filter(member => 'next_meeting_date' in member);
@@ -206,6 +207,7 @@ class Team extends Component {
     } else {
       return (
         <main id="main-team" className="main main-team" role="main">
+          {(() => console.log('GAAAAAA!!!', is_owner))()}
           <Helmet
             title={`${this.state.name} | Good Chat`}
           />
@@ -232,7 +234,7 @@ class Team extends Component {
                   familyName={member.family_name}
                   email={member.email}
                   picture={member.picture}
-                  meetingGroupId={member.meeting_group.id}
+                  meetingGroupId={member.meeting_group ? member.meeting_group.id : ''}
                   teamId={team.id}
                   nextMeetingDate={member.next_meeting_date}
                 />
