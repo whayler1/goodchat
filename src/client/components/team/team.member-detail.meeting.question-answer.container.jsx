@@ -134,7 +134,7 @@ export default class QuestionAnswer extends Component {
           placeholder="Click here to answer"
           togglePreview={!isDone && !isHost && this.togglePreview}
         />
-        {!isDone && (qaLength > 1 || typeof qaLength !== 'number') &&
+        {!isDone &&
         <ul className="pull-right inline-list meeting-qa-foot">
           {!isDone && isUserInput &&
           <li>
@@ -159,6 +159,7 @@ export default class QuestionAnswer extends Component {
             </button>
             }
           </li>}
+          {(qaLength > 1 || typeof qaLength !== 'number') &&
           <li>
             <button
               className="btn-no-style"
@@ -167,7 +168,7 @@ export default class QuestionAnswer extends Component {
             >
               Delete <i className="material-icons">close</i>
             </button>
-          </li>
+          </li>}
         </ul>}
       </div>
     );
