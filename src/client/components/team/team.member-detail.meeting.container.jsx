@@ -6,6 +6,7 @@ import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionAnswer from './team.member-detail.meeting.question-answer.container.jsx';
+import TeamMemberDetailToDo from './team.member-detail.meeting.todo-item.component.jsx';
 import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
@@ -248,7 +249,9 @@ class TeamMemberDetailMeeting extends Component {
   });
 
   render = () => {
-    const { meeting, imageUrl, memberImageUrl, className } = this.props;
+    const { meeting, imageUrl, memberImageUrl, className, teamId } = this.props;
+    // const { meetingGroupId } = this.props.params;
+    console.log('this.props', this.props);
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
@@ -398,7 +401,21 @@ class TeamMemberDetailMeeting extends Component {
           {answerReadyError === 'everything-not-answered' && <div className="danger-text half-gutter-top">Please answer every question</div>}
         </div>
         }
-        <form className="form gutter-large-top"
+        <div className="gutter-large-top">
+          <span className="input-label">To-do's</span>
+          <ul>
+            <li>
+              <TeamMemberDetailToDo
+                teamId={teamId}
+                meetingId={meeting.id}
+                meetingGroupId={`aaa`}
+                text={`zzz`}
+              />
+            </li>
+          </ul>
+        </div>
+        <form
+          className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
           <label htmlFor="note" className="input-label">

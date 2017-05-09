@@ -237,6 +237,26 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
   .catch(err => res.status(500).json({ msg: 'error finding meeting group memberships'}));
 });
 
+router.post('/team/:team_id/meeting/:meeting_group_id/todo/:meeting_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const { team_id, meeting_group_id, meeting_id } = req.params;
+  const { text } = req.body;
+  const user_id = req.user.id;
+
+  const insertObj = {
+    id: uuid.v1(),
+    user_id,
+    team_id,
+    meeting_group_id,
+    meeting_id,
+    text
+  };
+
+  knex('todos').insert(insertObj)
+  .returning('*')
+  .then(todo => res.json(todo))
+  .catch(() => res.status(500).json({ msg: 'error creating todo' }))
+});
+
 router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   const { id } = req.user;
 
