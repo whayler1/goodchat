@@ -446,6 +446,7 @@ class TeamMemberDetailMeeting extends Component {
               <button
                 type="button"
                 className="btn-primary"
+                id="btn-complete-meeting"
                 onClick={this.onCompleteMeeting}
               >
                 Complete meeting

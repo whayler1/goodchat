@@ -122,9 +122,6 @@ module.exports = {
     login(client, TEST_EMAIL, TEST_PASSWORD);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
-    client.url(function (urltest) {
-      console.log("URL is " + urltest.value);
-    });
 
     client.waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
@@ -194,6 +191,21 @@ module.exports = {
       .pause(1500);
 
     client.end();
+  },
+
+  'Complete Meeting': client => {
+    login(client, TEST_EMAIL, TEST_PASSWORD);
+
+    client.url(`http://localhost:3000/#/teams/${teamId}`)
+      .waitForElementVisible('#team-member-list', 1000)
+      .click('#team-member-list > li > a')
+      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .click('#btn-complete-meeting')
+      .waitForElementNotPresent('.modal-container.modal-container-team-meeting', 1000)
+      .click('#team-member-list > li > a')
+      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .assert.elementNotPresent('#btn-complete-meeting')
+      .end();
   },
 
   'Delete team': client => {
