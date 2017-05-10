@@ -82,7 +82,7 @@ class TeamMemberDetail extends Component {
       Object.assign(sendObj, { qa_length: 1 });
     }
 
-    createMeeting(team.id, params.meetingGroupId, meeting_date).then(
+    createMeeting(team.id, params.meetingGroupId, sendObj).then(
       () => {
         this.getMeetings();
         this.props.updateTeamMembers(team.id);
