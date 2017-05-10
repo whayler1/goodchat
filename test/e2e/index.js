@@ -2,6 +2,11 @@ const _ = require('lodash');
 
 let inviteId;
 let teamId;
+let question1originalValue;
+let question2originalValue;
+let question3originalValue;
+let question4originalValue;
+let question5originalValue;
 
 const question1Value = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 const question2Value = `Success isn't about the end result, it's about what you learn along the way.
@@ -61,6 +66,12 @@ module.exports = {
       .setValue('@nameInput', 'test team')
       .waitForElementVisible('@createTeamBtn', 1000)
       .click('@createTeamBtn')
+      .waitForElementVisible('@question1Input', 1000)
+      .getValue('@question1Input', result => question1originalValue = result.value)
+      .getValue('@question2Input', result => question2originalValue = result.value)
+      .getValue('@question3Input', result => question3originalValue = result.value)
+      .getValue('@question4Input', result => question4originalValue = result.value)
+      .getValue('@question5Input', result => question5originalValue = result.value)
       .waitForElementVisible('@saveQuestionsBtn', 1000)
       .click('@saveQuestionsBtn')
       .waitForElementVisible('@inviteTeamMembersLink', 1000)
@@ -75,14 +86,8 @@ module.exports = {
       .click('@sendInviteBtn')
       .waitForElementVisible('#invitee-0-email', 1000)
       .assert.containsText('#invitee-0-email', INVITEE_EMAIL)
-      .getValue('#invitee-0-invite-id', result => {
-        console.log('inviteId--:', result.value);
-        inviteId = result.value
-      })
-      .getValue('#invitee-0-team-id', result => {
-        console.log('teamId--:', result.value);
-        teamId = result.value
-      })
+      .getValue('#invitee-0-invite-id', result => inviteId = result.value)
+      .getValue('#invitee-0-team-id', result => teamId = result.value)
       .click('@closeBtn');
 
     client.waitForElementVisible('#navbar-hamburger', 1000)
@@ -180,6 +185,11 @@ module.exports = {
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
       .waitForElementVisible('#question1', 1000)
+      .assert.value("#question1", question1originalValue)
+      .assert.value("#question2", question2originalValue)
+      .assert.value("#question3", question3originalValue)
+      .assert.value("#question4", question4originalValue)
+      .assert.value("#question5", question5originalValue)
       .setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
       .clearValue('#question1')
       .setValue('#question1', question1Value)
