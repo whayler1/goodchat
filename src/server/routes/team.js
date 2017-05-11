@@ -245,15 +245,16 @@ router.post('/team/:team_id/meeting/:meeting_group_id/todo/:meeting_id', authHel
   const insertObj = {
     id: uuid.v1(),
     user_id,
-    team_id,
     meeting_group_id,
     meeting_id,
-    text
+    text,
+    created_at: knex.fn.now(),
+    updated_at: knex.fn.now()
   };
 
   knex('todos').insert(insertObj)
   .returning('*')
-  .then(todo => res.json(todo))
+  .then(todos => res.json(todos[0]))
   .catch(() => res.status(500).json({ msg: 'error creating todo' }))
 });
 
@@ -324,33 +325,36 @@ router.get('/team/:team_id/meetings/:meeting_group_id', authHelpers.loginRequire
   const { team_id, meeting_group_id } = req.params;
   const currentUserId = req.user.id;
 
-  knex('meeting_groups').where({ id: meeting_group_id })
-  .first()
-  .then(meeting_group => knex('meeting_group_memberships').where({ meeting_group_id: meeting_group.id })
-    .then(memberships => {
-      if (memberships.some(membership => membership.user_id === currentUserId)) {
-        meeting_group.memberships = memberships;
-        // JW: This feels flimsy, but gets us what we need for now
-        const user_id = memberships.find(membership => membership.user_id !== currentUserId).user_id;
+  knex('todos').where({ user_id: currentUserId, meeting_group_id }).then(todos =>
+    knex('meeting_groups').where({ id: meeting_group_id })
+    .first()
+    .then(meeting_group => knex('meeting_group_memberships').where({ meeting_group_id: meeting_group.id })
+      .then(memberships => {
+        if (memberships.some(membership => membership.user_id === currentUserId)) {
+          meeting_group.memberships = memberships;
+          // JW: This feels flimsy, but gets us what we need for now
+          const user_id = memberships.find(membership => membership.user_id !== currentUserId).user_id;
 
-        knex('meetings')
-        .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
-        .join('notes', { 'meetings.id': 'notes.meeting_id' })
-        .orderBy('meeting_date', 'desc')
-        .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
-        .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
-        .then(meetings => {
-          console.log('\n\ngot meetings success!', meetings);
-          res.json({ meetings, meeting_group });
-        })
-        .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
-      } else {
-        res.status(401).json({ msg: 'User not in this meeting' });
-      }
-    })
-    .catch(err => res.sendStatus(500))
+          knex('meetings')
+          .select([ 'meetings.*', 'notes.note', 'notes.id as note_id' ])
+          .join('notes', { 'meetings.id': 'notes.meeting_id' })
+          .orderBy('meeting_date', 'desc')
+          .where({ 'meetings.team_id': team_id, 'meetings.host_id': currentUserId, 'meetings.user_id': user_id, 'notes.user_id': currentUserId })
+          .orWhere({ 'meetings.team_id': team_id, 'meetings.host_id': user_id, 'meetings.user_id': currentUserId, 'notes.user_id': currentUserId })
+          .then(meetings => {
+            console.log('\n\ngot meetings success!', meetings);
+            res.json({ meetings, meeting_group, todos });
+          })
+          .catch(err => res.status(500).json({ msg: 'error-retrieving-meetings-with-teamid-and-userid'}));
+        } else {
+          res.status(401).json({ msg: 'User not in this meeting' });
+        }
+      })
+      .catch(err => res.sendStatus(500))
+    )
+    .catch(err => res.status(500).json({ msg: 'error-retrieving-meeting-groups-with-teamid-and-meeting-group-id'}))
   )
-  .catch(err => res.status(500).json({ msg: 'error-retrieving-meeting-groups-with-teamid-and-meeting-group-id'}));
+  .catch(() => res.status(500).json({ msg: 'error retrieving todos '}));
 });
 
 router.get('/team/:team_id/notes',authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {

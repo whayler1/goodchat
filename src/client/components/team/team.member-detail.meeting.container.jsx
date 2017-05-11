@@ -32,8 +32,10 @@ class TeamMemberDetailMeeting extends Component {
     setRedirect: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    className: PropTypes.string
-  }
+    className: PropTypes.string,
+    meetingGroupId: PropTypes.string.isRequired,
+    todos: PropTypes.array
+  };
 
   state = {
     question1: this.props.meeting.question1,
@@ -51,7 +53,7 @@ class TeamMemberDetailMeeting extends Component {
     isNoteMarkdown: (_.isString(this.props.meeting.note) && this.props.meeting.note.length > 0),
     isNoteAutofocus: false,
     title: this.props.meeting.title || ''
-  }
+  };
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
     .then(
@@ -249,8 +251,7 @@ class TeamMemberDetailMeeting extends Component {
   });
 
   render = () => {
-    const { meeting, imageUrl, memberImageUrl, className, teamId } = this.props;
-    // const { meetingGroupId } = this.props.params;
+    const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos } = this.props;
     console.log('this.props', this.props);
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
@@ -404,12 +405,20 @@ class TeamMemberDetailMeeting extends Component {
         <div className="gutter-large-top">
           <span className="input-label">To-do's</span>
           <ul>
+            {todos.map(todo => (
+              <TeamMemberDetailToDo
+                id={todo.id}
+                teamId={todo.team_id}
+                meetingId={meeting.id}
+                meetingGroupId={meetingGroupId}
+                text={todo.text}
+              />
+            ))}
             <li>
               <TeamMemberDetailToDo
                 teamId={teamId}
                 meetingId={meeting.id}
-                meetingGroupId={`aaa`}
-                text={`zzz`}
+                meetingGroupId={meetingGroupId}
               />
             </li>
           </ul>
@@ -479,7 +488,8 @@ class TeamMemberDetailMeeting extends Component {
 export default connect (
   state => ({
     userId: state.user.id,
-    teamId: state.team.team.id
+    teamId: state.team.team.id,
+    meetingGroupId: state.meeting.meetingGroup.id
   }),
   {
     updateMeeting,

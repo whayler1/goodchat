@@ -107,17 +107,6 @@ export const createMeeting = (teamId, meetingGroupId, meeting_date) => dispatch 
     }
   }));
 
-export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch => new Promise((resolve, reject) =>
-  superagent.post(`team/${teamId}/meeting/${meetingId}/todo/${meetingGroupId}`)
-  .send({ text })
-  .end((err, res) => {
-    if (err) {
-      reject(res);
-    } else {
-      resolve();
-    }
-  }));
-
 export const setMembers = members => ({
   type: SET_MEMBERS,
   members

@@ -27,7 +27,8 @@ class TeamMemberDetail extends Component {
     familyName: PropTypes.string.isRequired,
     imageUrl: PropTypes.string.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
-    createMeeting: PropTypes.func.isRequired
+    createMeeting: PropTypes.func.isRequired,
+    todos: PropTypes.array.isRequired
   }
 
   state = {
@@ -127,7 +128,7 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
-    const { team, meetings, imageUrl, history } = this.props;
+    const { team, meetings, imageUrl, history, todos } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
       question1,
@@ -253,6 +254,7 @@ class TeamMemberDetail extends Component {
           key={meeting.id}
           className="card meeting-card"
           meeting={meeting}
+          todos={todos.filter(todo => todo.meeting_id === meeting.id)}
           imageUrl={imageUrl}
           memberImageUrl={member.picture}
           memberId={member.id}
@@ -283,7 +285,8 @@ export default connect(
     members: state.team.members,
     givenName: state.user.givenName,
     familyName: state.user.familyName,
-    imageUrl: state.user.imageUrl
+    imageUrl: state.user.imageUrl,
+    todos: state.meeting.todos
   }),
   {
     getMeetings,
