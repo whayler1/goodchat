@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
+import _ from 'lodash';
 
-import { createTodo } from '../meeting/meeting.dux.js';
+import { createTodo, updateTodo } from '../meeting/meeting.dux.js';
 
 class TeamMemberDetailToDo extends Component {
   static propTypes = {
@@ -12,14 +13,25 @@ class TeamMemberDetailToDo extends Component {
     meetingGroupId: PropTypes.string.isRequired,
     meetingId: PropTypes.string.isRequired,
     createTodo: PropTypes.func.isRequired,
+    updateTodo: PropTypes.func.isRequired,
     text: PropTypes.string
   };
 
   state = {
-    text: this.props.text || ''
+    text: this.props.text || '',
+    isEdit: _.isNil(this.props.id)
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChangeUpdate = _.debounce(() =>
+    this.props.updateTodo(this.props.id, {
+      text: this.state.text
+    }).then(
+      () => this.setState({ isError: false }),
+      () => this.setState({ isError: true })
+    ), 750);
+
+  onChange = e => this.setState({ text: e.target.value }, () =>
+    _.isString(this.props.id) && this.onChangeUpdate());
 
   onSubmit = e => {
     e.preventDefault();
@@ -38,30 +50,77 @@ class TeamMemberDetailToDo extends Component {
     return false;
   };
 
+  onDeleteClick = e => {
+    e.preventDefault()
+    console.log('on delete click')
+    return false;
+  };
+
+  toggleIsEdit = () => {
+    // JW: need to timeout so delete can be clicked
+    if (this.state.isEdit) {
+      setTimeout(() => this.setState({ isEdit: false }), 250);
+    } else {
+      this.setState({ isEdit: true });
+    }
+  };
+
   render() {
     const { id } = this.props;
-    const { text } = this.state;
-    const { onSubmit, onChange } = this;
+    const { text, isEdit } = this.state;
+    const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
+    const name = `todo-${id}`;
 
     return (
       <form onSubmit={onSubmit}>
+        {(id && !isEdit) &&
+        <ReactMarkdown
+          className="team-markdown"
+          source={text}
+          containerProps={{ id: `name`, onClick: toggleIsEdit }}
+          escapeHtml={true}
+        />
+        }
+        {(!id || isEdit) &&
         <TextareaAutosize
           maxLength={1000}
           minLength={1}
           onChange={onChange}
-          name="text"
+          className={`form-control ${ (id || text.length > 0) ? '' : 'meeting-todo-form-control-add' }`}
+          id={name}
+          onBlur={toggleIsEdit}
+          name={name}
           value={text}
           placeholder={placeholder}
+          autoFocus={id}
           required
         />
-        {text && text.length > 0 &&
-        <button
-          type="submit"
-        >
-          Add
-        </button>}
+        }
+        {id && isEdit &&
+        <ul className="pull-right inline-list meeting-qa-foot">
+          <li>
+            <button
+              type="button"
+              className="btn-no-style btn-no-style-danger"
+              onClick={this.onDeleteClick}
+            >
+              Delete <i className="material-icons font-small">close</i>
+            </button>
+          </li>
+        </ul>
+        }
+        {!id && text.length > 0 &&
+        <div className="half-gutter-top">
+          <button
+            type="submit"
+            className="btn-no-style btn-no-style-primary"
+          >
+            Add <i className="material-icons">add_circle_outline</i>
+          </button>
+        </div>
+        }
       </form>
     );
   }
@@ -70,6 +129,7 @@ class TeamMemberDetailToDo extends Component {
 export default connect(
   null,
   {
-    createTodo
+    createTodo,
+    updateTodo
   }
 )(TeamMemberDetailToDo);

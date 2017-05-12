@@ -404,15 +404,18 @@ class TeamMemberDetailMeeting extends Component {
         }
         <div className="gutter-large-top">
           <span className="input-label">To-do's</span>
+          {todos &&
           <ul>
             {todos.map(todo => (
-              <TeamMemberDetailToDo
-                id={todo.id}
-                teamId={todo.team_id}
-                meetingId={meeting.id}
-                meetingGroupId={meetingGroupId}
-                text={todo.text}
-              />
+              <li key={todo.id}>
+                <TeamMemberDetailToDo
+                  id={todo.id}
+                  teamId={todo.team_id}
+                  meetingId={meeting.id}
+                  meetingGroupId={meetingGroupId}
+                  text={todo.text}
+                />
+              </li>
             ))}
             <li>
               <TeamMemberDetailToDo
@@ -421,7 +424,7 @@ class TeamMemberDetailMeeting extends Component {
                 meetingGroupId={meetingGroupId}
               />
             </li>
-          </ul>
+          </ul>}
         </div>
         <form
           className="form gutter-large-top"

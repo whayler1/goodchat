@@ -94,6 +94,27 @@ export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch 
     }
   }));
 
+export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) =>
+  superagent.put(`todos/${todo_id}`)
+  .send(options)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      resolve(res.body);
+    }
+  }));
+
+export const deleteTodo =  (todo_id) => dispatch => new Promise((resolve, reject) =>
+  superagent.delete(`todos/${todo_id}`)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      resolve();
+    }
+  }));
+
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_MEETINGS:
