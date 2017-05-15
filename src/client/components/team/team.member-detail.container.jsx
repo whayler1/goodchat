@@ -240,6 +240,7 @@ class TeamMemberDetail extends Component {
             <li key={meetings[0].id}>
               <TeamMemberDetailMeeting
                 meeting={meetings[0]}
+                todos={todos.filter(todo => todo.meeting_id === meetings[0].id)}
                 imageUrl={imageUrl}
                 memberImageUrl={member.picture}
                 memberId={member.id}
