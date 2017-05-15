@@ -840,6 +840,14 @@ p.main-team-set-questions-footnote {
   >li {
     margin-top: @half-gutter;
     list-style: none;
+
+    &:first-child {
+      .meeting-todo-form-control-add {
+        &.form-control {
+          border-color: @bluegrey-50;
+        }
+      }
+    }
   }
 }
 
