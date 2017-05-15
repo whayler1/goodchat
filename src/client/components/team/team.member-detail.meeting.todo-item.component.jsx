@@ -4,27 +4,31 @@ import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
-import { createTodo, updateTodo } from '../meeting/meeting.dux.js';
+import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
 
 class TeamMemberDetailToDo extends Component {
   static propTypes = {
     id: PropTypes.string,
+    isDone: PropTypes.boolean,
     teamId: PropTypes.string.isRequired,
     meetingGroupId: PropTypes.string.isRequired,
     meetingId: PropTypes.string.isRequired,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired,
     text: PropTypes.string
   };
 
   state = {
     text: this.props.text || '',
-    isEdit: _.isNil(this.props.id)
+    isEdit: _.isNil(this.props.id),
+    isChecked: this.props.isDone
   };
 
   onChangeUpdate = _.debounce(() =>
     this.props.updateTodo(this.props.id, {
-      text: this.state.text
+      text: this.state.text,
+      is_done: this.state.isChecked
     }).then(
       () => this.setState({ isError: false }),
       () => this.setState({ isError: true })
@@ -50,11 +54,7 @@ class TeamMemberDetailToDo extends Component {
     return false;
   };
 
-  onDeleteClick = e => {
-    e.preventDefault()
-    console.log('on delete click')
-    return false;
-  };
+  onDeleteClick = () => this.props.deleteTodo(this.props.id);
 
   toggleIsEdit = () => {
     // JW: need to timeout so delete can be clicked
@@ -65,16 +65,31 @@ class TeamMemberDetailToDo extends Component {
     }
   };
 
+  onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onChangeUpdate);
+
   render() {
     const { id } = this.props;
-    const { text, isEdit } = this.state;
+    const { text, isEdit, isChecked } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
     const name = `todo-${id}`;
+    const checkboxName = `todo-checkbox-${id}`;
 
     return (
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix ${ id ? '' : 'meeting-todo-form-add' }`}>
+        {id &&
+        <label htmlFor={checkboxName} className="checkbox-label">
+          <input
+            type="checkbox"
+            id={checkboxName}
+            name={checkboxName}
+            checked={isChecked}
+            onChange={this.onCheckboxChange}
+          />
+          <i className="material-icons">{isChecked ? 'check_box' : 'check_box_outline_blank'}</i>
+        </label>
+        }
         {(id && !isEdit) &&
         <ReactMarkdown
           className="team-markdown"
@@ -130,6 +145,7 @@ export default connect(
   null,
   {
     createTodo,
-    updateTodo
+    updateTodo,
+    deleteTodo
   }
 )(TeamMemberDetailToDo);

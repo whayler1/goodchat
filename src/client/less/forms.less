@@ -180,3 +180,21 @@
 :-moz-placeholder {
   color: @bluegrey-100;
 }
+
+.checkbox-label {
+  display: inline-block;
+  input {
+    display: none;
+  }
+  i {
+    color: @link-color;
+
+    &:hover,
+    &:focus {
+      color: @link-color-hover;
+    }
+    &:active {
+      color: @link-color-active;
+    }
+  }
+}

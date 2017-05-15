@@ -405,11 +405,12 @@ class TeamMemberDetailMeeting extends Component {
         <div className="gutter-large-top">
           <span className="input-label">To-do's</span>
           {todos &&
-          <ul>
+          <ul className="team-member-todo-list">
             {todos.map(todo => (
               <li key={todo.id}>
                 <TeamMemberDetailToDo
                   id={todo.id}
+                  isDone={todo.is_done}
                   teamId={todo.team_id}
                   meetingId={meeting.id}
                   meetingGroupId={meetingGroupId}

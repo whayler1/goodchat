@@ -11,6 +11,7 @@ const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 const DELETE_MEETING = 'meeting/delete-meeting';
 const ADD_TODO = 'meeting/add-todo';
+const DELETE_TODO = 'meeting/delete-todo';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
   .send({ is_done: true, finished_at: moment().format() })
@@ -105,12 +106,16 @@ export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve
     }
   }));
 
-export const deleteTodo =  (todo_id) => dispatch => new Promise((resolve, reject) =>
+export const deleteTodo = (todo_id) => dispatch => new Promise((resolve, reject) =>
   superagent.delete(`todos/${todo_id}`)
   .end((err, res) => {
     if (err) {
       reject(res);
     } else {
+      dispatch({
+        type: DELETE_TODO,
+        todo_id
+      });
       resolve();
     }
   }));
@@ -136,6 +141,17 @@ export default function reducer(state = defaultState, action) {
       const todos = [
         ...state.todos,
         action.todo
+      ];
+      return {
+        ...state,
+        todos
+      }
+    }
+    case DELETE_TODO: {
+      const index = state.todos.findIndex(todo => todo.id === action.todo_id);
+      const todos = [
+        ...state.todos.slice(0, index),
+        ...state.todos.slice(index + 1)
       ];
       return {
         ...state,
