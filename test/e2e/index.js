@@ -39,7 +39,6 @@ const login = (client, email, password) => {
 
   client.pause(1000);
   client.window_handles(function(result) {
-    console.log('switching windows:', result);
     var handle = result.value[1];
     client.switchWindow(handle, function() {
       client.waitForElementVisible('body', 1000)

@@ -407,9 +407,8 @@ class TeamMemberDetailMeeting extends Component {
         }
         <div className="gutter-large-top">
           <span className="input-label">To-do's</span>
-          {todos &&
           <ul className="team-member-todo-list">
-            {todos.map(todo => (
+            {todos && todos.map(todo => (
               <li key={todo.id}>
                 <TeamMemberDetailToDo
                   id={todo.id}
@@ -434,7 +433,7 @@ class TeamMemberDetailMeeting extends Component {
                 deleteTodo={deleteTodo}
               />
             </li>
-          </ul>}
+          </ul>
         </div>
         <form
           className="form gutter-large-top"
