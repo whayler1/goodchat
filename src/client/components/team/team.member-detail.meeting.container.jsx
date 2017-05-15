@@ -11,7 +11,7 @@ import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
@@ -34,7 +34,10 @@ class TeamMemberDetailMeeting extends Component {
     history: PropTypes.object.isRequired,
     className: PropTypes.string,
     meetingGroupId: PropTypes.string.isRequired,
-    todos: PropTypes.array
+    todos: PropTypes.array,
+    createTodo: PropTypes.func.isRequired,
+    updateTodo: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired
   };
 
   state = {
@@ -251,8 +254,8 @@ class TeamMemberDetailMeeting extends Component {
   });
 
   render = () => {
-    const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos } = this.props;
-    console.log('this.props', this.props);
+    const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
+      createTodo, updateTodo, deleteTodo } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
@@ -415,6 +418,9 @@ class TeamMemberDetailMeeting extends Component {
                   meetingId={meeting.id}
                   meetingGroupId={meetingGroupId}
                   text={todo.text}
+                  createTodo={createTodo}
+                  updateTodo={updateTodo}
+                  deleteTodo={deleteTodo}
                 />
               </li>
             ))}
@@ -423,6 +429,9 @@ class TeamMemberDetailMeeting extends Component {
                 teamId={teamId}
                 meetingId={meeting.id}
                 meetingGroupId={meetingGroupId}
+                createTodo={createTodo}
+                updateTodo={updateTodo}
+                deleteTodo={deleteTodo}
               />
             </li>
           </ul>}
@@ -502,6 +511,9 @@ export default connect (
     updateTeamMembers,
     deleteMeeting,
     setRedirect,
-    logout
+    logout,
+    createTodo,
+    updateTodo,
+    deleteTodo
   }
 )(TeamMemberDetailMeeting);

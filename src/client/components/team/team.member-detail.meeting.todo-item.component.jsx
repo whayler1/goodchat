@@ -1,12 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
-import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
-
-class TeamMemberDetailToDo extends Component {
+export default class TeamMemberDetailToDo extends Component {
   static propTypes = {
     id: PropTypes.string,
     isDone: PropTypes.boolean,
@@ -39,22 +36,28 @@ class TeamMemberDetailToDo extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { createTodo, teamId, meetingGroupId, meetingId } = this.props;
-    const { text } = this.state;
 
-    createTodo(teamId, meetingGroupId, meetingId, text).then(
-      () => this.setState({
-        text: '',
-        isError: false
-      }),
-      () => this.setState({
-        isError: true
-      })
-    );
+    this.setState({ isSubmitting: true }, () => {
+      const { createTodo, teamId, meetingGroupId, meetingId } = this.props;
+      const { text } = this.state;
+
+      createTodo(teamId, meetingGroupId, meetingId, text).then(
+        () => this.setState({
+          text: '',
+          isError: false,
+          isSubmitting: false
+        }),
+        () => this.setState({
+          isError: true,
+          isSubmitting: false
+        })
+      );
+    });
     return false;
   };
 
-  onDeleteClick = () => this.props.deleteTodo(this.props.id);
+  onDeleteClick = () => this.setState({ isDeleting: true }, () =>
+    this.props.deleteTodo(this.props.id));
 
   toggleIsEdit = () => {
     // JW: need to timeout so delete can be clicked
@@ -69,7 +72,7 @@ class TeamMemberDetailToDo extends Component {
 
   render() {
     const { id } = this.props;
-    const { text, isEdit, isChecked } = this.state;
+    const { text, isEdit, isChecked, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
@@ -79,7 +82,7 @@ class TeamMemberDetailToDo extends Component {
     return (
       <form onSubmit={onSubmit} className={`meeting-todo-form clearfix ${ id ? '' : 'meeting-todo-form-add' }`}>
         {id &&
-        <label htmlFor={checkboxName} className="checkbox-label">
+        <label htmlFor={checkboxName} className="checkbox-label meeting-todo-form-checkbox">
           <input
             type="checkbox"
             id={checkboxName}
@@ -92,34 +95,47 @@ class TeamMemberDetailToDo extends Component {
         }
         {(id && !isEdit) &&
         <ReactMarkdown
-          className="team-markdown"
+          className="team-markdown meeting-todo-form-text"
           source={text}
           containerProps={{ id: `name`, onClick: toggleIsEdit }}
           escapeHtml={true}
         />
         }
         {(!id || isEdit) &&
-        <TextareaAutosize
-          maxLength={1000}
-          minLength={1}
-          onChange={onChange}
-          className={`form-control ${ (id || text.length > 0) ? '' : 'meeting-todo-form-control-add' }`}
-          id={name}
-          onBlur={toggleIsEdit}
-          name={name}
-          value={text}
-          placeholder={placeholder}
-          autoFocus={id}
-          required
-        />
+        <div className="meeting-todo-form-text">
+          <TextareaAutosize
+            maxLength={1000}
+            minLength={1}
+            onChange={onChange}
+            className={`form-control ${ (id || text.length > 0) ? '' : 'meeting-todo-form-control-add' }`}
+            id={name}
+            onBlur={toggleIsEdit}
+            name={name}
+            value={text}
+            placeholder={placeholder}
+            autoFocus={id}
+            readOnly={!id && isSubmitting}
+            required
+          />
+        </div>
         }
         {id && isEdit &&
         <ul className="pull-right inline-list meeting-qa-foot">
           <li>
             <button
               type="button"
+              className="btn-no-style btn-no-style-primary"
+              onClick={toggleIsEdit}
+            >
+              Done editing <i className="material-icons font-small">done</i>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
               className="btn-no-style btn-no-style-danger"
               onClick={this.onDeleteClick}
+              disabled={isDeleting}
             >
               Delete <i className="material-icons font-small">close</i>
             </button>
@@ -131,8 +147,10 @@ class TeamMemberDetailToDo extends Component {
           <button
             type="submit"
             className="btn-no-style btn-no-style-primary"
+            disabled={isSubmitting}
           >
-            Add <i className="material-icons">add_circle_outline</i>
+            {!isSubmitting && <span>Add <i className="material-icons">add_circle_outline</i></span>}
+            {isSubmitting && <span>Saving...</span>}
           </button>
         </div>
         }
@@ -140,12 +158,3 @@ class TeamMemberDetailToDo extends Component {
     );
   }
 };
-
-export default connect(
-  null,
-  {
-    createTodo,
-    updateTodo,
-    deleteTodo
-  }
-)(TeamMemberDetailToDo);

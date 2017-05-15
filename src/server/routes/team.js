@@ -325,7 +325,7 @@ router.get('/team/:team_id/meetings/:meeting_group_id', authHelpers.loginRequire
   const { team_id, meeting_group_id } = req.params;
   const currentUserId = req.user.id;
 
-  knex('todos').where({ user_id: currentUserId, meeting_group_id }).then(todos =>
+  knex('todos').where({ user_id: currentUserId, meeting_group_id }).orderBy('created_at', 'desc').then(todos =>
     knex('meeting_groups').where({ id: meeting_group_id })
     .first()
     .then(meeting_group => knex('meeting_group_memberships').where({ meeting_group_id: meeting_group.id })

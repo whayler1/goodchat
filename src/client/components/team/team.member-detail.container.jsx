@@ -270,23 +270,13 @@ export default connect(
   state => ({
     userId: state.user.id,
     team: state.team.team,
-    meetings: state.meeting.meetings.sort((a, b) => {
-      const createdAtA = a.created_at;
-      const createdAtB = b.created_at;
-      if (createdAtA < createdAtB) {
-        return 1;
-      }
-      if (createdAtA > createdAtB) {
-        return -1;
-      }
-      return 0;
-    }),
+    meetings: _.orderBy(state.meeting.meetings, 'created_at', 'desc'),
     meetingGroup: state.meeting.meetingGroup,
     members: state.team.members,
     givenName: state.user.givenName,
     familyName: state.user.familyName,
     imageUrl: state.user.imageUrl,
-    todos: state.meeting.todos
+    todos: _.orderBy(state.meeting.todos, 'created_at')
   }),
   {
     getMeetings,
