@@ -47,14 +47,14 @@ module.exports = {
           .setValue('#identifierId', TEST_EMAIL)
           .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('input[type="password"]', 1000)
+          .waitForElementVisible('input[type="password"]', 3000)
           .setValue('input[type="password"]', TEST_PASSWORD)
           .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 2000)
+    teams.waitForElementVisible('@teamPageContent', 7000)
       .click('@createTeamBtn');
 
     team.waitForElementVisible('@nameInput', 1000)
@@ -118,14 +118,14 @@ module.exports = {
           .setValue('#identifierId', INVITEE_EMAIL)
           .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('input[type="password"]', 1000)
+          .waitForElementVisible('input[type="password"]', 3000)
           .setValue('input[type="password"]', INVITEE_PASSWORD)
           .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 2000);
+    teams.waitForElementVisible('@teamPageContent', 7000);
 
     client.url(`http://localhost:3000/#/invites/accept/${inviteId}`);
     client.url(function (urltest) {
@@ -161,14 +161,14 @@ module.exports = {
           .setValue('#identifierId', TEST_EMAIL)
           .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('input[type="password"]', 1000)
+          .waitForElementVisible('input[type="password"]', 3000)
           .setValue('input[type="password"]', TEST_PASSWORD)
           .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 2000);
+    teams.waitForElementVisible('@teamPageContent', 7000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
     client.url(function (urltest) {
@@ -230,14 +230,14 @@ module.exports = {
           .setValue('#identifierId', INVITEE_EMAIL)
           .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('input[type="password"]', 1000)
+          .waitForElementVisible('input[type="password"]', 3000)
           .setValue('input[type="password"]', INVITEE_PASSWORD)
           .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 2000);
+    teams.waitForElementVisible('@teamPageContent', 7000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
     client.url(function (urltest) {
@@ -294,14 +294,14 @@ module.exports = {
           .setValue('#identifierId', TEST_EMAIL)
           .click('#identifierNext')
           .pause(1000)
-          .waitForElementVisible('input[type="password"]', 1000)
+          .waitForElementVisible('input[type="password"]', 3000)
           .setValue('input[type="password"]', TEST_PASSWORD)
           .click('#passwordNext')
           .switchWindow(result.value[0]);
       });
     });
 
-    teams.waitForElementVisible('@teamPageContent', 2000);
+    teams.waitForElementVisible('@teamPageContent', 7000);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
