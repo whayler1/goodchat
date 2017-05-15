@@ -1,5 +1,12 @@
 const _ = require('lodash');
 
+const {
+  TEST_EMAIL,
+  TEST_PASSWORD,
+  INVITEE_EMAIL,
+  INVITEE_PASSWORD
+} = process.env;
+
 let inviteId;
 let teamId;
 let question1originalValue;
@@ -22,51 +29,50 @@ const answer3Value = _.repeat('abcd ef gh', 501);
 const answer4Value = 'This is Answer four';
 const answer5Value = 'This is Answer five';
 
+const login = (client, email, password) => {
+  const home = client.page.home();
+  const teams = client.page.teams();
+
+  home.navigate()
+    .waitForElementVisible('@loginCta', 1000)
+    .click('@loginCta');
+
+  client.pause(1000);
+  client.window_handles(function(result) {
+    console.log('switching windows:', result);
+    var handle = result.value[1];
+    client.switchWindow(handle, function() {
+      client.waitForElementVisible('body', 1000)
+        .waitForElementVisible('#identifierId', 1000)
+        .setValue('#identifierId', email)
+        .click('#identifierNext')
+        .pause(1000)
+        .waitForElementVisible('input[type="password"]', 5000)
+        .setValue('input[type="password"]', password)
+        .click('#passwordNext')
+        .switchWindow(result.value[0]);
+    });
+  });
+
+  teams.waitForElementVisible('@teamPageContent', 7000);
+}
+
 module.exports = {
   'Create a team and invite someone': client => {
-    // console.log('process.env', process.env);
-    console.log('%c starting tests', 'background: green');
-    const home = client.page.home();
     const teams = client.page.teams();
     const team = client.page.team();
     const teamInvite = client.page.teamInvite();
 
-    const {
-      TEST_EMAIL,
-      TEST_PASSWORD,
-      INVITEE_EMAIL,
-      INVITEE_PASSWORD
-    } = process.env;
+    login(client, TEST_EMAIL, TEST_PASSWORD);
 
-    home.navigate()
-      .waitForElementVisible('@loginCta', 1000)
-      .click('@loginCta');
-
-    client.pause(1000);
-    client.window_handles(function(result) {
-      console.log('switching windows:', result);
-      var handle = result.value[1];
-      client.switchWindow(handle, function() {
-        client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
-          .setValue('#identifierId', TEST_EMAIL)
-          .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 3000)
-          .setValue('input[type="password"]', TEST_PASSWORD)
-          .click('#passwordNext')
-          .switchWindow(result.value[0]);
-      });
-    });
-
-    teams.waitForElementVisible('@teamPageContent', 7000)
-      .click('@createTeamBtn');
+    teams.click('@createTeamBtn');
 
     team.waitForElementVisible('@nameInput', 1000)
       .setValue('@nameInput', 'test team')
       .waitForElementVisible('@createTeamBtn', 1000)
       .click('@createTeamBtn')
       .waitForElementVisible('@question1Input', 1000)
+      // JW: Check meeting autopopulates with default questions
       .getValue('@question1Input', result => question1originalValue = result.value)
       .getValue('@question2Input', result => question2originalValue = result.value)
       .getValue('@question3Input', result => question3originalValue = result.value)
@@ -99,38 +105,7 @@ module.exports = {
   },
 
   'Join a team': client => {
-    const home = client.page.home();
-    const teams = client.page.teams();
-    const team = client.page.team();
-    const teamInvite = client.page.teamInvite();
-
-    const {
-      INVITEE_EMAIL,
-      INVITEE_PASSWORD
-    } = process.env;
-
-    home.navigate()
-      .waitForElementVisible('@loginCta', 1000)
-      .click('@loginCta');
-
-    client.pause(1000);
-    client.window_handles(function(result) {
-      console.log('result:', result);
-      var handle = result.value[1];
-      client.switchWindow(handle, function() {
-        client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
-          .setValue('#identifierId', INVITEE_EMAIL)
-          .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 3000)
-          .setValue('input[type="password"]', INVITEE_PASSWORD)
-          .click('#passwordNext')
-          .switchWindow(result.value[0]);
-      });
-    });
-
-    teams.waitForElementVisible('@teamPageContent', 7000);
+    login(client, INVITEE_EMAIL, INVITEE_PASSWORD);
 
     client.url(`http://localhost:3000/#/invites/accept/${inviteId}`);
     client.url(function (urltest) {
@@ -144,41 +119,9 @@ module.exports = {
   },
 
   'Start a meeting as an admin': client => {
-    const home = client.page.home();
-    const teams = client.page.teams();
-    const team = client.page.team();
-    const teamInvite = client.page.teamInvite();
-
-    const {
-      TEST_EMAIL,
-      TEST_PASSWORD
-    } = process.env;
-
-    home.navigate()
-      .waitForElementVisible('@loginCta', 1000)
-      .click('@loginCta');
-
-    client.pause(1000);
-    client.window_handles(result => {
-      client.switchWindow(result.value[1], () => {
-        client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
-          .setValue('#identifierId', TEST_EMAIL)
-          .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 3000)
-          .setValue('input[type="password"]', TEST_PASSWORD)
-          .click('#passwordNext')
-          .switchWindow(result.value[0]);
-      });
-    });
-
-    teams.waitForElementVisible('@teamPageContent', 7000);
+    login(client, TEST_EMAIL, TEST_PASSWORD);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
-    client.url(function (urltest) {
-      console.log("URL is " + urltest.value);
-    });
 
     client.waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
@@ -216,38 +159,7 @@ module.exports = {
   },
 
   'Fill out meeting answers': client => {
-    const home = client.page.home();
-    const teams = client.page.teams();
-    const team = client.page.team();
-    const teamInvite = client.page.teamInvite();
-
-    const {
-      INVITEE_EMAIL,
-      INVITEE_PASSWORD
-    } = process.env;
-
-    home.navigate()
-      .waitForElementVisible('@loginCta', 1000)
-      .click('@loginCta');
-
-    client.pause(1000);
-    client.window_handles(function(result) {
-      console.log('result:', result);
-      var handle = result.value[1];
-      client.switchWindow(handle, function() {
-        client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
-          .setValue('#identifierId', INVITEE_EMAIL)
-          .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 3000)
-          .setValue('input[type="password"]', INVITEE_PASSWORD)
-          .click('#passwordNext')
-          .switchWindow(result.value[0]);
-      });
-    });
-
-    teams.waitForElementVisible('@teamPageContent', 7000);
+    login(client, INVITEE_EMAIL, INVITEE_PASSWORD);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`);
     client.url(function (urltest) {
@@ -281,37 +193,23 @@ module.exports = {
     client.end();
   },
 
+  'Complete Meeting': client => {
+    login(client, TEST_EMAIL, TEST_PASSWORD);
+
+    client.url(`http://localhost:3000/#/teams/${teamId}`)
+      .waitForElementVisible('#team-member-list', 1000)
+      .click('#team-member-list > li > a')
+      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .click('#btn-complete-meeting')
+      .waitForElementNotPresent('.modal-container.modal-container-team-meeting', 1000)
+      .click('#team-member-list > li > a')
+      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .assert.elementNotPresent('#btn-complete-meeting')
+      .end();
+  },
+
   'Delete team': client => {
-    const home = client.page.home();
-    const teams = client.page.teams();
-    const team = client.page.team();
-    const teamInvite = client.page.teamInvite();
-
-    const {
-      TEST_EMAIL,
-      TEST_PASSWORD
-    } = process.env;
-
-    home.navigate()
-      .waitForElementVisible('@loginCta', 1000)
-      .click('@loginCta');
-
-    client.pause(1000);
-    client.window_handles(result => {
-      client.switchWindow(result.value[1], () => {
-        client.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
-          .setValue('#identifierId', TEST_EMAIL)
-          .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 3000)
-          .setValue('input[type="password"]', TEST_PASSWORD)
-          .click('#passwordNext')
-          .switchWindow(result.value[0]);
-      });
-    });
-
-    teams.waitForElementVisible('@teamPageContent', 7000);
+    login(client, TEST_EMAIL, TEST_PASSWORD);
 
     client.url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
