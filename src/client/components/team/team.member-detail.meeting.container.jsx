@@ -6,11 +6,12 @@ import moment from 'moment';
 import superagent from 'superagent';
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionAnswer from './team.member-detail.meeting.question-answer.container.jsx';
+import TeamMemberDetailToDo from './team.member-detail.meeting.todo-item.component.jsx';
 import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import { updateMeeting, completeMeeting, getMeetings, deleteMeeting } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
@@ -31,8 +32,13 @@ class TeamMemberDetailMeeting extends Component {
     setRedirect: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    className: PropTypes.string
-  }
+    className: PropTypes.string,
+    meetingGroupId: PropTypes.string.isRequired,
+    todos: PropTypes.array,
+    createTodo: PropTypes.func.isRequired,
+    updateTodo: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired
+  };
 
   state = {
     question1: this.props.meeting.question1,
@@ -50,7 +56,7 @@ class TeamMemberDetailMeeting extends Component {
     isNoteMarkdown: (_.isString(this.props.meeting.note) && this.props.meeting.note.length > 0),
     isNoteAutofocus: false,
     title: this.props.meeting.title || ''
-  }
+  };
 
   onCompleteMeeting = () => this.props.completeMeeting(this.props.meeting.id)
     .then(
@@ -248,7 +254,8 @@ class TeamMemberDetailMeeting extends Component {
   });
 
   render = () => {
-    const { meeting, imageUrl, memberImageUrl, className } = this.props;
+    const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
+      createTodo, updateTodo, deleteTodo } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
@@ -398,7 +405,39 @@ class TeamMemberDetailMeeting extends Component {
           {answerReadyError === 'everything-not-answered' && <div className="danger-text half-gutter-top">Please answer every question</div>}
         </div>
         }
-        <form className="form gutter-large-top"
+        <div className="gutter-large-top">
+          <span className="input-label">To-do's</span>
+          {todos &&
+          <ul className="team-member-todo-list">
+            {todos.map(todo => (
+              <li key={todo.id}>
+                <TeamMemberDetailToDo
+                  id={todo.id}
+                  isDone={todo.is_done}
+                  teamId={todo.team_id}
+                  meetingId={meeting.id}
+                  meetingGroupId={meetingGroupId}
+                  text={todo.text}
+                  createTodo={createTodo}
+                  updateTodo={updateTodo}
+                  deleteTodo={deleteTodo}
+                />
+              </li>
+            ))}
+            <li>
+              <TeamMemberDetailToDo
+                teamId={teamId}
+                meetingId={meeting.id}
+                meetingGroupId={meetingGroupId}
+                createTodo={createTodo}
+                updateTodo={updateTodo}
+                deleteTodo={deleteTodo}
+              />
+            </li>
+          </ul>}
+        </div>
+        <form
+          className="form gutter-large-top"
           onSubmit={this.onNoteSubmit}
         >
           <label htmlFor="note" className="input-label">
@@ -473,6 +512,9 @@ export default connect (
     updateTeamMembers,
     deleteMeeting,
     setRedirect,
-    logout
+    logout,
+    createTodo,
+    updateTodo,
+    deleteTodo
   }
 )(TeamMemberDetailMeeting);

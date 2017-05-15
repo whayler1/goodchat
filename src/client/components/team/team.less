@@ -822,3 +822,50 @@ p.main-team-set-questions-footnote {
     }
   }
 }
+
+.meeting-todo-form-control-add {
+  &.form-control {
+    border-color: transparent;
+
+    &:focus {
+      border-color: @bluegrey-100;
+    }
+  }
+}
+
+.team-member-todo-list {
+  margin: 0;
+  padding-left: 0;
+
+  >li {
+    margin-top: @half-gutter;
+    list-style: none;
+
+    &:first-child {
+      .meeting-todo-form-control-add {
+        &.form-control {
+          border-color: @bluegrey-50;
+        }
+      }
+    }
+  }
+}
+
+.meeting-todo-form {
+  position: relative;
+  min-height: 22px;
+}
+
+.meeting-todo-form-text {
+  margin-left: 35px;
+
+  .meeting-todo-form-add & {
+    margin-left: 0;
+  }
+}
+
+.meeting-todo-form-checkbox {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

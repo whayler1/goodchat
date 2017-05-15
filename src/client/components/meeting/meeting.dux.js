@@ -3,12 +3,15 @@ import moment from 'moment';
 
 const defaultState = {
   meetings: [],
-  meetingGroup: {}
+  meetingGroup: {},
+  todos: []
 }
 
 const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 const DELETE_MEETING = 'meeting/delete-meeting';
+const ADD_TODO = 'meeting/add-todo';
+const DELETE_TODO = 'meeting/delete-todo';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
   .send({ is_done: true, finished_at: moment().format() })
@@ -32,12 +35,13 @@ export const getMeetings = (teamId, meetingGroupId) => dispatch => new Promise((
       if (err) {
         reject(res);
       } else {
-        const { meetings, meeting_group } = res.body;
+        const { meetings, meeting_group, todos } = res.body;
 
         dispatch({
           type: SET_MEETINGS,
           meetings,
-          meetingGroup: meeting_group
+          meetingGroup: meeting_group,
+          todos
         });
         resolve(meetings);
       }
@@ -74,10 +78,52 @@ export const deleteMeeting = id => dispatch => new Promise(
   })
 );
 
+export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch => new Promise((resolve, reject) =>
+  superagent.post(`team/${teamId}/meeting/${meetingGroupId}/todo/${meetingId}`)
+  .send({ text })
+  .end((err, res) => {
+    console.log('createTodo res', res);
+    dispatch({
+      type: ADD_TODO,
+      todo: res.body
+    });
+
+    if (err) {
+      reject(res);
+    } else {
+      resolve();
+    }
+  }));
+
+export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) =>
+  superagent.put(`todos/${todo_id}`)
+  .send(options)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      resolve(res.body);
+    }
+  }));
+
+export const deleteTodo = (todo_id) => dispatch => new Promise((resolve, reject) =>
+  superagent.delete(`todos/${todo_id}`)
+  .end((err, res) => {
+    if (err) {
+      reject(res);
+    } else {
+      dispatch({
+        type: DELETE_TODO,
+        todo_id
+      });
+      resolve();
+    }
+  }));
+
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_MEETINGS:
-      return Object.assign({}, state, _.pick(action, 'meetings', 'meetingGroup'));
+      return Object.assign({}, state, _.pick(action, 'meetings', 'meetingGroup', 'todos'));
     case UPDATE_MEETING: {
       const index = state.meetings.findIndex(meeting => meeting.id === action.meeting.id);
       const meetings = [
@@ -90,6 +136,27 @@ export default function reducer(state = defaultState, action) {
         ...state,
         meetings
       };
+    }
+    case ADD_TODO: {
+      const todos = [
+        ...state.todos,
+        action.todo
+      ];
+      return {
+        ...state,
+        todos
+      }
+    }
+    case DELETE_TODO: {
+      const index = state.todos.findIndex(todo => todo.id === action.todo_id);
+      const todos = [
+        ...state.todos.slice(0, index),
+        ...state.todos.slice(index + 1)
+      ];
+      return {
+        ...state,
+        todos
+      }
     }
     case DELETE_MEETING: {
       const index = state.meetings.findIndex(meeting => meeting.id === action.id);

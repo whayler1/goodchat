@@ -47,14 +47,14 @@ const login = (client, email, password) => {
         .setValue('#identifierId', email)
         .click('#identifierNext')
         .pause(1000)
-        .waitForElementVisible('input[type="password"]', 1000)
+        .waitForElementVisible('input[type="password"]', 5000)
         .setValue('input[type="password"]', password)
         .click('#passwordNext')
         .switchWindow(result.value[0]);
     });
   });
 
-  teams.waitForElementVisible('@teamPageContent', 2000);
+  teams.waitForElementVisible('@teamPageContent', 7000);
 }
 
 module.exports = {
