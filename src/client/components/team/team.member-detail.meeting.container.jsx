@@ -62,7 +62,7 @@ class TeamMemberDetailMeeting extends Component {
     .then(
       () => {
         Promise.all([
-          this.props.getMeetings(this.props.teamId, this.props.memberId),
+          this.props.getMeetings(this.props.teamId, this.props.meetingGroupId),
           this.props.updateTeamMembers(this.props.teamId)
         ]).then(() => this.props.history.push(`/teams/${this.props.teamId}`))
       },
