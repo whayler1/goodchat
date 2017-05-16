@@ -1,32 +1,39 @@
-exports.command = function(email, password) {
-    const client = this;
+var util = require('util');
+var events = require('events');
+function Login() {
+  events.EventEmitter.call(this);
+}
 
-    // JW: Cheap way of not throwing an error before client.page is created
-    if ('page' in this) {
-      const home = client.page.home();
-      const teams = client.page.teams();
+util.inherits(Login, events.EventEmitter);
 
-      home.navigate()
-        .waitForElementVisible('@loginCta', 1000)
-        .click('@loginCta');
+Login.prototype.command = function(email, password) {
+  const self = this;
+  const { api } = self.client;
+  const home = api.page.home();
+  const teams = api.page.teams();
 
-      client.pause(1000)
-        .window_handles((result) =>
-          client.switchWindow(result.value[1], () =>
-            client.waitForElementVisible('body', 1000)
-              .waitForElementVisible('#identifierId', 1000)
-              .setValue('#identifierId', email)
-              .click('#identifierNext')
-              .pause(1000)
-              .waitForElementVisible('input[type="password"]', 5000)
-              .setValue('input[type="password"]', password)
-              .click('#passwordNext')
-              .switchWindow(result.value[0])
-        )
-      );
+  home.navigate()
+    .waitForElementVisible('@loginCta', 1000)
+    .click('@loginCta');
 
-      teams.waitForElementVisible('@teamPageContent', 7000);
-    }
+  api.pause(1000)
+    .window_handles((result) =>
+      api.switchWindow(result.value[1], () =>
+        api.waitForElementVisible('body', 1000)
+          .waitForElementVisible('#identifierId', 1000)
+          .setValue('#identifierId', email)
+          .click('#identifierNext')
+          .pause(1000)
+          .waitForElementVisible('input[type="password"]', 5000)
+          .setValue('input[type="password"]', password)
+          .click('#passwordNext')
+          .switchWindow(result.value[0])
+    )
+  );
 
-    return client;
-  }
+  teams.waitForElementVisible('@teamPageContent', 5000, () => self.emit('complete'));
+
+  return self;
+};
+
+module.exports = Login;
