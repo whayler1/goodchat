@@ -29,40 +29,13 @@ const answer3Value = _.repeat('abcd ef gh', 501);
 const answer4Value = 'This is Answer four';
 const answer5Value = 'This is Answer five';
 
-const login = (client, email, password) => {
-  const home = client.page.home();
-  const teams = client.page.teams();
-
-  home.navigate()
-    .waitForElementVisible('@loginCta', 1000)
-    .click('@loginCta');
-
-  client.pause(1000);
-  client.window_handles(function(result) {
-    var handle = result.value[1];
-    client.switchWindow(handle, function() {
-      client.waitForElementVisible('body', 1000)
-        .waitForElementVisible('#identifierId', 1000)
-        .setValue('#identifierId', email)
-        .click('#identifierNext')
-        .pause(1000)
-        .waitForElementVisible('input[type="password"]', 5000)
-        .setValue('input[type="password"]', password)
-        .click('#passwordNext')
-        .switchWindow(result.value[0]);
-    });
-  });
-
-  teams.waitForElementVisible('@teamPageContent', 7000);
-}
-
 module.exports = {
   'Create a team and invite someone': client => {
     const teams = client.page.teams();
     const team = client.page.team();
     const teamInvite = client.page.teamInvite();
 
-    login(client, TEST_EMAIL, TEST_PASSWORD);
+    client.login(TEST_EMAIL, TEST_PASSWORD);
 
     teams.click('@createTeamBtn');
 
@@ -98,31 +71,23 @@ module.exports = {
     client.waitForElementVisible('#navbar-hamburger', 1000)
       .click('#navbar-hamburger')
       .waitForElementVisible('#btn-logout', 1000)
-      .click('#btn-logout');
-
-    client.end();
+      .click('#btn-logout')
+      .end();
   },
 
   'Join a team': client => {
-    login(client, INVITEE_EMAIL, INVITEE_PASSWORD);
-
-    client.url(`http://localhost:3000/#/invites/accept/${inviteId}`);
-    client.url(function (urltest) {
-      console.log("URL is " + urltest.value);
-    });
-    client.waitForElementVisible('#btn-join-team', 1000)
+    client.login(INVITEE_EMAIL, INVITEE_PASSWORD)
+      .url(`http://localhost:3000/#/invites/accept/${inviteId}`)
+      .waitForElementVisible('#btn-join-team', 1000)
       .click('#btn-join-team')
       .waitForElementVisible('#main-team', 3000)
-
-    client.end();
+      .end();
   },
 
   'Start a meeting as an admin': client => {
-    login(client, TEST_EMAIL, TEST_PASSWORD);
-
-    client.url(`http://localhost:3000/#/teams/${teamId}`);
-
-    client.waitForElementVisible('#team-member-list', 1000)
+    client.login(TEST_EMAIL, TEST_PASSWORD)
+      .url(`http://localhost:3000/#/teams/${teamId}`)
+      .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
@@ -152,20 +117,14 @@ module.exports = {
       .click('.team-markdown-note')
       .waitForElementVisible('textarea[name="note"]', 1000)
       // JW: Need to pause to allow value to sumbit
-      .pause(1500);
-
-    client.end();
+      .pause(1500)
+      .end();
   },
 
   'Fill out meeting answers': client => {
-    login(client, INVITEE_EMAIL, INVITEE_PASSWORD);
-
-    client.url(`http://localhost:3000/#/teams/${teamId}`);
-    client.url(function (urltest) {
-      console.log("URL is " + urltest.value);
-    });
-
-    client.waitForElementVisible('#team-member-list', 1000)
+    client.login(INVITEE_EMAIL, INVITEE_PASSWORD)
+      .url(`http://localhost:3000/#/teams/${teamId}`)
+      .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
       .waitForElementVisible('#answer1', 1000)
       .assert.containsText('#question1 >p', question1Value)
@@ -187,15 +146,13 @@ module.exports = {
       .assert.containsText('.team-markdown-note >p', 'lorem ipsum')
       .click('#btn-answers-ready')
       // #JW: Need to pause to allow value to sumbit
-      .pause(1500);
-
-    client.end();
+      .pause(1500)
+      .end();
   },
 
   'Complete Meeting': client => {
-    login(client, TEST_EMAIL, TEST_PASSWORD);
-
-    client.url(`http://localhost:3000/#/teams/${teamId}`)
+    client.login(TEST_EMAIL, TEST_PASSWORD)
+      .url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
       .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
@@ -208,9 +165,8 @@ module.exports = {
   },
 
   'Delete team': client => {
-    login(client, TEST_EMAIL, TEST_PASSWORD);
-
-    client.url(`http://localhost:3000/#/teams/${teamId}`)
+    client.login(TEST_EMAIL, TEST_PASSWORD)
+      .url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
       .waitForElementVisible('#answer1', 1000)

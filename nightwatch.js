@@ -1,4 +1,4 @@
-{
+module.exports = {
   "src_folders" : ["./test/e2e"],
   "output_folder" : "./test/e2e/reports",
   "custom_commands_path" : "./test/e2e/commands",
