@@ -113,6 +113,39 @@ textarea {
   padding: @half-gutter @gutter @gutter * 3;
 }
 
+.aside {
+  position: relative;
+  padding: @half-gutter @gutter;
+}
+
+.page-row {
+
+  @media(min-width: @tablet-width) {
+    display: table-row;
+  }
+}
+
+.page-layout {
+
+  @media(min-width: @tablet-width) {
+    display: table;
+
+    .header {
+      display: table-cell;
+      column-span: all;
+      padding: @half-gutter @gutter;
+    }
+
+    .aside {
+      display: table-cell;
+      width: 250px;
+    }
+    .main {
+      display: table-cell;
+    }
+  }
+}
+
 .container {
   max-width: @netbook-width;
   margin: 0 auto;
