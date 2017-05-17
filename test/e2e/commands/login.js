@@ -20,18 +20,17 @@ Login.prototype.command = function(email, password) {
     .window_handles((result) =>
       api.switchWindow(result.value[1], () =>
         api.waitForElementVisible('body', 1000)
-          .waitForElementVisible('#identifierId', 1000)
+          .waitForElementVisible('#identifierId', 10000)
           .setValue('#identifierId', email)
           .click('#identifierNext')
-          .pause(1000)
-          .waitForElementVisible('input[type="password"]', 5000)
+          .waitForElementVisible('input[type="password"]', 10000)
           .setValue('input[type="password"]', password)
           .click('#passwordNext')
           .switchWindow(result.value[0])
     )
   );
 
-  teams.waitForElementVisible('@teamPageContent', 5000, () => self.emit('complete'));
+  teams.waitForElementVisible('@teamPageContent', 20000, () => self.emit('complete'));
 
   return self;
 };

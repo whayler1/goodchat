@@ -85,6 +85,13 @@ module.exports = {
   },
 
   'Start a meeting as an admin': client => {
+    const meetings = client.page.meetings();
+
+    const todos = [
+      'foo bar',
+      'abc 123 efg 987'
+    ];
+
     client.login(TEST_EMAIL, TEST_PASSWORD)
       .url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
@@ -92,12 +99,29 @@ module.exports = {
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
       .waitForElementVisible('#question1', 1000)
+      // JW: Make sure questions are original values on load
       .assert.value("#question1", question1originalValue)
       .assert.value("#question2", question2originalValue)
       .assert.value("#question3", question3originalValue)
       .assert.value("#question4", question4originalValue)
-      .assert.value("#question5", question5originalValue)
-      .setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
+      .assert.value("#question5", question5originalValue);
+
+    meetings.setValue('@newTodoInput', todos[0])
+      .click('@newTodoAddBtn')
+      .setValue('@newTodoInput', todos[1])
+      .click('@newTodoAddBtn');
+
+    client.elements('css selector', '.team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
+        console.log('listItems', listItems);
+        listItems.value.forEach((listItem, index) => {
+          console.log('listItem:', listItem.ELEMENT);
+          client.elementIdText(listItem.ELEMENT, text => {
+            console.log('-> -> text:', text)});
+            client.assert.equal(text.value, todos[index]);
+        });
+      });
+
+    client.setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
       .clearValue('#question1')
       .setValue('#question1', question1Value)
       .clearValue('#question2')

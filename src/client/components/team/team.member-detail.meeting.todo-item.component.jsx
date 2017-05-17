@@ -71,13 +71,14 @@ export default class TeamMemberDetailToDo extends Component {
   onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onChangeUpdate);
 
   render() {
-    const { id } = this.props;
+    const { id, meetingId } = this.props;
     const { text, isEdit, isChecked, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
-    const name = `todo-${id}`;
-    const checkboxName = `todo-checkbox-${id}`;
+    const idStr = id ? id : meetingId + '-new';
+    const name = `todo-${idStr}`;
+    const checkboxName = `todo-checkbox-${idStr}`;
 
     return (
       <form onSubmit={onSubmit} className={`meeting-todo-form clearfix ${ id ? '' : 'meeting-todo-form-add' }`}>
@@ -97,7 +98,7 @@ export default class TeamMemberDetailToDo extends Component {
         <ReactMarkdown
           className="team-markdown meeting-todo-form-text"
           source={text}
-          containerProps={{ id: `name`, onClick: toggleIsEdit }}
+          containerProps={{ id: name, onClick: toggleIsEdit }}
           escapeHtml={true}
         />
         }
