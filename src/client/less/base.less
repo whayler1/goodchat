@@ -118,6 +118,30 @@ textarea {
   padding: @half-gutter @gutter;
 }
 
+.page-header {
+  position: relative;
+  padding: 0 @gutter @half-gutter;
+  background: white;
+  border-bottom: 1px solid @bluegrey-50;
+  z-index: 15;
+  transform: translateY(-1px);
+}
+
+.page-header-back-link {
+  position: absolute;
+  top: @half-gutter;
+  left: @gutter;
+  color: @header-color;
+
+  &:hover,
+  &:focus {
+    color: @header-color-hover;
+  }
+  &:active {
+    color: @header-color-active;
+  }
+}
+
 .page-row {
 
   @media(min-width: @tablet-width) {
@@ -129,12 +153,7 @@ textarea {
 
   @media(min-width: @tablet-width) {
     display: table;
-
-    .header {
-      display: table-cell;
-      column-span: all;
-      padding: @half-gutter @gutter;
-    }
+    width: 100%;
 
     .aside {
       display: table-cell;
