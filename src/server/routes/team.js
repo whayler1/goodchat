@@ -7,6 +7,9 @@ const uuid = require('node-uuid');
 const membershipHelpers = require('../membership/_helpers');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
+const User = require('../models/user')
+const Team = require('../models/team')
+const Membership = require('../models/membership')
 
 const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => {
   // create reusable transporter object using the default SMTP transport
@@ -273,30 +276,52 @@ router.get('/team', authHelpers.loginRequired, (req, res, next) => {
 router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
   const userId = req.user.id;
   const { id } = req.params;
-  const { name } = req.body;
 
-  knex('memberships').where({
-    user_id: userId,
-    team_id: id
-  })
-  .first()
-  .then(membership => {
-    if (!membership) {
-      res.status(403).json({msg: 'not-a-member'});
-    } else {
-      knex('memberships').where({ user_id: userId, team_id: id })
-      .join('teams', {
-        'memberships.team_id': 'teams.id'
-      })
-      .first()
-      .then(team => {
-        console.log('\n\nteam:', team);
-        res.json({ team });
-      })
-      .catch(err => res.sendStatus(500));
-    }
-  })
-  .catch(err => res.sendStatus(500));
+  Membership.where({user_id: userId, team_id: id})
+    .fetch({withRelated: ['team']})
+    .then(membership => {
+      if (!membership) {
+        res.status(403).json({msg: 'not-a-member'});
+      } else {
+        res.json({ membership })
+        // Team.where({id: id}).fetch()
+        //   .then(team => {
+        //     team.attributes.is_owner = membership.attributes.is_owner
+        //     team.attributes.is_admin = membership.attributes.is_admin
+        //     console.log("teamz");
+        //     console.log(team);
+        //     res.json({ team })
+        //   })
+        //   .catch(err => res.sendStatus(500));
+      }
+    })
+    .catch(err => {
+      console.log("pancake");
+      console.log(err);
+      res.sendStatus(500)
+    });
+  // knex('memberships').where({
+  //   user_id: userId,
+  //   team_id: id
+  // })
+  // .first()
+  // .then(membership => {
+  //   if (!membership) {
+  //     res.status(403).json({msg: 'not-a-member'});
+  //   } else {
+  //     knex('memberships').where({ user_id: userId, team_id: id })
+  //     .join('teams', {
+  //       'memberships.team_id': 'teams.id'
+  //     })
+  //     .first()
+  //     .then(team => {
+  //       console.log('\n\nteam:', team);
+  //       res.json({ team });
+  //     })
+  //     .catch(err => res.sendStatus(500));
+  //   }
+  // })
+  // .catch(err => res.sendStatus(500));
 });
 
 router.get('/team/:team_id/unauth', (req, res) => {
