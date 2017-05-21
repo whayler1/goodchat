@@ -5,7 +5,7 @@ const membershipRequired = (req, res, next) => {
   const team_id = req.params.id || req.params.team_id
   const { id } = req.user;
 
-  return Membership.where({ team_id, user_id: id }).fetch({withRelated: ['team']})
+  return new Membership({ 'team_id': team_id, 'user_id': id }).fetch({withRelated: ['team']})
   .then(membership => {
     if (membership) {
       req.membership = membership

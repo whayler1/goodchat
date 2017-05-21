@@ -276,9 +276,17 @@ router.get('/team', authHelpers.loginRequired, (req, res, next) => {
 router.get('/team/:id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res, next) => {
   const membership = req.membership
   const team = membership.related('team')
-  
+
   if (membership && team) {
-    Object.assign(team.attributes, membership.attributes)
+    const membershipAttrs = membership.attributes
+    const assignAttrs = {
+      team_id: membershipAttrs.team_id,
+      user_id: membershipAttrs.user_id,
+      is_admin: membershipAttrs.is_admin,
+      is_owner: membershipAttrs.is_owner
+    }
+
+    Object.assign(team.attributes, assignAttrs)
     res.json({ team })
   } else {
     res.sendStatus(500);
