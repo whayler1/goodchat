@@ -6,7 +6,8 @@ import superagent from 'superagent';
 import _ from 'lodash';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
-import { updateTeamMembers, createMeeting, createTodo, updateTodo, deleteTodo } from '../team/team.dux.js';
+import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
+import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -28,7 +29,10 @@ class TeamMemberDetail extends Component {
     imageUrl: PropTypes.string.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     createMeeting: PropTypes.func.isRequired,
-    todos: PropTypes.array.isRequired
+    todos: PropTypes.array.isRequired,
+    createTodo: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired,
   }
 
   state = {
@@ -128,7 +132,7 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
-    const { team, meetings, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
+    const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
       question1,
@@ -151,15 +155,18 @@ class TeamMemberDetail extends Component {
         <div className="page-layout gutter-top">
           <div className="page-row">
             <aside className="aside aside-team-meeting">
-              <section>
+              {meetings.length && <section>
                 <h3>To-do's</h3>
                 <TeamMemberDetailTodoList
+                  teamId={team.id}
+                  meetingId={meetings[0].id}
+                  meetingGroupId={meetingGroup.id}
                   todos={todos}
                   createTodo={createTodo}
                   updateTodo={updateTodo}
                   deleteTodo={deleteTodo}
                 />
-              </section>
+              </section>}
             </aside>
             <main className="main main-team-meeting" role="main">
               <section className="card">
@@ -187,6 +194,7 @@ class TeamMemberDetail extends Component {
                         name="newMeetingDateTime"
                         value={newMeetingDateTime}
                         onChange={this.onChange}
+                        autoFocus
                       />
                       {newMeetingDateTimeError &&
                       <p className="input-error-msg">
