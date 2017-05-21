@@ -6,11 +6,12 @@ import superagent from 'superagent';
 import _ from 'lodash';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
-import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
+import { updateTeamMembers, createMeeting, createTodo, updateTodo, deleteTodo } from '../team/team.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
+import TeamMemberDetailTodoList from './team.member-detail.todo-list.component.jsx';
 import Helmet from 'react-helmet';
 
 class TeamMemberDetail extends Component {
@@ -127,7 +128,7 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
-    const { team, meetings, imageUrl, history, todos } = this.props;
+    const { team, meetings, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
       question1,
@@ -152,7 +153,12 @@ class TeamMemberDetail extends Component {
             <aside className="aside aside-team-meeting">
               <section>
                 <h3>To-do's</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <TeamMemberDetailTodoList
+                  todos={todos}
+                  createTodo={createTodo}
+                  updateTodo={updateTodo}
+                  deleteTodo={deleteTodo}
+                />
               </section>
             </aside>
             <main className="main main-team-meeting" role="main">
@@ -291,6 +297,9 @@ export default connect(
   {
     getMeetings,
     updateTeamMembers,
-    createMeeting
+    createMeeting,
+    createTodo,
+    updateTodo,
+    deleteTodo
   }
 )(TeamMemberDetail);
