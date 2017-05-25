@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
-import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
+import { createTodo, updateTodo, updateTodoImmediately, deleteTodo } from '../meeting/meeting.dux.js';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -133,7 +133,7 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
-    const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
+    const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, updateTodoImmediately, deleteTodo } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
       question1,
@@ -168,6 +168,7 @@ class TeamMemberDetail extends Component {
                       todos={todos}
                       createTodo={createTodo}
                       updateTodo={updateTodo}
+                      updateTodoImmediately={updateTodoImmediately}
                       deleteTodo={deleteTodo}
                     />
                   </section>
@@ -315,6 +316,7 @@ export default connect(
     createMeeting,
     createTodo,
     updateTodo,
+    updateTodoImmediately,
     deleteTodo
   }
 )(TeamMemberDetail);

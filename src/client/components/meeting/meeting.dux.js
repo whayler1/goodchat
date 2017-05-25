@@ -12,6 +12,7 @@ const UPDATE_MEETING = 'meeting/update-meeting';
 const DELETE_MEETING = 'meeting/delete-meeting';
 const ADD_TODO = 'meeting/add-todo';
 const UPDATE_TODO = 'meeting/update-todo';
+const UPDATE_TODO_IMMEDIATELY = 'meeting/update-todo-immediately';
 const DELETE_TODO = 'meeting/delete-todo';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
@@ -94,7 +95,13 @@ export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch 
     }
   }));
 
-export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) =>
+export const updateTodoImmediately = (todo_id, options) => ({
+  type: UPDATE_TODO_IMMEDIATELY,
+  todo_id,
+  options
+});
+
+export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) => {
   superagent.put(`todos/${todo_id}`)
   .send(options)
   .end((err, res) => {
@@ -107,7 +114,7 @@ export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve
       });
       resolve(res.body);
     }
-  }));
+  })});
 
 export const deleteTodo = (todo_id) => dispatch => new Promise((resolve, reject) =>
   superagent.delete(`todos/${todo_id}`)
@@ -144,6 +151,20 @@ export default function reducer(state = defaultState, action) {
       const todos = [
         ...state.todos,
         action.todo
+      ];
+      return {
+        ...state,
+        todos
+      }
+    }
+    case UPDATE_TODO_IMMEDIATELY: {
+      console.log('%cupdate todo immediately', 'background:aqua', action.options);
+      const index = state.todos.findIndex(todo => todo.id === action.todo_id);
+      const todo = Object.assign({}, state.todos[index], action.options);
+      const todos = [
+        ...state.todos.slice(0, index),
+        todo,
+        ...state.todos.slice(index + 1)
       ];
       return {
         ...state,

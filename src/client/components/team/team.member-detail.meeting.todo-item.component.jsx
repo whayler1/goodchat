@@ -12,6 +12,7 @@ export default class TeamMemberDetailToDo extends Component {
     meetingId: PropTypes.string,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
+    updateTodoImmediately: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     text: PropTypes.string
   };
@@ -23,10 +24,15 @@ export default class TeamMemberDetailToDo extends Component {
   };
 
   onChangeUpdate = _.debounce(() =>
-    this.props.updateTodo(this.props.id, {
-      text: this.state.text,
-      is_done: this.state.isChecked
-    }).then(
+    this.props.updateTodo(this.props.id, { text: this.state.text })
+    .then(
+      () => this.setState({ isError: false }),
+      () => this.setState({ isError: true })
+    ), 750);
+
+  onCheckboxChangeUpdate = _.debounce(() =>
+    this.props.updateTodo(this.props.id, { is_done: this.state.isChecked })
+    .then(
       () => this.setState({ isError: false }),
       () => this.setState({ isError: true })
     ), 750);
@@ -68,14 +74,15 @@ export default class TeamMemberDetailToDo extends Component {
     }
   };
 
-  onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onChangeUpdate);
+  onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onCheckboxChangeUpdate);
 
-  componentWillReceiveProps(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
     if (!this.state.isEdit) {
       if (nextProps.text !== this.state.text) {
         console.log('text changed', nextProps.text);
         this.setState({ text: nextProps.text });
-      } else if (nextProps.isDone !== this.state.isChecked) {
+      }
+      if (nextProps.isDone !== this.state.isChecked) {
         console.log('check changed', nextProps.text);
         this.setState({ isChecked: nextProps.isDone });
       }
@@ -92,7 +99,7 @@ export default class TeamMemberDetailToDo extends Component {
     const checkboxName = `todo-checkbox-${id}`;
 
     return (
-      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix ${ id ? '' : 'meeting-todo-form-add' }`}>
+      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix${ id ? '' : ' meeting-todo-form-add' }${ isChecked ? ' meeting-todo-form-checked' : ''}`}>
         {id &&
         <label htmlFor={checkboxName} className="checkbox-label meeting-todo-form-checkbox">
           <input
@@ -119,7 +126,7 @@ export default class TeamMemberDetailToDo extends Component {
             maxLength={1000}
             minLength={1}
             onChange={onChange}
-            className={`form-control ${ (id || text.length > 0) ? '' : 'meeting-todo-form-control-add' }`}
+            className={`form-control ${ (id || (text && text.length > 0)) ? '' : 'meeting-todo-form-control-add' }`}
             id={name}
             onBlur={toggleIsEdit}
             name={name}
@@ -154,7 +161,7 @@ export default class TeamMemberDetailToDo extends Component {
           </li>
         </ul>
         }
-        {!id && text.length > 0 &&
+        {!id && (text && text.length > 0) &&
         <div className="half-gutter-top">
           <button
             type="submit"
