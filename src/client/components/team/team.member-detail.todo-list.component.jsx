@@ -15,25 +15,8 @@ export default class TeamMemberDetailTodoList extends Component {
     deleteTodo: PropTypes.func.isRequired
   }
 
-  state = {
-    todos: []
-  }
-
-  setOrderedTodos = todos => this.setState({
-    todos: _.orderBy(todos, 'created_at', 'desc')
-  })
-
-  componentWillMount() {
-    this.setOrderedTodos(this.props.todos);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    this.setOrderedTodos(nextProps.todos);
-  }
-
   render() {
-    const { teamId, meetingId, meetingGroupId, createTodo, updateTodo, deleteTodo } = this.props;
-    const { todos } = this.state;
+    const { teamId, meetingId, meetingGroupId, todos, createTodo, updateTodo, deleteTodo } = this.props;
 
     return (
       <ul className="team-member-todo-list">
@@ -47,7 +30,7 @@ export default class TeamMemberDetailTodoList extends Component {
             deleteTodo={deleteTodo}
           />
         </li>
-        {todos.map(todo => (
+        {_.orderBy(todos.filter(todo => !todo.is_done), 'created_at', 'desc').map(todo => (
           <li key={todo.id}>
             <TeamMemberDetailToDo
               id={todo.id}

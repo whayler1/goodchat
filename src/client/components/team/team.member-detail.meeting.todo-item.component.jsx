@@ -70,6 +70,18 @@ export default class TeamMemberDetailToDo extends Component {
 
   onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onChangeUpdate);
 
+  componentWillReceiveProps(nextProps, nextState) {
+    if (!this.state.isEdit) {
+      if (nextProps.text !== this.state.text) {
+        console.log('text changed', nextProps.text);
+        this.setState({ text: nextProps.text });
+      } else if (nextProps.isDone !== this.state.isChecked) {
+        console.log('check changed', nextProps.text);
+        this.setState({ isChecked: nextProps.isDone });
+      }
+    }
+  }
+
   render() {
     const { id } = this.props;
     const { text, isEdit, isChecked, isSubmitting, isDeleting } = this.state;

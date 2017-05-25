@@ -14,6 +14,7 @@ import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
 import TeamMemberDetailTodoList from './team.member-detail.todo-list.component.jsx';
 import Helmet from 'react-helmet';
+import { StickyContainer, Sticky } from 'react-sticky';
 
 class TeamMemberDetail extends Component {
   static propTypes = {
@@ -150,23 +151,29 @@ class TeamMemberDetail extends Component {
           <Link to={`teams/${team.id}`} className="page-header-back-link">
             <i className="material-icons">chevron_left</i><span>{team.name}</span>
           </Link>
-          <h1 className="vanity-font center strong-text">Meetings with {member.given_name} {member.family_name}</h1>
+          <h1 className="vanity-font center strong-text">Meetings with <span className="nowrap">{member.given_name} {member.family_name}</span></h1>
         </header>
         <div className="page-layout gutter-top">
           <div className="page-row">
             <aside className="aside aside-team-meeting">
-              {meetings.length && <section>
-                <h3>To-do's</h3>
-                <TeamMemberDetailTodoList
-                  teamId={team.id}
-                  meetingId={meetings[0].id}
-                  meetingGroupId={meetingGroup.id}
-                  todos={todos}
-                  createTodo={createTodo}
-                  updateTodo={updateTodo}
-                  deleteTodo={deleteTodo}
-                />
-              </section>}
+              {meetings.length &&
+              <StickyContainer className="aside-team-meeting-sticky-container">
+                <Sticky className="aside-team-meeting-sticky">
+                  <section>
+                    <h3>To-do's</h3>
+                    <TeamMemberDetailTodoList
+                      teamId={team.id}
+                      meetingId={meetings[0].id}
+                      meetingGroupId={meetingGroup.id}
+                      todos={todos}
+                      createTodo={createTodo}
+                      updateTodo={updateTodo}
+                      deleteTodo={deleteTodo}
+                    />
+                  </section>
+                </Sticky>
+              </StickyContainer>
+              }
             </aside>
             <main className="main main-team-meeting" role="main">
               <section className="card">

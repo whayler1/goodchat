@@ -868,3 +868,20 @@ p.main-team-set-questions-footnote {
   left: 0;
   top: 0;
 }
+
+.aside-team-meeting-sticky-container {
+  display: none;
+
+  @media(min-width: @tablet-width) {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.aside-team-meeting-sticky {
+  padding: @gutter 0 0 @gutter;
+}

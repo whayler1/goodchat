@@ -20,7 +20,10 @@ router.put('/todos/:todo_id', authHelpers.loginRequired, (req, res) => {
   knex('todos').where({ id: todo_id, user_id })
   .update(updateObj)
   .returning('*')
-  .then(todos => res.json({ todo: todos[0] }))
+  .then(todos => {
+    console.log('\n\ntodos:', todos);
+    res.json({ todo: todos[0] });
+  })
   .catch(() => res.status(500).json({ msg: 'error retrieving todo' }));
 });
 
