@@ -12,12 +12,11 @@ export default class TeamMemberDetailTodoList extends Component {
     todos: PropTypes.array.isRequired,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
-    updateTodoImmediately: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired
   }
 
   render() {
-    const { teamId, meetingId, meetingGroupId, todos, createTodo, updateTodo, updateTodoImmediately, deleteTodo } = this.props;
+    const { teamId, meetingId, meetingGroupId, todos, createTodo, updateTodo, deleteTodo } = this.props;
 
     return (
       <ul className="team-member-todo-list">
@@ -28,12 +27,11 @@ export default class TeamMemberDetailTodoList extends Component {
             meetingGroupId={meetingGroupId}
             createTodo={createTodo}
             updateTodo={updateTodo}
-            updateTodoImmediately={updateTodoImmediately}
             deleteTodo={deleteTodo}
           />
         </li>
         {_.orderBy(todos.filter(todo => !todo.is_done), 'created_at', 'desc').map(todo => (
-          <li key={`todo-list-${todo.id}`}>
+          <li key={todo.id}>
             <TeamMemberDetailToDo
               id={todo.id}
               isDone={todo.is_done}
@@ -41,7 +39,6 @@ export default class TeamMemberDetailTodoList extends Component {
               text={todo.text}
               createTodo={createTodo}
               updateTodo={updateTodo}
-              updateTodoImmediately={updateTodoImmediately}
               deleteTodo={deleteTodo}
             />
           </li>)

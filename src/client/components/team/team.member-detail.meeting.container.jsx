@@ -11,7 +11,7 @@ import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, updateTodoImmediately, deleteTodo } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
@@ -37,7 +37,6 @@ class TeamMemberDetailMeeting extends Component {
     todos: PropTypes.array,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
-    updateTodoImmediately: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired
   };
 
@@ -256,7 +255,7 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
-      createTodo, updateTodo, updateTodoImmediately, deleteTodo } = this.props;
+      createTodo, updateTodo, deleteTodo } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
@@ -420,7 +419,6 @@ class TeamMemberDetailMeeting extends Component {
                   text={todo.text}
                   createTodo={createTodo}
                   updateTodo={updateTodo}
-                  updateTodoImmediately={updateTodoImmediately}
                   deleteTodo={deleteTodo}
                 />
               </li>
@@ -432,7 +430,6 @@ class TeamMemberDetailMeeting extends Component {
                 meetingGroupId={meetingGroupId}
                 createTodo={createTodo}
                 updateTodo={updateTodo}
-                updateTodoImmediately={updateTodoImmediately}
                 deleteTodo={deleteTodo}
               />
             </li>
@@ -517,7 +514,6 @@ export default connect (
     logout,
     createTodo,
     updateTodo,
-    updateTodoImmediately,
     deleteTodo
   }
 )(TeamMemberDetailMeeting);

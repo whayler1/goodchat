@@ -12,7 +12,6 @@ export default class TeamMemberDetailToDo extends Component {
     meetingId: PropTypes.string,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
-    updateTodoImmediately: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     text: PropTypes.string
   };
@@ -75,19 +74,6 @@ export default class TeamMemberDetailToDo extends Component {
   };
 
   onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onCheckboxChangeUpdate);
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.state.isEdit) {
-      if (nextProps.text !== this.state.text) {
-        console.log('text changed', nextProps.text);
-        this.setState({ text: nextProps.text });
-      }
-      if (nextProps.isDone !== this.state.isChecked) {
-        console.log('check changed', nextProps.text);
-        this.setState({ isChecked: nextProps.isDone });
-      }
-    }
-  }
 
   render() {
     const { id } = this.props;
