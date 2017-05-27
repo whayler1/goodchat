@@ -11,33 +11,19 @@ export default class TeamMemberDetailToDo extends Component {
     meetingGroupId: PropTypes.string,
     meetingId: PropTypes.string,
     createTodo: PropTypes.func.isRequired,
-    updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    onCheckboxChange: PropTypes.func.isRequired,
+    onTextChange: PropTypes.func.isRequired,
     text: PropTypes.string
   };
 
   state = {
-    text: this.props.text || '',
-    isEdit: _.isNil(this.props.id),
-    isChecked: this.props.isDone
+    isEdit: _.isNil(this.props.id)
   };
 
-  onChangeUpdate = _.debounce(() =>
-    this.props.updateTodo(this.props.id, { text: this.state.text })
-    .then(
-      () => this.setState({ isError: false }),
-      () => this.setState({ isError: true })
-    ), 750);
+  onChange = e => this.props.onTextChange(this.props.id, e.target.value);
 
-  onCheckboxChangeUpdate = _.debounce(() =>
-    this.props.updateTodo(this.props.id, { is_done: this.state.isChecked })
-    .then(
-      () => this.setState({ isError: false }),
-      () => this.setState({ isError: true })
-    ), 750);
-
-  onChange = e => this.setState({ text: e.target.value }, () =>
-    _.isString(this.props.id) && this.onChangeUpdate());
+  onCheckboxChange = e => this.props.onCheckboxChange(this.props.id, e.target.checked);
 
   onSubmit = e => {
     e.preventDefault();
@@ -73,11 +59,9 @@ export default class TeamMemberDetailToDo extends Component {
     }
   };
 
-  onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onCheckboxChangeUpdate);
-
   render() {
-    const { id } = this.props;
-    const { text, isEdit, isChecked, isSubmitting, isDeleting } = this.state;
+    const { id, text, isDone } = this.props;
+    const { isEdit, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
@@ -85,17 +69,17 @@ export default class TeamMemberDetailToDo extends Component {
     const checkboxName = `todo-checkbox-${id}`;
 
     return (
-      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix${ id ? '' : ' meeting-todo-form-add' }${ isChecked ? ' meeting-todo-form-checked' : ''}`}>
+      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix${ id ? '' : ' meeting-todo-form-add' }${ isDone ? ' meeting-todo-form-checked' : ''}`}>
         {id &&
         <label htmlFor={checkboxName} className="checkbox-label meeting-todo-form-checkbox">
           <input
             type="checkbox"
             id={checkboxName}
             name={checkboxName}
-            checked={isChecked}
+            checked={isDone}
             onChange={this.onCheckboxChange}
           />
-          <i className="material-icons">{isChecked ? 'check_box' : 'check_box_outline_blank'}</i>
+          <i className="material-icons">{isDone ? 'check_box' : 'check_box_outline_blank'}</i>
         </label>
         }
         {(id && !isEdit) &&

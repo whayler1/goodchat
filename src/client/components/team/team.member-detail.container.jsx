@@ -32,7 +32,7 @@ class TeamMemberDetail extends Component {
     createMeeting: PropTypes.func.isRequired,
     todos: PropTypes.array.isRequired,
     createTodo: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired,
+    updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
   }
 
@@ -124,12 +124,23 @@ class TeamMemberDetail extends Component {
 
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
 
+  onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone });
+
+  onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text });
+
   componentWillMount = () => {
-    const { meetingGroup, userId, members } = this.props;
+    const { meetingGroup, userId, members, todos } = this.props;
     const memberId = meetingGroup.memberships.find(membership => membership.user_id !== userId).user_id;
     const member = members.find(member => member.id === memberId);
 
-    this.setState({ member });
+    const stateObj = { member };
+
+    todos.forEach(todo => {
+      stateObj[`todo-isdone-${todo.id}`] = todo.is_done;
+      stateObj[`todo-text-${todo.id}`] = todo.text;
+    });
+
+    this.setState(stateObj);
   };
 
   render = () => {
@@ -143,6 +154,7 @@ class TeamMemberDetail extends Component {
       question5,
     } = team;
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
+    const todoStates = _.pick(this.state, Object.keys(this.state).filter(key => /todo/.test(key)));
 
     return (
       <div>
@@ -167,8 +179,10 @@ class TeamMemberDetail extends Component {
                       meetingGroupId={meetingGroup.id}
                       todos={todos}
                       createTodo={createTodo}
-                      updateTodo={updateTodo}
                       deleteTodo={deleteTodo}
+                      todoStates={todoStates}
+                      onTodoCheckboxChange={this.onTodoCheckboxChange}
+                      onTodoTextChange={this.onTodoCheckboxChange}
                     />
                   </section>
                 </Sticky>
@@ -272,6 +286,9 @@ class TeamMemberDetail extends Component {
                       memberImageUrl={member.picture}
                       memberId={member.id}
                       history={history}
+                      onTodoCheckboxChange={this.onTodoCheckboxChange}
+                      onTodoTextChange={this.onTodoTextChange}
+                      todoStates={todoStates}
                     />
                   </li>
                 </ul>}
@@ -287,6 +304,9 @@ class TeamMemberDetail extends Component {
                 memberImageUrl={member.picture}
                 memberId={member.id}
                 history={history}
+                onTodoCheckboxChange={this.onTodoCheckboxChange}
+                onTodoTextChange={this.onTodoTextChange}
+                todoStates={todoStates}
               />
               ))}
             </main>

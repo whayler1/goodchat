@@ -11,12 +11,14 @@ export default class TeamMemberDetailTodoList extends Component {
     meetingGroupId: PropTypes.string.isRequired,
     todos: PropTypes.array.isRequired,
     createTodo: PropTypes.func.isRequired,
-    updateTodo: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired
+    deleteTodo: PropTypes.func.isRequired,
+    todoStates: PropTypes.object.isRequired,
+    onTodoCheckboxChange: PropTypes.func.isRequired,
+    onTodoTextChange: PropTypes.func.isRequired,
   }
 
   render() {
-    const { teamId, meetingId, meetingGroupId, todos, createTodo, updateTodo, deleteTodo } = this.props;
+    const { teamId, meetingId, meetingGroupId, todos, createTodo, deleteTodo, todoStates, onTodoTextChange, onTodoCheckboxChange } = this.props;
 
     return (
       <ul className="team-member-todo-list">
@@ -26,7 +28,6 @@ export default class TeamMemberDetailTodoList extends Component {
             meetingId={meetingId}
             meetingGroupId={meetingGroupId}
             createTodo={createTodo}
-            updateTodo={updateTodo}
             deleteTodo={deleteTodo}
           />
         </li>
@@ -34,12 +35,13 @@ export default class TeamMemberDetailTodoList extends Component {
           <li key={todo.id}>
             <TeamMemberDetailToDo
               id={todo.id}
-              isDone={todo.is_done}
+              isDone={todoStates[`todo-isdone-${todo.id}`]}
               teamId={todo.team_id}
-              text={todo.text}
+              text={todoStates[`todo-text-${todo.id}`]}
               createTodo={createTodo}
-              updateTodo={updateTodo}
               deleteTodo={deleteTodo}
+              onTextChange={onTodoTextChange}
+              onCheckboxChange={onTodoCheckboxChange}
             />
           </li>)
         )}
