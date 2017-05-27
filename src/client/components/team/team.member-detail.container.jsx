@@ -124,9 +124,25 @@ class TeamMemberDetail extends Component {
 
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
 
-  onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone });
+  updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options), 750);
 
-  onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text });
+  onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone }, () => this.updateTodo(todoId, { is_done: isDone }));
+
+  onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text }, () => this.updateTodo(todoId, { text }));
+
+  componentWillRecieveProps = (nextProps) => {
+    const stateObj = {};
+
+    nextProps.todos.forEach(todo => {
+      if (!(`todo-text-${todo.id}` in this.state) && !(`todo-isdone-${todo.id}` in this.state)) {
+        Object.assign(stateObj, {
+          [`todo-text-${todo.id}`]: todo.text,
+          [`todo-isdone-${todo.id}`]: todo.is_done
+        });
+      }
+    });
+    this.setState(stateObj);
+  }
 
   componentWillMount = () => {
     const { meetingGroup, userId, members, todos } = this.props;
@@ -182,7 +198,7 @@ class TeamMemberDetail extends Component {
                       deleteTodo={deleteTodo}
                       todoStates={todoStates}
                       onTodoCheckboxChange={this.onTodoCheckboxChange}
-                      onTodoTextChange={this.onTodoCheckboxChange}
+                      onTodoTextChange={this.onTodoTextChange}
                     />
                   </section>
                 </Sticky>
