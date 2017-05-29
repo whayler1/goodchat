@@ -1,4 +1,5 @@
 import superagent from 'superagent';
+import _ from 'lodash';
 
 const defaultState = {
   isLoggedIn: false,
@@ -22,24 +23,28 @@ export const setLoggedIn = idToken => (dispatch) => new Promise((resolve, reject
   .send({ idToken })
   .then(
     res => {
-      console.log('got it', res);
-      const { id, email, family_name, given_name, google_id, picture } = res.body;
-      dispatch({
-        type: SET_LOGGED_IN,
-        id,
-        email,
-        familyName: family_name,
-        givenName: given_name,
-        googleId: google_id,
-        imageUrl: picture
-      });
-      resolve();
-      analytics.identify(id, {
-        name: `${given_name} ${family_name}`,
-        firstName: given_name,
-        lastName: family_name,
-        email
-      });
+      if (!_.isNil(res.body) && !_.isNil(res.body.id)) {
+        const { id, email, family_name, given_name, google_id, picture } = res.body;
+        dispatch({
+          type: SET_LOGGED_IN,
+          id,
+          email,
+          familyName: family_name,
+          givenName: given_name,
+          googleId: google_id,
+          imageUrl: picture
+        });
+        resolve();
+        analytics.identify(id, {
+          name: `${given_name} ${family_name}`,
+          firstName: given_name,
+          lastName: family_name,
+          email
+        });
+      } else {
+        reject();
+        console.log('error logging in', res);
+      }
     },
     err => {
       reject();

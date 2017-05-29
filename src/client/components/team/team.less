@@ -268,6 +268,15 @@
   strong {
     color: @bluegrey-700;
   }
+
+  .meeting-todo-form-checked & {
+    text-decoration: line-through;
+    font-style: italic;
+    color: @bluegrey-200;
+    b,strong {
+      color: @bluegrey-200;
+    }
+  }
 }
 
 .team-markdown-note {
@@ -757,9 +766,11 @@ p.main-team-set-questions-footnote {
   position: relative;
   color: @bluegrey-400;
   font-size: 1.5rem;
-  text-align: center;
   margin: @gutter 0;
   z-index: 10;
+  max-width: @tablet-width;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .meeting-qa-foot {
@@ -868,4 +879,62 @@ p.main-team-set-questions-footnote {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.meeting-todo-form-checked {
+  .checkbox-label {
+    i {
+      color: @bluegrey-100;
+    }
+
+    &:hover,
+    &:focus {
+      i {
+        color: @link-color;
+      }
+    }
+    &:active {
+      i {
+        color: @link-color-active;
+      }
+    }
+  }
+}
+
+.aside-team-meeting-sticky-container {
+  display: none;
+
+  @media(min-width: @tablet-width) {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.aside-team-meeting-sticky {
+  padding: @gutter 0 0 @gutter;
+}
+
+.main-team-meeting {
+  &.main {
+    padding-left: @half-gutter;
+    padding-right: @half-gutter;
+
+    @media(min-width: @tablet-width) {
+      padding-left: @gutter;
+      padding-right: @gutter;
+    }
+  }
+
+  .card {
+    max-width: @tablet-width;
+    margin-left: auto;
+    margin-right: auto;
+    +.card {
+      margin-top: @gutter;
+    }
+  }
 }

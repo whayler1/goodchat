@@ -37,7 +37,10 @@ class TeamMemberDetailMeeting extends Component {
     todos: PropTypes.array,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired
+    deleteTodo: PropTypes.func.isRequired,
+    onTodoCheckboxChange: PropTypes.func.isRequired,
+    onTodoTextChange: PropTypes.func.isRequired,
+    todoStates: PropTypes.object.isRequired
   };
 
   state = {
@@ -255,7 +258,7 @@ class TeamMemberDetailMeeting extends Component {
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
-      createTodo, updateTodo, deleteTodo } = this.props;
+      createTodo, updateTodo, deleteTodo, onTodoTextChange, onTodoCheckboxChange, todoStates } = this.props;
     const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
@@ -274,7 +277,6 @@ class TeamMemberDetailMeeting extends Component {
 
     return (
       <section className={className ? className : ''}>
-
         {is_done &&
         <div className="meeting-header meeting-header-finished">
           <div className="meeting-header-lg-icon-wrapper">
@@ -412,14 +414,15 @@ class TeamMemberDetailMeeting extends Component {
               <li key={todo.id}>
                 <TeamMemberDetailToDo
                   id={todo.id}
-                  isDone={todo.is_done}
+                  isDone={todoStates[`todo-isdone-${todo.id}`]}
                   teamId={todo.team_id}
                   meetingId={meeting.id}
                   meetingGroupId={meetingGroupId}
-                  text={todo.text}
+                  text={todoStates[`todo-text-${todo.id}`]}
                   createTodo={createTodo}
-                  updateTodo={updateTodo}
                   deleteTodo={deleteTodo}
+                  onTextChange={onTodoTextChange}
+                  onCheckboxChange={onTodoCheckboxChange}
                 />
               </li>
             ))}
@@ -429,8 +432,9 @@ class TeamMemberDetailMeeting extends Component {
                 meetingId={meeting.id}
                 meetingGroupId={meetingGroupId}
                 createTodo={createTodo}
-                updateTodo={updateTodo}
                 deleteTodo={deleteTodo}
+                onTextChange={onTodoTextChange}
+                onCheckboxChange={onTodoCheckboxChange}
               />
             </li>
           </ul>

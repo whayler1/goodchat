@@ -8,31 +8,28 @@ export default class TeamMemberDetailToDo extends Component {
     id: PropTypes.string,
     isDone: PropTypes.boolean,
     teamId: PropTypes.string.isRequired,
-    meetingGroupId: PropTypes.string.isRequired,
-    meetingId: PropTypes.string.isRequired,
+    meetingGroupId: PropTypes.string,
+    meetingId: PropTypes.string,
     createTodo: PropTypes.func.isRequired,
-    updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    onCheckboxChange: PropTypes.func.isRequired,
+    onTextChange: PropTypes.func.isRequired,
     text: PropTypes.string
   };
 
   state = {
-    text: this.props.text || '',
-    isEdit: _.isNil(this.props.id),
-    isChecked: this.props.isDone
+    isEdit: _.isNil(this.props.id)
   };
 
-  onChangeUpdate = _.debounce(() =>
-    this.props.updateTodo(this.props.id, {
-      text: this.state.text,
-      is_done: this.state.isChecked
-    }).then(
-      () => this.setState({ isError: false }),
-      () => this.setState({ isError: true })
-    ), 750);
+  onChange = e => {
+    if (this.props.id) {
+      this.props.onTextChange(this.props.id, e.target.value);
+    } else {
+      this.setState({ text: e.target.value });
+    }
+  }
 
-  onChange = e => this.setState({ text: e.target.value }, () =>
-    _.isString(this.props.id) && this.onChangeUpdate());
+  onCheckboxChange = e => this.props.onCheckboxChange(this.props.id, e.target.checked);
 
   onSubmit = e => {
     e.preventDefault();
@@ -68,29 +65,37 @@ export default class TeamMemberDetailToDo extends Component {
     }
   };
 
-  onCheckboxChange = e => this.setState({ isChecked: e.target.checked }, this.onChangeUpdate);
+  componentWillMount() {
+    if (!this.props.id) {
+      this.setState({
+        text: ''
+      });
+    }
+  }
 
   render() {
-    const { id } = this.props;
-    const { text, isEdit, isChecked, isSubmitting, isDeleting } = this.state;
+    const { id, isDone } = this.props;
+    const { isEdit, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
     const name = `todo-${id}`;
     const checkboxName = `todo-checkbox-${id}`;
 
+    const text = id ? this.props.text : this.state.text;
+
     return (
-      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix ${ id ? '' : 'meeting-todo-form-add' }`}>
+      <form onSubmit={onSubmit} className={`meeting-todo-form clearfix${ id ? '' : ' meeting-todo-form-add' }${ isDone ? ' meeting-todo-form-checked' : ''}`}>
         {id &&
         <label htmlFor={checkboxName} className="checkbox-label meeting-todo-form-checkbox">
           <input
             type="checkbox"
             id={checkboxName}
             name={checkboxName}
-            checked={isChecked}
+            checked={isDone}
             onChange={this.onCheckboxChange}
           />
-          <i className="material-icons">{isChecked ? 'check_box' : 'check_box_outline_blank'}</i>
+          <i className="material-icons">{isDone ? 'check_box' : 'check_box_outline_blank'}</i>
         </label>
         }
         {(id && !isEdit) &&
@@ -107,7 +112,7 @@ export default class TeamMemberDetailToDo extends Component {
             maxLength={1000}
             minLength={1}
             onChange={onChange}
-            className={`form-control ${ (id || text.length > 0) ? '' : 'meeting-todo-form-control-add' }`}
+            className={`form-control ${ (id || (text && text.length > 0)) ? '' : 'meeting-todo-form-control-add' }`}
             id={name}
             onBlur={toggleIsEdit}
             name={name}
@@ -142,7 +147,7 @@ export default class TeamMemberDetailToDo extends Component {
           </li>
         </ul>
         }
-        {!id && text.length > 0 &&
+        {!id && (text && text.length > 0) &&
         <div className="half-gutter-top">
           <button
             type="submit"

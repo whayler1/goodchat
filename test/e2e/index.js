@@ -155,11 +155,11 @@ module.exports = {
       .url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
-      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .waitForElementVisible('.main-team-meeting', 1000)
       .click('#btn-complete-meeting')
-      .waitForElementNotPresent('.modal-container.modal-container-team-meeting', 1000)
+      .waitForElementNotPresent('.main-team-meeting', 1000)
       .click('#team-member-list > li > a')
-      .waitForElementVisible('.modal-container.modal-container-team-meeting', 1000)
+      .waitForElementVisible('.main-team-meeting', 1000)
       .assert.elementNotPresent('#btn-complete-meeting')
       .end();
   },
@@ -175,7 +175,7 @@ module.exports = {
       .assert.containsText('#answer3 >p', answer3Value.substr(0, 5000))
       .assert.containsText('#answer4 >p', answer4Value)
       .assert.containsText('#answer5 >p', answer5Value)
-      .click('.card-header-close')
+      .click('.page-header-back-link')
       .waitForElementVisible('#btn-main-team-more', 1000)
       .moveToElement('#btn-main-team-more', 10, 10, cb => console.log('moved to element', cb))
       .waitForElementVisible('#btn-delete-team', 1000)
