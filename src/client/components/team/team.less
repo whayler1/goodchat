@@ -919,6 +919,16 @@ p.main-team-set-questions-footnote {
 }
 
 .main-team-meeting {
+  &.main {
+    padding-left: @half-gutter;
+    padding-right: @half-gutter;
+
+    @media(min-width: @tablet-width) {
+      padding-left: @gutter;
+      padding-right: @gutter;
+    }
+  }
+
   .card {
     max-width: @tablet-width;
     margin-left: auto;

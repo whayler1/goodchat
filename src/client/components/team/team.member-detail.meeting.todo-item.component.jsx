@@ -21,7 +21,13 @@ export default class TeamMemberDetailToDo extends Component {
     isEdit: _.isNil(this.props.id)
   };
 
-  onChange = e => this.props.onTextChange(this.props.id, e.target.value);
+  onChange = e => {
+    if (this.props.id) {
+      this.props.onTextChange(this.props.id, e.target.value);
+    } else {
+      this.setState({ text: e.target.value });
+    }
+  }
 
   onCheckboxChange = e => this.props.onCheckboxChange(this.props.id, e.target.checked);
 
@@ -59,14 +65,24 @@ export default class TeamMemberDetailToDo extends Component {
     }
   };
 
+  componentWillMount() {
+    if (!this.props.id) {
+      this.setState({
+        text: ''
+      });
+    }
+  }
+
   render() {
-    const { id, text, isDone } = this.props;
+    const { id, isDone } = this.props;
     const { isEdit, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
     const placeholder = id ? '' : 'Add an item...';
     const name = `todo-${id}`;
     const checkboxName = `todo-checkbox-${id}`;
+
+    const text = id ? this.props.text : this.state.text;
 
     return (
       <form onSubmit={onSubmit} className={`meeting-todo-form clearfix${ id ? '' : ' meeting-todo-form-add' }${ isDone ? ' meeting-todo-form-checked' : ''}`}>

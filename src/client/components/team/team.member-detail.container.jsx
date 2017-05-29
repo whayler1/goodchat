@@ -130,18 +130,20 @@ class TeamMemberDetail extends Component {
 
   onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text }, () => this.updateTodo(todoId, { text }));
 
-  componentWillRecieveProps = (nextProps) => {
-    const stateObj = {};
+  componentWillUpdate = (nextProps) => {
+    if (nextProps.todos.length !== this.props.todos.length) {
+      const stateObj = {};
 
-    nextProps.todos.forEach(todo => {
-      if (!(`todo-text-${todo.id}` in this.state) && !(`todo-isdone-${todo.id}` in this.state)) {
-        Object.assign(stateObj, {
-          [`todo-text-${todo.id}`]: todo.text,
-          [`todo-isdone-${todo.id}`]: todo.is_done
-        });
-      }
-    });
-    this.setState(stateObj);
+      nextProps.todos.forEach(todo => {
+        if (!(`todo-text-${todo.id}` in this.state) && !(`todo-isdone-${todo.id}` in this.state)) {
+          Object.assign(stateObj, {
+            [`todo-text-${todo.id}`]: todo.text,
+            [`todo-isdone-${todo.id}`]: todo.is_done
+          });
+        }
+      });
+      this.setState(stateObj);
+    }
   }
 
   componentWillMount = () => {
@@ -181,10 +183,10 @@ class TeamMemberDetail extends Component {
           </Link>
           <h1 className="vanity-font center strong-text">Meetings with <span className="nowrap">{member.given_name} {member.family_name}</span></h1>
         </header>
-        <div className="page-layout gutter-top">
+        <div className="page-layout">
           <div className="page-row">
+            {meetings.length > 0 &&
             <aside className="aside aside-team-meeting">
-              {meetings.length &&
               <StickyContainer className="aside-team-meeting-sticky-container">
                 <Sticky className="aside-team-meeting-sticky">
                   <section>
@@ -203,8 +205,7 @@ class TeamMemberDetail extends Component {
                   </section>
                 </Sticky>
               </StickyContainer>
-              }
-            </aside>
+            </aside>}
             <main className="main main-team-meeting" role="main">
               <section className="card">
                 {canCreateNewMeeting &&
