@@ -98,7 +98,7 @@ module.exports = {
       .click('#team-member-list > li > a')
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
-      .waitForElementVisible('#question1', 1000)
+      .waitForElementVisible('#question1', 2000)
       // JW: Make sure questions are original values on load
       .assert.value("#question1", question1originalValue)
       .assert.value("#question2", question2originalValue)
