@@ -26,3 +26,10 @@ server forked from [node passport postgres](http://mherman.org/blog/2016/09/25/n
 1. Install the Heroku cli tools `brew install heroku`
 1. Deploy to Heroku - `git push heroku master`
 1. Run any required migrations - `heroku run knex migrate:latest`
+
+## Tests
+
+1. Install nightwatch globally `npm install -g nightwatch`
+1. Make sure dependancies are installed `npm i`
+1. Run executable `./node_modules/selenium-standalone/bin/selenium-standalone install`
+1. `nightwatch`
