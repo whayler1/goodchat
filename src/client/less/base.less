@@ -113,6 +113,69 @@ textarea {
   padding: @half-gutter @gutter @gutter * 3;
 }
 
+.aside {
+  position: relative;
+  padding: @half-gutter @gutter;
+}
+
+.page-header {
+  position: relative;
+  // padding: 0 @gutter @half-gutter;
+  // background: white;
+  // border-bottom: 1px solid @bluegrey-50;
+  // z-index: 15;
+  // transform: translateY(-1px);
+
+  h1 {
+    margin: @gutter 0 0;
+    line-height: 1.2em;
+  }
+}
+
+.page-header-back-link {
+  color: @header-color;
+
+  &:hover,
+  &:focus {
+    color: @header-color-hover;
+  }
+  &:active {
+    color: @header-color-active;
+  }
+
+  @media(min-width: @tablet-width) {
+    position: absolute;
+    top: @gutter * 1.5;
+    left: @gutter;
+  }
+}
+
+.page-row {
+
+  @media(min-width: @tablet-width) {
+    display: table-row;
+  }
+}
+
+.page-layout {
+
+  @media(min-width: @tablet-width) {
+    display: table;
+    width: 100%;
+    margin-top: @gutter;
+
+    .aside {
+      display: table-cell;
+      width: 250px;
+      vertical-align: top;
+    }
+    .main {
+      display: table-cell;
+      vertical-align: top;
+    }
+  }
+}
+
 .container {
   max-width: @netbook-width;
   margin: 0 auto;

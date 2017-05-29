@@ -11,6 +11,7 @@ const SET_MEETINGS = 'meeting/set-meetings';
 const UPDATE_MEETING = 'meeting/update-meeting';
 const DELETE_MEETING = 'meeting/delete-meeting';
 const ADD_TODO = 'meeting/add-todo';
+const UPDATE_TODO = 'meeting/update-todo';
 const DELETE_TODO = 'meeting/delete-todo';
 
 export const completeMeeting = meetingId => dispatch => new Promise((resolve, reject) => superagent.put(`meeting/${meetingId}`)
@@ -29,7 +30,6 @@ export const completeMeeting = meetingId => dispatch => new Promise((resolve, re
   }));
 
 export const getMeetings = (teamId, meetingGroupId) => dispatch => new Promise((resolve, reject) => {
-  console.log('getMeetings', teamId, '\n meetingGroupId', meetingGroupId);
   superagent.get(`team/${teamId}/meetings/${meetingGroupId}`)
     .end((err, res) => {
       if (err) {
@@ -82,7 +82,6 @@ export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch 
   superagent.post(`team/${teamId}/meeting/${meetingGroupId}/todo/${meetingId}`)
   .send({ text })
   .end((err, res) => {
-    console.log('createTodo res', res);
     dispatch({
       type: ADD_TODO,
       todo: res.body
@@ -95,16 +94,20 @@ export const createTodo = (teamId, meetingGroupId, meetingId, text) => dispatch 
     }
   }));
 
-export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) =>
+export const updateTodo = (todo_id, options) => dispatch => new Promise((resolve, reject) => {
   superagent.put(`todos/${todo_id}`)
   .send(options)
   .end((err, res) => {
     if (err) {
       reject(res);
     } else {
+      dispatch({
+        type: UPDATE_TODO,
+        todo: res.body.todo
+      });
       resolve(res.body);
     }
-  }));
+  })});
 
 export const deleteTodo = (todo_id) => dispatch => new Promise((resolve, reject) =>
   superagent.delete(`todos/${todo_id}`)
@@ -141,6 +144,18 @@ export default function reducer(state = defaultState, action) {
       const todos = [
         ...state.todos,
         action.todo
+      ];
+      return {
+        ...state,
+        todos
+      }
+    }
+    case UPDATE_TODO: {
+      const index = state.todos.findIndex(todo => todo.id === action.todo.id);
+      const todos = [
+        ...state.todos.slice(0, index),
+        action.todo,
+        ...state.todos.slice(index + 1)
       ];
       return {
         ...state,

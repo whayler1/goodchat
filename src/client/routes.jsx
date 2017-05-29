@@ -78,21 +78,24 @@ class Routes extends Component {
 
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
     const { teamId, meetingGroupId } = nextState.params;
-    const { getMeetings, setRedirect } = this.props;
+    const { getMeetings, setRedirect, getTeam, updateTeamMembers } = this.props;
 
-    getMeetings(teamId, meetingGroupId).then(
-      () => callback(),
-      err => {
-        if (err.status === 401) {
-          setRedirect(`/teams/${teamId}/meetings/${meetingGroupId}`);
-          replace('/');
-          callback();
-        } else {
-          replace('/teams');
-          callback();
-        }
+    const catcher = err => {
+      if (err.status === 401) {
+        setRedirect(`/teams/${teamId}/meetings/${meetingGroupId}`);
+        replace('/');
+        callback();
+      } else {
+        replace('/teams');
+        callback();
       }
-    );
+    }
+
+    const teamPromise = getTeam(teamId).catch(catcher);
+    const teamMembersPromise = updateTeamMembers(teamId).catch(catcher);
+    const meetingPromise = getMeetings(teamId, meetingGroupId).catch(catcher);
+
+    Promise.all([teamPromise, teamMembersPromise, meetingPromise]).then(() => callback());
   };
 
   onTeamErrorEnter = (nextState, replace, callback) => {
@@ -157,9 +160,9 @@ class Routes extends Component {
           <Route path="/teams" component={Teams} onEnter={this.onTeamsEnter}/>
           <Route path="/teams/:teamId" onEnter={this.onTeamEnter} component={Team}>
             <Route path="invite" component={TeamInvite} onEnter={this.onTeamInviteEnter}/>
-            <Route path="meetings/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
             <Route path="update-questions" component={TeamUpdateQuestions}/>
           </Route>
+          <Route path="/teams/:teamId/meetings/:meetingGroupId" onEnter={this.onTeamMemberDetailEnter} component={TeamMemberDetail}/>
           <Route path="/teams-error/:reason" onEnter={this.onTeamErrorEnter} component={TeamError}/>
           <Route path="/invites/accept/:inviteId" onEnter={this.onInviteAcceptEnter} component={InviteAccept}/>
           <Route path="/user" onEnter={this.onUserEnter} component={User}/>
