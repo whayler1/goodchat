@@ -74,7 +74,7 @@ export default class TeamMemberDetailToDo extends Component {
   }
 
   render() {
-    const { id, isDone } = this.props;
+    const { id, isDone, meetingId } = this.props;
     const { isEdit, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
