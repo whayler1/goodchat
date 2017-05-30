@@ -111,13 +111,21 @@ module.exports = {
       .setValue('@newTodoInput', todos[1])
       .click('@newTodoAddBtn');
 
-    client.elements('css selector', '.team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
-        console.log('listItems', listItems);
+    client.elements('css selector', '.main-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
         listItems.value.forEach((listItem, index) => {
-          console.log('listItem:', listItem.ELEMENT);
           client.elementIdText(listItem.ELEMENT, text => {
-            console.log('-> -> text:', text)});
             client.assert.equal(text.value, todos[index]);
+          });
+        });
+      });
+
+    const todosReverse = _.reverse(todos);
+
+    client.elements('css selector', '.aside-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
+        listItems.value.forEach((listItem, index) => {
+          client.elementIdText(listItem.ELEMENT, text => {
+            client.assert.equal(text.value, todosReverse[index]);
+          });
         });
       });
 

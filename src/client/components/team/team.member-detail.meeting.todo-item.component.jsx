@@ -6,6 +6,7 @@ import _ from 'lodash';
 export default class TeamMemberDetailToDo extends Component {
   static propTypes = {
     id: PropTypes.string,
+    idPrefix: PropTypes.string,
     isDone: PropTypes.boolean,
     teamId: PropTypes.string.isRequired,
     meetingGroupId: PropTypes.string,
@@ -74,14 +75,15 @@ export default class TeamMemberDetailToDo extends Component {
   }
 
   render() {
-    const { id, isDone, meetingId } = this.props;
+    const { id, idPrefix, isDone, meetingId } = this.props;
     const { isEdit, isSubmitting, isDeleting } = this.state;
     const { onSubmit, onChange, toggleIsEdit } = this;
 
+    const idPrefixStr = idPrefix ? idPrefix : '';
     const placeholder = id ? '' : 'Add an item...';
     const idStr = id ? id : meetingId + '-new';
-    const name = `todo-${idStr}`;
-    const checkboxName = `todo-checkbox-${idStr}`;
+    const name = `todo-${idPrefix}${idStr}`;
+    const checkboxName = `todo-checkbox-${idPrefix}${idStr}`;
 
     const text = id ? this.props.text : this.state.text;
 
