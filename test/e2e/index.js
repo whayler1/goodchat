@@ -119,15 +119,18 @@ module.exports = {
         });
       });
 
-    const todosReverse = _.reverse(todos);
-
-    client.elements('css selector', '.aside-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
-        listItems.value.forEach((listItem, index) => {
-          client.elementIdText(listItem.ELEMENT, text => {
-            client.assert.equal(text.value, todosReverse[index]);
-          });
-        });
-      });
+    // const todosReverse = [
+    //   'abc 123 efg 987',
+    //   'foo bar'
+    // ];
+    //
+    // client.elements('css selector', '.aside-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
+    //     listItems.value.forEach((listItem, index) => {
+    //       client.elementIdText(listItem.ELEMENT, text => {
+    //         client.assert.equal(text.value, todosReverse[index]);
+    //       });
+    //     });
+    //   });
 
     client.setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
       .clearValue('#question1')
