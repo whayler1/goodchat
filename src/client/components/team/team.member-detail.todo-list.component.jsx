@@ -25,6 +25,7 @@ export default class TeamMemberDetailTodoList extends Component {
         <li>
           <TeamMemberDetailToDo
             teamId={teamId}
+            idPrefix={'aside-'}
             meetingId={meetingId}
             meetingGroupId={meetingGroupId}
             createTodo={createTodo}
@@ -35,6 +36,7 @@ export default class TeamMemberDetailTodoList extends Component {
           <li key={todo.id}>
             <TeamMemberDetailToDo
               id={todo.id}
+              idPrefix={'aside-'}
               isDone={todoStates[`todo-isdone-${todo.id}`]}
               teamId={todo.team_id}
               text={todoStates[`todo-text-${todo.id}`]}

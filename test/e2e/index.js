@@ -85,19 +85,54 @@ module.exports = {
   },
 
   'Start a meeting as an admin': client => {
+    const meetings = client.page.meetings();
+
+    const todos = [
+      'foo bar',
+      'abc 123 efg 987'
+    ];
+
     client.login(TEST_EMAIL, TEST_PASSWORD)
       .url(`http://localhost:3000/#/teams/${teamId}`)
       .waitForElementVisible('#team-member-list', 1000)
       .click('#team-member-list > li > a')
       .waitForElementVisible('#btn-start-meeting-now', 1000)
       .click('#btn-start-meeting-now')
-      .waitForElementVisible('#question1', 1000)
+      .waitForElementVisible('#question1', 2000)
+      // JW: Make sure questions are original values on load
       .assert.value("#question1", question1originalValue)
       .assert.value("#question2", question2originalValue)
       .assert.value("#question3", question3originalValue)
       .assert.value("#question4", question4originalValue)
-      .assert.value("#question5", question5originalValue)
-      .setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
+      .assert.value("#question5", question5originalValue);
+
+    meetings.setValue('@newTodoInput', todos[0])
+      .click('@newTodoAddBtn')
+      .setValue('@newTodoInput', todos[1])
+      .click('@newTodoAddBtn');
+
+    client.elements('css selector', '.main-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
+        listItems.value.forEach((listItem, index) => {
+          client.elementIdText(listItem.ELEMENT, text => {
+            client.assert.equal(text.value, todos[index]);
+          });
+        });
+      });
+
+    // const todosReverse = [
+    //   'abc 123 efg 987',
+    //   'foo bar'
+    // ];
+    //
+    // client.elements('css selector', '.aside-team-meeting .team-member-todo-list > li > .meeting-todo-form > .meeting-todo-form-text > p', listItems => {
+    //     listItems.value.forEach((listItem, index) => {
+    //       client.elementIdText(listItem.ELEMENT, text => {
+    //         client.assert.equal(text.value, todosReverse[index]);
+    //       });
+    //     });
+    //   });
+
+    client.setValue('textarea[name="note"]', 'foo `bar_baz`, _italic_ **strong n bold**')
       .clearValue('#question1')
       .setValue('#question1', question1Value)
       .clearValue('#question2')

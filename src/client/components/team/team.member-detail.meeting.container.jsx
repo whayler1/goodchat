@@ -414,6 +414,7 @@ class TeamMemberDetailMeeting extends Component {
               <li key={todo.id}>
                 <TeamMemberDetailToDo
                   id={todo.id}
+                  idPrefix={'card-'}
                   isDone={todoStates[`todo-isdone-${todo.id}`]}
                   teamId={todo.team_id}
                   meetingId={meeting.id}
@@ -428,6 +429,7 @@ class TeamMemberDetailMeeting extends Component {
             ))}
             <li>
               <TeamMemberDetailToDo
+                idPrefix={'card-'}
                 teamId={teamId}
                 meetingId={meeting.id}
                 meetingGroupId={meetingGroupId}
