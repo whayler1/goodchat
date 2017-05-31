@@ -44,18 +44,31 @@ export default class TeamMemberDetailToDo extends Component {
           text: '',
           isError: false,
           isSubmitting: false
-        }),
+        }, () => window.analytics.track('create-todo', {
+          teamId,
+          meetingGroupId,
+          meetingId,
+          text
+        })),
         () => this.setState({
           isError: true,
           isSubmitting: false
-        })
+        }, () => window.analytics.track('create-todo-error', {
+          teamId,
+          meetingGroupId,
+          meetingId,
+          text
+        }))
       );
     });
     return false;
   };
 
   onDeleteClick = () => this.setState({ isDeleting: true }, () =>
-    this.props.deleteTodo(this.props.id));
+    this.props.deleteTodo(this.props.id).then(
+      () => window.analytics.track('delete-todo'),
+      () => window.analytics.track('delete-todo-error')
+    ));
 
   toggleIsEdit = () => {
     // JW: need to timeout so delete can be clicked

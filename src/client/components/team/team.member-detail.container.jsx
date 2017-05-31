@@ -124,7 +124,10 @@ class TeamMemberDetail extends Component {
 
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
 
-  updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options), 750);
+  updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
+      () => analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
+      () => analytics.track('update-todo-error')
+    ), 750);
 
   onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone }, () => this.updateTodo(todoId, { is_done: isDone }));
 
