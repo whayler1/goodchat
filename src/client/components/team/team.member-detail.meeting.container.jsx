@@ -489,6 +489,15 @@ class TeamMemberDetailMeeting extends Component {
             <li>
               <button
                 type="button"
+                className="btn-primary-inverse"
+                id="btn-resend-invite"
+              >
+                Resend Invite
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
                 className="btn-primary"
                 id="btn-complete-meeting"
                 onClick={this.onCompleteMeeting}
