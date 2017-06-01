@@ -7,6 +7,9 @@ const uuid = require('node-uuid');
 const membershipHelpers = require('../membership/_helpers');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
+const User = require('../models/user')
+const Team = require('../models/team')
+const Membership = require('../models/membership')
 
 const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => {
   // create reusable transporter object using the default SMTP transport
@@ -270,33 +273,24 @@ router.get('/team', authHelpers.loginRequired, (req, res, next) => {
   .catch(err => res.sendStatus(500));
 });
 
-router.get('/team/:id', authHelpers.loginRequired, (req, res, next) => {
-  const userId = req.user.id;
-  const { id } = req.params;
-  const { name } = req.body;
+router.get('/team/:id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res, next) => {
+  const membership = req.membership
+  const team = membership.related('team')
 
-  knex('memberships').where({
-    user_id: userId,
-    team_id: id
-  })
-  .first()
-  .then(membership => {
-    if (!membership) {
-      res.status(403).json({msg: 'not-a-member'});
-    } else {
-      knex('memberships').where({ user_id: userId, team_id: id })
-      .join('teams', {
-        'memberships.team_id': 'teams.id'
-      })
-      .first()
-      .then(team => {
-        console.log('\n\nteam:', team);
-        res.json({ team });
-      })
-      .catch(err => res.sendStatus(500));
+  if (membership && team) {
+    const membershipAttrs = membership.attributes
+    const assignAttrs = {
+      team_id: membershipAttrs.team_id,
+      user_id: membershipAttrs.user_id,
+      is_admin: membershipAttrs.is_admin,
+      is_owner: membershipAttrs.is_owner
     }
-  })
-  .catch(err => res.sendStatus(500));
+
+    Object.assign(team.attributes, assignAttrs)
+    res.json({ team })
+  } else {
+    res.sendStatus(500);
+  }
 });
 
 router.get('/team/:team_id/unauth', (req, res) => {
