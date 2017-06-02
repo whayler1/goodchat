@@ -14,8 +14,8 @@ const ADD_TODO = 'meeting/add-todo';
 const UPDATE_TODO = 'meeting/update-todo';
 const DELETE_TODO = 'meeting/delete-todo';
 
-export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) =>
-  new Promise((resolve, reject) => superagent.put(`team/${teamId}/meeting/${meetingGroupId}/invite/${meetingId}`)
+export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) => () =>
+  new Promise((resolve, reject) => superagent.post(`team/${teamId}/meeting/${meetingGroupId}/invite/${meetingId}`)
   .end((err, res) => {
     if (err) {
       reject();

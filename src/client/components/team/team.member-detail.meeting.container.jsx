@@ -83,7 +83,7 @@ class TeamMemberDetailMeeting extends Component {
     );
 
   sendInvite = () => this.setState({ isSendInviteInFlight: true }, () =>
-    this.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
+    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
       () => this.setState({ isSendInviteInFlight: false, isInviteSent: true }),
       () => this.setState({ isSendInviteInFlight: false, isInviteError: true })
     ));
@@ -493,7 +493,19 @@ class TeamMemberDetailMeeting extends Component {
         </form>
         {isHost && !is_done &&
         <div className="gutter-large-top align-right">
+          {this.state.isInviteError && <p className="danger-text">There was an error sending your meeting reminder. If the problem presists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
           <ul className="stacked-to-inline-list">
+            <li>
+              {!this.state.isInviteSent && <button
+                type="button"
+                className="btn-no-style btn-no-style-secondary"
+                onClick={this.sendInvite}
+                disabled={this.state.isSendInviteInFlight}
+              >
+                {this.state.isSendInviteInFlight ? <span>Sending&hellip;</span> : <span>Send reminder <i className="material-icons">send</i></span>}
+              </button>}
+              {this.state.isInviteSent && <p className="success-text center">Reminder sent</p>}
+            </li>
             <li>
               <button
                 type="button"
