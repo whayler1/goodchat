@@ -11,7 +11,8 @@ import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo,
+  updateTodo, deleteTodo, sendMeetingInvite } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
@@ -38,6 +39,7 @@ class TeamMemberDetailMeeting extends Component {
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    sendMeetingInvite: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
     todoStates: PropTypes.object.isRequired
@@ -79,6 +81,12 @@ class TeamMemberDetailMeeting extends Component {
         console.log('completeMeeting err', err);
       }
     );
+
+  sendInvite = () => this.setState({ isSendInviteInFlight: true }, () =>
+    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
+      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true }),
+      () => this.setState({ isSendInviteInFlight: false, isInviteError: true })
+    ));
 
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
@@ -485,7 +493,19 @@ class TeamMemberDetailMeeting extends Component {
         </form>
         {isHost && !is_done &&
         <div className="gutter-large-top align-right">
+          {this.state.isInviteError && <p className="danger-text">There was an error sending your meeting reminder. If the problem presists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
           <ul className="stacked-to-inline-list">
+            <li>
+              {!this.state.isInviteSent && <button
+                type="button"
+                className="btn-no-style btn-no-style-secondary"
+                onClick={this.sendInvite}
+                disabled={this.state.isSendInviteInFlight}
+              >
+                {this.state.isSendInviteInFlight ? <span>Sending&hellip;</span> : <span>Send reminder <i className="material-icons">send</i></span>}
+              </button>}
+              {this.state.isInviteSent && <p className="success-text center">Reminder sent</p>}
+            </li>
             <li>
               <button
                 type="button"
@@ -520,6 +540,7 @@ export default connect (
     logout,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    sendMeetingInvite
   }
 )(TeamMemberDetailMeeting);
