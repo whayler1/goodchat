@@ -11,7 +11,8 @@ import Dropdown from '../dropdown/dropdown.component.jsx';
 import AutosizeInput from 'react-input-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
+import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo,
+  updateTodo, deleteTodo, sendMeetingInvite } from '../meeting/meeting.dux.js';
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
@@ -38,6 +39,7 @@ class TeamMemberDetailMeeting extends Component {
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    sendMeetingInvite: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
     todoStates: PropTypes.object.isRequired
@@ -79,6 +81,12 @@ class TeamMemberDetailMeeting extends Component {
         console.log('completeMeeting err', err);
       }
     );
+
+  sendInvite = () => this.setState({ isSendInviteInFlight: true }, () =>
+    this.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
+      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true }),
+      () => this.setState({ isSendInviteInFlight: false, isInviteError: true })
+    ));
 
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
@@ -520,6 +528,7 @@ export default connect (
     logout,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    sendMeetingInvite
   }
 )(TeamMemberDetailMeeting);

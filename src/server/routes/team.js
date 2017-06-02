@@ -11,7 +11,7 @@ const User = require('../models/user')
 const Team = require('../models/team')
 const Membership = require('../models/membership')
 
-const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => {
+const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => new Promise((resolve, reject) =>  {
   // create reusable transporter object using the default SMTP transport
 
   knex('users').where({ id: hostId }).orWhere({ id: guestId })
@@ -34,15 +34,20 @@ const sendMeetingEmail = (guestId, hostId, teamId, meetingId) => {
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error, info){
       if (error){
+        reject();
         console.log(error);
       } else {
+        resolve();
         console.log('Message sent: ' + info.response);
       }
       transporter.close();
     });
   })
-  .catch(err => console.log('\n\nerr sending meeting email', err))
-};
+  .catch(err => {
+    reject();
+    console.log('\n\nerr sending meeting email', err);
+  })});
+// };
 
 router.post('/team', authHelpers.loginRequired, (req, res, next)  => {
   const { id } = req.user;
@@ -157,6 +162,22 @@ router.post('/team/:team_id/join/:invite_id', authHelpers.loginRequired, (req, r
     }
   })
   .catch(err => res.sendStatus(500));
+});
+
+router.post('/team/:team_id/meeting/:meeting_group_id/invite/:meeting_id', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
+  const {
+    team_id,
+    meeting_group_id,
+    meeting_id
+  } = req.params;
+
+  knex('meetings').where({ id: meeting_id })
+  .first()
+  .then(meeting => sendMeetingEmail(meeting.user_id, meeting.host_id, team_id, meeting_group_id).then(
+    () => res.sendStatus(200),
+    () => res.status(500).json({ msg: 'error sending email' })
+  ))
+  .catch(err => res.status(500).json({ msg: 'error finding meeting by id' }));
 });
 
 router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequired, membershipHelpers.membershipRequired, (req, res) => {
