@@ -82,11 +82,13 @@ class TeamMemberDetailMeeting extends Component {
       }
     );
 
-  sendInvite = () => this.setState({ isSendInviteInFlight: true }, () =>
+  sendInvite = () => this.setState({ isSendInviteInFlight: true }, () => {
+    const { is_invite_sent } = this.props.meeting;
     this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
-      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true }),
+      () => this.setState({ isSendInviteInFlight: false, isInviteSent: is_invite_sent }),
       () => this.setState({ isSendInviteInFlight: false, isInviteError: true })
-    ));
+    );
+  });
 
   submit = _.debounce(() => {
     const isUser = this.props.meeting.user_id === this.props.userId;
@@ -125,7 +127,7 @@ class TeamMemberDetailMeeting extends Component {
         this.props.history.push('/');
       }
     });
-  }, 750)
+  }, 750);
 
   onSubmit = e => {
     e.preventDefault();
@@ -267,7 +269,7 @@ class TeamMemberDetailMeeting extends Component {
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
       createTodo, updateTodo, deleteTodo, onTodoTextChange, onTodoCheckboxChange, todoStates } = this.props;
-    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title } = meeting;
+    const { meeting_date, is_done, finished_at, are_answers_ready, qa_length, title, is_invite_sent } = meeting;
     const { answer1, answer2, answer3, answer4, answer5, isAnswerReadyInFlight,
       isUpdateInFlight, isNoteUpdateInFlight, isAddQAInFlight, isUpdateError,
       isNoteUpdateError, answerReadyError, isNoteMarkdown, isNoteAutofocus } = this.state;
@@ -495,26 +497,36 @@ class TeamMemberDetailMeeting extends Component {
         <div className="gutter-large-top align-right">
           {this.state.isInviteError && <p className="danger-text">There was an error sending your meeting reminder. If the problem presists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
           <ul className="stacked-to-inline-list">
-            <li>
+            {is_invite_sent && <li>
               {!this.state.isInviteSent && <button
                 type="button"
                 className="btn-no-style btn-no-style-secondary"
                 onClick={this.sendInvite}
                 disabled={this.state.isSendInviteInFlight}
+                id="btn-send-meeting-reminder"
               >
-                {this.state.isSendInviteInFlight ? <span>Sending&hellip;</span> : <span>Send reminder <i className="material-icons">send</i></span>}
+                {this.state.isSendInviteInFlight ? <span>Sending&hellip; <i className="material-icons">send</i></span> : <span>Send reminder <i className="material-icons">send</i></span>}
               </button>}
-              {this.state.isInviteSent && <p className="success-text center">Reminder sent</p>}
-            </li>
+              {this.state.isInviteSent && <p className="success-text center" id="btn-send-meeting-reminder-success">Reminder sent</p>}
+            </li>}
             <li>
-              <button
+              {!is_invite_sent && <button
+                type="button"
+                className="btn-primary"
+                id="btn-send-meeting-invite"
+                onClick={this.sendInvite}
+                disabled={this.state.isSendInviteInFlight}
+              >
+                {this.state.isSendInviteInFlight ? <span>Sending&hellip; <i className="material-icons">send</i></span> : <span>Send invite <i className="material-icons">send</i></span>}
+              </button>}
+              {is_invite_sent && <button
                 type="button"
                 className="btn-primary"
                 id="btn-complete-meeting"
                 onClick={this.onCompleteMeeting}
               >
                 Complete meeting
-              </button>
+              </button>}
             </li>
           </ul>
         </div>

@@ -123,6 +123,7 @@ router.put('/meeting/:id', authHelpers.loginRequired, isMeetingMember, (req, res
       'answer4',
       'answer5',
       'is_done',
+      'is_invite_sent',
       'are_answers_ready',
       'meeting_date',
       'finished_at',

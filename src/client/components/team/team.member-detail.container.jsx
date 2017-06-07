@@ -176,6 +176,7 @@ class TeamMemberDetail extends Component {
     } = team;
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
     const todoStates = _.pick(this.state, Object.keys(this.state).filter(key => /todo/.test(key)));
+    const finishedMeetings = meetings.filter(meeting => meeting.is_done);
 
     return (
       <div>
@@ -313,8 +314,8 @@ class TeamMemberDetail extends Component {
                   </li>
                 </ul>}
               </section>
-              {meetings.length > 1 && <h3 className="meeting-subhead">Previous meetings</h3>}
-              {meetings.filter(meeting => meeting.is_done).map(meeting => (
+              {finishedMeetings.length > 0 && <h3 className="meeting-subhead">Previous meetings</h3>}
+              {finishedMeetings.map(meeting => (
               <TeamMemberDetailMeeting
                 key={meeting.id}
                 className="card meeting-card"
