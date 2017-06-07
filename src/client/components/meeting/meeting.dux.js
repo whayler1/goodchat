@@ -14,12 +14,17 @@ const ADD_TODO = 'meeting/add-todo';
 const UPDATE_TODO = 'meeting/update-todo';
 const DELETE_TODO = 'meeting/delete-todo';
 
-export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) => () =>
+export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) => dispatch =>
   new Promise((resolve, reject) => superagent.post(`team/${teamId}/meeting/${meetingGroupId}/invite/${meetingId}`)
   .end((err, res) => {
     if (err) {
       reject();
     } else {
+      console.log('sendMeetingInvite res', res.body.meeting);
+      dispatch({
+        type: UPDATE_MEETING,
+        meeting: res.body.meeting
+      });
       resolve();
     }
   }));

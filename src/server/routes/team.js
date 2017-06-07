@@ -172,9 +172,10 @@ router.post('/team/:team_id/meeting/:meeting_group_id/invite/:meeting_id', authH
   } = req.params;
 
   knex('meetings').where({ id: meeting_id })
-  .first()
-  .then(meeting => sendMeetingEmail(meeting.user_id, meeting.host_id, team_id, meeting_group_id).then(
-    () => res.sendStatus(200),
+  .update({ is_invite_sent: true })
+  .returning('*')
+  .then(meetings => sendMeetingEmail(meetings[0].user_id, meetings[0].host_id, team_id, meeting_group_id).then(
+    () => res.json({ meeting: meetings[0] }),
     () => res.status(500).json({ msg: 'error sending email' })
   ))
   .catch(err => res.status(500).json({ msg: 'error finding meeting by id' }));
@@ -248,10 +249,7 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
         user_id: insertObj.host_id,
         meeting_id
       })
-      .then(() => {
-        sendMeetingEmail(user_id, host_id, team_id, meeting_group_id);
-        return res.json({ meeting });
-      })
+      .then(() => res.json({ meeting }))
       .catch(err => res.status(500).json({ msg: 'error-creating-host-note' }))
       )
       .catch(err => res.status(500).json({ msg: 'error-creating-user-note' }));
