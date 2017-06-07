@@ -503,10 +503,11 @@ class TeamMemberDetailMeeting extends Component {
                 className="btn-no-style btn-no-style-secondary"
                 onClick={this.sendInvite}
                 disabled={this.state.isSendInviteInFlight}
+                id="btn-send-meeting-reminder"
               >
                 {this.state.isSendInviteInFlight ? <span>Sending&hellip; <i className="material-icons">send</i></span> : <span>Send reminder <i className="material-icons">send</i></span>}
               </button>}
-              {this.state.isInviteSent && <p className="success-text center">Reminder sent</p>}
+              {this.state.isInviteSent && <p className="success-text center" id="btn-send-meeting-reminder-success">Reminder sent</p>}
             </li>}
             <li>
               {!is_invite_sent && <button

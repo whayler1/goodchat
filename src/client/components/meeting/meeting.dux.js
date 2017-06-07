@@ -20,7 +20,6 @@ export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) => dispatch
     if (err) {
       reject();
     } else {
-      console.log('sendMeetingInvite res', res.body.meeting);
       dispatch({
         type: UPDATE_MEETING,
         meeting: res.body.meeting
