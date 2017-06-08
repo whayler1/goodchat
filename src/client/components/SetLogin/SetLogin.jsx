@@ -14,7 +14,8 @@ export default class SetLogin extends Component {
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       gapi.auth2.init({
         client_id: this.props.googleClientId,
-        cookiepolicy: 'single_host_origin'
+        cookiepolicy: 'single_host_origin',
+        scope: 'https://www.googleapis.com/auth/calendar'
       }).then(() => {
         const auth2 = gapi.auth2.getAuthInstance();
         if (auth2.isSignedIn.get()) {
