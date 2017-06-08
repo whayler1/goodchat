@@ -192,8 +192,6 @@ module.exports = {
       .click('#team-member-list > li > a')
       .waitForElementVisible('.main-team-meeting', 1000)
       .click('#btn-send-meeting-invite')
-      .waitForElementVisible('#btn-complete-meeting', 3000)
-      .click('#btn-send-meeting-reminder')
       .waitForElementVisible('#btn-send-meeting-reminder-success', 3000)
       .click('#btn-complete-meeting')
       .waitForElementNotPresent('.main-team-meeting', 1000)

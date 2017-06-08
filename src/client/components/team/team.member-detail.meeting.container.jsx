@@ -132,7 +132,7 @@ class TeamMemberDetailMeeting extends Component {
 
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
       res => this.setState({ isUpdateInFlight: false, isUpdateError: false },
-        () => analytics.track('update-meeting', analyticsObj)
+        () => analytics.track('update-meeting', analyticsObj))
     ).catch(err => {
       this.setState({ isUpdateError: true }, () => analytics.track('update-meeting-error', analyticsObj));
       if (err.status === 401) {
@@ -140,7 +140,7 @@ class TeamMemberDetailMeeting extends Component {
         this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
         this.props.history.push('/');
       }
-    });
+    })
   }, 750);
 
   onSubmit = e => {
@@ -536,7 +536,7 @@ class TeamMemberDetailMeeting extends Component {
                 className="btn-primary-inverse"
                 onClick={this.sendInvite}
                 disabled={this.state.isSendInviteInFlight}
-                id="btn-send-meeting-reminder"
+                id="btn-send-meeting-invite"
               >
                 {this.state.isSendInviteInFlight ? <span>Sending&hellip;</span> : is_invite_sent ? <span>Send reminder</span> : <span>Send invite</span>}
               </button>}
