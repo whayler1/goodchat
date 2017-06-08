@@ -78,15 +78,21 @@ class TeamMemberDetailMeeting extends Component {
           this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
           this.props.history.push('/');
         }
-        console.log('completeMeeting err', err);
       }
     );
 
   sendInvite = () => this.setState({ isSendInviteInFlight: true }, () => {
     const { is_invite_sent } = this.props.meeting;
+    const analyticsObj = {
+      category: 'meeting',
+      meetingId: this.props.meeting.id,
+      teamId: this.props.teamId
+    }
     this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
-      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true }),
-      () => this.setState({ isSendInviteInFlight: false, isInviteError: true })
+      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true },
+        () => analytics.track('meeting-invite-sent', analyticsObj)),
+      () => this.setState({ isSendInviteInFlight: false, isInviteError: true },
+        () => analytics.track('meeting-invite-error', analyticsObj))
     );
   });
 
@@ -117,10 +123,18 @@ class TeamMemberDetailMeeting extends Component {
       ));
     }
 
+    const analyticsObj = {
+      ...sendObj,
+      category: 'meeting',
+      meetingId: this.props.meeting.id,
+      teamId: this.props.teamId
+    };
+
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
-      res => this.setState({ isUpdateInFlight: false, isUpdateError: false })
+      res => this.setState({ isUpdateInFlight: false, isUpdateError: false },
+        () => analytics.track('update-meeting', analyticsObj)
     ).catch(err => {
-      this.setState({ isUpdateError: true })
+      this.setState({ isUpdateError: true }, () => analytics.track('update-meeting-error', analyticsObj));
       if (err.status === 401) {
         this.props.logout();
         this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
@@ -139,17 +153,24 @@ class TeamMemberDetailMeeting extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value, isUpdateInFlight: true }, this.submit);
 
   noteSubmit = _.debounce(() => {
+    const analyticsObj = {
+      category: 'meeting',
+      meetingId: this.props.meeting.id,
+      teamId: this.props.teamId,
+      note: this.state.note
+    };
     superagent.put(`note/${this.props.meeting.note_id}`)
     .send({
       note: this.state.note
     })
     .end((err, res) => {
       if (err) {
-        console.log('error updating note', res);
-        this.setState({ isNoteUpdateError: true });
+        this.setState({ isNoteUpdateError: true },
+          () => analytics.track('updated-note-error', analyticsObj));
         return;
       }
-      this.setState({ isNoteUpdateInFlight: false, isNoteUpdateError: false });
+      this.setState({ isNoteUpdateInFlight: false, isNoteUpdateError: false },
+        () => analytics.track('updated-note', analyticsObj));
     });
   }, 750);
 
@@ -180,16 +201,19 @@ class TeamMemberDetailMeeting extends Component {
   }
 
   onAnswersReady = () => this.setState({ isAnswerReadyInFlight: true }, () => {
+    const analyticsObj = {
+      category: 'meeting',
+      meetingId: this.props.meeting.id,
+      teamId: this.props.teamId
+    };
+
     if (this.isEverythingAnswered()) {
       this.setState({ answerReadyError: '' }, () =>
         this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }).then(() =>
-          analytics.track('answers-ready', {
-            category: 'meeting',
-            meetingId: this.props.meeting.id,
-            teamId: this.props.teamId
-          })));
+          analytics.track('answers-ready', analyticsObj)));
     } else  {
-      this.setState({ answerReadyError: 'everything-not-answered', isAnswerReadyInFlight: false });
+      this.setState({ answerReadyError: 'everything-not-answered', isAnswerReadyInFlight: false },
+        () => analytics.track('answers-ready-rejected', analyticsObj));
     }
   })
 
@@ -226,7 +250,12 @@ class TeamMemberDetailMeeting extends Component {
 
   onAddQAClick = () => this.setState({ isAddQAInFlight: true }, () =>
     this.props.updateMeeting(this.props.meeting.id, { qa_length: this.props.meeting.qa_length + 1 })
-    .then(res => this.setState({ isAddQAInFlight: false })));
+    .then(() => this.setState({ isAddQAInFlight: false },
+      () => analytics.track('add-qa', {
+        category: 'meeting',
+        meetingId: this.props.meeting.id,
+        teamId: this.props.teamId
+      }))));
 
   getLiveMeetingTitle = (isShort) => {
     const meetingDate = moment(this.props.meeting.meeting_date);
@@ -264,7 +293,11 @@ class TeamMemberDetailMeeting extends Component {
   toggleIsNoteMarkdown = () => this.setState({
     isNoteMarkdown: !this.state.isNoteMarkdown,
     isNoteAutofocus: true
-  });
+  }, () => analytics.track('toggle-is-note-markdown', {
+    category: 'meeting',
+    meetingId: this.props.meeting.id,
+    teamId: this.props.teamId
+  }));
 
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
