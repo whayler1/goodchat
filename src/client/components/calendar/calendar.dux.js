@@ -7,7 +7,7 @@ const defaultState = {
 
 const SET_EVENT_LIST = 'calendar/event-list';
 
-export const getEventList = () => dispatch => new Promise((resolve, reject) =>
+export const getEvents = () => dispatch => new Promise((resolve, reject) =>
   gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (new Date()).toISOString(),

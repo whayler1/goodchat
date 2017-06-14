@@ -8,6 +8,7 @@ class TeamMemberDetailSchedule extends Component {
   };
 
   render() {
+    console.log('%c events', 'background:pink', this.props.events);
     return (
       <section className="card">
         <header className="card-header">

@@ -7,6 +7,7 @@ import { setRedirect } from './components/login/login.dux';
 import { setInvites, setInvite } from './components/invite/invite.dux';
 import { getMeetings } from './components/meeting/meeting.dux';
 import { logout } from './components/user/user.dux';
+import { getEvents } from './components/calendar/calendar.dux';
 import App from './components/app/app.jsx';
 import Home from './components/home/home.container.jsx';
 import Teams from './components/team/teams.container.jsx';
@@ -24,13 +25,16 @@ class Routes extends Component {
     setTeams: PropTypes.func.isRequired,
     setTeam: PropTypes.func.isRequired,
     getTeam: PropTypes.func.isRequired,
+    getEvents: PropTypes.func.isRequired,
     setMembers: PropTypes.func.isRequired,
     setInvites: PropTypes.func.isRequired,
     setInvite: PropTypes.func.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     setRedirect: PropTypes.func.isRequired,
     getMeetings: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    calendarEvents: PropTypes.bool.isRequired
   }
 
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
@@ -78,7 +82,7 @@ class Routes extends Component {
 
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
     const { teamId, meetingGroupId } = nextState.params;
-    const { getMeetings, setRedirect, getTeam, updateTeamMembers } = this.props;
+    const { getMeetings, setRedirect, getTeam, updateTeamMembers, getEvents } = this.props;
 
     const catcher = err => {
       if (err.status === 401) {
@@ -95,7 +99,13 @@ class Routes extends Component {
     const teamMembersPromise = updateTeamMembers(teamId).catch(catcher);
     const meetingPromise = getMeetings(teamId, meetingGroupId).catch(catcher);
 
-    Promise.all([teamPromise, teamMembersPromise, meetingPromise]).then(() => callback());
+    const promises = [teamPromise, teamMembersPromise, meetingPromise];
+
+    if (!this.props.calendarEvents.length) {
+      promises.push(getEvents().catch(catcher));
+    }
+
+    Promise.all(promises).then(() => callback());
   };
 
   onTeamErrorEnter = (nextState, replace, callback) => {
@@ -174,13 +184,15 @@ class Routes extends Component {
 
 export default connect(
   state => ({
-    isLoggedIn: state.user.isLoggedIn
+    isLoggedIn: state.user.isLoggedIn,
+    calendarEvents: state.calendar.events
   }),
   {
     getTeams,
     setTeams,
     setTeam,
     getTeam,
+    getEvents,
     setMembers,
     setInvites,
     setInvite,
