@@ -14,6 +14,8 @@ import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
 import TeamMemberDetailTodoList from './team.member-detail.todo-list.component.jsx';
 import Helmet from 'react-helmet';
+import Modal from '../modal/modal.container.jsx';
+import TeamMemberDetailSchedule from './team.member-detail.schedule.container.jsx';
 import { StickyContainer, Sticky } from 'react-sticky';
 
 class TeamMemberDetail extends Component {
@@ -133,6 +135,8 @@ class TeamMemberDetail extends Component {
 
   onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text }, () => this.updateTodo(todoId, { text }));
 
+  toggleScheduleMeetingSelected = () => this.setState({ isScheduleMeetingSelected: !this.state.isScheduleMeetingSelected });
+
   componentWillUpdate = (nextProps) => {
     if (nextProps.todos.length !== this.props.todos.length) {
       const stateObj = {};
@@ -180,6 +184,14 @@ class TeamMemberDetail extends Component {
 
     return (
       <div>
+        {isScheduleMeetingSelected &&
+        <Modal
+          closeFunc={this.toggleScheduleMeetingSelected}
+        >
+          <TeamMemberDetailSchedule
+            closeFunc={this.toggleScheduleMeetingSelected}
+          />
+        </Modal>}
         <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
         <header className="page-header">
           <Link to={`teams/${team.id}`} className="page-header-back-link">
