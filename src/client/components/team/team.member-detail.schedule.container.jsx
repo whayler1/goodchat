@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+
+import CalendarAvailableTimes from '../calendar/calendar.available-times.container.jsx';
 
 class TeamMemberDetailSchedule extends Component {
   static propTypes = {
@@ -23,6 +26,14 @@ class TeamMemberDetailSchedule extends Component {
         </header>
         <div className="card-padded-content">
           <span className="input-label">Choose an open meeting time</span>
+          <CalendarAvailableTimes
+            startTime={moment()}
+            endTime={moment({ hour: 18 })}
+          />
+          <CalendarAvailableTimes
+            startTime={moment({ hour: 8 }).add(1, 'day')}
+            endTime={moment({ hour: 18 }).add(1, 'day')}
+          />
         </div>
       </section>
     );
