@@ -1,0 +1,43 @@
+.available-times-list {
+  // border: 1px solid @bluegrey-400;
+  border-radius: 2px;
+  margin: @gutter 0 0;
+  padding: 0;
+
+  >li {
+    margin-top: -1px;
+    height: 44px;
+    list-style: none;
+
+    &:first-child {
+      margin-top: 0;
+
+      .available-times-list-btn {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+    }
+    &:last-child {
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+  }
+}
+
+.available-times-list-btn {
+  background: transparent;
+  border-radius: 0;
+  border: 1px solid @bluegrey-400;
+  position: relative;
+
+  &:hover,
+  &:focus {
+    border-color: @link-color;
+    color: @link-color;
+    z-index: 2;
+  }
+  &:active {
+    border-color: @link-color-active;
+    color: @link-color-active;
+  }
+}

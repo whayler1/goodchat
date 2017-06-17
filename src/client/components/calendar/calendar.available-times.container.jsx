@@ -13,7 +13,7 @@ class TimeSlot extends Component {
     return (
       <button
         type="button"
-        className="btn-primary-inverse btn-block"
+        className="btn btn-block available-times-list-btn"
       >
         {startTime.format('h:mmA')}
       </button>
@@ -57,7 +57,7 @@ export default class CalendarAvailableTimes extends Component {
     return (
       <section>
         <span className="input-label">{label}</span>
-        <ul>
+        <ul className="available-times-list">
           {timeSlots.map((timeSlot, index) => (
             <li key={index}>
               <TimeSlot
