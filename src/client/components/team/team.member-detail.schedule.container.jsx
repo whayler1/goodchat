@@ -11,7 +11,9 @@ class TeamMemberDetailSchedule extends Component {
   };
 
   render() {
-    console.log('%c events', 'background:pink', this.props.events);
+    // console.log('%c events', 'background:pink', this.props.events);
+    const { events } = this.props;
+
     return (
       <section className="card">
         <header className="card-header">
@@ -29,10 +31,12 @@ class TeamMemberDetailSchedule extends Component {
           <CalendarAvailableTimes
             startTime={moment()}
             endTime={moment({ hour: 18 })}
+            events={events}
           />
           <CalendarAvailableTimes
             startTime={moment({ hour: 8 }).add(1, 'day')}
             endTime={moment({ hour: 18 }).add(1, 'day')}
+            events={events}
           />
         </div>
       </section>

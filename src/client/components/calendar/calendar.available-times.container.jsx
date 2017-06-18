@@ -24,31 +24,37 @@ class TimeSlot extends Component {
 export default class CalendarAvailableTimes extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
-    endTime: PropTypes.object.isRequired
+    endTime: PropTypes.object.isRequired,
+    events: PropTypes.array.isRequired
   };
 
   state = {
-    timeSlots: []
+    timeSlots: [],
+    events: []
   };
 
   componentWillMount() {
     const { startTime, endTime } = this.props;
     const start = startTime.clone();
-    // console.log('%cdiff', 'background:pink', count);
-    const remainder = 30 - start.minute() % 30;
-    moment(start).add("minutes", remainder );
 
-    const count = endTime.diff(start, 'minutes') / 30;
+    const remainder = 30 - start.minute() % 30;
+    start.add('minutes', remainder).seconds(0);
+
+    const count = Math.round(endTime.diff(start, 'minutes') / 30);
 
     const timeSlots = _.times(count, (n) => ({
       startTime: start.clone().add(n * 30, 'minutes'),
       endTime: start.clone().add((n + 1) * 30, 'minutes')
     }));
-    console.log('timeSlots', timeSlots);
 
-    const label = startTime.format('MMM DD, YY');
+    const label = startTime.format('MMM DD, YYYY');
 
-    this.setState({ timeSlots, label });
+    const events = this.props.events.filter(event =>
+      (moment(event.start.dateTime).isAfter(start) && moment(event.start.dateTime).isBefore(endTime)) ||
+      (moment(event.end.dateTime).isAfter(start) && moment(event.end.dateTime).isBefore(endTime)));
+    console.log('events', events);
+
+    this.setState({ timeSlots, events, label });
   }
 
   render() {
