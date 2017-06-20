@@ -4,22 +4,82 @@ import moment from 'moment';
 class TimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
-    endTime: PropTypes.object.isRequired
+    endTime: PropTypes.object.isRequired,
+    events: PropTypes.array
   };
+
+  componentWillMount() {
+    const { startTime, endTime } = this.props;
+
+    const events = this.props.events.map(event => {
+      const evtStart = moment(event.start.dateTime);
+      const evtEnd = moment(event.end.dateTime);
+
+      const topPct = (() => {
+        if (evtStart.isSameOrBefore(startTime)) {
+          return 0;
+        }
+        return Math.round(evtStart.diff(startTime, 'minutes') / 30 * 100);
+      })();
+
+      const bottomPct = (() => {
+        if (evtEnd.isSameOrAfter(endTime)) {
+          return 0;
+        }
+        return 100 - Math.round(evtEnd.diff(endTime, 'minutes') / 30 * 100);
+      })();
+
+      const displayStr = evtStart.isSameOrAfter(startTime) ?
+        `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h:mm')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
+
+      return {
+        ...event,
+        topPct: `${topPct}%`,
+        bottomPct: `${bottomPct}%`,
+        displayStr
+      };
+    });
+
+    console.log('- btn events', events);
+
+    this.setState({
+      btnId: `available-times-list-btn-${startTime.unix()}`,
+      events,
+      displayStr: events.filter(event => event.displayStr).map(event => event.displayStr).join(', ')
+    });
+  }
 
   render() {
     const { startTime, endTime } = this.props;
+    const { btnId, events, displayStr } = this.state;
 
     return (
       <li>
-        <div className="available-times-list-label">
+        <label
+          className="available-times-list-label"
+          htmlFor={btnId}
+        >
           {startTime.format('h:mmA')}
-        </div>
+        </label>
         <div className="available-times-list-btn-col">
           <button
+            id={btnId}
+            name={btnId}
             type="button"
             className="btn btn-block available-times-list-btn"
+            ref={el => this.buttonEl = el}
           >
+            {events.map(event => (
+              <div
+                key={event.id}
+                className="available-times-list-btn-event"
+                style={{
+                  top: event.topPct,
+                  bottom: event.bottomPct
+                }}
+              />
+            ))}
+            {displayStr ? <small>{displayStr}</small> : <small>&nbsp;</small>}
           </button>
         </div>
       </li>
@@ -61,7 +121,7 @@ export default class CalendarAvailableTimes extends Component {
         const evtEnd = moment(event.end.dateTime);
         const { startTime, endTime } = timeSlot;
 
-        return (evtStart.isSameOrAfter(startTime) && evtStart.isSameOrBefore(endTime)) ||
+        return (evtStart.isSameOrAfter(startTime) && evtStart.isBefore(endTime)) ||
           (evtEnd.isAfter(startTime) && evtEnd.isSameOrBefore(endTime)) ||
           (evtStart.isBefore(startTime) && evtEnd.isAfter(endTime));
       })

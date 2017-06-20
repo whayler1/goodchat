@@ -29,9 +29,17 @@
 .available-times-list-label {
   position: absolute;
   left: 0;
-  top: 0;
+  top: -4px;
   font-size: 0.8rem;
   font-weight: 400;
+
+  &:hover,
+  &:focus {
+    color: @bluegrey-600;
+  }
+  &:active {
+    color: @bluegrey-700;
+  }
 }
 
 .available-times-list-btn-col {
@@ -42,8 +50,13 @@
   background: transparent;
   border-radius: 0;
   border: 1px solid @bluegrey-100;
-  color: @bluegrey-400;
+  color: @bluegrey-600;
   position: relative;
+  text-align: left;
+
+  &.btn {
+    padding: 3px 12px;
+  }
 
   &:hover,
   &:focus {
@@ -55,4 +68,14 @@
     border-color: @link-color-active;
     color: @link-color-active;
   }
+}
+
+.available-times-list-btn-event {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: @bluegrey-200;
+  opacity: .3;
 }
