@@ -53,6 +53,7 @@
   color: @bluegrey-600;
   position: relative;
   text-align: left;
+  overflow: hidden;
 
   &.btn {
     padding: 3px 12px;
@@ -67,6 +68,10 @@
   &:active {
     border-color: @link-color-active;
     color: @link-color-active;
+  }
+
+  small {
+    white-space: nowrap;
   }
 }
 
