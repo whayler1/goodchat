@@ -59,11 +59,19 @@
     padding: 3px 12px;
   }
 
+  .available-times-list-btn-hover-ui {
+    visibility: hidden;
+  }
+
   &:hover,
   &:focus {
     border-color: @link-color;
     color: @link-color;
     z-index: 2;
+
+    .available-times-list-btn-hover-ui {
+      visibility: visible;
+    }
   }
   &:active {
     border-color: @link-color-active;

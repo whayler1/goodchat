@@ -26,11 +26,11 @@ class TimeSlot extends Component {
         if (evtEnd.isSameOrAfter(endTime)) {
           return 0;
         }
-        return 100 - Math.round(evtEnd.diff(endTime, 'minutes') / 30 * 100);
+        return 100 - Math.round(endTime.diff(evtEnd, 'minutes') / 30 * 100);
       })();
 
       const displayStr = evtStart.isSameOrAfter(startTime) ?
-        `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h:mm')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
+        `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
 
       return {
         ...event,
@@ -79,7 +79,7 @@ class TimeSlot extends Component {
                 }}
               />
             ))}
-            {displayStr ? <small>{displayStr}</small> : <small>&nbsp;</small>}
+            {displayStr ? <small>{displayStr}</small> : events.length ? <small>&nbsp;</small> : <small className="available-times-list-btn-hover-ui">Click to schedule</small>}
           </button>
         </div>
       </li>
