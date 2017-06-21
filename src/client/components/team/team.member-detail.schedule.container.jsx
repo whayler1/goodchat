@@ -10,23 +10,52 @@ class TeamMemberDetailSchedule extends Component {
     events: PropTypes.array.isRequired
   };
 
+  StartHr = 6;
+
+  EODHr = 19;
+
+  getLabel = momentObj => momentObj.format('ddd MMM DD, YYYY');
+
+  getIsPrevVisible = momentObj => momentObj.isAfter(moment());
+
+  getIterateFunc = funcKey => () => {
+    const startTime = this.state.startTime.clone().hours(this.StartHr).minutes(0).seconds(0)[funcKey](1, 'day');
+    const endTime = startTime.clone().hours(this.EODHr);
+    const label = this.getLabel(startTime);
+    const isPrevVisible = this.getIsPrevVisible(startTime);
+
+    this.setState({
+      startTime,
+      endTime,
+      label,
+      isPrevVisible
+    });
+  }
+
+  onPrevClick = this.getIterateFunc('subtract');
+
+  onNextClick = this.getIterateFunc('add');
+
   componentWillMount() {
     const now = moment();
     const EODHr = 19;
     const isNowBeforeEOD = now.hours() < EODHr;
     const startTime = isNowBeforeEOD ? now : moment({ hour: 6 }).add(1, 'day');
     const endTime = isNowBeforeEOD ? moment({ hour: EODHr }) : moment({ hour: EODHr }).add(1, 'day');
+    const label = startTime.format('ddd MMM DD, YYYY');
+    const isPrevVisible = startTime.isAfter(now);
 
     this.setState({
       startTime,
-      endTime
+      endTime,
+      label,
+      isPrevVisible
     });
   }
 
   render() {
-    // console.log('%c events', 'background:pink', this.props.events);
     const { events } = this.props;
-    const { startTime, endTime } = this.state;
+    const { startTime, endTime, label, isPrevVisible } = this.state;
 
     return (
       <section className="card">
@@ -42,6 +71,21 @@ class TeamMemberDetailSchedule extends Component {
         </header>
         <div className="card-padded-content">
           <span className="input-label">Choose an open meeting time</span>
+          <div>
+            {isPrevVisible && <button
+              className="btn-no-style btn-no-style-primary"
+              onClick={this.onPrevClick}
+            >
+              Prev
+            </button>}
+            <span className="input-label">{label}</span>
+            <button
+              className="btn-no-style btn-no-style-primary"
+              onClick={this.onNextClick}
+            >
+              Next
+            </button>
+          </div>
           <CalendarAvailableTimes
             startTime={startTime}
             endTime={endTime}

@@ -8,26 +8,15 @@ class TimeSlot extends Component {
     events: PropTypes.array
   };
 
-  componentWillMount() {
-    const { startTime, endTime } = this.props;
+  getNewState = newProps => {
+    const { startTime, endTime } = newProps;
 
-    const events = this.props.events.map(event => {
+    const events = newProps.events.map(event => {
       const evtStart = moment(event.start.dateTime);
       const evtEnd = moment(event.end.dateTime);
 
-      const topPct = (() => {
-        if (evtStart.isSameOrBefore(startTime)) {
-          return 0;
-        }
-        return Math.round(evtStart.diff(startTime, 'minutes') / 30 * 100);
-      })();
-
-      const bottomPct = (() => {
-        if (evtEnd.isSameOrAfter(endTime)) {
-          return 0;
-        }
-        return 100 - Math.round(endTime.diff(evtEnd, 'minutes') / 30 * 100);
-      })();
+      const topPct = evtStart.isSameOrBefore(startTime) ? 0 : Math.round(evtStart.diff(startTime, 'minutes') / 30 * 100);
+      const bottomPct = evtEnd.isSameOrAfter(endTime) ? 0 : 100 - Math.round(endTime.diff(evtEnd, 'minutes') / 30 * 100);
 
       const displayStr = evtStart.isSameOrAfter(startTime) ?
         `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
@@ -40,13 +29,19 @@ class TimeSlot extends Component {
       };
     });
 
-    console.log('- btn events', events);
-
-    this.setState({
+    return {
       btnId: `available-times-list-btn-${startTime.unix()}`,
       events,
       displayStr: events.filter(event => event.displayStr).map(event => event.displayStr).join(', ')
-    });
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getNewState(nextProps));
+  }
+
+  componentWillMount() {
+    this.setState(this.getNewState(this.props));
   }
 
   render() {
@@ -99,11 +94,11 @@ export default class CalendarAvailableTimes extends Component {
     events: []
   };
 
-  componentWillMount() {
-    const { startTime, endTime } = this.props;
+  getNewState = newState => {
+    const { startTime, endTime } = newState;
     const start = startTime.clone();
 
-    const events = this.props.events.filter(event =>
+    const events = newState.events.filter(event =>
       (moment(event.start.dateTime).isAfter(start) && moment(event.start.dateTime).isBefore(endTime)) ||
       (moment(event.end.dateTime).isAfter(start) && moment(event.end.dateTime).isBefore(endTime)));
 
@@ -127,29 +122,29 @@ export default class CalendarAvailableTimes extends Component {
       })
     }));
 
-    const label = startTime.format('ddd MMM DD, YYYY');
+    return { timeSlots, events };
+  }
 
-    console.log('events', events);
-    console.log('timeSlots', timeSlots);
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getNewState(nextProps));
+  }
 
-    this.setState({ timeSlots, events, label });
+  componentWillMount() {
+    this.setState(this.getNewState(this.props));
   }
 
   render() {
-    const { timeSlots, label } = this.state;
+    const { timeSlots } = this.state;
 
     return (
-      <section>
-        <span className="input-label">{label}</span>
-        <ul className="available-times-list">
-          {timeSlots.map((timeSlot, index) => (
-            <TimeSlot
-              key={index}
-              {...timeSlot}
-            />
-          ))}
-        </ul>
-      </section>
+      <ul className="available-times-list">
+        {timeSlots.map((timeSlot, index) => (
+          <TimeSlot
+            key={index}
+            {...timeSlot}
+          />
+        ))}
+      </ul>
     );
   }
 }
