@@ -127,7 +127,7 @@ export default class CalendarAvailableTimes extends Component {
       })
     }));
 
-    const label = startTime.format('MMM DD, YYYY');
+    const label = startTime.format('ddd MMM DD, YYYY');
 
     console.log('events', events);
     console.log('timeSlots', timeSlots);

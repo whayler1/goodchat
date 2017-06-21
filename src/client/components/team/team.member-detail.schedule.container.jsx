@@ -10,9 +10,23 @@ class TeamMemberDetailSchedule extends Component {
     events: PropTypes.array.isRequired
   };
 
+  componentWillMount() {
+    const now = moment();
+    const EODHr = 19;
+    const isNowBeforeEOD = now.hours() < EODHr;
+    const startTime = isNowBeforeEOD ? now : moment({ hour: 6 }).add(1, 'day');
+    const endTime = isNowBeforeEOD ? moment({ hour: EODHr }) : moment({ hour: EODHr }).add(1, 'day');
+
+    this.setState({
+      startTime,
+      endTime
+    });
+  }
+
   render() {
     // console.log('%c events', 'background:pink', this.props.events);
     const { events } = this.props;
+    const { startTime, endTime } = this.state;
 
     return (
       <section className="card">
@@ -29,13 +43,8 @@ class TeamMemberDetailSchedule extends Component {
         <div className="card-padded-content">
           <span className="input-label">Choose an open meeting time</span>
           <CalendarAvailableTimes
-            startTime={moment()}
-            endTime={moment({ hour: 18 })}
-            events={events}
-          />
-          <CalendarAvailableTimes
-            startTime={moment({ hour: 8 }).add(1, 'day')}
-            endTime={moment({ hour: 18 }).add(1, 'day')}
+            startTime={startTime}
+            endTime={endTime}
             events={events}
           />
         </div>
