@@ -5,8 +5,11 @@ class TimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
-    events: PropTypes.array
+    events: PropTypes.array,
+    onTimeSlotSelected: PropTypes.func.isRequired
   };
+
+  onTimeSlotSelected = () => this.props.onTimeSlotSelected(this.props.startTime);
 
   getNewState = newProps => {
     const { startTime, endTime } = newProps;
@@ -62,7 +65,7 @@ class TimeSlot extends Component {
             name={btnId}
             type="button"
             className="btn btn-block available-times-list-btn"
-            ref={el => this.buttonEl = el}
+            onClick={this.onTimeSlotSelected}
           >
             {events.map(event => (
               <div
@@ -86,7 +89,8 @@ export default class CalendarAvailableTimes extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
-    events: PropTypes.array.isRequired
+    events: PropTypes.array.isRequired,
+    onTimeSlotSelected: PropTypes.func.isRequired
   };
 
   state = {
@@ -141,6 +145,7 @@ export default class CalendarAvailableTimes extends Component {
         {timeSlots.map((timeSlot, index) => (
           <TimeSlot
             key={index}
+            onTimeSlotSelected={this.props.onTimeSlotSelected}
             {...timeSlot}
           />
         ))}

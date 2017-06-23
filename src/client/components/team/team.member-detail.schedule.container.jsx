@@ -3,11 +3,16 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import CalendarAvailableTimes from '../calendar/calendar.available-times.container.jsx';
+import TeamMemberDetailScheduleTimeSlot from './team.member-detail.schedule-timeslot.component.jsx';
 
 class TeamMemberDetailSchedule extends Component {
   static propTypes = {
     closeFunc: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired
+  };
+
+  state = {
+    selectedTimeSlot: null
   };
 
   StartHr = 6;
@@ -16,10 +21,10 @@ class TeamMemberDetailSchedule extends Component {
 
   getLabel = momentObj => momentObj.format('ddd MMM DD, YYYY');
 
-  getIsPrevVisible = momentObj => momentObj.isAfter(moment());
+  getIsPrevVisible = momentObj => moment().hours() < this.EODHr ? momentObj.isAfter(moment()) : momentObj.isAfter(moment().add(1, 'day').hours(0).minutes(0));
 
   getIterateFunc = funcKey => () => {
-    const startTime = this.state.startTime.clone().hours(this.StartHr).minutes(0).seconds(0)[funcKey](1, 'day');
+    const startTime = this.state.startTime.clone().hours(this.StartHr).minutes(0).seconds(0).milliseconds(0)[funcKey](1, 'day');
     const endTime = startTime.clone().hours(this.EODHr);
     const label = this.getLabel(startTime);
     const isPrevVisible = this.getIsPrevVisible(startTime);
@@ -36,14 +41,18 @@ class TeamMemberDetailSchedule extends Component {
 
   onNextClick = this.getIterateFunc('add');
 
+  onTimeSlotSelected = selectedTimeSlot => this.setState({ selectedTimeSlot });
+
+  deselectTimeSlot = () => this.setState({ selectedTimeSlot: null });
+
   componentWillMount() {
     const now = moment();
-    const EODHr = 19;
+    const { EODHr, StartHr } = this;
     const isNowBeforeEOD = now.hours() < EODHr;
-    const startTime = isNowBeforeEOD ? now : moment({ hour: 6 }).add(1, 'day');
+    const startTime = isNowBeforeEOD ? now : moment({ hour: StartHr }).add(1, 'day');
     const endTime = isNowBeforeEOD ? moment({ hour: EODHr }) : moment({ hour: EODHr }).add(1, 'day');
-    const label = startTime.format('ddd MMM DD, YYYY');
-    const isPrevVisible = startTime.isAfter(now);
+    const label = this.getLabel(startTime);
+    const isPrevVisible = this.getIsPrevVisible(startTime);
 
     this.setState({
       startTime,
@@ -55,7 +64,7 @@ class TeamMemberDetailSchedule extends Component {
 
   render() {
     const { events } = this.props;
-    const { startTime, endTime, label, isPrevVisible } = this.state;
+    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot } = this.state;
 
     return (
       <section className="card">
@@ -69,29 +78,44 @@ class TeamMemberDetailSchedule extends Component {
             <i className="material-icons">close</i>
           </button>
         </header>
+        {selectedTimeSlot && <div className="card-padded-content">
+          <button
+            type="button"
+            className="btn-no-style btn-no-style-primary"
+            onClick={this.deselectTimeSlot}
+          >
+            <i className="material-icons">arrow_back</i> Back to date picker
+          </button>
+          <TeamMemberDetailScheduleTimeSlot
+            startTime={selectedTimeSlot}
+          />
+        </div>}
+        {!selectedTimeSlot &&
         <div className="card-padded-content">
           <span className="input-label">Choose an open meeting time</span>
-          <div>
+          <div className="available-times-nav">
             {isPrevVisible && <button
-              className="btn-no-style btn-no-style-primary"
+              className="btn-no-style btn-no-style-primary available-times-nav-prev-btn"
               onClick={this.onPrevClick}
             >
-              Prev
+              <i className="material-icons">chevron_left</i>Prev
             </button>}
             <span className="input-label">{label}</span>
             <button
-              className="btn-no-style btn-no-style-primary"
+              className="btn-no-style btn-no-style-primary available-times-nav-next-btn"
               onClick={this.onNextClick}
             >
-              Next
+              Next<i className="material-icons">chevron_right</i>
             </button>
           </div>
           <CalendarAvailableTimes
             startTime={startTime}
             endTime={endTime}
             events={events}
+            onTimeSlotSelected={this.onTimeSlotSelected}
           />
         </div>
+        }
       </section>
     );
   }
