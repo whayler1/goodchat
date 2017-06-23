@@ -58,6 +58,7 @@
     "react-facebook-login": "^3.4.1",
     "react-helmet": "^3.2.2",
     "react-input-autosize": "^1.1.0",
+    "react-input-mask": "^0.9.1",
     "react-markdown": "^2.5.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
