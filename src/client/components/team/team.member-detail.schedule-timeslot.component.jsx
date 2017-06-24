@@ -17,6 +17,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   timePlaceholder = "HH:MMam";
   timeFormatChars = {
     1: '[0-1]',
+    3: '[0-3]',
     5: '[0-5]',
     9: '[0-9]',
     p: '[a|p]',
@@ -25,43 +26,88 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
   componentWillMount() {
     const { startTime } = this.props;
+    const endTime = startTime.clone().add(30, 'minutes');
     this.setState({
-      startTime: startTime.clone().format('hh:mma'),
-      endTime: startTime.clone().add(1, 'hour').format('hh:mma')
+      startDate: startTime.format('MM/DD/YY'),
+      startTime: startTime.format('hh:mma'),
+      endTime: endTime.format('hh:mma'),
+      endDate: endTime.format('MM/DD/YY')
     });
   }
 
   render() {
-    const { startTime, endTime } = this.state;
+    const { startDate, startTime, endTime, endDate } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
 
     return (
       <form onSubmit={this.onSubmit} className="form gutter-top">
         <fieldset>
-          <label className="input-label" htmlFor="startTime">Start time</label>
-          <InputMask
-            className="form-control"
-            name="startTime"
-            id="startTime"
-            placeholder={timePlaceholder}
-            value={startTime}
-            onChange={this.onChange}
-            mask={timeMask}
-            formatChars={timeFormatChars}
-          />
+          <div className="schedule-timeslot-inputs">
+            <div className="schedule-timeslot-inputs-group">
+              <label className="input-label" htmlFor="startDate">Start Date</label>
+              <InputMask
+                className="form-control"
+                name="startDate"
+                id="startDate"
+                placeholder="MM/DD/YY"
+                value={startDate}
+                onChange={this.onChange}
+                mask="19/39/99"
+                formatChars={timeFormatChars}
+              />
+            </div>
+            <div className="schedule-timeslot-inputs-group">
+              <label className="input-label" htmlFor="startTime">Start time</label>
+              <InputMask
+                className="form-control"
+                name="startTime"
+                id="startTime"
+                placeholder={timePlaceholder}
+                value={startTime}
+                onChange={this.onChange}
+                mask={timeMask}
+                formatChars={timeFormatChars}
+              />
+            </div>
+            <div className="schedule-timeslot-inputs-group">
+              <label className="input-label" htmlFor="endTime">End time</label>
+              <InputMask
+                className="form-control"
+                name="endTime"
+                id="endTime"
+                placeholder={timePlaceholder}
+                value={endTime}
+                onChange={this.onChange}
+                mask={timeMask}
+                formatChars={timeFormatChars}
+              />
+            </div>
+            <div className="schedule-timeslot-inputs-group">
+              <label className="input-label" htmlFor="endDate">End date</label>
+              <InputMask
+                className="form-control"
+                name="endDate"
+                id="endDate"
+                placeholder="MM/DD/YY"
+                value={endDate}
+                onChange={this.onChange}
+                mask="19/39/99"
+                formatChars={timeFormatChars}
+              />
+            </div>
+          </div>
         </fieldset>
-        <fieldset>
-          <label className="input-label" htmlFor="endTime">End time</label>
-          <InputMask
-            className="form-control"
-            name="endTime"
-            id="endTime"
-            placeholder={timePlaceholder}
-            value={endTime}
-            onChange={this.onChange}
-            mask={timeMask}
-            formatChars={timeFormatChars}
-          />
+        <fieldset className="align-right">
+          <ul className="stacked-to-inline-list">
+            <li>
+              <button
+                type="submit"
+                className="btn-primary"
+              >
+                Create meeting
+              </button>
+            </li>
+          </ul>
         </fieldset>
       </form>
     );

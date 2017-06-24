@@ -956,3 +956,31 @@ p.main-team-set-questions-footnote {
   right: 0;
   top: 0;
 }
+
+.schedule-timeslot-table {
+
+
+}
+
+.schedule-timeslot-inputs {
+  @media(min-width: @tablet-width) {
+    display: table;
+    table-layout: auto;
+    border-spacing: @half-gutter;
+    margin-left: -@half-gutter;
+    margin-right: -@half-gutter;
+  }
+}
+
+.schedule-timeslot-inputs-group {
+  +.schedule-timeslot-inputs-group {
+    margin-top: @gutter;
+  }
+  @media(min-width: @tablet-width) {
+    display: table-cell;
+    vertical-align: middle;
+    +.schedule-timeslot-inputs-group {
+      margin-top: 0;
+    }
+  }
+}
