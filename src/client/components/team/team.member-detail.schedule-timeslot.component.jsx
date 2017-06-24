@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import InputMask from 'react-input-mask';
 
+import moment from 'moment';
+
 export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
@@ -12,14 +14,30 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     meetingGroupId: PropTypes.string.isRequired
   };
 
+  getMoment = (date, time) => {
+    const timeSplit = time.split(':');
+    const isPm = timeSplit[1].search(/p/) > -1;
+    const hour = isPm ? Number(timeSplit[0]) + 12 : timeSplit[0];
+    const minutes = timeSplit[1].substr(0,2);
+
+    return moment(date).hours(hour).minutes(minutes);
+  }
+
   onSubmit = e => {
     e.preventDefault();
     const { guest, givenName, familyName, teamId, meetingGroupId } = this.props;
+    const { startDate, startTime, endDate, endTime } = this.state;
+
+    const startDateMoment = this.getMoment(startDate, startTime);
+    const endDateMoment = this.getMoment(endDate, endTime);
 
     const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
     const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
+    const startDateTime = startDateMoment.format('YYYY-MM-DDThh:mm:00');
+    const endDateTime = '';
+    const timeZone = '';
 
-    console.log('summary', summary, '\n\ndescription', description);
+    console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime);
 
     return false;
   }
