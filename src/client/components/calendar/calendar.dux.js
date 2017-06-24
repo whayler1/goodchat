@@ -22,6 +22,23 @@ export const getEvents = () => dispatch => new Promise((resolve, reject) =>
     resolve();
   }));
 
+export const createEvent = (summary, description, startDateTime, endDateTime, timeZone) => dispatch => new Promise((resolve, reject) =>
+  gapi.client.calendar.events.insert({
+    calendarId: 'primary',
+    resource: {
+      summary,
+      description,
+      start: {
+        dateTime: startDateTime,
+        timeZone
+      },
+      end: {
+        dateTime: endDateTime,
+        timeZone
+      }
+    }
+  }));
+
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SET_EVENT_LIST:

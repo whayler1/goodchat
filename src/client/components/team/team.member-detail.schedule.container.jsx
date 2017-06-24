@@ -5,10 +5,18 @@ import moment from 'moment';
 import CalendarAvailableTimes from '../calendar/calendar.available-times.container.jsx';
 import TeamMemberDetailScheduleTimeSlot from './team.member-detail.schedule-timeslot.component.jsx';
 
+import { createEvent } from '../calendar/calendar.dux.js';
+
 class TeamMemberDetailSchedule extends Component {
   static propTypes = {
     closeFunc: PropTypes.func.isRequired,
-    events: PropTypes.array.isRequired
+    events: PropTypes.array.isRequired,
+    createEvent: PropTypes.func.isRequired,
+    guest: PropTypes.object.isRequired,
+    givenName: PropTypes.string.isRequired,
+    familyName: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
+    meetingGroupId: PropTypes.string.isRequired
   };
 
   state = {
@@ -63,7 +71,7 @@ class TeamMemberDetailSchedule extends Component {
   }
 
   render() {
-    const { events } = this.props;
+    const { events, teamId, meetingGroupId, givenName, familyName } = this.props;
     const { startTime, endTime, label, isPrevVisible, selectedTimeSlot } = this.state;
 
     return (
@@ -88,6 +96,12 @@ class TeamMemberDetailSchedule extends Component {
           </button>
           <TeamMemberDetailScheduleTimeSlot
             startTime={selectedTimeSlot}
+            createEvent={this.props.createEvent}
+            guest={this.props.guest}
+            givenName={givenName}
+            familyName={familyName}
+            teamId={teamId}
+            meetingGroupId={meetingGroupId}
           />
         </div>}
         {!selectedTimeSlot &&
@@ -123,6 +137,11 @@ class TeamMemberDetailSchedule extends Component {
 
 export default connect(
   state => ({
-    events: state.calendar.events
-  })
+    events: state.calendar.events,
+    givenName: state.user.givenName,
+    familyName: state.user.familyName
+  }),
+  {
+    createEvent
+  }
 )(TeamMemberDetailSchedule);

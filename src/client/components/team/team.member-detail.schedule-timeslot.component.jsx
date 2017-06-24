@@ -3,11 +3,24 @@ import InputMask from 'react-input-mask';
 
 export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
-    startTime: PropTypes.object.isRequired
+    startTime: PropTypes.object.isRequired,
+    createEvent: PropTypes.func.isRequired,
+    guest: PropTypes.object.isRequired,
+    givenName: PropTypes.string.isRequired,
+    familyName: PropTypes.string.isRequired,
+    teamId: PropTypes.string.isRequired,
+    meetingGroupId: PropTypes.string.isRequired
   };
 
   onSubmit = e => {
     e.preventDefault();
+    const { guest, givenName, familyName, teamId, meetingGroupId } = this.props;
+
+    const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
+    const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
+
+    console.log('summary', summary, '\n\ndescription', description);
+
     return false;
   }
 
@@ -38,6 +51,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   render() {
     const { startDate, startTime, endTime, endDate } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
+
+    console.log('%c guest', 'background:aqua', this.props.guest);
 
     return (
       <form onSubmit={this.onSubmit} className="form gutter-top">

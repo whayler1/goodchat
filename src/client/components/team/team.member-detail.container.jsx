@@ -169,6 +169,7 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
+    console.log('PROPS', this.props);
     const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
@@ -184,15 +185,18 @@ class TeamMemberDetail extends Component {
 
     return (
       <div>
+        <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
         {isScheduleMeetingSelected &&
         <Modal
           closeFunc={this.toggleScheduleMeetingSelected}
         >
           <TeamMemberDetailSchedule
             closeFunc={this.toggleScheduleMeetingSelected}
+            guest={member}
+            teamId={team.id}
+            meetingGroupId={this.props.params.meetingGroupId}
           />
         </Modal>}
-        <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
         <header className="page-header">
           <Link to={`teams/${team.id}`} className="page-header-back-link">
             <i className="material-icons">chevron_left</i><span>{team.name}</span>
