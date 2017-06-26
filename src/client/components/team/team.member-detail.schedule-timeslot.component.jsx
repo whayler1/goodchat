@@ -35,10 +35,16 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     const endDateTime = this.getDateTime(endDate, endTime);
     const timeZone = moment.tz.guess();
 
+    const options = {
+      attendees: [
+        { email: guest.email }
+      ]
+    };
+
     console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime,
       '\n\nendDateTime', endDateTime, '\n\n timeZone', timeZone);
 
-    createEvent(summary, description, startDateTime, endDateTime, timeZone);
+    createEvent(summary, description, startDateTime, endDateTime, timeZone, options);
 
     return false;
   }

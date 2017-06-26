@@ -22,10 +22,12 @@ export const getEvents = () => dispatch => new Promise((resolve, reject) =>
     resolve();
   }));
 
-export const createEvent = (summary, description, startDateTime, endDateTime, timeZone) => dispatch => new Promise((resolve, reject) =>
+export const createEvent = (summary, description, startDateTime, endDateTime, timeZone, options) => dispatch => new Promise((resolve, reject) =>
   gapi.client.calendar.events.insert({
     calendarId: 'primary',
+    sendNotifications: true,
     resource: {
+      ...options,
       summary,
       description,
       start: {
