@@ -37,7 +37,16 @@ export const createEvent = (summary, description, startDateTime, endDateTime, ti
         timeZone
       }
     }
-  }));
+  }).then(
+    res => {
+      console.log('createEvent success', res);
+      resolve();
+    },
+    err => {
+      console.log('createEvent err', err);
+      reject()
+    }
+  ));
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {

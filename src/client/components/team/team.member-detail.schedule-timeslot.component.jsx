@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import InputMask from 'react-input-mask';
 
 import moment from 'moment';
+import momentTz from 'moment-timezone';
 
 export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
@@ -14,30 +15,30 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     meetingGroupId: PropTypes.string.isRequired
   };
 
-  getMoment = (date, time) => {
+  getDateTime = (date, time) => {
     const timeSplit = time.split(':');
     const isPm = timeSplit[1].search(/p/) > -1;
     const hour = isPm ? Number(timeSplit[0]) + 12 : timeSplit[0];
     const minutes = timeSplit[1].substr(0,2);
 
-    return moment(date).hours(hour).minutes(minutes);
+    return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDThh:mm:00');
   }
 
   onSubmit = e => {
     e.preventDefault();
-    const { guest, givenName, familyName, teamId, meetingGroupId } = this.props;
+    const { guest, givenName, familyName, teamId, meetingGroupId, createEvent } = this.props;
     const { startDate, startTime, endDate, endTime } = this.state;
-
-    const startDateMoment = this.getMoment(startDate, startTime);
-    const endDateMoment = this.getMoment(endDate, endTime);
 
     const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
     const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
-    const startDateTime = startDateMoment.format('YYYY-MM-DDThh:mm:00');
-    const endDateTime = '';
-    const timeZone = '';
+    const startDateTime = this.getDateTime(startDate, startTime);
+    const endDateTime = this.getDateTime(endDate, endTime);
+    const timeZone = moment.tz.guess();
 
-    console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime);
+    console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime,
+      '\n\nendDateTime', endDateTime, '\n\n timeZone', timeZone);
+
+    createEvent(summary, description, startDateTime, endDateTime, timeZone);
 
     return false;
   }
