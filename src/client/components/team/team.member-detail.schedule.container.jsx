@@ -12,6 +12,7 @@ class TeamMemberDetailSchedule extends Component {
     closeFunc: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired,
     createEvent: PropTypes.func.isRequired,
+    onScheduleSubmit: PropTypes.func.isRequired,
     guest: PropTypes.object.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
@@ -97,6 +98,7 @@ class TeamMemberDetailSchedule extends Component {
           <TeamMemberDetailScheduleTimeSlot
             startTime={selectedTimeSlot}
             createEvent={this.props.createEvent}
+            onScheduleSubmit={this.props.onScheduleSubmit}
             guest={this.props.guest}
             givenName={givenName}
             familyName={familyName}

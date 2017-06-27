@@ -62,7 +62,7 @@ class TeamMemberDetail extends Component {
 
   getMeetings = () => this.props.getMeetings(this.props.team.id, this.props.params.meetingGroupId);
 
-  submit = () => {
+  submit = () => new Promise((resolve, reject) => {
     const { team, createMeeting, params } = this.props;
     const {
       question1,
@@ -92,12 +92,15 @@ class TeamMemberDetail extends Component {
 
     createMeeting(team.id, params.meetingGroupId, sendObj).then(
       () => {
-        this.getMeetings();
+        this.getMeetings().then(() => resolve());
         this.props.updateTeamMembers(team.id);
       },
-      err => console.log('error creating team')
+      err => {
+        console.log('error creating team');
+        reject()
+      }
     );
-  }
+  })
 
   onSubmit = e => {
     e.preventDefault();
@@ -115,6 +118,9 @@ class TeamMemberDetail extends Component {
 
     return false;
   }
+
+  onScheduleSubmit = newMeetingDateTime => this.setState({ newMeetingDateTime },
+    () => this.submit().then(() => this.setState({ isScheduleMeetingSelected: false })));
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
     analytics.track('start-meeting-now', {
@@ -195,6 +201,7 @@ class TeamMemberDetail extends Component {
             guest={member}
             teamId={team.id}
             meetingGroupId={this.props.params.meetingGroupId}
+            onScheduleSubmit={this.onScheduleSubmit}
           />
         </Modal>}
         <header className="page-header">

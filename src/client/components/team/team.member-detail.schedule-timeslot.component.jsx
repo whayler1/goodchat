@@ -8,6 +8,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
     createEvent: PropTypes.func.isRequired,
+    onScheduleSubmit: PropTypes.func.isRequired,
     guest: PropTypes.object.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
@@ -26,7 +27,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { guest, givenName, familyName, teamId, meetingGroupId, createEvent } = this.props;
+    const { guest, givenName, familyName, teamId, meetingGroupId,
+      createEvent, onScheduleSubmit } = this.props;
     const { startDate, startTime, endDate, endTime } = this.state;
 
     const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
@@ -44,7 +46,10 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime,
       '\n\nendDateTime', endDateTime, '\n\n timeZone', timeZone);
 
-    createEvent(summary, description, startDateTime, endDateTime, timeZone, options);
+    createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
+      () => onScheduleSubmit(startDateTime),
+      () => this.setState({ isCreateEventError: true })
+    );
 
     return false;
   }
@@ -76,8 +81,6 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   render() {
     const { startDate, startTime, endTime, endDate } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
-
-    console.log('%c guest', 'background:aqua', this.props.guest);
 
     return (
       <form onSubmit={this.onSubmit} className="form gutter-top">
