@@ -43,13 +43,11 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       ]
     };
 
-    console.log('summary', summary, '\n\ndescription', description, '\n\nstartDateTime', startDateTime,
-      '\n\nendDateTime', endDateTime, '\n\n timeZone', timeZone);
-
-    createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
-      () => onScheduleSubmit(startDateTime),
-      () => this.setState({ isCreateEventError: true })
-    );
+    this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+      createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
+        () => onScheduleSubmit(startDateTime),
+        () => this.setState({ isCreateEventError: true, isInFlight: false })
+      ));
 
     return false;
   }
@@ -79,7 +77,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   }
 
   render() {
-    const { startDate, startTime, endTime, endDate } = this.state;
+    const { startDate, startTime, endTime, endDate, isInFlight, isCreateEventError } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
 
     return (
@@ -146,11 +144,13 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
               <button
                 type="submit"
                 className="btn-primary"
+                disabled={isInFlight}
               >
-                Create meeting
+                {isInFlight ? 'Creating...' : 'Create meeting'}
               </button>
             </li>
           </ul>
+          {isCreateEventError && <p className="danger-text">There was an error creating this meeting. If the problem persists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
         </fieldset>
       </form>
     );

@@ -6,6 +6,7 @@ const defaultState = {
 };
 
 const SET_EVENT_LIST = 'calendar/event-list';
+const ADD_EVENT = 'calendar/add-event';
 
 export const getEvents = () => dispatch => new Promise((resolve, reject) =>
   gapi.client.calendar.events.list({
@@ -42,6 +43,10 @@ export const createEvent = (summary, description, startDateTime, endDateTime, ti
   }).then(
     res => {
       console.log('createEvent success', res);
+      dispatch({
+        type: ADD_EVENT,
+        event: res.result
+      });
       resolve();
     },
     err => {
@@ -56,6 +61,14 @@ export default function reducer(state = defaultState, action) {
     return {
       ...state,
       events: action.events
+    }
+    case ADD_EVENT:
+    return {
+      ...state,
+      events: [
+        ...state.events,
+        action.event
+      ]
     }
     default:
     return state;
