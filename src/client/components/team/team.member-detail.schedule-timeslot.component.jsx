@@ -45,7 +45,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
     this.setState({ isCreateEventError: false, isInFlight: true }, () =>
       createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
-        () => onScheduleSubmit(startDateTime),
+        event => onScheduleSubmit(startDateTime, event.id),
         () => this.setState({ isCreateEventError: true, isInFlight: false })
       ));
 

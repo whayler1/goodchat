@@ -79,13 +79,15 @@ class TeamMemberDetailSchedule extends Component {
       <section className="card">
         <header className="card-header">
           <h3>Schedule meeting</h3>
-          <button
-            type="button"
-            className="card-header-close btn-no-style"
-            onClick={this.props.closeFunc}
-          >
-            <i className="material-icons">close</i>
-          </button>
+          <div className="card-header-close">
+            <button
+              type="button"
+              className="btn-no-style"
+              onClick={this.props.closeFunc}
+            >
+              <i className="material-icons">close</i>
+            </button>
+          </div>
         </header>
         {selectedTimeSlot && <div className="card-padded-content">
           <button

@@ -72,11 +72,16 @@ class TeamMemberDetail extends Component {
       question5
     } = team;
     const {
-      newMeetingDateTime
+      newMeetingDateTime,
+      googleCalendarEventId
     } = this.state;
 
     const meeting_date = moment(newMeetingDateTime).toISOString();
     const sendObj = { meeting_date };
+
+    if (googleCalendarEventId) {
+      Object.assign(sendObj, { google_calendar_event_id: googleCalendarEventId });
+    }
 
     if (team.is_admin || team.is_owner) {
       Object.assign(sendObj, {
@@ -96,7 +101,7 @@ class TeamMemberDetail extends Component {
         this.props.updateTeamMembers(team.id);
       },
       err => {
-        console.log('error creating team');
+        console.log('error creating meeting');
         reject()
       }
     );
@@ -119,8 +124,9 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
-  onScheduleSubmit = newMeetingDateTime => this.setState({ newMeetingDateTime },
-    () => this.submit().then(() => this.setState({ isScheduleMeetingSelected: false })));
+  onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId) =>
+    this.setState({ newMeetingDateTime, googleCalendarEventId }, () =>
+      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null })));
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
     analytics.track('start-meeting-now', {

@@ -200,7 +200,8 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
     answer5,
     is_done,
     meeting_date,
-    qa_length
+    qa_length,
+    google_calendar_event_id
   } = req.body;
 
   const host_id = req.user.id;
@@ -232,7 +233,8 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
       answer5,
       is_done,
       meeting_date,
-      qa_length
+      qa_length,
+      google_calendar_event_id
     },
     _.isNil);
 

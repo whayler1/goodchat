@@ -43,11 +43,12 @@ export const createEvent = (summary, description, startDateTime, endDateTime, ti
   }).then(
     res => {
       console.log('createEvent success', res);
+      const event = res.result;
       dispatch({
         type: ADD_EVENT,
-        event: res.result
+        event
       });
-      resolve();
+      resolve(event);
     },
     err => {
       console.log('createEvent err', err);
