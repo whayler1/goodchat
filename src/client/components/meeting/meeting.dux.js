@@ -14,8 +14,8 @@ const ADD_TODO = 'meeting/add-todo';
 const UPDATE_TODO = 'meeting/update-todo';
 const DELETE_TODO = 'meeting/delete-todo';
 
-export const sendMeetingInvite = (teamId, meetingGroupId, meetingId) => dispatch =>
-  new Promise((resolve, reject) => superagent.post(`team/${teamId}/meeting/${meetingGroupId}/invite/${meetingId}`)
+export const sendMeetingInvite = (teamId, meetingGroupId, meetingId, isEmailSuppressed) => dispatch =>
+  new Promise((resolve, reject) => superagent.post(`team/${teamId}/meeting/${meetingGroupId}/invite/${meetingId}${isEmailSuppressed ? '?isEmailSuppressed=true' : ''}`)
   .end((err, res) => {
     if (err) {
       reject();
@@ -35,7 +35,7 @@ export const completeMeeting = meetingId => dispatch => new Promise((resolve, re
       reject(res);
     } else {
       const { meeting } = res.body;
-      analytics.track('complete-meeting', {
+      window.analytics.track('complete-meeting', {
         category: 'meeting',
         meetingId
       })

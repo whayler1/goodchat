@@ -7,6 +7,7 @@ const defaultState = {
 
 const SET_EVENT_LIST = 'calendar/event-list';
 const ADD_EVENT = 'calendar/add-event';
+const SEND_EVENT_NOTIFICATION = 'calendar/send-event-notification';
 
 export const getEvents = () => dispatch => new Promise((resolve, reject) =>
   gapi.client.calendar.events.list({
@@ -52,9 +53,26 @@ export const createEvent = (summary, description, startDateTime, endDateTime, ti
     },
     err => {
       console.log('createEvent err', err);
-      reject()
+      reject();
     }
   ));
+
+// export const sendEventNotification = eventId => (dispatch, getState) => new Promise((resolve, reject) =>
+//   gapi.client.calendar.events.update({
+//     calendarId: 'primary',
+//     eventId,
+//     sendNotifications: true,
+//     resource: getState().calendar.events.find(event => event.id === eventId)
+//   }).then(
+//     res => {
+//       console.log('sendEventNotification success', res);
+//       resolve();
+//     },
+//     err => {
+//       console.log('sendEventNotification error', err);
+//       reject();
+//     }
+//   ));
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {

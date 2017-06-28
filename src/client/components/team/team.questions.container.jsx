@@ -47,7 +47,7 @@ class TeamQuestions extends Component {
     this.props.updateTeam(teamId, _.pick(this.state, [1,2,3,4,5].map(n => `question${n}`)))
       .then(res => {
         this.setState({ isInFlight: false })
-        analytics.track('questions-set', {
+        window.analytics.track('questions-set', {
           category: 'team',
           teamId
         });
@@ -134,7 +134,7 @@ class TeamQuestions extends Component {
       >
         {(() => {
           const { isInFlight } = this.state;
-          
+
           if (this.props.shouldShowSaveUI) {
             if (typeof isInFlight === 'boolean') {
               if (isInFlight) {

@@ -112,7 +112,7 @@ class TeamMemberDetail extends Component {
 
     this.validate().then(
       () => {
-        analytics.track('schedule-meeting', {
+        window.analytics.track('schedule-meeting', {
           category: 'meeting',
           teamId: this.props.team.id
         });
@@ -129,7 +129,7 @@ class TeamMemberDetail extends Component {
       this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null })));
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
-    analytics.track('start-meeting-now', {
+    window.analytics.track('start-meeting-now', {
       category: 'meeting',
       teamId: this.props.team.id
     });
@@ -139,8 +139,8 @@ class TeamMemberDetail extends Component {
   modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
 
   updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
-      () => analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
-      () => analytics.track('update-todo-error')
+      () => window.analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
+      () => window.analytics.track('update-todo-error')
     ), 750);
 
   onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone }, () => this.updateTodo(todoId, { is_done: isDone }));

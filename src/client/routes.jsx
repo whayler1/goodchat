@@ -159,7 +159,7 @@ class Routes extends Component {
       }
       hash = hash.replace(/[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}/g, ':uuid');
     }
-    analytics.page(hash);
+    window.analytics.page(hash);
   }, 500);
 
   render() {

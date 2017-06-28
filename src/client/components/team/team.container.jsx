@@ -51,7 +51,7 @@ class Team extends Component {
       superagent.delete(`team/${this.props.params.teamId}`)
       .then(
         res => {
-          analytics.track('delete-team', {
+          window.analytics.track('delete-team', {
             category: 'team',
             teamId: this.props.params.teamId
           });
@@ -72,7 +72,7 @@ class Team extends Component {
       .send({ name })
       .then(
         res => {
-          analytics.track('set-team-name', {
+          window.analytics.track('set-team-name', {
             category: 'team',
             teamId: this.props.team.id
           });

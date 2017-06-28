@@ -38,7 +38,7 @@ export const setLoggedIn = idToken => (dispatch) => new Promise((resolve, reject
           imageUrl: picture
         });
         resolve();
-        analytics.identify(id, {
+        window.analytics.identify(id, {
           name: `${given_name} ${family_name}`,
           firstName: given_name,
           lastName: family_name,
