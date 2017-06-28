@@ -1,6 +1,8 @@
 import superagent from 'superagent';
 import moment from 'moment';
 
+import { deleteEvent } from '../calendar/calendar.dux.js';
+
 const defaultState = {
   meetings: [],
   meetingGroup: {},
@@ -77,17 +79,31 @@ export const updateMeeting = (meetingId, updateObj) => dispatch => new Promise((
     }
   }));
 
-export const deleteMeeting = id => dispatch => new Promise(
+export const deleteMeeting = id => (dispatch, getState) => new Promise(
   (resolve, reject) => superagent.delete(`meeting/${ id }`)
   .end((err, res) => {
     if (err) {
       reject(res);
     } else {
-      dispatch({
-        type: DELETE_MEETING,
-        id
-      });
-      resolve();
+      const meeting = getState().meeting.meetings.find(meeting => meeting.id === id);
+      if ('google_calendar_event_id' in meeting) {
+        dispatch(deleteEvent(meeting.google_calendar_event_id)).then(
+          () => {
+            dispatch({
+              type: DELETE_MEETING,
+              id
+            });
+            resolve();
+          },
+          reject
+        );
+      } else {
+        dispatch({
+          type: DELETE_MEETING,
+          id
+        });
+        resolve();
+      }
     }
   })
 );
