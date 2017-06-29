@@ -16,6 +16,7 @@ import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo,
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
+import { updateEvent } from '../calendar/calendar.dux.js';
 
 class TeamMemberDetailMeeting extends Component {
   static propTypes = {
@@ -40,9 +41,11 @@ class TeamMemberDetailMeeting extends Component {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     sendMeetingInvite: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
-    todoStates: PropTypes.object.isRequired
+    todoStates: PropTypes.object.isRequired,
+    events: PropTypes.array.isRequired
   };
 
   state = {
@@ -97,7 +100,22 @@ class TeamMemberDetailMeeting extends Component {
     const { is_invite_sent, google_calendar_event_id } = this.props.meeting;
     const { onInviteError, onInviteSuccess } = this;
 
-    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(onInviteSuccess, onInviteError);
+    const isEmailSuppressed = _.isString(google_calendar_event_id);
+
+    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id, isEmailSuppressed).then(
+      () => {
+        if (isEmailSuppressed) {
+          const event = this.props.events.find(event => event.id === google_calendar_event_id);
+          console.log('%c event', 'background:pink', event);
+          const description = `You have a new meeting on Good Chat. Follow the link below to fill out your answers before the meeting:
+${event.summary}`;
+          this.props.updateEvent(google_calendar_event_id, { description }, true).then(onInviteSuccess, onInviteError);
+        } else {
+          onInviteSuccess();
+        }
+      },
+      onInviteError
+    );
   });
 
   submit = _.debounce(() => {
@@ -568,7 +586,8 @@ export default connect (
   state => ({
     userId: state.user.id,
     teamId: state.team.team.id,
-    meetingGroupId: state.meeting.meetingGroup.id
+    meetingGroupId: state.meeting.meetingGroup.id,
+    events: state.calendar.events
   }),
   {
     updateMeeting,
@@ -581,6 +600,7 @@ export default connect (
     createTodo,
     updateTodo,
     deleteTodo,
-    sendMeetingInvite
+    sendMeetingInvite,
+    updateEvent
   }
 )(TeamMemberDetailMeeting);
