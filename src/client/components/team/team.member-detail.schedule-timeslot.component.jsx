@@ -25,32 +25,50 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDThh:mm:00');
   }
 
-  onSubmit = e => {
-    e.preventDefault();
-    const { guest, givenName, familyName, teamId, meetingGroupId,
-      createEvent, onScheduleSubmit } = this.props;
+  validate = () => new Promise((resolve, reject) => {
+    let isValid = true;
     const { startDate, startTime, endDate, endTime } = this.state;
-
-    const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
-    const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
-    const startDateTime = this.getDateTime(startDate, startTime);
-    const endDateTime = this.getDateTime(endDate, endTime);
-    const timeZone = moment.tz.guess();
-
-    const options = {
-      attendees: [
-        { email: guest.email }
-      ]
+    const stateObj = {
+      isEndDateBeforeStart: false
     };
 
-    this.setState({ isCreateEventError: false, isInFlight: true }, () =>
-      createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
-        event => onScheduleSubmit(startDateTime, event.id),
-        () => this.setState({ isCreateEventError: true, isInFlight: false })
-      ));
+    if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
+      stateObj.isEndDateBeforeStart = true;
+      isValid = false;
+    }
 
+    this.setState(stateObj, () => isValid ? resolve() : reject());
+  });
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    this.validate().then(() => {
+      const { guest, givenName, familyName, teamId, meetingGroupId,
+        createEvent, onScheduleSubmit } = this.props;
+      const { startDate, startTime, endDate, endTime } = this.state;
+
+      const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
+      const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
+      const startDateTime = this.getDateTime(startDate, startTime);
+      const endDateTime = this.getDateTime(endDate, endTime);
+      const timeZone = moment.tz.guess();
+
+      const options = {
+        attendees: [
+          { email: guest.email }
+        ]
+      };
+
+      this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+        createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
+          event => onScheduleSubmit(startDateTime, event.id),
+          () => this.setState({ isCreateEventError: true, isInFlight: false })
+        ));
+
+    });
     return false;
-  }
+  };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -77,7 +95,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   }
 
   render() {
-    const { startDate, startTime, endTime, endDate, isInFlight, isCreateEventError } = this.state;
+    const { startDate, startTime, endTime, endDate, isInFlight,
+      isCreateEventError, isEndDateBeforeStart } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
 
     return (
@@ -138,6 +157,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
             </div>
           </div>
         </fieldset>
+        {isEndDateBeforeStart && <p className="danger-text">Start date and time must be after end date and time</p>}
         <fieldset className="align-right">
           <ul className="stacked-to-inline-list">
             <li>

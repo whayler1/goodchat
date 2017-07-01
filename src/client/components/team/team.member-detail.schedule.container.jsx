@@ -148,8 +148,10 @@ class TeamMemberDetailSchedule extends Component {
               selected={startTime}
               minDate={this.now}
               onChange={this.onDateSelected}
+              onBlur={this.hideDatePicker}
               placeholderText="MM/DD/YYYY"
               calendarClassName="date-picker-calendar"
+              className="form-control date-picker-calendar-form-control"
             />}
             <button
               className="btn-no-style btn-no-style-primary available-times-nav-next-btn"
