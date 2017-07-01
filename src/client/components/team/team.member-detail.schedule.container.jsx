@@ -4,6 +4,9 @@ import moment from 'moment';
 
 import CalendarAvailableTimes from '../calendar/calendar.available-times.container.jsx';
 import TeamMemberDetailScheduleTimeSlot from './team.member-detail.schedule-timeslot.component.jsx';
+import DatePicker from 'react-datepicker';
+
+import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
 
 import { createEvent } from '../calendar/calendar.dux.js';
 
@@ -23,6 +26,8 @@ class TeamMemberDetailSchedule extends Component {
   state = {
     selectedTimeSlot: null
   };
+
+  now = moment();
 
   StartHr = 6;
 
@@ -54,6 +59,18 @@ class TeamMemberDetailSchedule extends Component {
 
   deselectTimeSlot = () => this.setState({ selectedTimeSlot: null });
 
+  showDatePicker = () => this.setState({ isDatePickerVisible: true });
+
+  hideDatePicker = () => this.setState({ isDatePickerVisible: false });
+
+  onDateSelected = date => this.setState({
+    startTime: date.clone().hours(this.StartHr).minutes(0).seconds(0).milliseconds(0),
+    endTime: date.clone().hours(this.EODHr),
+    label: this.getLabel(date),
+    isPrevVisible: this.getIsPrevVisible(date),
+    isDatePickerVisible: false
+  });
+
   componentWillMount() {
     const now = moment();
     const { EODHr, StartHr } = this;
@@ -73,7 +90,7 @@ class TeamMemberDetailSchedule extends Component {
 
   render() {
     const { events, teamId, meetingGroupId, givenName, familyName } = this.props;
-    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot } = this.state;
+    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot, isDatePickerVisible } = this.state;
 
     return (
       <section className="card">
@@ -118,7 +135,22 @@ class TeamMemberDetailSchedule extends Component {
             >
               <i className="material-icons">chevron_left</i>Prev
             </button>}
-            <span className="input-label">{label}</span>
+            {!isDatePickerVisible &&
+            <button
+              type="button"
+              onClick={this.showDatePicker}
+              className="btn-no-style btn-no-style-secondary"
+            >
+              {label}
+            </button>}
+            {isDatePickerVisible &&
+            <DatePicker
+              selected={startTime}
+              minDate={this.now}
+              onChange={this.onDateSelected}
+              placeholderText="MM/DD/YYYY"
+              calendarClassName="date-picker-calendar"
+            />}
             <button
               className="btn-no-style btn-no-style-primary available-times-nav-next-btn"
               onClick={this.onNextClick}

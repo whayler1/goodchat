@@ -258,53 +258,6 @@ class TeamMemberDetail extends Component {
                     </div>
                   </div>
                   <form className="form" onSubmit={this.onSubmit}>
-                    {isScheduleMeetingSelected && [
-                    <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
-                      <label
-                        htmlFor="newMeetingDateTime"
-                        className="input-label"
-                      >Meeting date and time</label>
-                      <input
-                        type="datetime-local"
-                        className="form-control"
-                        id="newMeetingDateTime"
-                        name="newMeetingDateTime"
-                        value={newMeetingDateTime}
-                        onChange={this.onChange}
-                        autoFocus
-                      />
-                      {newMeetingDateTimeError &&
-                      <p className="input-error-msg">
-                        {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
-                        {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
-                      </p>
-                      }
-                    </fieldset>,
-                    <fieldset className="align-right">
-                      <ul className="stacked-to-inline-list">
-                        <li className="hide-handheld">
-                          <button
-                            type="button"
-                            className="btn-no-style btn-no-style-secondary"
-                            onClick={() => this.setState({ isScheduleMeetingSelected: false })}
-                          >Cancel</button>
-                        </li>
-                        <li>
-                          <button
-                            type="submit"
-                            className="btn-primary btn-block"
-                          >Schedule meeting</button>
-                        </li>
-                        <li className="hide-tablet">
-                          <button
-                            type="button"
-                            className="btn-no-style btn-no-style-secondary"
-                            onClick={() => this.setState({ isScheduleMeetingSelected: false })}
-                          >Cancel</button>
-                        </li>
-                      </ul>
-                    </fieldset>]}
-                    {!isScheduleMeetingSelected &&
                     <fieldset className="align-right">
                       <ul className="stacked-to-inline-list">
                         <li>
@@ -328,7 +281,6 @@ class TeamMemberDetail extends Component {
                         </li>
                       </ul>
                     </fieldset>
-                    }
                   </form>
                 </div>
                 }
