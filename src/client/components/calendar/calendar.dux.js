@@ -28,7 +28,6 @@ export const getEvents = () => dispatch => new Promise((resolve, reject) =>
 export const createEvent = (summary, description, startDateTime, endDateTime, timeZone, options) => dispatch => new Promise((resolve, reject) =>
   gapi.client.calendar.events.insert({
     calendarId: 'primary',
-    sendNotifications: true,
     resource: {
       ...options,
       summary,
@@ -44,7 +43,6 @@ export const createEvent = (summary, description, startDateTime, endDateTime, ti
     }
   }).then(
     res => {
-      console.log('createEvent success', res);
       const event = res.result;
       dispatch({
         type: ADD_EVENT,
@@ -66,7 +64,6 @@ export const updateEvent = (eventId, resource, sendNotifications) => (dispatch, 
     resource: Object.assign({}, getState().calendar.events.find(event => event.id === eventId), resource)
   }).then(
     res => {
-      console.log('updateEvent success', res);
       const event = res.result;
       dispatch({
         type: UPDATE_EVENT,

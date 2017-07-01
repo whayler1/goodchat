@@ -100,15 +100,15 @@ class TeamMemberDetailMeeting extends Component {
     const { is_invite_sent, google_calendar_event_id } = this.props.meeting;
     const { onInviteError, onInviteSuccess } = this;
 
-    const isEmailSuppressed = _.isString(google_calendar_event_id);
+    const isEmailSuppressed = !is_invite_sent && _.isString(google_calendar_event_id);
 
     this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id, isEmailSuppressed).then(
       () => {
         if (isEmailSuppressed) {
           const event = this.props.events.find(event => event.id === google_calendar_event_id);
           console.log('%c event', 'background:pink', event);
-          const description = `You have a new meeting on Good Chat. Follow the link below to fill out your answers before the meeting:
-${event.summary}`;
+          const description = `You have a meeting on Good Chat. Follow the link below to fill out your answers before the meeting:
+${event.description}`;
           this.props.updateEvent(google_calendar_event_id, { description }, true).then(onInviteSuccess, onInviteError);
         } else {
           onInviteSuccess();

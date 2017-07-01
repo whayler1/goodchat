@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
+import { getEvents } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -36,6 +37,8 @@ class TeamMemberDetail extends Component {
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    getEvents: PropTypes.func.isRequired,
+    events: PropTypes.array.isRequired
   }
 
   state = {
@@ -166,11 +169,15 @@ class TeamMemberDetail extends Component {
   }
 
   componentWillMount = () => {
-    const { meetingGroup, userId, members, todos } = this.props;
+    const { meetingGroup, userId, members, todos, events, getEvents } = this.props;
     const memberId = meetingGroup.memberships.find(membership => membership.user_id !== userId).user_id;
     const member = members.find(member => member.id === memberId);
 
     const stateObj = { member };
+
+    if (!events.length) {
+      getEvents();
+    }
 
     todos.forEach(todo => {
       stateObj[`todo-isdone-${todo.id}`] = todo.is_done;
@@ -181,7 +188,6 @@ class TeamMemberDetail extends Component {
   };
 
   render = () => {
-    console.log('PROPS', this.props);
     const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
     const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
     const {
@@ -377,7 +383,8 @@ export default connect(
     givenName: state.user.givenName,
     familyName: state.user.familyName,
     imageUrl: state.user.imageUrl,
-    todos: _.orderBy(state.meeting.todos, 'created_at')
+    todos: _.orderBy(state.meeting.todos, 'created_at'),
+    events: state.calendar.events
   }),
   {
     getMeetings,
@@ -385,6 +392,7 @@ export default connect(
     createMeeting,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    getEvents
   }
 )(TeamMemberDetail);
