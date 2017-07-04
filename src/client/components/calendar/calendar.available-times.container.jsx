@@ -107,7 +107,10 @@ export default class CalendarAvailableTimes extends Component {
       (moment(event.end.dateTime).isAfter(start) && moment(event.end.dateTime).isBefore(endTime)));
 
     const remainder = 30 - start.minute() % 30;
-    start.add('minutes', remainder).seconds(0);
+
+    if (remainder < 30) {
+      start.add('minutes', remainder).seconds(0);
+    }
 
     const count = Math.round(endTime.diff(start, 'minutes') / 30);
 

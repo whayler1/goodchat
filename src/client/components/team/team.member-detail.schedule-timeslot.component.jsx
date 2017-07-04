@@ -29,7 +29,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     let isValid = true;
     const { startDate, startTime, endDate, endTime } = this.state;
     const stateObj = {
-      isEndDateBeforeStart: false
+      isEndDateBeforeStart: false,
+      isCreateEventError: false
     };
 
     if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
@@ -158,6 +159,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
           </div>
         </fieldset>
         {isEndDateBeforeStart && <p className="danger-text">Start date and time must be after end date and time</p>}
+        {isCreateEventError && <p className="danger-text">There was an error creating this meeting. If the problem persists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
         <fieldset className="align-right">
           <ul className="stacked-to-inline-list">
             <li>
@@ -170,7 +172,6 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
               </button>
             </li>
           </ul>
-          {isCreateEventError && <p className="danger-text">There was an error creating this meeting. If the problem persists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
         </fieldset>
       </form>
     );

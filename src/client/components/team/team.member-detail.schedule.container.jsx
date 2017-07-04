@@ -24,31 +24,31 @@ class TeamMemberDetailSchedule extends Component {
   };
 
   state = {
-    selectedTimeSlot: null
+    selectedTimeSlot: null,
+    isAllTimesVisible: false,
+    startHr: 6,
+    EODHr: 19
   };
 
   now = moment();
 
-  StartHr = 6;
+  tomorrow = this.now.clone().add(1, 'day');
 
-  EODHr = 19;
+  isNowPastEOD = this.now.hours() >= this.state.EODHr;
 
   getLabel = momentObj => momentObj.format('ddd MMM DD, YYYY');
 
-  getIsPrevVisible = momentObj => moment().hours() < this.EODHr ? momentObj.isAfter(moment()) : momentObj.isAfter(moment().add(1, 'day').hours(0).minutes(0));
+  getIsPrevVisible = momentObj => momentObj.isAfter(this.now);
 
   getIterateFunc = funcKey => () => {
-    const startTime = this.state.startTime.clone().hours(this.StartHr).minutes(0).seconds(0).milliseconds(0)[funcKey](1, 'day');
-    const endTime = startTime.clone().hours(this.EODHr);
-    const label = this.getLabel(startTime);
-    const isPrevVisible = this.getIsPrevVisible(startTime);
+    let startTime = this.state.startTime.clone().hours(this.state.startHr).minutes(0).seconds(0).milliseconds(0)[funcKey](1, 'day');
+    const isSameDay = startTime.isSame(this.now, 'day');
 
-    this.setState({
-      startTime,
-      endTime,
-      label,
-      isPrevVisible
-    });
+    if (isSameDay) {
+      startTime = moment();
+    }
+
+    this.onDateSelected(startTime);
   }
 
   onPrevClick = this.getIterateFunc('subtract');
@@ -63,34 +63,38 @@ class TeamMemberDetailSchedule extends Component {
 
   hideDatePicker = () => this.setState({ isDatePickerVisible: false });
 
-  onDateSelected = date => this.setState({
-    startTime: date.clone().hours(this.StartHr).minutes(0).seconds(0).milliseconds(0),
-    endTime: date.clone().hours(this.EODHr),
-    label: this.getLabel(date),
-    isPrevVisible: this.getIsPrevVisible(date),
-    isDatePickerVisible: false
-  });
+  showAllTimes = () => this.setState({
+    isAllTimesVisible: true,
+    startHr: 0,
+    EODHr: 24
+  }, () => this.onDateSelected(this.state.startTime));
+
+  showLessTimes = () => this.setState({
+    isAllTimesVisible: false,
+    startHr: 6,
+    EODHr: 19
+  }, () => this.onDateSelected(this.state.startTime));
+
+  onDateSelected = date => {
+    const isDateToday = date.isSame(this.now, 'day');
+    this.setState({
+      startTime: isDateToday ? moment() : date.clone().hours(this.state.startHr).minutes(0).seconds(0).milliseconds(0),
+      endTime: date.clone().hours(isDateToday && this.isNowPastEOD ? 24 : this.state.EODHr),
+      label: this.getLabel(date),
+      isPrevVisible: this.getIsPrevVisible(date),
+      isDatePickerVisible: false
+    });
+  };
 
   componentWillMount() {
-    const now = moment();
-    const { EODHr, StartHr } = this;
-    const isNowBeforeEOD = now.hours() < EODHr;
-    const startTime = isNowBeforeEOD ? now : moment({ hour: StartHr }).add(1, 'day');
-    const endTime = isNowBeforeEOD ? moment({ hour: EODHr }) : moment({ hour: EODHr }).add(1, 'day');
-    const label = this.getLabel(startTime);
-    const isPrevVisible = this.getIsPrevVisible(startTime);
-
-    this.setState({
-      startTime,
-      endTime,
-      label,
-      isPrevVisible
-    });
+    const { now, isNowPastEOD, onDateSelected } = this;
+    const startTime = isNowPastEOD ? moment({ hour: this.state.startHr }).add(1, 'day') : now;
+    onDateSelected(startTime);
   }
 
   render() {
     const { events, teamId, meetingGroupId, givenName, familyName } = this.props;
-    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot, isDatePickerVisible } = this.state;
+    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot, isDatePickerVisible, isAllTimesVisible } = this.state;
 
     return (
       <section className="card">
@@ -146,7 +150,7 @@ class TeamMemberDetailSchedule extends Component {
             {isDatePickerVisible &&
             <DatePicker
               selected={startTime}
-              minDate={this.now}
+              minDate={this.isNowPastEOD ? this.tomorrow : this.now }
               onChange={this.onDateSelected}
               onBlur={this.hideDatePicker}
               placeholderText="MM/DD/YYYY"
@@ -166,6 +170,26 @@ class TeamMemberDetailSchedule extends Component {
             events={events}
             onTimeSlotSelected={this.onTimeSlotSelected}
           />
+        {!isAllTimesVisible &&
+        <div className="text-center gutter-top">
+          <button
+            type="button"
+            className="btn-no-style btn-no-style-primary"
+            onClick={this.showAllTimes}
+          >
+            Show all times
+          </button>
+        </div>}
+        {isAllTimesVisible &&
+        <div className="text-center gutter-top">
+          <button
+            type="button"
+            className="btn-no-style btn-no-style-primary"
+            onClick={this.showLessTimes}
+          >
+            Show less times
+          </button>
+        </div>}
         </div>
         }
       </section>
