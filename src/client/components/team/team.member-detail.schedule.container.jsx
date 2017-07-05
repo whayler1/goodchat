@@ -40,7 +40,7 @@ class TeamMemberDetailSchedule extends Component {
 
   getIsPrevVisible = momentObj => !momentObj.isSame(this.now, 'day');
 
-  getIterateFunc = funcKey => () => {
+  getIterateFunc = (funcKey, trackingStr) => () => {
     let startTime = this.state.startTime.clone().hours(this.state.startHr).minutes(0).seconds(0).milliseconds(0)[funcKey](1, 'day');
     const isSameDay = startTime.isSame(this.now, 'day');
 
@@ -49,31 +49,41 @@ class TeamMemberDetailSchedule extends Component {
     }
 
     this.onDateSelected(startTime);
+    window.analytics.track(trackingStr, { category: 'meeting' });
   }
 
-  onPrevClick = this.getIterateFunc('subtract');
+  onPrevClick = this.getIterateFunc('subtract', 'meeting-scheduler-prev-click');
 
-  onNextClick = this.getIterateFunc('add');
+  onNextClick = this.getIterateFunc('add', 'meeting-scheduler-next-click');
 
-  onTimeSlotSelected = selectedTimeSlot => this.setState({ selectedTimeSlot });
+  onTimeSlotSelected = selectedTimeSlot => this.setState({ selectedTimeSlot }, () =>
+    window.analytics.track('meeting-scheduler-time-slot-selected', { category: 'meeting' }));
 
   deselectTimeSlot = () => this.setState({ selectedTimeSlot: null });
 
-  showDatePicker = () => this.setState({ isDatePickerVisible: true });
+  showDatePicker = () => this.setState({ isDatePickerVisible: true }, () =>
+    window.analytics.track('meeting-scheduler-show-date-picker', { category: 'meeting' }));
 
-  hideDatePicker = () => this.setState({ isDatePickerVisible: false });
+  hideDatePicker = () => this.setState({ isDatePickerVisible: false }, () =>
+    window.analytics.track('meeting-scheduler-hide-date-picker', { category: 'meeting' }));
 
   showAllTimes = () => this.setState({
     isAllTimesVisible: true,
     startHr: 0,
     EODHr: 24
-  }, () => this.onDateSelected(this.state.startTime));
+  }, () => {
+    this.onDateSelected(this.state.startTime);
+    window.analytics.track('meeting-scheduler-show-more-time', { category: 'meeting' });
+  });
 
   showLessTimes = () => this.setState({
     isAllTimesVisible: false,
     startHr: 6,
     EODHr: 19
-  }, () => this.onDateSelected(this.state.startTime));
+  }, () => {
+    this.onDateSelected(this.state.startTime);
+    window.analytics.track('meeting-scheduler-show-less-time', { category: 'meeting' });
+  });
 
   onDateSelected = date => {
     const isDateToday = date.isSame(this.now, 'day');

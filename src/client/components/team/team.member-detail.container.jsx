@@ -139,8 +139,6 @@ class TeamMemberDetail extends Component {
     this.submit();
   });
 
-  modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
-
   updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
       () => window.analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
       () => window.analytics.track('update-todo-error')
@@ -150,7 +148,11 @@ class TeamMemberDetail extends Component {
 
   onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text }, () => this.updateTodo(todoId, { text }));
 
-  toggleScheduleMeetingSelected = () => this.setState({ isScheduleMeetingSelected: !this.state.isScheduleMeetingSelected });
+  toggleScheduleMeetingSelected = () => this.setState({ isScheduleMeetingSelected: !this.state.isScheduleMeetingSelected }, () =>
+    window.analytics.track(this.state.isScheduleMeetingSelected ? 'schedule-meeting-closed' : 'schedule-meeting-selected', {
+      category: 'meeting',
+      teamId: this.props.team.id
+    }));
 
   componentWillUpdate = (nextProps) => {
     if (nextProps.todos.length !== this.props.todos.length) {
@@ -264,7 +266,7 @@ class TeamMemberDetail extends Component {
                           <button
                             type="button"
                             className="btn-primary-inverse btn-block"
-                            onClick={() => this.setState({ newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`, isScheduleMeetingSelected: true })}
+                            onClick={this.toggleScheduleMeetingSelected}
                           >
                             Schedule meeting
                           </button>
