@@ -50,7 +50,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       const { startDate, startTime, endDate, endTime } = this.state;
 
       const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
-      const description = `https://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
+      const description = `http://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
       const startDateTime = this.getDateTime(startDate, startTime);
       const endDateTime = this.getDateTime(endDate, endTime);
       const timeZone = moment.tz.guess();
