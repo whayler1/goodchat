@@ -18,11 +18,11 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
   getDateTime = (date, time) => {
     const timeSplit = time.split(':');
-    const isPm = timeSplit[1].search(/p/) > -1;
+    const isPm = timeSplit[1].search(/pm/) > -1;
     const hour = isPm ? Number(timeSplit[0]) + 12 : timeSplit[0];
     const minutes = timeSplit[1].substr(0,2);
 
-    return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDThh:mm:00');
+    return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDTHH:mm:00');
   }
 
   validate = () => new Promise((resolve, reject) => {

@@ -38,7 +38,7 @@ class TeamMemberDetailSchedule extends Component {
 
   getLabel = momentObj => momentObj.format('ddd MMM DD, YYYY');
 
-  getIsPrevVisible = momentObj => momentObj.isAfter(this.now);
+  getIsPrevVisible = momentObj => !momentObj.isSame(this.now, 'day');
 
   getIterateFunc = funcKey => () => {
     let startTime = this.state.startTime.clone().hours(this.state.startHr).minutes(0).seconds(0).milliseconds(0)[funcKey](1, 'day');
