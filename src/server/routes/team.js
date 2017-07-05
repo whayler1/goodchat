@@ -171,13 +171,21 @@ router.post('/team/:team_id/meeting/:meeting_group_id/invite/:meeting_id', authH
     meeting_id
   } = req.params;
 
+  const { isEmailSuppressed } = req.query;
+
   knex('meetings').where({ id: meeting_id })
   .update({ is_invite_sent: true })
   .returning('*')
-  .then(meetings => sendMeetingEmail(meetings[0].user_id, meetings[0].host_id, team_id, meeting_group_id).then(
-    () => res.json({ meeting: meetings[0] }),
-    () => res.status(500).json({ msg: 'error sending email' })
-  ))
+  .then(meetings => {
+    if (isEmailSuppressed) {
+      res.json({ meeting: meetings[0] });
+    } else {
+      sendMeetingEmail(meetings[0].user_id, meetings[0].host_id, team_id, meeting_group_id).then(
+        () => res.json({ meeting: meetings[0] }),
+        () => res.status(500).json({ msg: 'error sending email' })
+      );
+    }
+  })
   .catch(err => res.status(500).json({ msg: 'error finding meeting by id' }));
 });
 
@@ -200,7 +208,8 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
     answer5,
     is_done,
     meeting_date,
-    qa_length
+    qa_length,
+    google_calendar_event_id
   } = req.body;
 
   const host_id = req.user.id;
@@ -232,7 +241,8 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
       answer5,
       is_done,
       meeting_date,
-      qa_length
+      qa_length,
+      google_calendar_event_id
     },
     _.isNil);
 

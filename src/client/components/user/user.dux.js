@@ -15,7 +15,10 @@ const SET_LOGGED_IN = 'user/set-logged-in';
 const LOGOUT = 'user/logout';
 
 export const login = () => dispatch => window.gapi.auth2.getAuthInstance().signIn().then(
-  res => dispatch(setLoggedIn(res.getAuthResponse().id_token)),
+  res => {
+    console.log('%clogin', 'background:aqua');
+    dispatch(setLoggedIn(res.getAuthResponse().id_token));
+  },
   err => console.log('login err:', err)
 );
 
@@ -35,7 +38,7 @@ export const setLoggedIn = idToken => (dispatch) => new Promise((resolve, reject
           imageUrl: picture
         });
         resolve();
-        analytics.identify(id, {
+        window.analytics.identify(id, {
           name: `${given_name} ${family_name}`,
           firstName: given_name,
           lastName: family_name,

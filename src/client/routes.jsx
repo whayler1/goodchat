@@ -30,7 +30,9 @@ class Routes extends Component {
     updateTeamMembers: PropTypes.func.isRequired,
     setRedirect: PropTypes.func.isRequired,
     getMeetings: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    calendarEvents: PropTypes.bool.isRequired
   }
 
   onTeamsEnter = (nextState, replace, callback) => this.props.getTeams(
@@ -79,8 +81,10 @@ class Routes extends Component {
   onTeamMemberDetailEnter = (nextState, replace, callback) => {
     const { teamId, meetingGroupId } = nextState.params;
     const { getMeetings, setRedirect, getTeam, updateTeamMembers } = this.props;
+    console.log('onTeamMemberDetailEnter');
 
     const catcher = err => {
+      console.log('catcher', err);
       if (err.status === 401) {
         setRedirect(`/teams/${teamId}/meetings/${meetingGroupId}`);
         replace('/');
@@ -95,7 +99,9 @@ class Routes extends Component {
     const teamMembersPromise = updateTeamMembers(teamId).catch(catcher);
     const meetingPromise = getMeetings(teamId, meetingGroupId).catch(catcher);
 
-    Promise.all([teamPromise, teamMembersPromise, meetingPromise]).then(() => callback());
+    const promises = [teamPromise, teamMembersPromise, meetingPromise];
+
+    Promise.all(promises).then(() => callback());
   };
 
   onTeamErrorEnter = (nextState, replace, callback) => {
@@ -149,7 +155,7 @@ class Routes extends Component {
       }
       hash = hash.replace(/[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}/g, ':uuid');
     }
-    analytics.page(hash);
+    window.analytics.page(hash);
   }, 500);
 
   render() {
@@ -174,7 +180,8 @@ class Routes extends Component {
 
 export default connect(
   state => ({
-    isLoggedIn: state.user.isLoggedIn
+    isLoggedIn: state.user.isLoggedIn,
+    calendarEvents: state.calendar.events
   }),
   {
     getTeams,

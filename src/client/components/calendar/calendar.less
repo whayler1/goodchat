@@ -1,0 +1,94 @@
+.available-times-list {
+  // border: 1px solid @bluegrey-400;
+  border-radius: 2px;
+  margin: @gutter 0 0;
+  padding: 0;
+
+  >li {
+    position: relative;
+    margin-top: -1px;
+    list-style: none;
+
+    &:first-child {
+      margin-top: 0;
+
+      .available-times-list-btn {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+    }
+    &:last-child {
+      .available-times-list-btn {
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+    }
+  }
+}
+
+.available-times-list-label {
+  position: absolute;
+  left: 0;
+  top: -4px;
+  font-size: 0.8rem;
+  font-weight: 400;
+
+  &:hover,
+  &:focus {
+    color: @bluegrey-600;
+  }
+  &:active {
+    color: @bluegrey-700;
+  }
+}
+
+.available-times-list-btn-col {
+  margin-left: 80px;
+}
+
+.available-times-list-btn {
+  background: transparent;
+  border-radius: 0;
+  border: 1px solid @bluegrey-100;
+  color: @bluegrey-600;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+
+  &.btn {
+    padding: 3px 12px;
+  }
+
+  .available-times-list-btn-hover-ui {
+    visibility: hidden;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: @link-color;
+    color: @link-color;
+    z-index: 2;
+
+    .available-times-list-btn-hover-ui {
+      visibility: visible;
+    }
+  }
+  &:active {
+    border-color: @link-color-active;
+    color: @link-color-active;
+  }
+
+  small {
+    white-space: nowrap;
+  }
+}
+
+.available-times-list-btn-event {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: @bluegrey-200;
+  opacity: .3;
+}

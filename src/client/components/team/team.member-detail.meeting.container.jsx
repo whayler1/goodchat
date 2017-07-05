@@ -16,6 +16,7 @@ import { updateMeeting, completeMeeting, getMeetings, deleteMeeting, createTodo,
 import { updateTeamMembers } from '../team/team.dux.js';
 import { setRedirect } from '../login/login.dux.js';
 import { logout } from '../user/user.dux.js';
+import { updateEvent } from '../calendar/calendar.dux.js';
 
 class TeamMemberDetailMeeting extends Component {
   static propTypes = {
@@ -40,9 +41,11 @@ class TeamMemberDetailMeeting extends Component {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     sendMeetingInvite: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
-    todoStates: PropTypes.object.isRequired
+    todoStates: PropTypes.object.isRequired,
+    events: PropTypes.array.isRequired
   };
 
   state = {
@@ -81,18 +84,37 @@ class TeamMemberDetailMeeting extends Component {
       }
     );
 
+  inviteAnalyticsObj = {
+    category: 'meeting',
+    meetingId: this.props.meeting.id,
+    teamId: this.props.teamId
+  };
+
+  onInviteSuccess = () => this.setState({ isSendInviteInFlight: false, isInviteSent: true },
+    () => window.analytics.track('meeting-invite-sent', this.inviteAnalyticsObj));
+
+  onInviteError = () => this.setState({ isSendInviteInFlight: false, isInviteError: true },
+    () => window.analytics.track('meeting-invite-error', this.inviteAnalyticsObj));
+
   sendInvite = () => this.setState({ isSendInviteInFlight: true }, () => {
-    const { is_invite_sent } = this.props.meeting;
-    const analyticsObj = {
-      category: 'meeting',
-      meetingId: this.props.meeting.id,
-      teamId: this.props.teamId
-    }
-    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id).then(
-      () => this.setState({ isSendInviteInFlight: false, isInviteSent: true },
-        () => analytics.track('meeting-invite-sent', analyticsObj)),
-      () => this.setState({ isSendInviteInFlight: false, isInviteError: true },
-        () => analytics.track('meeting-invite-error', analyticsObj))
+    const { is_invite_sent, google_calendar_event_id } = this.props.meeting;
+    const { onInviteError, onInviteSuccess } = this;
+
+    const isEmailSuppressed = !is_invite_sent && _.isString(google_calendar_event_id);
+
+    this.props.sendMeetingInvite(this.props.teamId, this.props.meetingGroupId, this.props.meeting.id, isEmailSuppressed).then(
+      () => {
+        if (isEmailSuppressed) {
+          const event = this.props.events.find(event => event.id === google_calendar_event_id);
+          console.log('%c event', 'background:pink', event);
+          const description = `You have a meeting on Good Chat. Follow the link below to fill out your answers before the meeting:
+${event.description}`;
+          this.props.updateEvent(google_calendar_event_id, { description }, true).then(onInviteSuccess, onInviteError);
+        } else {
+          onInviteSuccess();
+        }
+      },
+      onInviteError
     );
   });
 
@@ -132,9 +154,9 @@ class TeamMemberDetailMeeting extends Component {
 
     this.props.updateMeeting(this.props.meeting.id, sendObj).then(
       res => this.setState({ isUpdateInFlight: false, isUpdateError: false },
-        () => analytics.track('update-meeting', analyticsObj))
+        () => window.analytics.track('update-meeting', analyticsObj))
     ).catch(err => {
-      this.setState({ isUpdateError: true }, () => analytics.track('update-meeting-error', analyticsObj));
+      this.setState({ isUpdateError: true }, () => window.analytics.track('update-meeting-error', analyticsObj));
       if (err.status === 401) {
         this.props.logout();
         this.props.setRedirect(`/teams/${this.props.teamId}/meetings/${this.props.memberId}`);
@@ -166,11 +188,11 @@ class TeamMemberDetailMeeting extends Component {
     .end((err, res) => {
       if (err) {
         this.setState({ isNoteUpdateError: true },
-          () => analytics.track('updated-note-error', analyticsObj));
+          () => window.analytics.track('updated-note-error', analyticsObj));
         return;
       }
       this.setState({ isNoteUpdateInFlight: false, isNoteUpdateError: false },
-        () => analytics.track('updated-note', analyticsObj));
+        () => window.analytics.track('updated-note', analyticsObj));
     });
   }, 750);
 
@@ -192,7 +214,7 @@ class TeamMemberDetailMeeting extends Component {
   onDeleteClick = () => {
     if (window.confirm(`Are you sure you want to delete this meeting? This can not be undone.`)) {
       this.props.deleteMeeting(this.props.meeting.id).then(() => this.props.updateTeamMembers(this.props.teamId));
-      analytics.track('delete-meeting', {
+      window.analytics.track('delete-meeting', {
         category: 'meeting',
         meetingId: this.props.meeting.id,
         teamId: this.props.teamId
@@ -210,10 +232,10 @@ class TeamMemberDetailMeeting extends Component {
     if (this.isEverythingAnswered()) {
       this.setState({ answerReadyError: '' }, () =>
         this.props.updateMeeting(this.props.meeting.id, { are_answers_ready: true }).then(() =>
-          analytics.track('answers-ready', analyticsObj)));
+          window.analytics.track('answers-ready', analyticsObj)));
     } else  {
       this.setState({ answerReadyError: 'everything-not-answered', isAnswerReadyInFlight: false },
-        () => analytics.track('answers-ready-rejected', analyticsObj));
+        () => window.analytics.track('answers-ready-rejected', analyticsObj));
     }
   })
 
@@ -251,7 +273,7 @@ class TeamMemberDetailMeeting extends Component {
   onAddQAClick = () => this.setState({ isAddQAInFlight: true }, () =>
     this.props.updateMeeting(this.props.meeting.id, { qa_length: this.props.meeting.qa_length + 1 })
     .then(() => this.setState({ isAddQAInFlight: false },
-      () => analytics.track('add-qa', {
+      () => window.analytics.track('add-qa', {
         category: 'meeting',
         meetingId: this.props.meeting.id,
         teamId: this.props.teamId
@@ -293,7 +315,7 @@ class TeamMemberDetailMeeting extends Component {
   toggleIsNoteMarkdown = () => this.setState({
     isNoteMarkdown: !this.state.isNoteMarkdown,
     isNoteAutofocus: true
-  }, () => analytics.track('toggle-is-note-markdown', {
+  }, () => window.analytics.track('toggle-is-note-markdown', {
     category: 'meeting',
     meetingId: this.props.meeting.id,
     teamId: this.props.teamId
@@ -564,7 +586,8 @@ export default connect (
   state => ({
     userId: state.user.id,
     teamId: state.team.team.id,
-    meetingGroupId: state.meeting.meetingGroup.id
+    meetingGroupId: state.meeting.meetingGroup.id,
+    events: state.calendar.events
   }),
   {
     updateMeeting,
@@ -577,6 +600,7 @@ export default connect (
     createTodo,
     updateTodo,
     deleteTodo,
-    sendMeetingInvite
+    sendMeetingInvite,
+    updateEvent
   }
 )(TeamMemberDetailMeeting);

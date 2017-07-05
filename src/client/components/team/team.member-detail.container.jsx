@@ -8,12 +8,15 @@ import _ from 'lodash';
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
+import { getEvents } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
 import TeamHeader from './team.header.container.jsx';
 import TeamMemberDetailTodoList from './team.member-detail.todo-list.component.jsx';
 import Helmet from 'react-helmet';
+import Modal from '../modal/modal.container.jsx';
+import TeamMemberDetailSchedule from './team.member-detail.schedule.container.jsx';
 import { StickyContainer, Sticky } from 'react-sticky';
 
 class TeamMemberDetail extends Component {
@@ -34,6 +37,8 @@ class TeamMemberDetail extends Component {
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
+    getEvents: PropTypes.func.isRequired,
+    events: PropTypes.array.isRequired
   }
 
   state = {
@@ -60,7 +65,7 @@ class TeamMemberDetail extends Component {
 
   getMeetings = () => this.props.getMeetings(this.props.team.id, this.props.params.meetingGroupId);
 
-  submit = () => {
+  submit = () => new Promise((resolve, reject) => {
     const { team, createMeeting, params } = this.props;
     const {
       question1,
@@ -70,11 +75,16 @@ class TeamMemberDetail extends Component {
       question5
     } = team;
     const {
-      newMeetingDateTime
+      newMeetingDateTime,
+      googleCalendarEventId
     } = this.state;
 
     const meeting_date = moment(newMeetingDateTime).toISOString();
     const sendObj = { meeting_date };
+
+    if (googleCalendarEventId) {
+      Object.assign(sendObj, { google_calendar_event_id: googleCalendarEventId });
+    }
 
     if (team.is_admin || team.is_owner) {
       Object.assign(sendObj, {
@@ -90,19 +100,22 @@ class TeamMemberDetail extends Component {
 
     createMeeting(team.id, params.meetingGroupId, sendObj).then(
       () => {
-        this.getMeetings();
+        this.getMeetings().then(() => resolve());
         this.props.updateTeamMembers(team.id);
       },
-      err => console.log('error creating team')
+      err => {
+        console.log('error creating meeting');
+        reject()
+      }
     );
-  }
+  })
 
   onSubmit = e => {
     e.preventDefault();
 
     this.validate().then(
       () => {
-        analytics.track('schedule-meeting', {
+        window.analytics.track('schedule-meeting', {
           category: 'meeting',
           teamId: this.props.team.id
         });
@@ -114,24 +127,32 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
+  onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId) =>
+    this.setState({ newMeetingDateTime, googleCalendarEventId }, () =>
+      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null })));
+
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
-    analytics.track('start-meeting-now', {
+    window.analytics.track('start-meeting-now', {
       category: 'meeting',
       teamId: this.props.team.id
     });
     this.submit();
   });
 
-  modalCloseFunc = () => this.props.history.push(`teams/${this.props.team.id}`);
-
   updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
-      () => analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
-      () => analytics.track('update-todo-error')
+      () => window.analytics.track('update-todo', _.omitBy(_.pick(options, 'text', 'is_done'), _.isNil)),
+      () => window.analytics.track('update-todo-error')
     ), 750);
 
   onTodoCheckboxChange = (todoId, isDone) => this.setState({ [`todo-isdone-${todoId}`]: isDone }, () => this.updateTodo(todoId, { is_done: isDone }));
 
   onTodoTextChange = (todoId, text) => this.setState({ [`todo-text-${todoId}`]: text }, () => this.updateTodo(todoId, { text }));
+
+  toggleScheduleMeetingSelected = () => this.setState({ isScheduleMeetingSelected: !this.state.isScheduleMeetingSelected }, () =>
+    window.analytics.track(this.state.isScheduleMeetingSelected ? 'schedule-meeting-closed' : 'schedule-meeting-selected', {
+      category: 'meeting',
+      teamId: this.props.team.id
+    }));
 
   componentWillUpdate = (nextProps) => {
     if (nextProps.todos.length !== this.props.todos.length) {
@@ -150,11 +171,15 @@ class TeamMemberDetail extends Component {
   }
 
   componentWillMount = () => {
-    const { meetingGroup, userId, members, todos } = this.props;
+    const { meetingGroup, userId, members, todos, events, getEvents } = this.props;
     const memberId = meetingGroup.memberships.find(membership => membership.user_id !== userId).user_id;
     const member = members.find(member => member.id === memberId);
 
     const stateObj = { member };
+
+    if (!events.length) {
+      getEvents();
+    }
 
     todos.forEach(todo => {
       stateObj[`todo-isdone-${todo.id}`] = todo.is_done;
@@ -181,6 +206,18 @@ class TeamMemberDetail extends Component {
     return (
       <div>
         <Helmet title={`Meetings with ${member.given_name} ${member.family_name} | Good Chat`} />
+        {isScheduleMeetingSelected &&
+        <Modal
+          closeFunc={this.toggleScheduleMeetingSelected}
+        >
+          <TeamMemberDetailSchedule
+            closeFunc={this.toggleScheduleMeetingSelected}
+            guest={member}
+            teamId={team.id}
+            meetingGroupId={this.props.params.meetingGroupId}
+            onScheduleSubmit={this.onScheduleSubmit}
+          />
+        </Modal>}
         <header className="page-header">
           <Link to={`teams/${team.id}`} className="page-header-back-link">
             <i className="material-icons">chevron_left</i><span>{team.name}</span>
@@ -223,60 +260,13 @@ class TeamMemberDetail extends Component {
                     </div>
                   </div>
                   <form className="form" onSubmit={this.onSubmit}>
-                    {isScheduleMeetingSelected && [
-                    <fieldset className={newMeetingDateTimeError ? 'input-error' : ''}>
-                      <label
-                        htmlFor="newMeetingDateTime"
-                        className="input-label"
-                      >Meeting date and time</label>
-                      <input
-                        type="datetime-local"
-                        className="form-control"
-                        id="newMeetingDateTime"
-                        name="newMeetingDateTime"
-                        value={newMeetingDateTime}
-                        onChange={this.onChange}
-                        autoFocus
-                      />
-                      {newMeetingDateTimeError &&
-                      <p className="input-error-msg">
-                        {newMeetingDateTimeError === 'doesnt-exist' && 'Please provide a date and time.'}
-                        {newMeetingDateTimeError === 'before-now' && 'New meeting must be in the future.'}
-                      </p>
-                      }
-                    </fieldset>,
-                    <fieldset className="align-right">
-                      <ul className="stacked-to-inline-list">
-                        <li className="hide-handheld">
-                          <button
-                            type="button"
-                            className="btn-no-style btn-no-style-secondary"
-                            onClick={() => this.setState({ isScheduleMeetingSelected: false })}
-                          >Cancel</button>
-                        </li>
-                        <li>
-                          <button
-                            type="submit"
-                            className="btn-primary btn-block"
-                          >Schedule meeting</button>
-                        </li>
-                        <li className="hide-tablet">
-                          <button
-                            type="button"
-                            className="btn-no-style btn-no-style-secondary"
-                            onClick={() => this.setState({ isScheduleMeetingSelected: false })}
-                          >Cancel</button>
-                        </li>
-                      </ul>
-                    </fieldset>]}
-                    {!isScheduleMeetingSelected &&
                     <fieldset className="align-right">
                       <ul className="stacked-to-inline-list">
                         <li>
                           <button
                             type="button"
                             className="btn-primary-inverse btn-block"
-                            onClick={() => this.setState({ newMeetingDateTime: `${moment().add(7, 'd').format('YYYY-MM-DD')}T14:00`, isScheduleMeetingSelected: true })}
+                            onClick={this.toggleScheduleMeetingSelected}
                           >
                             Schedule meeting
                           </button>
@@ -293,7 +283,6 @@ class TeamMemberDetail extends Component {
                         </li>
                       </ul>
                     </fieldset>
-                    }
                   </form>
                 </div>
                 }
@@ -348,7 +337,8 @@ export default connect(
     givenName: state.user.givenName,
     familyName: state.user.familyName,
     imageUrl: state.user.imageUrl,
-    todos: _.orderBy(state.meeting.todos, 'created_at')
+    todos: _.orderBy(state.meeting.todos, 'created_at'),
+    events: state.calendar.events
   }),
   {
     getMeetings,
@@ -356,6 +346,7 @@ export default connect(
     createMeeting,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    getEvents
   }
 )(TeamMemberDetail);

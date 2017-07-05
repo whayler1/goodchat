@@ -5,6 +5,7 @@ import team from '../components/team/team.dux';
 import invite from '../components/invite/invite.dux';
 import meeting from '../components/meeting/meeting.dux';
 import login from '../components/login/login.dux';
+import calendar from '../components/calendar/calendar.dux';
 
 export default combineReducers({
   user,
@@ -12,5 +13,6 @@ export default combineReducers({
   team,
   invite,
   meeting,
-  login
+  login,
+  calendar
 })
