@@ -16,6 +16,10 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     meetingGroupId: PropTypes.string.isRequired
   };
 
+  state = {
+    shouldSendNotification: false
+  }
+
   getDateTime = (date, time) => {
     const timeSplit = time.split(':');
     const isPm = timeSplit[1].search(/pm/) > -1;
@@ -33,10 +37,6 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     const yearNum = Number('20' + valSplit[2]);
     const daysInMonth = monthNum && yearNum ? moment(`20${valSplit[2]}-${valSplit[0]}`, 'YYYY-MM').daysInMonth() : 0;
     const { currentYear } = this.state;
-
-    console.log('monthNum', monthNum, '\n dayNum', dayNum,
-      '\n yearNum', yearNum, '\n daysInMonth', daysInMonth,
-      '\n currentYear', currentYear);
 
     if (val.search('_') > -1 ||
         monthNum > 12 ||
@@ -105,7 +105,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     this.validate().then(() => {
       const { guest, givenName, familyName, teamId, meetingGroupId,
         createEvent, onScheduleSubmit } = this.props;
-      const { startDate, startTime, endDate, endTime } = this.state;
+      const { startDate, startTime, endDate, endTime, shouldSendNotification } = this.state;
 
       const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
       const description = `http://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
@@ -120,8 +120,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       };
 
       this.setState({ isCreateEventError: false, isInFlight: true }, () =>
-        createEvent(summary, description, startDateTime, endDateTime, timeZone, options).then(
-          event => onScheduleSubmit(startDateTime, event.id),
+        createEvent(summary, description, startDateTime, endDateTime, timeZone, shouldSendNotification, options).then(
+          event => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
           () => this.setState({ isCreateEventError: true, isInFlight: false })
         ));
 
@@ -133,6 +133,8 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     console.log('e.target.value', e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   }
+
+  toggleShouldSendNotification = () => this.setState({ shouldSendNotification: !this.state.shouldSendNotification })
 
   timeMask = "19:59pm";
   timePlaceholder = "HH:MMam";
@@ -159,7 +161,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   }
 
   render() {
-    const { startDate, startTime, endTime, endDate, isInFlight,
+    const { startDate, startTime, endTime, endDate, isInFlight, shouldSendNotification,
       isStartDateInvalid, isEndDateInvalid, isStartTimeInvalid, isEndTimeInvalid,
       isCreateEventError, isEndDateBeforeStart } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
@@ -228,6 +230,20 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
         {isEndTimeInvalid && <p className="danger-text">Please enter a valid end time.</p>}
         {isEndDateBeforeStart && <p className="danger-text">Start date and time must be after end date and time.</p>}
         {isCreateEventError && <p className="danger-text">There was an error creating this meeting. If the problem persists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
+        <fieldset>
+          <label className="checkbox-label" htmlFor="sendNotification">
+            <i className="material-icons">
+              {shouldSendNotification ? 'check_box' : 'check_box_outline_blank'}
+            </i>
+            <input
+              type="checkbox"
+              id="sendNotification"
+              name="sendNotification"
+              checked={shouldSendNotification}
+              onChange={this.toggleShouldSendNotification}
+            /> Send notification
+          </label>
+        </fieldset>
         <fieldset className="align-right">
           <ul className="stacked-to-inline-list">
             <li>
