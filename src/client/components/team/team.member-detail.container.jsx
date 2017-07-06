@@ -76,7 +76,8 @@ class TeamMemberDetail extends Component {
     } = team;
     const {
       newMeetingDateTime,
-      googleCalendarEventId
+      googleCalendarEventId,
+      isInviteSent
     } = this.state;
 
     const meeting_date = moment(newMeetingDateTime).toISOString();
@@ -84,6 +85,9 @@ class TeamMemberDetail extends Component {
 
     if (googleCalendarEventId) {
       Object.assign(sendObj, { google_calendar_event_id: googleCalendarEventId });
+    }
+    if (isInviteSent) {
+      Object.assign(sendObj, { is_invite_sent: true });
     }
 
     if (team.is_admin || team.is_owner) {
@@ -127,9 +131,9 @@ class TeamMemberDetail extends Component {
     return false;
   }
 
-  onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId) =>
-    this.setState({ newMeetingDateTime, googleCalendarEventId }, () =>
-      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null })));
+  onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId, isInviteSent) =>
+    this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () =>
+      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false })));
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
     window.analytics.track('start-meeting-now', {

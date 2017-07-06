@@ -209,6 +209,7 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
     is_done,
     meeting_date,
     qa_length,
+    is_invite_sent,
     google_calendar_event_id
   } = req.body;
 
@@ -242,6 +243,7 @@ router.post('/team/:team_id/meeting/:meeting_group_id/', authHelpers.loginRequir
       is_done,
       meeting_date,
       qa_length,
+      is_invite_sent,
       google_calendar_event_id
     },
     _.isNil);
