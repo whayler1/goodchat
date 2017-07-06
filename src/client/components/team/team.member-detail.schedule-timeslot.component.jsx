@@ -25,15 +25,73 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDTHH:mm:00');
   }
 
+  isDateInputValid = val => {
+    let isValid = true;
+    const valSplit = val.split('/');
+    const monthNum = Number(valSplit[0]);
+    const dayNum = Number(valSplit[1]);
+    const yearNum = Number('20' + valSplit[2]);
+    const daysInMonth = monthNum && yearNum ? moment(`20${valSplit[2]}-${valSplit[0]}`, 'YYYY-MM').daysInMonth() : 0;
+    const { currentYear } = this.state;
+
+    console.log('monthNum', monthNum, '\n dayNum', dayNum,
+      '\n yearNum', yearNum, '\n daysInMonth', daysInMonth,
+      '\n currentYear', currentYear);
+
+    if (val.search('_') > -1 ||
+        monthNum > 12 ||
+        monthNum < 1 ||
+        dayNum > daysInMonth ||
+        dayNum < 1 ||
+        yearNum < currentYear) {
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  isTimeInputValid = val => {
+    let isValid = true;
+    const valSplit = val.split(':');
+    const hourNum = Number(valSplit[0]);
+    const minuteNum = Number(valSplit[1].substr(0, 2));
+
+    if (val.search('_') > -1 ||
+        hourNum > 12 ||
+        hourNum < 1 ||
+        minuteNum > 59) {
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
   validate = () => new Promise((resolve, reject) => {
     let isValid = true;
+    const { isDateInputValid, isTimeInputValid } = this;
     const { startDate, startTime, endDate, endTime } = this.state;
     const stateObj = {
+      isStartDateInvalid: false,
+      isEndDateInvalid: false,
+      isStartTimeInvalid: false,
+      isEndTimeInvalid: false,
       isEndDateBeforeStart: false,
       isCreateEventError: false
     };
 
-    if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
+    if (!isDateInputValid(startDate)) {
+      stateObj.isStartDateInvalid = true;
+      isValid = false;
+    } else if (!isDateInputValid(endDate)) {
+      stateObj.isEndDateInvalid = true;
+      isValid = false;
+    } else if (!isTimeInputValid(startTime)) {
+      stateObj.isStartTimeInvalid = true;
+      isValid = false;
+    } else if (!isTimeInputValid(endTime)) {
+      stateObj.isEndTimeInvalid = true;
+      isValid = false;
+    } else if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
       stateObj.isEndDateBeforeStart = true;
       isValid = false;
     }
@@ -71,7 +129,10 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     return false;
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChange = e => {
+    console.log('e.target.value', e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   timeMask = "19:59pm";
   timePlaceholder = "HH:MMam";
@@ -87,21 +148,24 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   componentWillMount() {
     const { startTime } = this.props;
     const endTime = startTime.clone().add(30, 'minutes');
+
     this.setState({
       startDate: startTime.format('MM/DD/YY'),
       startTime: startTime.format('hh:mma'),
       endTime: endTime.format('hh:mma'),
-      endDate: endTime.format('MM/DD/YY')
+      endDate: endTime.format('MM/DD/YY'),
+      currentYear: moment().format('YYYY')
     });
   }
 
   render() {
     const { startDate, startTime, endTime, endDate, isInFlight,
+      isStartDateInvalid, isEndDateInvalid, isStartTimeInvalid, isEndTimeInvalid,
       isCreateEventError, isEndDateBeforeStart } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
 
     return (
-      <form onSubmit={this.onSubmit} className="form gutter-top">
+      <form onSubmit={this.onSubmit} className="form gutter-top schedule-timeslot-form">
         <fieldset>
           <div className="schedule-timeslot-inputs">
             <div className="schedule-timeslot-inputs-group">
@@ -158,7 +222,11 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
             </div>
           </div>
         </fieldset>
-        {isEndDateBeforeStart && <p className="danger-text">Start date and time must be after end date and time</p>}
+        {isStartDateInvalid && <p className="danger-text">Please enter a valid start date.</p>}
+        {isEndDateInvalid && <p className="danger-text">Please enter a valid end date.</p>}
+        {isStartTimeInvalid && <p className="danger-text">Please enter a valid start time.</p>}
+        {isEndTimeInvalid && <p className="danger-text">Please enter a valid end time.</p>}
+        {isEndDateBeforeStart && <p className="danger-text">Start date and time must be after end date and time.</p>}
         {isCreateEventError && <p className="danger-text">There was an error creating this meeting. If the problem persists please email <a href="mailto:support@goodchat.io">support@goodchat.io</a>.</p>}
         <fieldset className="align-right">
           <ul className="stacked-to-inline-list">
