@@ -44,6 +44,7 @@ class TeamMemberDetailMeeting extends Component {
     updateEvent: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
+    openScheduler: PropTypes.func.isRequired,
     todoStates: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired
   };
@@ -377,7 +378,13 @@ ${event.description}`;
             </form>}
             {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
-            <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+            <button
+              type="button"
+              className="btn-no-style"
+              onClick={this.props.openScheduler}
+            >
+              <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+            </button>
             {isHost &&
               <Dropdown
                 className="team-meeting-header-dropdown-wrapper"

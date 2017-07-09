@@ -20,7 +20,8 @@ class TeamMemberDetailSchedule extends Component {
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
-    meetingGroupId: PropTypes.string.isRequired
+    meetingGroupId: PropTypes.string.isRequired,
+    currentMeeting: PropTypes.object.isRequired
   };
 
   state = {
@@ -98,13 +99,31 @@ class TeamMemberDetailSchedule extends Component {
 
   componentWillMount() {
     const { now, isNowPastEOD, onDateSelected } = this;
+    const { currentMeeting } = this.props;
     const startTime = isNowPastEOD ? moment({ hour: this.state.startHr }).add(1, 'day') : now;
+
+    if (currentMeeting) {
+      if (_.isString(currentMeeting.google_calendar_event_id)) {
+        const event = this.props.events.find((event) => event.id === currentMeeting.google_calendar_event_id);
+        this.setState({
+          currentMeetingStartTime: moment(event.start.dateTime),
+          currentMeetingEndTime: moment(event.end.dateTime)
+        });
+      } else {
+        this.setState({
+          currentMeetingStartTime: moment(currentMeeting.meeting_date),
+          currentMeetingEndTime: moment(currentMeeting.meeting_date).add(30, 'minutes')
+        });
+      }
+    }
+
     onDateSelected(startTime);
   }
 
   render() {
     const { events, teamId, meetingGroupId, givenName, familyName } = this.props;
-    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot, isDatePickerVisible, isAllTimesVisible } = this.state;
+    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot,
+      isDatePickerVisible, isAllTimesVisible, currentMeetingStartTime, currentMeetingEndTime } = this.state;
 
     return (
       <section className="card">
@@ -179,6 +198,8 @@ class TeamMemberDetailSchedule extends Component {
             endTime={endTime}
             events={events}
             onTimeSlotSelected={this.onTimeSlotSelected}
+            currentMeetingStartTime={currentMeetingStartTime}
+            currentMeetingEndTime={currentMeetingEndTime}
           />
         {!isAllTimesVisible &&
         <div className="text-center gutter-top">

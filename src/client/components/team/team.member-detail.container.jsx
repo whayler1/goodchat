@@ -206,6 +206,7 @@ class TeamMemberDetail extends Component {
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
     const todoStates = _.pick(this.state, Object.keys(this.state).filter(key => /todo/.test(key)));
     const finishedMeetings = meetings.filter(meeting => meeting.is_done);
+    const currentMeeting = !canCreateNewMeeting ? meetings[0] : null;
 
     return (
       <div>
@@ -220,6 +221,7 @@ class TeamMemberDetail extends Component {
             teamId={team.id}
             meetingGroupId={this.props.params.meetingGroupId}
             onScheduleSubmit={this.onScheduleSubmit}
+            currentMeeting={currentMeeting}
           />
         </Modal>}
         <header className="page-header">
@@ -303,6 +305,7 @@ class TeamMemberDetail extends Component {
                       onTodoCheckboxChange={this.onTodoCheckboxChange}
                       onTodoTextChange={this.onTodoTextChange}
                       todoStates={todoStates}
+                      openScheduler={this.toggleScheduleMeetingSelected}
                     />
                   </li>
                 </ul>}

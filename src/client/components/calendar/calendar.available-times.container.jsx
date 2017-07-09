@@ -6,7 +6,8 @@ class TimeSlot extends Component {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
     events: PropTypes.array,
-    onTimeSlotSelected: PropTypes.func.isRequired
+    onTimeSlotSelected: PropTypes.func.isRequired,
+    isCurrentMeetingStart: PropTypes.bool
   };
 
   onTimeSlotSelected = () => this.props.onTimeSlotSelected(this.props.startTime);
@@ -64,7 +65,7 @@ class TimeSlot extends Component {
             id={btnId}
             name={btnId}
             type="button"
-            className="btn btn-block available-times-list-btn"
+            className={`btn btn-block available-times-list-btn${this.props.isCurrentMeetingStart ? ' available-times-list-btn-active' : ''}`}
             onClick={this.onTimeSlotSelected}
           >
             {events.map(event => (
@@ -90,7 +91,9 @@ export default class CalendarAvailableTimes extends Component {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired,
-    onTimeSlotSelected: PropTypes.func.isRequired
+    onTimeSlotSelected: PropTypes.func.isRequired,
+    currentMeetingStartTime: PropTypes.object,
+    currentMeetingEndTime: PropTypes.object
   };
 
   state = {
@@ -141,6 +144,7 @@ export default class CalendarAvailableTimes extends Component {
   }
 
   render() {
+    const { currentMeetingStartTime } = this.props;
     const { timeSlots } = this.state;
 
     return (
@@ -149,6 +153,7 @@ export default class CalendarAvailableTimes extends Component {
           <TimeSlot
             key={index}
             onTimeSlotSelected={this.props.onTimeSlotSelected}
+            isCurrentMeetingStart={currentMeetingStartTime.isSameOrAfter(timeSlot.startTime) && currentMeetingStartTime.isBefore(timeSlot.endTime)}
             {...timeSlot}
           />
         ))}

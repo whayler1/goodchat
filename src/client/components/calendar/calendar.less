@@ -55,6 +55,22 @@
   text-align: left;
   overflow: hidden;
 
+  &.available-times-list-btn-active {
+    border-color: @link-color;
+    color: @link-color;
+    z-index: 3;
+
+    &:hover,
+    &:focus {
+      border-color: @link-color-hover;
+      color: @link-color-hover;
+    }
+    &:active {
+      border-color: @link-color-active;
+      color: @link-color-active;
+    }
+  }
+
   &.btn {
     padding: 3px 12px;
   }

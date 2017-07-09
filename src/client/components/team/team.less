@@ -718,6 +718,17 @@ p.main-team-set-questions-footnote {
   display: inline-block;
   padding-top: 4px;
   font-weight: 400;
+
+  .btn-no-style & {
+    color: @bluegrey-800;
+    &:hover,
+    &:focus {
+      color: @link-color;
+    }
+    &:active {
+      color: @link-color-active;
+    }
+  }
 }
 
 .team-card-body-list {
