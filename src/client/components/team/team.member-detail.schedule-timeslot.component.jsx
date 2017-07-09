@@ -8,12 +8,15 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
     createEvent: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     onScheduleSubmit: PropTypes.func.isRequired,
     guest: PropTypes.object.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
-    meetingGroupId: PropTypes.string.isRequired
+    meetingGroupId: PropTypes.string.isRequired,
+    // googleCalendarEventId: PropTypes.string,
+    event: PropTypes.object
   };
 
   state = {
@@ -104,7 +107,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
     this.validate().then(() => {
       const { guest, givenName, familyName, teamId, meetingGroupId,
-        createEvent, onScheduleSubmit } = this.props;
+        createEvent, updateEvent, onScheduleSubmit, event } = this.props;
       const { startDate, startTime, endDate, endTime, shouldSendNotification } = this.state;
 
       const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
@@ -119,12 +122,19 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
         ]
       };
 
-      this.setState({ isCreateEventError: false, isInFlight: true }, () =>
-        createEvent(summary, description, startDateTime, endDateTime, timeZone, shouldSendNotification, options).then(
-          event => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
-          () => this.setState({ isCreateEventError: true, isInFlight: false })
-        ));
-
+      if (event) {
+        this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+          updateEvent(event.id, event, shouldSendNotification).then(
+            () => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
+            () => this.setState({ isCreateEventError: true, isInFlight: false })
+          ));
+      } else {
+        this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+          createEvent(summary, description, startDateTime, endDateTime, timeZone, shouldSendNotification, options).then(
+            event => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
+            () => this.setState({ isCreateEventError: true, isInFlight: false })
+          ));
+      }
     });
     return false;
   };

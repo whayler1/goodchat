@@ -132,8 +132,15 @@ class TeamMemberDetail extends Component {
   }
 
   onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId, isInviteSent) =>
-    this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () =>
-      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false })));
+    this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () => {
+      const { meetings } = this.props;
+      if (meetings.length && !meetings[0].is_done) {
+        // update meeting[0]
+        console.log('got to here');
+      } else {
+        this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
+      }
+    });
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
     window.analytics.track('start-meeting-now', {

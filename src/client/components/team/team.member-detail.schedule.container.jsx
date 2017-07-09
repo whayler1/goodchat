@@ -8,20 +8,21 @@ import DatePicker from 'react-datepicker';
 
 import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
 
-import { createEvent } from '../calendar/calendar.dux.js';
+import { createEvent, updateEvent } from '../calendar/calendar.dux.js';
 
 class TeamMemberDetailSchedule extends Component {
   static propTypes = {
     closeFunc: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired,
     createEvent: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     onScheduleSubmit: PropTypes.func.isRequired,
     guest: PropTypes.object.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     meetingGroupId: PropTypes.string.isRequired,
-    currentMeeting: PropTypes.object.isRequired
+    currentMeeting: PropTypes.object
   };
 
   state = {
@@ -106,6 +107,7 @@ class TeamMemberDetailSchedule extends Component {
       if (_.isString(currentMeeting.google_calendar_event_id)) {
         const event = this.props.events.find((event) => event.id === currentMeeting.google_calendar_event_id);
         this.setState({
+          event,
           currentMeetingStartTime: moment(event.start.dateTime),
           currentMeetingEndTime: moment(event.end.dateTime)
         });
@@ -121,8 +123,8 @@ class TeamMemberDetailSchedule extends Component {
   }
 
   render() {
-    const { events, teamId, meetingGroupId, givenName, familyName } = this.props;
-    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot,
+    const { events, teamId, meetingGroupId, givenName, familyName, currentMeeting } = this.props;
+    const { startTime, endTime, label, isPrevVisible, selectedTimeSlot, event,
       isDatePickerVisible, isAllTimesVisible, currentMeetingStartTime, currentMeetingEndTime } = this.state;
 
     return (
@@ -150,17 +152,22 @@ class TeamMemberDetailSchedule extends Component {
           <TeamMemberDetailScheduleTimeSlot
             startTime={selectedTimeSlot}
             createEvent={this.props.createEvent}
+            updateEvent={this.props.updateEvent}
             onScheduleSubmit={this.props.onScheduleSubmit}
             guest={this.props.guest}
             givenName={givenName}
             familyName={familyName}
             teamId={teamId}
             meetingGroupId={meetingGroupId}
+            event={event}
           />
         </div>}
         {!selectedTimeSlot &&
         <div className="card-padded-content">
-          <span className="input-label">Choose an open meeting time</span>
+          {!currentMeeting &&
+          <span className="input-label">Choose an open meeting time</span>}
+          {currentMeeting &&
+          <span className="input-label">Reschedule your meeting</span>}
           <div className="available-times-nav">
             {isPrevVisible && <button
               className="btn-no-style btn-no-style-primary available-times-nav-prev-btn"
@@ -235,6 +242,7 @@ export default connect(
     familyName: state.user.familyName
   }),
   {
-    createEvent
+    createEvent,
+    updateEvent
   }
 )(TeamMemberDetailSchedule);

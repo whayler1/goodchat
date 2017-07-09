@@ -153,7 +153,7 @@ export default class CalendarAvailableTimes extends Component {
           <TimeSlot
             key={index}
             onTimeSlotSelected={this.props.onTimeSlotSelected}
-            isCurrentMeetingStart={currentMeetingStartTime.isSameOrAfter(timeSlot.startTime) && currentMeetingStartTime.isBefore(timeSlot.endTime)}
+            isCurrentMeetingStart={currentMeetingStartTime && (currentMeetingStartTime.isSameOrAfter(timeSlot.startTime) && currentMeetingStartTime.isBefore(timeSlot.endTime))}
             {...timeSlot}
           />
         ))}
