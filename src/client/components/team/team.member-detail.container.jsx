@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
-import { getEvents } from '../calendar/calendar.dux';
+import { getEvents, updateEvent } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -38,6 +38,7 @@ class TeamMemberDetail extends Component {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     getEvents: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired
   }
 
@@ -136,7 +137,8 @@ class TeamMemberDetail extends Component {
       const { meetings } = this.props;
       if (meetings.length && !meetings[0].is_done) {
         // update meeting[0]
-        console.log('got to here');
+        console.log('got to here', '\n newMeetingDateTime:', newMeetingDateTime, '\n googleCalendarEventId:', googleCalendarEventId);
+        // this.props.updateEvent(googleCalendarEventId)
       } else {
         this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
       }
@@ -202,7 +204,7 @@ class TeamMemberDetail extends Component {
 
   render = () => {
     const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
-    const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
+    const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected, event } = this.state;
     const {
       question1,
       question2,
@@ -213,7 +215,6 @@ class TeamMemberDetail extends Component {
     const canCreateNewMeeting = meetings.length < 1 || (meetings.length > 0 && meetings[0].is_done);
     const todoStates = _.pick(this.state, Object.keys(this.state).filter(key => /todo/.test(key)));
     const finishedMeetings = meetings.filter(meeting => meeting.is_done);
-    const currentMeeting = !canCreateNewMeeting ? meetings[0] : null;
 
     return (
       <div>
@@ -228,7 +229,7 @@ class TeamMemberDetail extends Component {
             teamId={team.id}
             meetingGroupId={this.props.params.meetingGroupId}
             onScheduleSubmit={this.onScheduleSubmit}
-            currentMeeting={currentMeeting}
+            currentMeeting={!canCreateNewMeeting ? meetings[0] : null}
           />
         </Modal>}
         <header className="page-header">
@@ -361,6 +362,7 @@ export default connect(
     createTodo,
     updateTodo,
     deleteTodo,
-    getEvents
+    getEvents,
+    updateEvent
   }
 )(TeamMemberDetail);

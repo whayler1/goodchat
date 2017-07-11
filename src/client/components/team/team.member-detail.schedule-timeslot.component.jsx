@@ -262,7 +262,13 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
                 className="btn-primary"
                 disabled={isInFlight}
               >
-                {isInFlight ? 'Creating...' : 'Create meeting'}
+                {(() => {
+                  if (event) {
+                    return isInFlight ? 'Updating...' : 'Update meeting time';
+                  } else {
+                    return isInFlight ? 'Creating...' : 'Create meeting';
+                  }
+                })()}
               </button>
             </li>
           </ul>

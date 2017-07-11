@@ -105,12 +105,16 @@ class TeamMemberDetailSchedule extends Component {
 
     if (currentMeeting) {
       if (_.isString(currentMeeting.google_calendar_event_id)) {
-        const event = this.props.events.find((event) => event.id === currentMeeting.google_calendar_event_id);
-        this.setState({
-          event,
-          currentMeetingStartTime: moment(event.start.dateTime),
-          currentMeetingEndTime: moment(event.end.dateTime)
-        });
+        const event = this.props.events.find(event => event.id === currentMeeting.google_calendar_event_id);
+        if (event) {
+          this.setState({
+            event,
+            currentMeetingStartTime: moment(event.start.dateTime),
+            currentMeetingEndTime: moment(event.end.dateTime)
+          });
+        } else {
+          console.error('could not find event with google calendar event id')
+        }
       } else {
         this.setState({
           currentMeetingStartTime: moment(currentMeeting.meeting_date),
