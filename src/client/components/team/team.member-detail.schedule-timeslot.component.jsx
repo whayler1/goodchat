@@ -15,7 +15,6 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     familyName: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
     meetingGroupId: PropTypes.string.isRequired,
-    // googleCalendarEventId: PropTypes.string,
     event: PropTypes.object
   };
 
@@ -123,8 +122,18 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       };
 
       if (event) {
+        const newEvent = Object.assign({}, event, {
+          start: {
+            dateTime: startDateTime,
+            timeZone
+          },
+          end: {
+            dateTime: endDateTime,
+            timeZone
+          }
+        });
         this.setState({ isCreateEventError: false, isInFlight: true }, () =>
-          updateEvent(event.id, event, shouldSendNotification).then(
+          updateEvent(event.id, newEvent, shouldSendNotification).then(
             () => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
             () => this.setState({ isCreateEventError: true, isInFlight: false })
           ));
@@ -139,10 +148,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     return false;
   };
 
-  onChange = e => {
-    console.log('e.target.value', e.target.value);
-    this.setState({ [e.target.name]: e.target.value });
-  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   toggleShouldSendNotification = () => this.setState({ shouldSendNotification: !this.state.shouldSendNotification })
 
@@ -175,6 +181,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       isStartDateInvalid, isEndDateInvalid, isStartTimeInvalid, isEndTimeInvalid,
       isCreateEventError, isEndDateBeforeStart } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
+    const { event } = this.props;
 
     return (
       <form onSubmit={this.onSubmit} className="form gutter-top schedule-timeslot-form">

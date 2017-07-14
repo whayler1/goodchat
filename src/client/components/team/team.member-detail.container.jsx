@@ -7,8 +7,8 @@ import _ from 'lodash';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
-import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
-import { getEvents, updateEvent } from '../calendar/calendar.dux';
+import { createTodo, updateTodo, deleteTodo, updateMeeting } from '../meeting/meeting.dux.js';
+import { getEvents } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -33,12 +33,12 @@ class TeamMemberDetail extends Component {
     imageUrl: PropTypes.string.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     createMeeting: PropTypes.func.isRequired,
+    updateMeeting: PropTypes.func.isRequired,
     todos: PropTypes.array.isRequired,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     getEvents: PropTypes.func.isRequired,
-    updateEvent: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired
   }
 
@@ -136,9 +136,7 @@ class TeamMemberDetail extends Component {
     this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () => {
       const { meetings } = this.props;
       if (meetings.length && !meetings[0].is_done) {
-        // update meeting[0]
-        console.log('got to here', '\n newMeetingDateTime:', newMeetingDateTime, '\n googleCalendarEventId:', googleCalendarEventId);
-        // this.props.updateEvent(googleCalendarEventId)
+        this.props.updateMeeting(meetings[0].id, { meeting_date: moment(newMeetingDateTime).toISOString() }).then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
       } else {
         this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
       }
@@ -363,6 +361,6 @@ export default connect(
     updateTodo,
     deleteTodo,
     getEvents,
-    updateEvent
+    updateMeeting
   }
 )(TeamMemberDetail);
