@@ -21,8 +21,8 @@ class TimeSlot extends Component {
 
       const topPct = evtStart.isSameOrBefore(startTime) ? 0 : Math.round(evtStart.diff(startTime, 'minutes') / 30 * 100);
       const bottomPct = evtEnd.isSameOrAfter(endTime) ? 0 : 100 - Math.round(endTime.diff(evtEnd, 'minutes') / 30 * 100);
-
-      const displayStr = evtStart.isSameOrAfter(startTime) ?
+      console.log('evtStart', evtStart, '\nstartTime', startTime);
+      const displayStr = evtStart.isSameOrAfter(startTime, 'minute') ?
         `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
 
       return {
@@ -119,7 +119,7 @@ export default class CalendarAvailableTimes extends Component {
 
     const timeSlots = _.times(count, (n) => ({
       startTime: start.clone().add(n * 30, 'minutes'),
-      endTime: start.clone().add((n + 1) * 30, 'minutes')
+      endTime: start.clone().add(((n + 1) * 30) - 1, 'minutes')
     })).map(timeSlot => Object.assign(timeSlot, {
       events: events.filter(event => {
         const evtStart = moment(event.start.dateTime);
