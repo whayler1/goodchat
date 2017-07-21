@@ -4,9 +4,13 @@
   left: 0;
   right: 0;
   height: 100vh;
+  min-height: 300px;
   background: white;
-  // background: url(../../images/brush-pattern.jpg) center 40px repeat transparent;
   background-size: 750px 750px;
+
+  @media(min-width: @tablet-width) {
+    min-height: 500px;
+  }
 }
 
 .main-home-content {
