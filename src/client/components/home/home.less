@@ -15,6 +15,12 @@
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   text-align: center;
+
+  .btn-large {
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.4em;
+  }
 }
 
 .main-home-title {
@@ -35,11 +41,19 @@
 
 .main-home-copy {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 1.3rem;
   font-weight: 300;
-  margin: @gutter 0 @gutter * 2;
+  margin: @gutter 0 @gutter * 1.5;
+  white-space: nowrap;
+
   strong {
     font-weight: 500;
     line-height: 1em;
+    color: @bluegrey-500;
+  }
+
+  @media(min-width: @tablet-width) {
+    font-size: 2.5rem;
+    margin: @gutter 0 @gutter * 2;
   }
 }

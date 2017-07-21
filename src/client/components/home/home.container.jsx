@@ -82,7 +82,7 @@ class Home extends Component {
         />
         <div className="main-home-content">
           <h1 className="main-home-title">Good Chat</h1>
-            <p className="main-home-copy"><strong>Get the most <span className="nowrap">out of 1on1's</span></strong></p>
+            <p className="main-home-copy"><strong>Get the most out of 1on1's</strong></p>
             {!isLoggedIn &&
             <GoogleLoginBtn
               onClick={this.props.login}
