@@ -5,6 +5,7 @@ import { setLoggedIn, login } from '../user/user.dux';
 import { clearRedirect } from '../login/login.dux';
 import { showHeroLink, hideHeroLink } from '../navbar/navbar.dux';
 import { getTeams } from '../team/team.dux';
+import GoogleLoginBtn from '../GoogleLoginBtn/GoogleLoginBtn.component.jsx';
 
 class Home extends Component {
   static propTypes = {
@@ -79,18 +80,14 @@ class Home extends Component {
           title="Good Chat"
           meta={[{"name": "description", "content": "This thing me and Chris are building."}]}
         />
-        <h1 className="main-home-title">Good Chat</h1>
-        <div className="main-home-bottom">
-          <p className="main-home-copy">A tool to<br/><strong>Get the most<br/>out of 1on1's</strong></p>
-          {!isLoggedIn &&
-          <button
-            type="button"
-            id="home-hero-google"
-            className="btn-inverse btn-inverse-google"
-            onClick={this.props.login}
-          >
-            Login with Google
-          </button>}
+        <div className="main-home-content">
+          <h1 className="main-home-title">Good Chat</h1>
+            <p className="main-home-copy"><strong>Get the most <span className="nowrap">out of 1on1's</span></strong></p>
+            {!isLoggedIn &&
+            <GoogleLoginBtn
+              onClick={this.props.login}
+              className="nowrap"
+            />}
         </div>
       </main>
     );

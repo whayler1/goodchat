@@ -10,25 +10,30 @@ export default class SetLogin extends Component {
   }
 
   componentWillMount = () => {
-    gapi.load('client:auth2', () => {
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      gapi.client.init({
-        client_id: this.props.googleClientId,
-        cookiepolicy: 'single_host_origin',
-        scope: 'https://www.googleapis.com/auth/calendar'
-      }).then(() => gapi.client.load('calendar','v3', () => {
-          const auth2 = gapi.auth2.getAuthInstance();
-          if (auth2.isSignedIn.get()) {
-            this.props.onSuccess(auth2.currentUser.get().getAuthResponse().id_token).then(
-              () => this.setState({ isLoginStateSet: true }),
-              () => this.setState({ isLoginStateSet: true })
-            );
-          } else {
-            this.setState({ isLoginStateSet: true });
-          }
-        })
-      );
-    });
+    if ('gapi' in window) {
+      gapi.load('client:auth2', () => {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        gapi.client.init({
+          client_id: this.props.googleClientId,
+          cookiepolicy: 'single_host_origin',
+          scope: 'https://www.googleapis.com/auth/calendar'
+        }).then(() => gapi.client.load('calendar','v3', () => {
+            const auth2 = gapi.auth2.getAuthInstance();
+            if (auth2.isSignedIn.get()) {
+              this.props.onSuccess(auth2.currentUser.get().getAuthResponse().id_token).then(
+                () => this.setState({ isLoginStateSet: true }),
+                () => this.setState({ isLoginStateSet: true })
+              );
+            } else {
+              this.setState({ isLoginStateSet: true });
+            }
+          })
+        );
+      });
+    } else {
+      console.error('gapi is missing');
+      this.setState({ isLoginStateSet: true });
+    }
   }
 
   render() {
