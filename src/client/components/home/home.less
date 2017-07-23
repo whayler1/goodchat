@@ -28,18 +28,13 @@
 }
 
 .main-home-title {
-  margin: 0 auto;
+  font-size: 4.5rem;
   text-align: center;
-  font-size: 0;
-  width: 260px;
-  height: 66px;
-  background: url(../../images/logo-bluegrey.png) 0 0 no-repeat transparent;
-  background-size: 260px 66px;
+  color: @bluegrey-500;
+  line-height: 1.1em;
 
   @media(min-width: @tablet-width) {
-    width: 520px;
-    height: 134px;
-    background-size: 520px 134px;
+    font-size: 8.5rem;
   }
 }
 
@@ -47,7 +42,7 @@
   text-align: center;
   font-size: 1.3rem;
   font-weight: 300;
-  margin: @gutter 0 @gutter * 1.5;
+  margin: 0 0 @gutter * 1.5;
   white-space: nowrap;
 
   strong {
@@ -58,6 +53,6 @@
 
   @media(min-width: @tablet-width) {
     font-size: 2.5rem;
-    margin: @gutter 0 @gutter * 2;
+    margin: 0 0 @gutter * 2;
   }
 }

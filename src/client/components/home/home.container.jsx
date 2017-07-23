@@ -81,7 +81,7 @@ class Home extends Component {
           meta={[{"name": "description", "content": "This thing me and Chris are building."}]}
         />
         <div className="main-home-content">
-          <h1 className="main-home-title">Good Chat</h1>
+          <h1 className="main-home-title vanity-font">GoodChat</h1>
             <p className="main-home-copy"><strong>Get the most out of 1on1's</strong></p>
             {!isLoggedIn &&
             <GoogleLoginBtn
