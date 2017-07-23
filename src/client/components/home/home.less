@@ -4,47 +4,55 @@
   left: 0;
   right: 0;
   height: 100vh;
-  background: url(../../images/brush-pattern.jpg) center 40px repeat transparent;
+  min-height: 300px;
+  background: white;
   background-size: 750px 750px;
+
+  @media(min-width: @tablet-width) {
+    min-height: 500px;
+  }
+}
+
+.main-home-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: center;
+
+  .btn-large {
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.4em;
+  }
 }
 
 .main-home-title {
-  margin: 70px auto 0;
+  font-size: 4.5rem;
   text-align: center;
-  font-size: 0;
-  width: 260px;
-  height: 66px;
-  background: url(../../images/logo-white.png) 0 0 no-repeat transparent;
-  background-size: 260px 66px;
+  color: @bluegrey-500;
+  line-height: 1.1em;
+
+  @media(min-width: @tablet-width) {
+    font-size: 8.5rem;
+  }
 }
 
 .main-home-copy {
   text-align: center;
-  color: white;
-  font-size: 2.2rem;
+  font-size: 1.3rem;
   font-weight: 300;
+  margin: 0 0 @gutter * 1.5;
+  white-space: nowrap;
+
   strong {
-    color: white;
     font-weight: 500;
     line-height: 1em;
+    color: @bluegrey-500;
   }
-}
 
-.main-home-bottom {
-  position: absolute;
-  bottom: 90px;
-  left: 20px;
-  right: 20px;
-  text-align: center;
-  .btn-inverse {
-    display: inline-block;
-    font-size: 1.2rem;
-    i {
-      display: inline-block;
-      margin-right: 10px;
-    }
-  }
-  @media(min-width: 768px) {
-    bottom: 20px;
+  @media(min-width: @tablet-width) {
+    font-size: 2.5rem;
+    margin: 0 0 @gutter * 2;
   }
 }

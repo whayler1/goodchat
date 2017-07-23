@@ -38,7 +38,7 @@ class Navbar extends Component {
     const { shouldShowNav, shouldShowHeroLink, isLoggedIn, givenName, teams } = this.props;
     const teamsForNav = teams.map(team => ({ title: team.name || 'Untitled team', to: `/teams/${team.id}`, isSecondary: true }));
     return (
-      <header className="header">
+      <header className={`header${shouldShowHeroLink ? '' : ' header-hero-hidden'}`}>
         <nav className="header-nav">
           {(() => {
             if (!isLoggedIn) {
