@@ -18,21 +18,17 @@ class InviteAccept extends Component {
     isJoinInFlight: false
   }
   join = () => {
-    console.log('join');
     const { invite, team } = this.props;
     superagent.post(`team/${team.id}/join/${invite.id}`)
       .end((err, res) => {
         if (err) {
-          console.log('error accepting invite:', res);
           this.state({ error: 'server-error' });
           return;
         }
-        console.log('success accepting invite');
         this.props.history.push(`teams/${team.id}`);
       });
   }
   onJoinClick = () => {
-    console.log('onJoinClick');
     if (!this.state.isJoinInFlight) {
       this.setState({ isJoinInFlight: true }, this.join);
     }
@@ -54,7 +50,10 @@ class InviteAccept extends Component {
     } else {
       return ([
         <p>Please login with Google to accept.</p>,
-        <GoogleLoginBtn onClick={this.props.login} />
+        <GoogleLoginBtn
+          onClick={this.props.login}
+          id="invite-accept-google-login"
+        />
       ]);
     }
   }

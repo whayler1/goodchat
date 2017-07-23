@@ -2,12 +2,14 @@ import React from 'react';
 
 export default function({
   onClick,
-  className
+  className,
+  id
 }) {
   return (
     <button
       type="button"
       className={`btn-primary-inverse btn-large invite-accept-login-btn${className ? ' ' + className : ''}`}
+      id={id}
       onClick={onClick}
     >
       <svg style={{ width: '30px', height: '30px', verticalAlign: 'top' }} viewBox="0 0 24 24">

@@ -87,6 +87,7 @@ class Home extends Component {
             <GoogleLoginBtn
               onClick={this.props.login}
               className="nowrap"
+              id="home-hero-google"
             />}
         </div>
       </main>
