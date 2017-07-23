@@ -25,7 +25,14 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   getDateTime = (date, time) => {
     const timeSplit = time.split(':');
     const isPm = timeSplit[1].search(/pm/) > -1;
-    const hour = isPm ? Number(timeSplit[0]) + 12 : timeSplit[0];
+    const hourAsNumber = Number(timeSplit[0]);
+    const hour = (() => {
+      if (isPm) {
+        return hourAsNumber < 12 ? hourAsNumber + 12 : hourAsNumber;
+      } else {
+        return hourAsNumber < 12 ? hourAsNumber : 0;
+      }
+    })();
     const minutes = timeSplit[1].substr(0,2);
 
     return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDTHH:mm:00');
