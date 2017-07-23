@@ -4,11 +4,13 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import superagent from 'superagent';
 import _ from 'lodash';
+import calendarHelpers from '../calendar/helpers';
+console.log('helpers', calendarHelpers);
 
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
 import { createTodo, updateTodo, deleteTodo, updateMeeting } from '../meeting/meeting.dux.js';
-import { getEvents } from '../calendar/calendar.dux';
+import { getEvents, createEvent } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -39,6 +41,7 @@ class TeamMemberDetail extends Component {
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     getEvents: PropTypes.func.isRequired,
+    createEvent: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired
   }
 
@@ -109,8 +112,8 @@ class TeamMemberDetail extends Component {
         this.props.updateTeamMembers(team.id);
       },
       err => {
-        console.log('error creating meeting');
-        reject()
+        alert('error creating meeting');
+        reject();
       }
     );
   })
@@ -143,11 +146,37 @@ class TeamMemberDetail extends Component {
     });
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
+    const { givenName, familyName, team, meetingGroup } = this.props;
+    const { member } = this.state;
+    const {
+      dateTimeFormat,
+      getSummary,
+      getDescription,
+      getTimeZone,
+      getOptions
+    } = calendarHelpers;
+
     window.analytics.track('start-meeting-now', {
       category: 'meeting',
-      teamId: this.props.team.id
+      teamId: team.id
     });
-    this.submit();
+
+    this.setState({ isStartNowInFlight: true }, () => this.props.createEvent(
+      getSummary(givenName, familyName, member.given_name, member.family_name),
+      getDescription(team.id, meetingGroup.id),
+      moment().format(dateTimeFormat),
+      moment().add(30, 'minutes').seconds(0).format(dateTimeFormat),
+      getTimeZone(),
+      false,
+      getOptions(member.email)
+    ).then(
+      (event) => this.setState({ googleCalendarEventId: event.id },
+        () => this.submit().then(() => this.setState({
+          googleCalendarEventId: null,
+          isStartNowInFlight: false
+        }))),
+      () => console.error('error creating event')
+    ));
   });
 
   updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
@@ -279,6 +308,7 @@ class TeamMemberDetail extends Component {
                             type="button"
                             className="btn-primary-inverse btn-block"
                             onClick={this.toggleScheduleMeetingSelected}
+                            disabled={this.state.isStartNowInFlight}
                           >
                             Schedule meeting
                           </button>
@@ -288,9 +318,10 @@ class TeamMemberDetail extends Component {
                             type="button"
                             className="btn-primary btn-block"
                             onClick={this.onStartMeetingNow}
+                            disabled={this.state.isStartNowInFlight}
                             autoFocus
                           >
-                            Start meeting now
+                            {this.state.isStartNowInFlight ? <span>Creating meeting&hellip;</span> : 'Start meeting now'}
                           </button>
                         </li>
                       </ul>
@@ -361,6 +392,7 @@ export default connect(
     updateTodo,
     deleteTodo,
     getEvents,
+    createEvent,
     updateMeeting
   }
 )(TeamMemberDetail);
