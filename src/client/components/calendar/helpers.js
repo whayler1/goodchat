@@ -37,6 +37,7 @@ const getOptions = (guestEmail) => ({
 
 export default {
   dateTimeFormat,
+  getDateTime,
   getSummary,
   getDescription,
   getStartDateTime,

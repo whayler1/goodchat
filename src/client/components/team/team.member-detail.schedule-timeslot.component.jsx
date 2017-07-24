@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import InputMask from 'react-input-mask';
-
+import calendarHelpers from '../calendar/helpers';
 import moment from 'moment';
 import momentTz from 'moment-timezone';
 
@@ -20,22 +20,6 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
   state = {
     shouldSendNotification: false
-  }
-
-  getDateTime = (date, time) => {
-    const timeSplit = time.split(':');
-    const isPm = timeSplit[1].search(/pm/) > -1;
-    const hourAsNumber = Number(timeSplit[0]);
-    const hour = (() => {
-      if (isPm) {
-        return hourAsNumber < 12 ? hourAsNumber + 12 : hourAsNumber;
-      } else {
-        return hourAsNumber < 12 ? hourAsNumber : 0;
-      }
-    })();
-    const minutes = timeSplit[1].substr(0,2);
-
-    return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDTHH:mm:00');
   }
 
   isDateInputValid = val => {
@@ -100,7 +84,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     } else if (!isTimeInputValid(endTime)) {
       stateObj.isEndTimeInvalid = true;
       isValid = false;
-    } else if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
+    } else if (moment(calendarHelpers.getDateTime(endDate, endTime)).isBefore(moment(calendarHelpers.getDateTime(startDate, startTime)))) {
       stateObj.isEndDateBeforeStart = true;
       isValid = false;
     }
@@ -115,18 +99,21 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       const { guest, givenName, familyName, teamId, meetingGroupId,
         createEvent, updateEvent, onScheduleSubmit, event } = this.props;
       const { startDate, startTime, endDate, endTime, shouldSendNotification } = this.state;
+      const {
+        getSummary,
+        getDescription,
+        getStartDateTime,
+        getEndDateTime,
+        getTimeZone,
+        getOptions
+      } = calendarHelpers;
 
-      const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
-      const description = `http://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
-      const startDateTime = this.getDateTime(startDate, startTime);
-      const endDateTime = this.getDateTime(endDate, endTime);
-      const timeZone = moment.tz.guess();
-
-      const options = {
-        attendees: [
-          { email: guest.email }
-        ]
-      };
+      const summary = getSummary(givenName, familyName, guest.given_name, guest.family_name);
+      const description = getDescription(teamId, meetingGroupId);
+      const startDateTime = getStartDateTime(startDate, startTime);
+      const endDateTime = getEndDateTime(endDate, endTime);
+      const timeZone = getTimeZone();
+      const options = getOptions(guest.email);
 
       if (event) {
         const newEvent = Object.assign({}, event, {

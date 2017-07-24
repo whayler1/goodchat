@@ -420,7 +420,20 @@ ${event.description}`;
                 label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
                 content={<ul className="dropdown-list">
                           <li>
-                            <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+                            <button
+                              type="button"
+                              className="btn-no-style btn-no-style-secondary nowrap"
+                              onClick={this.props.openScheduler}
+                            >
+                              Update meeting time
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="btn-no-style btn-no-style-danger nowrap"
+                              onClick={this.onDeleteClick}
+                            >
                               Cancel meeting <i className="material-icons">delete</i>
                             </button>
                           </li>
