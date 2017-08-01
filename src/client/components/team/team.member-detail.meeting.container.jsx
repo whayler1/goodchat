@@ -328,9 +328,6 @@ ${event.description}`;
     const { finished_at, meeting_date } = this.props.meeting;
     const { event } = this.state;
 
-    if (event) {
-      return moment(finished_at || event.start.dateTime).format(this.meetingDateFormat);
-    }
     return moment(finished_at || meeting_date).format(this.meetingDateFormat);
   };
 
