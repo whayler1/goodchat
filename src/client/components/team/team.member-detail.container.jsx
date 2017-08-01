@@ -5,7 +5,6 @@ import moment from 'moment';
 import superagent from 'superagent';
 import _ from 'lodash';
 import calendarHelpers from '../calendar/helpers';
-console.log('helpers', calendarHelpers);
 
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
