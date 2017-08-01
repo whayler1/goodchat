@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import InputMask from 'react-input-mask';
-
+import calendarHelpers from '../calendar/helpers';
 import moment from 'moment';
 import momentTz from 'moment-timezone';
 
@@ -8,25 +8,18 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
   static propTypes = {
     startTime: PropTypes.object.isRequired,
     createEvent: PropTypes.func.isRequired,
+    updateEvent: PropTypes.func.isRequired,
     onScheduleSubmit: PropTypes.func.isRequired,
     guest: PropTypes.object.isRequired,
     givenName: PropTypes.string.isRequired,
     familyName: PropTypes.string.isRequired,
     teamId: PropTypes.string.isRequired,
-    meetingGroupId: PropTypes.string.isRequired
+    meetingGroupId: PropTypes.string.isRequired,
+    event: PropTypes.object
   };
 
   state = {
     shouldSendNotification: false
-  }
-
-  getDateTime = (date, time) => {
-    const timeSplit = time.split(':');
-    const isPm = timeSplit[1].search(/pm/) > -1;
-    const hour = isPm ? Number(timeSplit[0]) + 12 : timeSplit[0];
-    const minutes = timeSplit[1].substr(0,2);
-
-    return moment(date).hours(hour).minutes(minutes).format('YYYY-MM-DDTHH:mm:00');
   }
 
   isDateInputValid = val => {
@@ -91,7 +84,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
     } else if (!isTimeInputValid(endTime)) {
       stateObj.isEndTimeInvalid = true;
       isValid = false;
-    } else if (moment(this.getDateTime(endDate, endTime)).isBefore(moment(this.getDateTime(startDate, startTime)))) {
+    } else if (moment(calendarHelpers.getDateTime(endDate, endTime)).isBefore(moment(calendarHelpers.getDateTime(startDate, startTime)))) {
       stateObj.isEndDateBeforeStart = true;
       isValid = false;
     }
@@ -104,35 +97,52 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
 
     this.validate().then(() => {
       const { guest, givenName, familyName, teamId, meetingGroupId,
-        createEvent, onScheduleSubmit } = this.props;
+        createEvent, updateEvent, onScheduleSubmit, event } = this.props;
       const { startDate, startTime, endDate, endTime, shouldSendNotification } = this.state;
+      const {
+        getSummary,
+        getDescription,
+        getStartDateTime,
+        getEndDateTime,
+        getTimeZone,
+        getOptions
+      } = calendarHelpers;
 
-      const summary = `${givenName} ${familyName} <> ${guest.given_name} ${guest.family_name} | Good Chat`;
-      const description = `http://www.goodchat.io/#/teams/${teamId}/meetings/${meetingGroupId}`;
-      const startDateTime = this.getDateTime(startDate, startTime);
-      const endDateTime = this.getDateTime(endDate, endTime);
-      const timeZone = moment.tz.guess();
+      const summary = getSummary(givenName, familyName, guest.given_name, guest.family_name);
+      const description = getDescription(teamId, meetingGroupId);
+      const startDateTime = getStartDateTime(startDate, startTime);
+      const endDateTime = getEndDateTime(endDate, endTime);
+      const timeZone = getTimeZone();
+      const options = getOptions(guest.email);
 
-      const options = {
-        attendees: [
-          { email: guest.email }
-        ]
-      };
-
-      this.setState({ isCreateEventError: false, isInFlight: true }, () =>
-        createEvent(summary, description, startDateTime, endDateTime, timeZone, shouldSendNotification, options).then(
-          event => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
-          () => this.setState({ isCreateEventError: true, isInFlight: false })
-        ));
-
+      if (event) {
+        const newEvent = Object.assign({}, event, {
+          start: {
+            dateTime: startDateTime,
+            timeZone
+          },
+          end: {
+            dateTime: endDateTime,
+            timeZone
+          }
+        });
+        this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+          updateEvent(event.id, newEvent, shouldSendNotification).then(
+            () => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
+            () => this.setState({ isCreateEventError: true, isInFlight: false })
+          ));
+      } else {
+        this.setState({ isCreateEventError: false, isInFlight: true }, () =>
+          createEvent(summary, description, startDateTime, endDateTime, timeZone, shouldSendNotification, options).then(
+            event => onScheduleSubmit(startDateTime, event.id, shouldSendNotification),
+            () => this.setState({ isCreateEventError: true, isInFlight: false })
+          ));
+      }
     });
     return false;
   };
 
-  onChange = e => {
-    console.log('e.target.value', e.target.value);
-    this.setState({ [e.target.name]: e.target.value });
-  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   toggleShouldSendNotification = () => this.setState({ shouldSendNotification: !this.state.shouldSendNotification })
 
@@ -165,6 +175,7 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
       isStartDateInvalid, isEndDateInvalid, isStartTimeInvalid, isEndTimeInvalid,
       isCreateEventError, isEndDateBeforeStart } = this.state;
     const { timeMask, timePlaceholder, timeFormatChars } = this;
+    const { event } = this.props;
 
     return (
       <form onSubmit={this.onSubmit} className="form gutter-top schedule-timeslot-form">
@@ -252,7 +263,13 @@ export default class TeamMemberDetailScheduleTimeSlot extends Component {
                 className="btn-primary"
                 disabled={isInFlight}
               >
-                {isInFlight ? 'Creating...' : 'Create meeting'}
+                {(() => {
+                  if (event) {
+                    return isInFlight ? 'Updating...' : 'Update meeting time';
+                  } else {
+                    return isInFlight ? 'Creating...' : 'Create meeting';
+                  }
+                })()}
               </button>
             </li>
           </ul>

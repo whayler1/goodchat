@@ -4,11 +4,12 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import superagent from 'superagent';
 import _ from 'lodash';
+import calendarHelpers from '../calendar/helpers';
 
 import { getMeetings } from '../meeting/meeting.dux.js';
 import { updateTeamMembers, createMeeting } from '../team/team.dux.js';
-import { createTodo, updateTodo, deleteTodo } from '../meeting/meeting.dux.js';
-import { getEvents } from '../calendar/calendar.dux';
+import { createTodo, updateTodo, deleteTodo, updateMeeting } from '../meeting/meeting.dux.js';
+import { getEvents, createEvent } from '../calendar/calendar.dux';
 
 import TeamMemberDetailMeeting from './team.member-detail.meeting.container.jsx';
 import questionDefaults from '../../questions/questions.js';
@@ -33,11 +34,13 @@ class TeamMemberDetail extends Component {
     imageUrl: PropTypes.string.isRequired,
     updateTeamMembers: PropTypes.func.isRequired,
     createMeeting: PropTypes.func.isRequired,
+    updateMeeting: PropTypes.func.isRequired,
     todos: PropTypes.array.isRequired,
     createTodo: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
     deleteTodo: PropTypes.func.isRequired,
     getEvents: PropTypes.func.isRequired,
+    createEvent: PropTypes.func.isRequired,
     events: PropTypes.array.isRequired
   }
 
@@ -108,8 +111,8 @@ class TeamMemberDetail extends Component {
         this.props.updateTeamMembers(team.id);
       },
       err => {
-        console.log('error creating meeting');
-        reject()
+        alert('error creating meeting');
+        reject();
       }
     );
   })
@@ -132,15 +135,47 @@ class TeamMemberDetail extends Component {
   }
 
   onScheduleSubmit = (newMeetingDateTime, googleCalendarEventId, isInviteSent) =>
-    this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () =>
-      this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false })));
+    this.setState({ newMeetingDateTime, googleCalendarEventId, isInviteSent }, () => {
+      const { meetings } = this.props;
+      if (meetings.length && !meetings[0].is_done) {
+        this.props.updateMeeting(meetings[0].id, { meeting_date: moment(newMeetingDateTime).toISOString() }).then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
+      } else {
+        this.submit().then(() => this.setState({ isScheduleMeetingSelected: false, googleCalendarEventId: null, isInviteSent: false }));
+      }
+    });
 
   onStartMeetingNow = () => this.setState({ newMeetingDateTime: moment().toISOString() }, () => {
+    const { givenName, familyName, team, meetingGroup } = this.props;
+    const { member } = this.state;
+    const {
+      dateTimeFormat,
+      getSummary,
+      getDescription,
+      getTimeZone,
+      getOptions
+    } = calendarHelpers;
+
     window.analytics.track('start-meeting-now', {
       category: 'meeting',
-      teamId: this.props.team.id
+      teamId: team.id
     });
-    this.submit();
+
+    this.setState({ isStartNowInFlight: true }, () => this.props.createEvent(
+      getSummary(givenName, familyName, member.given_name, member.family_name),
+      getDescription(team.id, meetingGroup.id),
+      moment().format(dateTimeFormat),
+      moment().add(30, 'minutes').seconds(0).format(dateTimeFormat),
+      getTimeZone(),
+      false,
+      getOptions(member.email)
+    ).then(
+      (event) => this.setState({ googleCalendarEventId: event.id },
+        () => this.submit().then(() => this.setState({
+          googleCalendarEventId: null,
+          isStartNowInFlight: false
+        }))),
+      () => console.error('error creating event')
+    ));
   });
 
   updateTodo = _.debounce((todoId, options) => this.props.updateTodo(todoId, options).then(
@@ -195,7 +230,7 @@ class TeamMemberDetail extends Component {
 
   render = () => {
     const { team, meetings, meetingGroup, imageUrl, history, todos, createTodo, updateTodo, deleteTodo } = this.props;
-    const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected } = this.state;
+    const { member, newMeetingDateTime, newMeetingDateTimeError, isScheduleMeetingSelected, event } = this.state;
     const {
       question1,
       question2,
@@ -220,6 +255,7 @@ class TeamMemberDetail extends Component {
             teamId={team.id}
             meetingGroupId={this.props.params.meetingGroupId}
             onScheduleSubmit={this.onScheduleSubmit}
+            currentMeeting={!canCreateNewMeeting ? meetings[0] : null}
           />
         </Modal>}
         <header className="page-header">
@@ -271,6 +307,7 @@ class TeamMemberDetail extends Component {
                             type="button"
                             className="btn-primary-inverse btn-block"
                             onClick={this.toggleScheduleMeetingSelected}
+                            disabled={this.state.isStartNowInFlight}
                           >
                             Schedule meeting
                           </button>
@@ -280,9 +317,10 @@ class TeamMemberDetail extends Component {
                             type="button"
                             className="btn-primary btn-block"
                             onClick={this.onStartMeetingNow}
+                            disabled={this.state.isStartNowInFlight}
                             autoFocus
                           >
-                            Start meeting now
+                            {this.state.isStartNowInFlight ? <span>Creating meeting&hellip;</span> : 'Start meeting now'}
                           </button>
                         </li>
                       </ul>
@@ -303,6 +341,7 @@ class TeamMemberDetail extends Component {
                       onTodoCheckboxChange={this.onTodoCheckboxChange}
                       onTodoTextChange={this.onTodoTextChange}
                       todoStates={todoStates}
+                      openScheduler={this.toggleScheduleMeetingSelected}
                     />
                   </li>
                 </ul>}
@@ -351,6 +390,8 @@ export default connect(
     createTodo,
     updateTodo,
     deleteTodo,
-    getEvents
+    getEvents,
+    createEvent,
+    updateMeeting
   }
 )(TeamMemberDetail);

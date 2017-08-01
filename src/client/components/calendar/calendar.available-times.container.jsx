@@ -6,7 +6,8 @@ class TimeSlot extends Component {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
     events: PropTypes.array,
-    onTimeSlotSelected: PropTypes.func.isRequired
+    onTimeSlotSelected: PropTypes.func.isRequired,
+    isCurrentMeetingStart: PropTypes.bool
   };
 
   onTimeSlotSelected = () => this.props.onTimeSlotSelected(this.props.startTime);
@@ -21,7 +22,7 @@ class TimeSlot extends Component {
       const topPct = evtStart.isSameOrBefore(startTime) ? 0 : Math.round(evtStart.diff(startTime, 'minutes') / 30 * 100);
       const bottomPct = evtEnd.isSameOrAfter(endTime) ? 0 : 100 - Math.round(endTime.diff(evtEnd, 'minutes') / 30 * 100);
 
-      const displayStr = evtStart.isSameOrAfter(startTime) ?
+      const displayStr = evtStart.isSameOrAfter(startTime, 'minute') ?
         `${evtStart.format('h')}${evtStart.minutes() ? evtStart.format(':mm') : ''} - ${evtEnd.format('h')}${evtEnd.minutes() ? evtEnd.format(':mm') : ''} ${event.summary}` : null;
 
       return {
@@ -64,7 +65,7 @@ class TimeSlot extends Component {
             id={btnId}
             name={btnId}
             type="button"
-            className="btn btn-block available-times-list-btn"
+            className={`btn btn-block available-times-list-btn${this.props.isCurrentMeetingStart ? ' available-times-list-btn-active' : ''}`}
             onClick={this.onTimeSlotSelected}
           >
             {events.map(event => (
@@ -90,7 +91,9 @@ export default class CalendarAvailableTimes extends Component {
     startTime: PropTypes.object.isRequired,
     endTime: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired,
-    onTimeSlotSelected: PropTypes.func.isRequired
+    onTimeSlotSelected: PropTypes.func.isRequired,
+    currentMeetingStartTime: PropTypes.object,
+    currentMeetingEndTime: PropTypes.object
   };
 
   state = {
@@ -116,7 +119,7 @@ export default class CalendarAvailableTimes extends Component {
 
     const timeSlots = _.times(count, (n) => ({
       startTime: start.clone().add(n * 30, 'minutes'),
-      endTime: start.clone().add((n + 1) * 30, 'minutes')
+      endTime: start.clone().add(((n + 1) * 30) - 1, 'minutes')
     })).map(timeSlot => Object.assign(timeSlot, {
       events: events.filter(event => {
         const evtStart = moment(event.start.dateTime);
@@ -141,6 +144,7 @@ export default class CalendarAvailableTimes extends Component {
   }
 
   render() {
+    const { currentMeetingStartTime } = this.props;
     const { timeSlots } = this.state;
 
     return (
@@ -149,6 +153,7 @@ export default class CalendarAvailableTimes extends Component {
           <TimeSlot
             key={index}
             onTimeSlotSelected={this.props.onTimeSlotSelected}
+            isCurrentMeetingStart={currentMeetingStartTime && (currentMeetingStartTime.isSameOrAfter(timeSlot.startTime, 'minute') && currentMeetingStartTime.isBefore(timeSlot.endTime, 'minute'))}
             {...timeSlot}
           />
         ))}

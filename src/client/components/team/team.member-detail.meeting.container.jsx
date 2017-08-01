@@ -44,6 +44,7 @@ class TeamMemberDetailMeeting extends Component {
     updateEvent: PropTypes.func.isRequired,
     onTodoCheckboxChange: PropTypes.func.isRequired,
     onTodoTextChange: PropTypes.func.isRequired,
+    openScheduler: PropTypes.func.isRequired,
     todoStates: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired
   };
@@ -321,6 +322,32 @@ ${event.description}`;
     teamId: this.props.teamId
   }));
 
+  meetingDateFormat = 'MMM Do YYYY, h:mm a';
+
+  getMeetingDateDisplay = () => {
+    const { finished_at, meeting_date } = this.props.meeting;
+    const { event } = this.state;
+
+    return moment(finished_at || meeting_date).format(this.meetingDateFormat);
+  };
+
+  setEvent = events => this.setState({
+    event: events.find(event => event.id === this.props.meeting.google_calendar_event_id)
+  }, () => console.log('setEvent', this.state.event));
+
+  componentWillReceiveProps(nextProps) {
+    if (_.isString(nextProps.meeting.google_calendar_event_id) && !this.state.event && nextProps.events.length) {
+      this.setEvent(nextProps.events);
+    }
+  }
+
+  componentWillMount() {
+    const { meeting, events } = this.props;
+    if (_.isString(meeting.google_calendar_event_id)) {
+      this.setEvent(events);
+    }
+  }
+
   render = () => {
     const { meeting, imageUrl, memberImageUrl, className, teamId, meetingGroupId, todos,
       createTodo, updateTodo, deleteTodo, onTodoTextChange, onTodoCheckboxChange, todoStates } = this.props;
@@ -350,7 +377,7 @@ ${event.description}`;
           </div>
           <div className="meeting-header-lg-content">
             <h1 className="meeting-header-title">{ title || `Finished ${moment(finished_at || meeting_date).fromNow()}` }</h1>
-            <span className="meeting-header-date">{ moment(finished_at || meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+            <span className="meeting-header-date">{ this.getMeetingDateDisplay() }</span>
           </div>
         </div>}
         {!is_done &&
@@ -377,14 +404,33 @@ ${event.description}`;
             </form>}
             {(is_done || !isHost) &&
             <h1 className="meeting-header-title">{ title || this.getLiveMeetingTitle() }</h1>}
-            <span className="meeting-header-date">{ moment(meeting_date).format('MMM Do YYYY, h:mm a') }</span>
+            <button
+              type="button"
+              className="btn-no-style"
+              onClick={this.props.openScheduler}
+            >
+              <span className="meeting-header-date">{ this.getMeetingDateDisplay() }</span>
+            </button>
             {isHost &&
               <Dropdown
                 className="team-meeting-header-dropdown-wrapper"
                 label={<button type="button" className="btn-main-team-more"><i className="material-icons">more_horiz</i></button>}
                 content={<ul className="dropdown-list">
                           <li>
-                            <button type="button" className="btn-no-style btn-no-style-danger nowrap" onClick={this.onDeleteClick}>
+                            <button
+                              type="button"
+                              className="btn-no-style btn-no-style-secondary nowrap"
+                              onClick={this.props.openScheduler}
+                            >
+                              Update meeting time
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              className="btn-no-style btn-no-style-danger nowrap"
+                              onClick={this.onDeleteClick}
+                            >
                               Cancel meeting <i className="material-icons">delete</i>
                             </button>
                           </li>
