@@ -5,7 +5,7 @@
     "node": "7.0.0"
   },
   "scripts": {
-    "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors",
+    "postinstall": "NODE_ENV=production webpack -p --config ./webpack.config.js --progress --colors && node_modules/selenium-standalone/bin/selenium-standalone install",
     "start": "babel-node --presets es2015,stage-0 ./src/server/server",
     "test": "./node_modules/nightwatch/bin/nightwatch",
     "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
