@@ -1,0 +1,959 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+sudo	/Users/justinworsdale/goodchat/.travis.yml	/^sudo: required$/;"	function	line:2
+dist	/Users/justinworsdale/goodchat/.travis.yml	/^dist: trusty$/;"	function	line:3
+addons	/Users/justinworsdale/goodchat/.travis.yml	/^addons:$/;"	function	line:4
+apt	/Users/justinworsdale/goodchat/.travis.yml	/^  apt:$/;"	function	line:5
+sources	/Users/justinworsdale/goodchat/.travis.yml	/^    sources:$/;"	function	line:6
+packages	/Users/justinworsdale/goodchat/.travis.yml	/^    packages:$/;"	function	line:8
+language	/Users/justinworsdale/goodchat/.travis.yml	/^language: node_js$/;"	function	line:10
+node_js	/Users/justinworsdale/goodchat/.travis.yml	/^node_js:$/;"	function	line:11
+before_script	/Users/justinworsdale/goodchat/.travis.yml	/^before_script:$/;"	function	line:13
+script	/Users/justinworsdale/goodchat/.travis.yml	/^script:$/;"	function	line:17
+const.scripts	/Users/justinworsdale/goodchat/gulpfile.js	/^const paths = {$/;"	property	line:14
+const.script	/Users/justinworsdale/goodchat/gulpfile.js	/^const nodemonConfig = {$/;"	property	line:31
+module.exports.production	/Users/justinworsdale/goodchat/knexfile.js	/^module.exports = {$/;"	property	line:3
+module.exports.src_folders	/Users/justinworsdale/goodchat/nightwatch.js	/^module.exports = {$/;"	property	line:1
+version	/Users/justinworsdale/goodchat/package.json	/^  "version": "0.0.0",$/;"	function	line:2
+private	/Users/justinworsdale/goodchat/package.json	/^  "private": true,$/;"	function	line:3
+engines	/Users/justinworsdale/goodchat/package.json	/^  "engines": {$/;"	function	line:4
+node	/Users/justinworsdale/goodchat/package.json	/^    "node": "7.0.0"$/;"	function	line:5
+scripts	/Users/justinworsdale/goodchat/package.json	/^  "scripts": {$/;"	function	line:7
+postinstall	/Users/justinworsdale/goodchat/package.json	/^    "postinstall": "NODE_ENV=production webpack -p --config .\/webpack.config.js --progress --colors && node_modules\/selenium-standalone\/bin\/selenium-standalone install",$/;"	function	line:8
+start	/Users/justinworsdale/goodchat/package.json	/^    "start": "babel-node --presets es2015,stage-0 .\/src\/server\/server",$/;"	function	line:9
+test	/Users/justinworsdale/goodchat/package.json	/^    "test": ".\/node_modules\/nightwatch\/bin\/nightwatch",$/;"	function	line:10
+e2e-setup	/Users/justinworsdale/goodchat/package.json	/^    "e2e-setup": "node_modules\/selenium-standalone\/bin\/selenium-standalone install"$/;"	function	line:11
+dependencies	/Users/justinworsdale/goodchat/package.json	/^  "dependencies": {$/;"	function	line:13
+babel-cli	/Users/justinworsdale/goodchat/package.json	/^    "babel-cli": "^6.18.0",$/;"	function	line:14
+babel-core	/Users/justinworsdale/goodchat/package.json	/^    "babel-core": "^6.18.2",$/;"	function	line:15
+babel-loader	/Users/justinworsdale/goodchat/package.json	/^    "babel-loader": "^6.2.7",$/;"	function	line:16
+babel-plugin-transform-runtime	/Users/justinworsdale/goodchat/package.json	/^    "babel-plugin-transform-runtime": "^6.15.0",$/;"	function	line:17
+babel-polyfill	/Users/justinworsdale/goodchat/package.json	/^    "babel-polyfill": "^6.16.0",$/;"	function	line:18
+babel-preset-es2015	/Users/justinworsdale/goodchat/package.json	/^    "babel-preset-es2015": "^6.18.0",$/;"	function	line:19
+babel-preset-react	/Users/justinworsdale/goodchat/package.json	/^    "babel-preset-react": "^6.16.0",$/;"	function	line:20
+babel-preset-stage-0	/Users/justinworsdale/goodchat/package.json	/^    "babel-preset-stage-0": "^6.16.0",$/;"	function	line:21
+babel-runtime	/Users/justinworsdale/goodchat/package.json	/^    "babel-runtime": "^6.18.0",$/;"	function	line:22
+bcryptjs	/Users/justinworsdale/goodchat/package.json	/^    "bcryptjs": "^2.3.0",$/;"	function	line:23
+body-parser	/Users/justinworsdale/goodchat/package.json	/^    "body-parser": "~1.15.1",$/;"	function	line:24
+bookshelf	/Users/justinworsdale/goodchat/package.json	/^    "bookshelf": "^0.10.3",$/;"	function	line:25
+connect-flash	/Users/justinworsdale/goodchat/package.json	/^    "connect-flash": "^0.1.1",$/;"	function	line:26
+cookie-parser	/Users/justinworsdale/goodchat/package.json	/^    "cookie-parser": "~1.4.3",$/;"	function	line:27
+css-loader	/Users/justinworsdale/goodchat/package.json	/^    "css-loader": "^0.25.0",$/;"	function	line:28
+debug	/Users/justinworsdale/goodchat/package.json	/^    "debug": "~2.2.0",$/;"	function	line:29
+dotenv	/Users/justinworsdale/goodchat/package.json	/^    "dotenv": "^2.0.0",$/;"	function	line:30
+express	/Users/justinworsdale/goodchat/package.json	/^    "express": "~4.13.4",$/;"	function	line:31
+express-session	/Users/justinworsdale/goodchat/package.json	/^    "express-session": "^1.14.0",$/;"	function	line:32
+favicons-webpack-plugin	/Users/justinworsdale/goodchat/package.json	/^    "favicons-webpack-plugin": "0.0.7",$/;"	function	line:33
+file-loader	/Users/justinworsdale/goodchat/package.json	/^    "file-loader": "^0.9.0",$/;"	function	line:34
+gifsicle	/Users/justinworsdale/goodchat/package.json	/^    "gifsicle": "^3.0.4",$/;"	function	line:35
+html-webpack-plugin	/Users/justinworsdale/goodchat/package.json	/^    "html-webpack-plugin": "^2.24.1",$/;"	function	line:36
+image-webpack-loader	/Users/justinworsdale/goodchat/package.json	/^    "image-webpack-loader": "^3.0.0",$/;"	function	line:37
+json-loader	/Users/justinworsdale/goodchat/package.json	/^    "json-loader": "^0.5.4",$/;"	function	line:38
+knex	/Users/justinworsdale/goodchat/package.json	/^    "knex": "^0.12.9",$/;"	function	line:39
+less	/Users/justinworsdale/goodchat/package.json	/^    "less": "^2.7.1",$/;"	function	line:40
+less-loader	/Users/justinworsdale/goodchat/package.json	/^    "less-loader": "^2.2.3",$/;"	function	line:41
+lodash	/Users/justinworsdale/goodchat/package.json	/^    "lodash": "^4.17.2",$/;"	function	line:42
+material-design-icons	/Users/justinworsdale/goodchat/package.json	/^    "material-design-icons": "^3.0.1",$/;"	function	line:43
+moment	/Users/justinworsdale/goodchat/package.json	/^    "moment": "^2.18.1",$/;"	function	line:44
+moment-timezone	/Users/justinworsdale/goodchat/package.json	/^    "moment-timezone": "^0.5.13",$/;"	function	line:45
+morgan	/Users/justinworsdale/goodchat/package.json	/^    "morgan": "~1.7.0",$/;"	function	line:46
+nightwatch	/Users/justinworsdale/goodchat/package.json	/^    "nightwatch": "^0.9.14",$/;"	function	line:47
+node-uuid	/Users/justinworsdale/goodchat/package.json	/^    "node-uuid": "^1.4.7",$/;"	function	line:48
+nodemailer	/Users/justinworsdale/goodchat/package.json	/^    "nodemailer": "^2.7.0",$/;"	function	line:49
+nunjucks	/Users/justinworsdale/goodchat/package.json	/^    "nunjucks": "^2.4.2",$/;"	function	line:50
+passport	/Users/justinworsdale/goodchat/package.json	/^    "passport": "^0.3.2",$/;"	function	line:51
+passport-facebook	/Users/justinworsdale/goodchat/package.json	/^    "passport-facebook": "^2.1.1",$/;"	function	line:52
+passport-google-web	/Users/justinworsdale/goodchat/package.json	/^    "passport-google-web": "^1.0.0",$/;"	function	line:53
+passport-local	/Users/justinworsdale/goodchat/package.json	/^    "passport-local": "^1.0.0",$/;"	function	line:54
+passport-stub	/Users/justinworsdale/goodchat/package.json	/^    "passport-stub": "^1.1.1",$/;"	function	line:55
+pg	/Users/justinworsdale/goodchat/package.json	/^    "pg": "6.1.0",$/;"	function	line:56
+react	/Users/justinworsdale/goodchat/package.json	/^    "react": "^15.3.2",$/;"	function	line:57
+react-datepicker	/Users/justinworsdale/goodchat/package.json	/^    "react-datepicker": "^0.48.0",$/;"	function	line:58
+react-dom	/Users/justinworsdale/goodchat/package.json	/^    "react-dom": "^15.3.2",$/;"	function	line:59
+react-facebook-login	/Users/justinworsdale/goodchat/package.json	/^    "react-facebook-login": "^3.4.1",$/;"	function	line:60
+react-helmet	/Users/justinworsdale/goodchat/package.json	/^    "react-helmet": "^3.2.2",$/;"	function	line:61
+react-input-autosize	/Users/justinworsdale/goodchat/package.json	/^    "react-input-autosize": "^1.1.0",$/;"	function	line:62
+react-input-mask	/Users/justinworsdale/goodchat/package.json	/^    "react-input-mask": "^0.9.1",$/;"	function	line:63
+react-markdown	/Users/justinworsdale/goodchat/package.json	/^    "react-markdown": "^2.5.0",$/;"	function	line:64
+react-redux	/Users/justinworsdale/goodchat/package.json	/^    "react-redux": "^4.4.5",$/;"	function	line:65
+react-router	/Users/justinworsdale/goodchat/package.json	/^    "react-router": "^2.8.1",$/;"	function	line:66
+react-sticky	/Users/justinworsdale/goodchat/package.json	/^    "react-sticky": "^5.0.5",$/;"	function	line:67
+react-textarea-autosize	/Users/justinworsdale/goodchat/package.json	/^    "react-textarea-autosize": "^4.0.5",$/;"	function	line:68
+react-time	/Users/justinworsdale/goodchat/package.json	/^    "react-time": "^4.2.0",$/;"	function	line:69
+redux	/Users/justinworsdale/goodchat/package.json	/^    "redux": "^3.6.0",$/;"	function	line:70
+redux-thunk	/Users/justinworsdale/goodchat/package.json	/^    "redux-thunk": "^1.0.3",$/;"	function	line:71
+style-loader	/Users/justinworsdale/goodchat/package.json	/^    "style-loader": "^0.13.1",$/;"	function	line:72
+superagent	/Users/justinworsdale/goodchat/package.json	/^    "superagent": "^3.3.0",$/;"	function	line:73
+webpack	/Users/justinworsdale/goodchat/package.json	/^    "webpack": "^1.13.3",$/;"	function	line:74
+webpack-dev-server	/Users/justinworsdale/goodchat/package.json	/^    "webpack-dev-server": "^1.16.2"$/;"	function	line:75
+devDependencies	/Users/justinworsdale/goodchat/package.json	/^  "devDependencies": {$/;"	function	line:77
+chai	/Users/justinworsdale/goodchat/package.json	/^    "chai": "^3.5.0",$/;"	function	line:78
+chai-http	/Users/justinworsdale/goodchat/package.json	/^    "chai-http": "^3.0.0",$/;"	function	line:79
+eslint	/Users/justinworsdale/goodchat/package.json	/^    "eslint": "^3.10.0",$/;"	function	line:80
+eslint-loader	/Users/justinworsdale/goodchat/package.json	/^    "eslint-loader": "^1.6.1",$/;"	function	line:81
+gulp-jscs	/Users/justinworsdale/goodchat/package.json	/^    "gulp-jscs": "^4.0.0",$/;"	function	line:82
+gulp-jshint	/Users/justinworsdale/goodchat/package.json	/^    "gulp-jshint": "^2.0.1",$/;"	function	line:83
+gulp-nodemon	/Users/justinworsdale/goodchat/package.json	/^    "gulp-nodemon": "^2.1.0",$/;"	function	line:84
+gulp-plumber	/Users/justinworsdale/goodchat/package.json	/^    "gulp-plumber": "^1.1.0",$/;"	function	line:85
+jshint	/Users/justinworsdale/goodchat/package.json	/^    "jshint": "^2.9.3",$/;"	function	line:86
+jshint-stylish	/Users/justinworsdale/goodchat/package.json	/^    "jshint-stylish": "^2.2.1",$/;"	function	line:87
+mocha	/Users/justinworsdale/goodchat/package.json	/^    "mocha": "^3.0.2",$/;"	function	line:88
+mocha-jscs	/Users/justinworsdale/goodchat/package.json	/^    "mocha-jscs": "^5.0.1",$/;"	function	line:89
+mocha-jshint	/Users/justinworsdale/goodchat/package.json	/^    "mocha-jshint": "^2.3.1",$/;"	function	line:90
+run-sequence	/Users/justinworsdale/goodchat/package.json	/^    "run-sequence": "^1.2.2",$/;"	function	line:91
+selenium-standalone	/Users/justinworsdale/goodchat/package.json	/^    "selenium-standalone": "^6.2.0",$/;"	function	line:92
+tiny-lr	/Users/justinworsdale/goodchat/package.json	/^    "tiny-lr": "^0.2.1"$/;"	function	line:93
+name	/Users/justinworsdale/goodchat/package.json	/^  "name": "goodchat"$/;"	function	line:95
+Goodchat	/Users/justinworsdale/goodchat/README.md	/^# Goodchat$/;"	function	line:1
+dependencies	/Users/justinworsdale/goodchat/README.md	/^## dependencies$/;"	function	line:7
+Getting started	/Users/justinworsdale/goodchat/README.md	/^## Getting started$/;"	function	line:15
+Deployment	/Users/justinworsdale/goodchat/README.md	/^## Deployment$/;"	function	line:25
+Tests	/Users/justinworsdale/goodchat/README.md	/^## Tests$/;"	function	line:30
+const.events	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.dux.js	/^const defaultState = {$/;"	property	line:4
+reducer	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:100
+switch	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.dux.js	/^  switch (action.type) {$/;"	function	line:101
+.available-times-list	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^.available-times-list {$/;"	function	line:1
+>li	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  >li {$/;"	function	line:7
+&:first-child	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    &:first-child {$/;"	function	line:12
+.available-times-list-btn	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^      .available-times-list-btn {$/;"	function	line:15
+&:last-child	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    &:last-child {$/;"	function	line:20
+.available-times-list-btn	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^      .available-times-list-btn {$/;"	function	line:21
+.available-times-list-label	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^.available-times-list-label {$/;"	function	line:29
+&:hover	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:hover,$/;"	function	line:36
+&:focus	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:focus {$/;"	function	line:37
+&:active	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:active {$/;"	function	line:40
+.available-times-list-btn-col	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^.available-times-list-btn-col {$/;"	function	line:45
+.available-times-list-btn	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^.available-times-list-btn {$/;"	function	line:49
+&.available-times-list-btn-active	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &.available-times-list-btn-active {$/;"	function	line:58
+&:hover	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    &:hover,$/;"	function	line:63
+&:focus	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    &:focus {$/;"	function	line:64
+&:active	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    &:active {$/;"	function	line:68
+&.btn	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &.btn {$/;"	function	line:74
+.available-times-list-btn-hover-ui	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  .available-times-list-btn-hover-ui {$/;"	function	line:78
+&:hover	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:hover,$/;"	function	line:82
+&:focus	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:focus {$/;"	function	line:83
+.available-times-list-btn-hover-ui	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^    .available-times-list-btn-hover-ui {$/;"	function	line:88
+&:active	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  &:active {$/;"	function	line:92
+small	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^  small {$/;"	function	line:97
+.available-times-list-btn-event	/Users/justinworsdale/goodchat/src/client/components/calendar/calendar.less	/^.available-times-list-btn-event {$/;"	function	line:102
+.dropdown-wrapper	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^.dropdown-wrapper {$/;"	function	line:1
+.dropdown-container	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^.dropdown-container {$/;"	function	line:7
+.dropdown-wrapper:hover &	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^  .dropdown-wrapper:hover &,$/;"	function	line:15
+.dropdown-wrapper:focus &	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^  .dropdown-wrapper:focus &,$/;"	function	line:16
+.dropdown-wrapper:active &	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^  .dropdown-wrapper:active & {$/;"	function	line:17
+.dropdown-right &	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^  .dropdown-right & {$/;"	function	line:21
+.dropdown	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^.dropdown {$/;"	function	line:27
+.dropdown-list	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^.dropdown-list {$/;"	function	line:34
+>li	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^  >li {$/;"	function	line:38
+>a	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^    >a,$/;"	function	line:40
+>button	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^    >button {$/;"	function	line:41
+>a	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^    >a {$/;"	function	line:44
+&:hover	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^      &:hover,$/;"	function	line:47
+&:focus	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^      &:focus {$/;"	function	line:48
+&:active	/Users/justinworsdale/goodchat/src/client/components/dropdown/dropdown.less	/^      &:active {$/;"	function	line:51
+.main-home	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^.main-home {$/;"	function	line:1
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:11
+.main-home-content	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^.main-home-content {$/;"	function	line:16
+.btn-large	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^  .btn-large {$/;"	function	line:23
+.main-home-title	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^.main-home-title {$/;"	function	line:30
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:36
+.main-home-copy	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^.main-home-copy {$/;"	function	line:41
+strong	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^  strong {$/;"	function	line:48
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/home/home.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:54
+const.invites	/Users/justinworsdale/goodchat/src/client/components/invite/invite.dux.js	/^const defaultState = {$/;"	property	line:1
+reducer	/Users/justinworsdale/goodchat/src/client/components/invite/invite.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:19
+switch	/Users/justinworsdale/goodchat/src/client/components/invite/invite.dux.js	/^  switch (action.type) {$/;"	function	line:20
+.invite-accept-container	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^.invite-accept-container {$/;"	function	line:1
+h1	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^  h1 {$/;"	function	line:5
+p	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^  p {$/;"	function	line:10
+a	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^    a {$/;"	function	line:12
+.invite-accept-login-btn	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^  .invite-accept-login-btn {$/;"	function	line:17
+@media( min-width: @tablet-width )	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^  @media( min-width: @tablet-width ) {$/;"	function	line:21
+h1	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^    h1 {$/;"	function	line:24
+p	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^    p {$/;"	function	line:28
+a	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^      a {$/;"	function	line:30
+.invite-accept-login-btn	/Users/justinworsdale/goodchat/src/client/components/invite/invite.less	/^    .invite-accept-login-btn {$/;"	function	line:36
+const.redirect	/Users/justinworsdale/goodchat/src/client/components/login/login.dux.js	/^const defaultState = {$/;"	property	line:1
+const.response	/Users/justinworsdale/goodchat/src/client/components/login/login.dux.js	/^  redirect: '',$/;"	property	line:2
+reducer	/Users/justinworsdale/goodchat/src/client/components/login/login.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:26
+switch	/Users/justinworsdale/goodchat/src/client/components/login/login.dux.js	/^  switch (action.type) {$/;"	function	line:27
+const.meetings	/Users/justinworsdale/goodchat/src/client/components/meeting/meeting.dux.js	/^const defaultState = {$/;"	property	line:6
+reducer	/Users/justinworsdale/goodchat/src/client/components/meeting/meeting.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:156
+switch	/Users/justinworsdale/goodchat/src/client/components/meeting/meeting.dux.js	/^  switch (action.type) {$/;"	function	line:157
+.modal-container	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^.modal-container {$/;"	function	line:1
+@keyframes fadein	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^@keyframes fadein {$/;"	function	line:12
+0%	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  0% {$/;"	function	line:13
+} 100%	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  } 100% {$/;"	function	line:15
+.modal-close-scrim	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^.modal-close-scrim {$/;"	function	line:20
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:28
+@keyframes modal-card	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^@keyframes modal-card {$/;"	function	line:35
+0%	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  0% {$/;"	function	line:36
+} 100%	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  } 100% {$/;"	function	line:39
+.modal-card-container	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^.modal-card-container {$/;"	function	line:45
+.card	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^  .card {$/;"	function	line:52
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/modal/modal.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:59
+const.shouldShowHeroLink	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.dux.js	/^const defaultState = {$/;"	property	line:1
+const.shouldShowNav	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.dux.js	/^  shouldShowHeroLink: true,$/;"	property	line:2
+reducer	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:27
+switch	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.dux.js	/^  switch (action.type) {$/;"	function	line:28
+.header-nav	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-nav {$/;"	function	line:1
+.header-hero-hidden &	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  .header-hero-hidden & {$/;"	function	line:10
+a	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  a,$/;"	function	line:14
+button	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  button {$/;"	function	line:15
+&:hover	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    &:hover,$/;"	function	line:21
+&:focus	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    &:focus {$/;"	function	line:22
+&:active	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    &:active {$/;"	function	line:26
+i	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    i {$/;"	function	line:30
+&.header-nav-mobile-ui	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    &.header-nav-mobile-ui {$/;"	function	line:34
+// @media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^      \/\/ @media(min-width: @tablet-width) {$/;"	function	line:35
+.header-nav-mobile-ui	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-nav-mobile-ui {$/;"	function	line:42
++.header-home-anchor	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  +.header-home-anchor {$/;"	function	line:43
+.header-home-anchor	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-home-anchor {$/;"	function	line:48
+&:hover	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  &:hover,$/;"	function	line:57
+&:focus	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  &:focus {$/;"	function	line:58
+&:active	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  &:active {$/;"	function	line:61
+// @media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  \/\/ @media(min-width: @tablet-width) {$/;"	function	line:65
+.header-user-ui	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-user-ui {$/;"	function	line:70
+.header-user-ui-img	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-user-ui-img {$/;"	function	line:74
+@keyframes header-app-nav-scrim-in	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^@keyframes header-app-nav-scrim-in {$/;"	function	line:81
+0%	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  0% {$/;"	function	line:82
+} 100%	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  } 100% {$/;"	function	line:84
+.header-app-nav-scrim	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-app-nav-scrim {$/;"	function	line:89
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:101
+.header-app-nav	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-app-nav {$/;"	function	line:106
+&.header-app-nav-show	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  &.header-app-nav-show {$/;"	function	line:118
+button.btn-primary-inverse	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  button.btn-primary-inverse,$/;"	function	line:122
+button.btn-secondary	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  button.btn-secondary {$/;"	function	line:123
++button	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    +button {$/;"	function	line:128
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:133
+.header-app-nav-list	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-app-nav-list {$/;"	function	line:140
+>li	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^  >li {$/;"	function	line:143
+>a	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    >a {$/;"	function	line:144
+&:hover	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^      &:hover,$/;"	function	line:149
+&:focus	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^      &:focus {$/;"	function	line:150
+&:active	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^      &:active {$/;"	function	line:153
+&.header-app-nav-list-item-secondary	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^    &.header-app-nav-list-item-secondary {$/;"	function	line:158
+>a	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^      >a {$/;"	function	line:159
+&:hover	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^        &:hover,$/;"	function	line:163
+&:focus	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^        &:focus {$/;"	function	line:164
+&:active	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^        &:active {$/;"	function	line:167
+.header-app-nav-footer	/Users/justinworsdale/goodchat/src/client/components/navbar/navbar.less	/^.header-app-nav-footer {$/;"	function	line:175
+const.teams	/Users/justinworsdale/goodchat/src/client/components/team/team.dux.js	/^const defaultState = {$/;"	property	line:6
+reducer	/Users/justinworsdale/goodchat/src/client/components/team/team.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:115
+switch	/Users/justinworsdale/goodchat/src/client/components/team/team.dux.js	/^  switch (action.type) {$/;"	function	line:116
+.pending-invite-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.pending-invite-list {$/;"	function	line:1
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:4
+.pending-invite-list-ui-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.pending-invite-list-ui-list {$/;"	function	line:10
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:16
+.team-member-list-title	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-list-title {$/;"	function	line:21
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:26
+.team-member-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-list {$/;"	function	line:32
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:36
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:40
+&:first-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:first-child {$/;"	function	line:45
+>a	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >a {$/;"	function	line:49
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:hover,$/;"	function	line:54
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:focus {$/;"	function	line:55
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:active {$/;"	function	line:58
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      @media(min-width: @tablet-width) {$/;"	function	line:62
+team-member-ui-image-size	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^@team-member-ui-image-size: 40px;$/;"	function	line:69
+team-member-ui-image-size-tablet	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^@team-member-ui-image-size-tablet: 50px;$/;"	function	line:70
+.team-member-ui-image	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-ui-image {$/;"	function	line:72
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:83
+.team-member-ui-content	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-ui-content {$/;"	function	line:90
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:93
+.team-member-ui-content-name	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-ui-content-name {$/;"	function	line:98
+a:hover &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:hover &,$/;"	function	line:101
+a:focus &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:focus & {$/;"	function	line:102
+a:active &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:active & {$/;"	function	line:105
+.team-member-ui-wrapper	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-ui-wrapper {$/;"	function	line:110
+.team-member-ui-image	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .team-member-ui-image {$/;"	function	line:112
+.team-member-detail-qa-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-detail-qa-list {$/;"	function	line:117
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:120
++li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    +li {$/;"	function	line:122
+.team-member-detail-qa-list-item-input-group	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-detail-qa-list-item-input-group {$/;"	function	line:128
+>.team-member-detail-qa-list-item-input-wrap	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >.team-member-detail-qa-list-item-input-wrap {$/;"	function	line:134
+.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    .form-control {$/;"	function	line:140
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:hover,$/;"	function	line:144
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:focus {$/;"	function	line:145
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:active {$/;"	function	line:148
+&::before	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::before {$/;"	function	line:153
+>.team-member-detail-qa-list-item	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >.team-member-detail-qa-list-item {$/;"	function	line:166
+li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    li {$/;"	function	line:175
+&:first-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:first-child {$/;"	function	line:178
+&::before	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::before {$/;"	function	line:183
+&.team-member-detail-qa-list-item-no-comment	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &.team-member-detail-qa-list-item-no-comment {$/;"	function	line:196
+.team-markdown	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-markdown {$/;"	function	line:202
+>*:first-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >*:first-child {$/;"	function	line:205
+>*:last-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >*:last-child {$/;"	function	line:208
+ul, ol, p, h1, h2, h3, h4, h5, h6	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  ul, ol, p, h1, h2, h3, h4, h5, h6 {$/;"	function	line:212
+hr	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  hr {$/;"	function	line:217
+h1, h2, h3, h4, h5, h6	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  h1, h2, h3, h4, h5, h6 {$/;"	function	line:225
+code	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  code {$/;"	function	line:231
+pre	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  pre {$/;"	function	line:235
+pre	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  pre,$/;"	function	line:239
+code	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  code {$/;"	function	line:240
+code	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    code {$/;"	function	line:245
+ul	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  ul {$/;"	function	line:253
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >li {$/;"	function	line:255
+li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      li {$/;"	function	line:257
+ol	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  ol {$/;"	function	line:262
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >li {$/;"	function	line:264
+strong	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  strong {$/;"	function	line:268
+.meeting-todo-form-checked &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .meeting-todo-form-checked & {$/;"	function	line:272
+b,strong	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    b,strong {$/;"	function	line:276
+.team-markdown-note	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-markdown-note {$/;"	function	line:282
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:hover,$/;"	function	line:289
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:focus {$/;"	function	line:290
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:active {$/;"	function	line:293
+.team-member-detail-qa-list-item-icon	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-detail-qa-list-item-icon {$/;"	function	line:298
+.team-header-title	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-header-title {$/;"	function	line:310
+input	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  input {$/;"	function	line:318
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:hover,$/;"	function	line:328
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus {$/;"	function	line:329
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:active {$/;"	function	line:334
+.team-member-icon	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-icon {$/;"	function	line:340
+.team-set-name-label	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-set-name-label {$/;"	function	line:350
+@media( min-width: @tablet-width )	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media( min-width: @tablet-width ) {$/;"	function	line:357
+.team-set-name-input	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-set-name-input {$/;"	function	line:363
+>input	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >input {$/;"	function	line:366
+&::input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::input-placeholder {$/;"	function	line:381
+&::-webkit-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::-webkit-input-placeholder {$/;"	function	line:384
+@media( min-width: @tablet-width )	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    @media( min-width: @tablet-width ) {$/;"	function	line:388
+@keyframes team-set-name-submit	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^@keyframes team-set-name-submit {$/;"	function	line:394
+0%	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  0% {$/;"	function	line:395
+} 100%	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  } 100% {$/;"	function	line:398
+.team-set-name-submit	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-set-name-submit {$/;"	function	line:404
+.main-team-set-questions &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .main-team-set-questions & {$/;"	function	line:410
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:hover,$/;"	function	line:414
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:focus {$/;"	function	line:415
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:active {$/;"	function	line:418
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:422
+.main-team-set-name	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team-set-name {$/;"	function	line:427
+.main-team	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team {$/;"	function	line:431
+.main-team-container	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team-container {$/;"	function	line:436
+p	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  p {$/;"	function	line:441
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:443
+.main-team-header	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team-header {$/;"	function	line:449
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:452
+h1	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  h1 {$/;"	function	line:456
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:463
+.dropdown-wrapper	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .dropdown-wrapper {$/;"	function	line:467
+.btn-main-team-more	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.btn-main-team-more {$/;"	function	line:472
+>i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >i {$/;"	function	line:483
+.main-team-set-questions	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team-set-questions {$/;"	function	line:488
+>.container	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >.container {$/;"	function	line:493
+.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .form-control {$/;"	function	line:500
+.dropdown-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .dropdown-list {$/;"	function	line:504
+h1	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  h1 {$/;"	function	line:508
+p	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  p {$/;"	function	line:513
+@media( min-width: @tablet-width )	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media( min-width: @tablet-width ) {$/;"	function	line:517
+.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    .form-control {$/;"	function	line:521
+.input-group-addon	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    .input-group-addon {$/;"	function	line:524
+.dropdown-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    .dropdown-list {$/;"	function	line:527
+a	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      a {$/;"	function	line:528
+h1	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    h1 {$/;"	function	line:533
+p	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    p {$/;"	function	line:537
+p.main-team-set-questions-footnote	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^p.main-team-set-questions-footnote {$/;"	function	line:543
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:547
+.btn-team-skip	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.btn-team-skip {$/;"	function	line:553
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:hover,$/;"	function	line:556
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:focus {$/;"	function	line:557
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:active {$/;"	function	line:560
+.team-member-ui-content-info	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-ui-content-info {$/;"	function	line:565
+a:hover &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:hover &,$/;"	function	line:572
+a:focus &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:focus & {$/;"	function	line:573
+a:active &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  a:active & {$/;"	function	line:576
+.btn-team-invite	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.btn-team-invite {$/;"	function	line:581
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:584
+.meeting-header	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header {$/;"	function	line:590
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:596
+.meeting-header-lg-icon-wrapper	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-lg-icon-wrapper {$/;"	function	line:602
+.team-card-subheader-create-meeting &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .team-card-subheader-create-meeting & {$/;"	function	line:609
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:613
+.meeting-header-lg-icon-sub	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-lg-icon-sub {$/;"	function	line:618
+.meeting-header-lg-icon	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-lg-icon {$/;"	function	line:623
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:626
+.team-card-subheader-create-meeting &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .team-card-subheader-create-meeting & {$/;"	function	line:630
+.meeting-header-lg-content	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-lg-content {$/;"	function	line:635
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:638
+.team-card-subheader-create-meeting &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .team-card-subheader-create-meeting & {$/;"	function	line:642
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:645
+.meeting-header-title	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-title {$/;"	function	line:651
+.team-card-subheader-create-meeting &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .team-card-subheader-create-meeting & {$/;"	function	line:653
+>input	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >input {$/;"	function	line:657
+&::-webkit-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::-webkit-input-placeholder {$/;"	function	line:667
+&::-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &::-moz-placeholder {$/;"	function	line:670
+&:-ms-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:-ms-input-placeholder {$/;"	function	line:673
+&:-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:-moz-placeholder {$/;"	function	line:676
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:hover {$/;"	function	line:679
+&::-webkit-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &::-webkit-input-placeholder {$/;"	function	line:680
+&::-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &::-moz-placeholder {$/;"	function	line:683
+&:-ms-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:-ms-input-placeholder {$/;"	function	line:686
+&:-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:-moz-placeholder {$/;"	function	line:689
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus,$/;"	function	line:693
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:active {$/;"	function	line:694
+&::-webkit-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &::-webkit-input-placeholder {$/;"	function	line:695
+&::-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &::-moz-placeholder {$/;"	function	line:698
+&:-ms-input-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:-ms-input-placeholder {$/;"	function	line:701
+&:-moz-placeholder	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      &:-moz-placeholder {$/;"	function	line:704
+.meeting-header-title-input-icon	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-title-input-icon {$/;"	function	line:711
+.meeting-header-date	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-header-date {$/;"	function	line:717
+.btn-no-style &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .btn-no-style & {$/;"	function	line:722
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:hover,$/;"	function	line:724
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus {$/;"	function	line:725
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:active {$/;"	function	line:728
+.team-card-body-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-card-body-list {$/;"	function	line:734
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:737
+&:first-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:first-child {$/;"	function	line:741
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:746
+.team-card-subheader	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-card-subheader {$/;"	function	line:751
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:755
+.team-meeting-header-dropdown-wrapper	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-meeting-header-dropdown-wrapper {$/;"	function	line:760
+&.dropdown-wrapper	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &.dropdown-wrapper {$/;"	function	line:761
+.meeting-card	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-card {$/;"	function	line:769
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:771
+.meeting-subhead	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-subhead {$/;"	function	line:776
+.meeting-qa-foot	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-qa-foot {$/;"	function	line:787
+.btn-no-style	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .btn-no-style {$/;"	function	line:790
+i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    i {$/;"	function	line:794
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:hover,$/;"	function	line:798
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus {$/;"	function	line:799
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:active {$/;"	function	line:803
+.team-member-detail-add-qa-btn	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-detail-add-qa-btn {$/;"	function	line:809
+>i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >i {$/;"	function	line:813
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:hover,$/;"	function	line:817
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:focus {$/;"	function	line:818
+>i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >i {$/;"	function	line:820
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:active {$/;"	function	line:824
+>i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >i {$/;"	function	line:826
+&:disabled	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &:disabled {$/;"	function	line:830
+>i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    >i {$/;"	function	line:832
+.modal-container-team-meeting	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.modal-container-team-meeting {$/;"	function	line:838
+.modal-card-container	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .modal-card-container {$/;"	function	line:839
+.card	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    .card {$/;"	function	line:840
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      @media(min-width: @tablet-width) {$/;"	function	line:841
+.meeting-todo-form-control-add	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-todo-form-control-add {$/;"	function	line:848
+&.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &.form-control {$/;"	function	line:849
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus {$/;"	function	line:852
+.team-member-todo-list	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.team-member-todo-list {$/;"	function	line:858
+>li	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  >li {$/;"	function	line:862
+&:first-child	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:first-child {$/;"	function	line:866
+.meeting-todo-form-control-add	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      .meeting-todo-form-control-add {$/;"	function	line:867
+&.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^        &.form-control {$/;"	function	line:868
+.meeting-todo-form	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-todo-form {$/;"	function	line:876
+.meeting-todo-form-text	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-todo-form-text {$/;"	function	line:881
+.meeting-todo-form-add &	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .meeting-todo-form-add & {$/;"	function	line:884
+.meeting-todo-form-checkbox	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-todo-form-checkbox {$/;"	function	line:889
+.meeting-todo-form-checked	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.meeting-todo-form-checked {$/;"	function	line:895
+.checkbox-label	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .checkbox-label {$/;"	function	line:896
+i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    i {$/;"	function	line:897
+&:hover	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:hover,$/;"	function	line:901
+&:focus	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:focus {$/;"	function	line:902
+i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      i {$/;"	function	line:903
+&:active	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    &:active {$/;"	function	line:907
+i	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^      i {$/;"	function	line:908
+.aside-team-meeting-sticky-container	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.aside-team-meeting-sticky-container {$/;"	function	line:915
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:918
+.aside-team-meeting-sticky	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.aside-team-meeting-sticky {$/;"	function	line:928
+.main-team-meeting	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.main-team-meeting {$/;"	function	line:932
+&.main	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &.main {$/;"	function	line:933
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:937
+.card	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .card {$/;"	function	line:943
++.card	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    +.card {$/;"	function	line:947
+.available-times-nav	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.available-times-nav {$/;"	function	line:953
+.available-times-nav-prev-btn	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.available-times-nav-prev-btn {$/;"	function	line:959
+.available-times-nav-next-btn	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.available-times-nav-next-btn {$/;"	function	line:965
+.schedule-timeslot-table	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.schedule-timeslot-table {$/;"	function	line:971
+.schedule-timeslot-inputs	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.schedule-timeslot-inputs {$/;"	function	line:976
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:977
+.schedule-timeslot-inputs-group	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.schedule-timeslot-inputs-group {$/;"	function	line:986
++.schedule-timeslot-inputs-group	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  +.schedule-timeslot-inputs-group {$/;"	function	line:987
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:990
++.schedule-timeslot-inputs-group	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^    +.schedule-timeslot-inputs-group {$/;"	function	line:993
+.form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.form-control {$/;"	function	line:999
+&.date-picker-calendar-form-control	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  &.date-picker-calendar-form-control {$/;"	function	line:1000
+.schedule-timeslot-form	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^.schedule-timeslot-form {$/;"	function	line:1005
+.danger-text	/Users/justinworsdale/goodchat/src/client/components/team/team.less	/^  .danger-text {$/;"	function	line:1006
+const.isLoggedIn	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^const defaultState = {$/;"	property	line:4
+const.id	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  isLoggedIn: false,$/;"	property	line:5
+const.email	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  id: '',$/;"	property	line:6
+const.familyName	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  email: '',$/;"	property	line:7
+const.givenName	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  familyName: '',$/;"	property	line:8
+const.googleId	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  givenName: '',$/;"	property	line:9
+const.imageUrl	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  googleId: '',$/;"	property	line:10
+reducer	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^export default function reducer(state = defaultState, action) {$/;"	function	line:66
+switch	/Users/justinworsdale/goodchat/src/client/components/user/user.dux.js	/^  switch (action.type) {$/;"	function	line:67
+user-hero-img-container-size	/Users/justinworsdale/goodchat/src/client/components/user/user.less	/^@user-hero-img-container-size: 40px;$/;"	function	line:1
+.user-hero-img-container	/Users/justinworsdale/goodchat/src/client/components/user/user.less	/^.user-hero-img-container {$/;"	function	line:3
+.user-profile-container	/Users/justinworsdale/goodchat/src/client/components/user/user.less	/^.user-profile-container {$/;"	function	line:15
+font-family	/Users/justinworsdale/goodchat/src/client/less/base.less	/^@font-family: 'Helvetica Neue', helvetica, arial, sans-serif;$/;"	function	line:1
+html, body	/Users/justinworsdale/goodchat/src/client/less/base.less	/^html, body {$/;"	function	line:3
+div, nav, header, footer, span, button, ul, li, p, a, section	/Users/justinworsdale/goodchat/src/client/less/base.less	/^div, nav, header, footer, span, button, ul, li, p, a, section {$/;"	function	line:15
+body	/Users/justinworsdale/goodchat/src/client/less/base.less	/^body {$/;"	function	line:19
+&.no-scroll	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &.no-scroll {$/;"	function	line:20
+h1, h2, h3, h4, h5, h6	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h1, h2, h3, h4, h5, h6 {$/;"	function	line:25
+h1, h2	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h1, h2 {$/;"	function	line:29
+p, a, button, label	/Users/justinworsdale/goodchat/src/client/less/base.less	/^p, a, button, label {$/;"	function	line:33
+b, strong	/Users/justinworsdale/goodchat/src/client/less/base.less	/^b, strong {$/;"	function	line:37
+h3, h4, h5	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h3, h4, h5 {$/;"	function	line:42
+h3	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h3 {$/;"	function	line:47
+h4, h5	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h4, h5 {$/;"	function	line:51
+h1	/Users/justinworsdale/goodchat/src/client/less/base.less	/^h1 {$/;"	function	line:55
+a, button	/Users/justinworsdale/goodchat/src/client/less/base.less	/^a, button {$/;"	function	line:59
+a	/Users/justinworsdale/goodchat/src/client/less/base.less	/^a {$/;"	function	line:68
+&:hover	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:hover,$/;"	function	line:71
+&:focus	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:focus {$/;"	function	line:72
+&:active	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:active {$/;"	function	line:75
+input, textarea, select	/Users/justinworsdale/goodchat/src/client/less/base.less	/^input, textarea, select {$/;"	function	line:80
+textarea	/Users/justinworsdale/goodchat/src/client/less/base.less	/^textarea {$/;"	function	line:87
+.material-icons	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.material-icons {$/;"	function	line:91
+.page-body	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-body {$/;"	function	line:95
+p	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  p {$/;"	function	line:99
+.page-header	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-header {$/;"	function	line:103
++.page-body	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  +.page-body {$/;"	function	line:106
+.main	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.main {$/;"	function	line:111
+.aside	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.aside {$/;"	function	line:116
+.page-header	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-header {$/;"	function	line:121
+h1	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  h1 {$/;"	function	line:129
+.page-header-back-link	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-header-back-link {$/;"	function	line:135
+&:hover	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:hover,$/;"	function	line:138
+&:focus	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:focus {$/;"	function	line:139
+&:active	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  &:active {$/;"	function	line:142
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:146
+.page-row	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-row {$/;"	function	line:153
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:155
+.page-layout	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.page-layout {$/;"	function	line:160
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:162
+.aside	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    .aside {$/;"	function	line:167
+.main	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    .main {$/;"	function	line:172
+.container	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.container {$/;"	function	line:179
+.container-slim	/Users/justinworsdale/goodchat/src/client/less/base.less	/^.container-slim {$/;"	function	line:184
+h1	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  h1 {$/;"	function	line:188
+p	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  p {$/;"	function	line:193
+a	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    a {$/;"	function	line:195
+&:hover	/Users/justinworsdale/goodchat/src/client/less/base.less	/^      &:hover,$/;"	function	line:200
+&:focus	/Users/justinworsdale/goodchat/src/client/less/base.less	/^      &:focus {$/;"	function	line:201
+&:active	/Users/justinworsdale/goodchat/src/client/less/base.less	/^      &:active {$/;"	function	line:204
+@media( min-width: @tablet-width )	/Users/justinworsdale/goodchat/src/client/less/base.less	/^  @media( min-width: @tablet-width ) {$/;"	function	line:210
+h1	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    h1 {$/;"	function	line:213
+p	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    p {$/;"	function	line:217
+a	/Users/justinworsdale/goodchat/src/client/less/base.less	/^      a {$/;"	function	line:219
+.invite-accept-login-btn	/Users/justinworsdale/goodchat/src/client/less/base.less	/^    .invite-accept-login-btn {$/;"	function	line:224
+[class^="btn-"]	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^[class^="btn-"],$/;"	function	line:1
+[class*=" btn-"]	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^[class*=" btn-"] {$/;"	function	line:2
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:9
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:10
+.btn-large	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-large {$/;"	function	line:15
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:19
+.btn-block	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-block {$/;"	function	line:24
+a.btn-block	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^a.btn-block {$/;"	function	line:29
+.btn-inverse	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-inverse {$/;"	function	line:33
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:39
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:40
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:44
+.btn-inverse-google	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-inverse-google {$/;"	function	line:49
+&::before	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &::before {$/;"	function	line:50
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:62
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:63
+&::before	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^    &::before {$/;"	function	line:64
+.btn-no-style	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-no-style {$/;"	function	line:70
+.btn-no-style-primary	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-no-style-primary {$/;"	function	line:78
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:81
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:82
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:85
+&[disabled]	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &[disabled] {$/;"	function	line:88
+.btn-no-style-danger	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-no-style-danger {$/;"	function	line:93
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:96
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:97
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:100
+.btn-no-style-secondary	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-no-style-secondary {$/;"	function	line:105
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:108
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:109
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:112
+btn-icon-radius	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^@btn-icon-radius: 2rem;$/;"	function	line:117
+.btn-icon	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-icon {$/;"	function	line:119
+>i	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  >i {$/;"	function	line:128
+.btn-icon-danger	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-icon-danger {$/;"	function	line:133
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:134
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:135
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:139
+.btn-secondary	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-secondary {$/;"	function	line:145
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:150
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:151
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:155
+.btn-primary	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-primary {$/;"	function	line:161
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:166
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:167
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:171
+.btn-primary-inverse	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^.btn-primary-inverse {$/;"	function	line:177
+&:hover	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:hover,$/;"	function	line:183
+&:focus	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:focus {$/;"	function	line:184
+&:active	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &:active {$/;"	function	line:189
+&[disabled]	/Users/justinworsdale/goodchat/src/client/less/buttons.less	/^  &[disabled] {$/;"	function	line:195
+.card	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card {$/;"	function	line:1
+p	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  p {$/;"	function	line:7
+.card-padded-content	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card-padded-content {$/;"	function	line:11
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:14
+.card-header	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card-header {$/;"	function	line:19
+// h3	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  \/\/ h3 {$/;"	function	line:26
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:30
+.card-header-close	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card-header-close {$/;"	function	line:35
+a, button	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  a, button {$/;"	function	line:40
+&:hover	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    &:hover,$/;"	function	line:43
+&:focus	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    &:focus {$/;"	function	line:44
+&:active	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    &:active {$/;"	function	line:47
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:52
+.card-body-list	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card-body-list {$/;"	function	line:57
+>li	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  >li {$/;"	function	line:61
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    &:first-child {$/;"	function	line:65
+>a	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    >a {$/;"	function	line:69
+&:hover	/Users/justinworsdale/goodchat/src/client/less/card.less	/^      &:hover,$/;"	function	line:75
+&:focus	/Users/justinworsdale/goodchat/src/client/less/card.less	/^      &:focus {$/;"	function	line:76
+&:active	/Users/justinworsdale/goodchat/src/client/less/card.less	/^      &:active {$/;"	function	line:79
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/card.less	/^      @media(min-width: @tablet-width) {$/;"	function	line:83
+.card-footer-btn-list	/Users/justinworsdale/goodchat/src/client/less/card.less	/^.card-footer-btn-list {$/;"	function	line:90
+>li	/Users/justinworsdale/goodchat/src/client/less/card.less	/^  >li {$/;"	function	line:94
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/card.less	/^    &:first-child {$/;"	function	line:98
+bluegrey-50	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-50: #ECEFF1;$/;"	function	line:1
+bluegrey-100	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-100: #CFD8DC;$/;"	function	line:2
+bluegrey-200	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-200: #B0BEC5;$/;"	function	line:3
+bluegrey-400	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-400: #78909C;$/;"	function	line:4
+bluegrey-500	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-500: #607D8B;$/;"	function	line:5
+bluegrey-600	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-600: #546E7A;$/;"	function	line:6
+bluegrey-700	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-700: #455A64;$/;"	function	line:7
+bluegrey-800	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-800: #37474F;$/;"	function	line:8
+bluegrey-900	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@bluegrey-900: #263238;$/;"	function	line:9
+black-squeeze	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@black-squeeze: #F7FCFC;$/;"	function	line:11
+cyan-500	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@cyan-500: #00BCD4;$/;"	function	line:13
+cyan-a400	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@cyan-a400: #00E5FF;$/;"	function	line:14
+cyan-600	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@cyan-600: #00ACC1;$/;"	function	line:15
+cyan-700	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@cyan-700: #0097A7;$/;"	function	line:16
+pink-400	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@pink-400: #EC407A;$/;"	function	line:17
+pink-500	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@pink-500: #E91E63;$/;"	function	line:18
+pink-600	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@pink-600: #D81B60;$/;"	function	line:19
+green-a400	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@green-a400: #00C853;$/;"	function	line:21
+body-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@body-color: @bluegrey-400;$/;"	function	line:23
+body-bold-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@body-bold-color: @bluegrey-500;$/;"	function	line:24
+body-color-hover	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@body-color-hover: darken(@body-color, 10%);$/;"	function	line:25
+body-color-active	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@body-color-active: darken(@body-color, 20%);$/;"	function	line:26
+danger-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@danger-color: @pink-400;$/;"	function	line:28
+danger-color-hover	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@danger-color-hover: @pink-500;$/;"	function	line:29
+danger-color-active	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@danger-color-active: @pink-600;$/;"	function	line:30
+success-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@success-color: @green-a400;$/;"	function	line:32
+header-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color: @bluegrey-400;$/;"	function	line:34
+header-color-hover	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color-hover: darken(@header-color, 10%);$/;"	function	line:35
+header-color-active	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color-active: darken(@header-color, 20%);$/;"	function	line:36
+header-color-secondary	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color-secondary: lighten(@bluegrey-400, 20%);$/;"	function	line:38
+header-color-secondary-hover	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color-secondary-hover: lighten(@bluegrey-400, 10%);$/;"	function	line:39
+header-color-secondary-active	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@header-color-secondary-active: @bluegrey-400;$/;"	function	line:40
+link-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@link-color: @cyan-500;$/;"	function	line:42
+link-color-hover	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@link-color-hover: @cyan-600;$/;"	function	line:43
+link-color-active	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@link-color-active: @cyan-700;$/;"	function	line:44
+card-header-title-color	/Users/justinworsdale/goodchat/src/client/less/colors.less	/^@card-header-title-color: @bluegrey-600;$/;"	function	line:46
+tablet-width	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@tablet-width: 768px;$/;"	function	line:1
+netbook-width	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@netbook-width: 960px;$/;"	function	line:2
+desktop-width	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@desktop-width: 1170px;$/;"	function	line:3
+border-radius	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@border-radius: 2px;$/;"	function	line:5
+gutter	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@gutter: 20px;$/;"	function	line:7
+half-gutter	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@half-gutter: 10px;$/;"	function	line:8
+quarter-gutter	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@quarter-gutter: 5px;$/;"	function	line:9
+box-shadow-z1	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@box-shadow-z1: 0px 2px 2px 0px rgba(0,0,0,0.05);$/;"	function	line:11
+box-shadow-z2	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@box-shadow-z2: 0px 2px 5px 0px rgba(0,0,0,0.3);$/;"	function	line:12
+box-shadow-z3	/Users/justinworsdale/goodchat/src/client/less/dimensions.less	/^@box-shadow-z3: 0px 2px 20px 2px rgba(0,0,0,0.3);$/;"	function	line:13
+.dropdown-container	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^.dropdown-container {$/;"	function	line:1
+&.dropdown-container-show	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^  &.dropdown-container-show {$/;"	function	line:10
+.dropdown	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^.dropdown {$/;"	function	line:15
+.dropdown-list	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^.dropdown-list {$/;"	function	line:22
+>li	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^  >li {$/;"	function	line:25
+>a	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^    >a {$/;"	function	line:27
+&:hover	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^      &:hover,$/;"	function	line:32
+&:focus	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^      &:focus {$/;"	function	line:33
+&:active	/Users/justinworsdale/goodchat/src/client/less/dropdowns.less	/^      &:active {$/;"	function	line:37
+.form	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.form {$/;"	function	line:1
+fieldset	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  fieldset {$/;"	function	line:2
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:first-child {$/;"	function	line:7
+.input-label	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.input-label {$/;"	function	line:13
++.input-group	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  +.input-group,$/;"	function	line:17
++.form-control	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  +.form-control {$/;"	function	line:18
+.input-group	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.input-group {$/;"	function	line:23
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:hover,$/;"	function	line:30
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:focus {$/;"	function	line:31
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:active {$/;"	function	line:34
+.input-error &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-error & {$/;"	function	line:38
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:41
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus {$/;"	function	line:42
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:45
+&.input-group-cosmetic	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &.input-group-cosmetic {$/;"	function	line:50
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:53
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus,$/;"	function	line:54
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:55
+&.input-group-seamless	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &.input-group-seamless {$/;"	function	line:60
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:63
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus {$/;"	function	line:64
+.input-group-addon	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^      .input-group-addon {$/;"	function	line:67
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:71
+.form-control	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.form-control {$/;"	function	line:77
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:hover,$/;"	function	line:88
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:focus {$/;"	function	line:89
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &:active {$/;"	function	line:92
+.input-error &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-error & {$/;"	function	line:96
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:99
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus {$/;"	function	line:100
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:103
+.input-group &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-group & {$/;"	function	line:108
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:114
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus,$/;"	function	line:115
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:116
+.input-group-cosmetic &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-group-cosmetic & {$/;"	function	line:120
+&.form-control-cosmetic	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  &.form-control-cosmetic {$/;"	function	line:124
++.input-group-addon-divided	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  +.input-group-addon-divided {$/;"	function	line:129
+.input-group-addon	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.input-group-addon {$/;"	function	line:134
+.material-icons	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .material-icons {$/;"	function	line:143
+.input-group-seamless &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-group-seamless & {$/;"	function	line:146
+.input-group-cosmetic &	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  .input-group-cosmetic & {$/;"	function	line:149
+button	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  button {$/;"	function	line:154
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:156
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus {$/;"	function	line:157
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:160
+.input-error-msg	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.input-error-msg {$/;"	function	line:166
+::-webkit-input-placeholder	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^::-webkit-input-placeholder {$/;"	function	line:171
+::-moz-placeholder	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^::-moz-placeholder {$/;"	function	line:174
+:-ms-input-placeholder	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^:-ms-input-placeholder {$/;"	function	line:177
+:-moz-placeholder	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^:-moz-placeholder {$/;"	function	line:180
+.checkbox-label	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^.checkbox-label {$/;"	function	line:184
+input	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  input {$/;"	function	line:188
+i	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^  i {$/;"	function	line:191
+&:hover	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:hover,$/;"	function	line:194
+&:focus	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:focus {$/;"	function	line:195
+&:active	/Users/justinworsdale/goodchat/src/client/less/forms.less	/^    &:active {$/;"	function	line:198
+.clearfix	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.clearfix {$/;"	function	line:1
+.relative	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.relative {$/;"	function	line:5
+.center	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.center {$/;"	function	line:9
+.align-right	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.align-right {$/;"	function	line:13
+.pull-right	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.pull-right {$/;"	function	line:17
+.nowrap	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.nowrap {$/;"	function	line:21
+.font-small	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.font-small {$/;"	function	line:25
+.muted-text	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.muted-text {$/;"	function	line:30
+.danger-text	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.danger-text {$/;"	function	line:34
+a	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^  a {$/;"	function	line:36
+&:hover	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^    &:hover,$/;"	function	line:41
+&:focus	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^    &:focus {$/;"	function	line:42
+&:active	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^    &:active {$/;"	function	line:45
+.success-text	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.success-text {$/;"	function	line:51
+.strong-text	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.strong-text {$/;"	function	line:55
+.quarter-gutter-top	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.quarter-gutter-top {$/;"	function	line:59
+.half-gutter-top	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.half-gutter-top {$/;"	function	line:63
+.gutter-top	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.gutter-top {$/;"	function	line:67
+.gutter-large-top	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.gutter-large-top {$/;"	function	line:71
+.capitalize	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.capitalize {$/;"	function	line:75
+.vanity-font	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.vanity-font {$/;"	function	line:79
+.text-center	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.text-center {$/;"	function	line:83
+.hide-handheld	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.hide-handheld {$/;"	function	line:87
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:89
+.hide-tablet	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.hide-tablet {$/;"	function	line:94
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^  @media(min-width: @tablet-width) {$/;"	function	line:95
+.date-picker-calendar	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^.date-picker-calendar {$/;"	function	line:100
+.react-datepicker__day--selected	/Users/justinworsdale/goodchat/src/client/less/helpers.less	/^  .react-datepicker__day--selected {$/;"	function	line:101
+.footer-btn-list	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^.footer-btn-list {$/;"	function	line:1
+.page-body &	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  .page-body & {$/;"	function	line:5
+li	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  li {$/;"	function	line:10
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    &:first-child {$/;"	function	line:13
+.page-body-list	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^.page-body-list {$/;"	function	line:19
+.page-body &	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  .page-body & {$/;"	function	line:23
+>li	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  >li {$/;"	function	line:28
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    &:first-child {$/;"	function	line:32
+>div	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    >div {$/;"	function	line:35
+>a	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    >a {$/;"	function	line:38
+&:hover	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^      &:hover,$/;"	function	line:43
+&:active	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^      &:active {$/;"	function	line:44
+&:active	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^      &:active {$/;"	function	line:48
+.inline-list	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^.inline-list {$/;"	function	line:55
+>li	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  >li {$/;"	function	line:59
++li	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    +li {$/;"	function	line:63
+.stacked-to-inline-list	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^.stacked-to-inline-list {$/;"	function	line:69
+>li	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^  >li {$/;"	function	line:73
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    &:first-child {$/;"	function	line:77
+button	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    button {$/;"	function	line:80
+@media(min-width: @tablet-width)	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^    @media(min-width: @tablet-width) {$/;"	function	line:84
+&:first-child	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^      &:first-child {$/;"	function	line:89
+button	/Users/justinworsdale/goodchat/src/client/less/lists.less	/^      button {$/;"	function	line:93
+comparePass	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function comparePass(userPassword, databasePassword) {$/;"	function	line:3
+comparePass	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function comparePass(userPassword, databasePassword) {$/;"	function	line:3
+createUser	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function createUser(req, res) {$/;"	function	line:7
+createUser	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function createUser(req, res) {$/;"	function	line:7
+loginRequired	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function loginRequired(req, res, next) {$/;"	function	line:26
+loginRequired	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function loginRequired(req, res, next) {$/;"	function	line:26
+adminRequired	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function adminRequired(req, res, next) {$/;"	function	line:31
+adminRequired	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function adminRequired(req, res, next) {$/;"	function	line:31
+loginRedirect	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function loginRedirect(req, res, next) {$/;"	function	line:43
+loginRedirect	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function loginRedirect(req, res, next) {$/;"	function	line:43
+handleErrors	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function handleErrors(req) {$/;"	function	line:50
+handleErrors	/Users/justinworsdale/goodchat/src/server/auth/_helpers.js	/^function handleErrors(req) {$/;"	function	line:50
+init	/Users/justinworsdale/goodchat/src/server/config/error-config.js	/^  errorConfig.init = function (app) {$/;"	function	line:7
+errorConfig.init	/Users/justinworsdale/goodchat/src/server/config/error-config.js	/^  'use strict';$/;"	function	line:3
+init	/Users/justinworsdale/goodchat/src/server/config/main-config.js	/^  appConfig.init = function(app, express) {$/;"	function	line:23
+appConfig.init	/Users/justinworsdale/goodchat/src/server/config/main-config.js	/^  require('dotenv').config();$/;"	function	line:21
+init	/Users/justinworsdale/goodchat/src/server/config/route-config.js	/^  routeConfig.init = function (app) {$/;"	function	line:5
+routeConfig.init	/Users/justinworsdale/goodchat/src/server/config/route-config.js	/^  'use strict';$/;"	function	line:3
+sum	/Users/justinworsdale/goodchat/src/server/controllers/index.js	/^function sum(num1, num2, callback) {$/;"	function	line:1
+sum	/Users/justinworsdale/goodchat/src/server/controllers/index.js	/^function sum(num1, num2, callback) {$/;"	function	line:1
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218173043_organizations.js	/^exports.up = function(knex, Promise) {$/;"	function	line:3
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218173043_organizations.js	/^const uuid = require('node-uuid');$/;"	function	line:1
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218173043_organizations.js	/^exports.down = function(knex, Promise) {$/;"	function	line:12
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218173043_organizations.js	/^};$/;"	function	line:10
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218180316_teams.js	/^exports.up = function(knex, Promise) {$/;"	function	line:3
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218180316_teams.js	/^const uuid = require('node-uuid');$/;"	function	line:1
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218180316_teams.js	/^exports.down = function(knex, Promise) {$/;"	function	line:12
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161218180316_teams.js	/^};$/;"	function	line:10
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161223194247_teams.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161223194247_teams.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161223194247_teams.js	/^exports.down = function(knex, Promise) {$/;"	function	line:9
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161223194247_teams.js	/^};$/;"	function	line:7
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161226131448_users.js	/^exports.up = function(knex, Promise) {$/;"	function	line:3
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161226131448_users.js	/^const uuid = require('node-uuid');$/;"	function	line:1
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161226131448_users.js	/^exports.down = function(knex, Promise) {$/;"	function	line:9
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161226131448_users.js	/^};$/;"	function	line:7
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161230185133_memberships.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20161230185133_memberships.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161230185133_memberships.js	/^exports.down = function(knex, Promise) {$/;"	function	line:13
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20161230185133_memberships.js	/^};$/;"	function	line:11
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170101192340_teams.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170101192340_teams.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170101192340_teams.js	/^exports.down = function(knex, Promise) {$/;"	function	line:11
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170101192340_teams.js	/^};$/;"	function	line:9
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170102134631_memberships.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170102134631_memberships.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170102134631_memberships.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170102134631_memberships.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103211002_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103211002_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103211002_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:24
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103211002_meetings.js	/^};$/;"	function	line:22
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103214941_invites.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103214941_invites.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103214941_invites.js	/^exports.down = function(knex, Promise) {$/;"	function	line:14
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170103214941_invites.js	/^};$/;"	function	line:12
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170107171405_users.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170107171405_users.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170107171405_users.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170107171405_users.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108095753_invites.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108095753_invites.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108095753_invites.js	/^exports.down = function(knex, Promise) {$/;"	function	line:6
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108095753_invites.js	/^};$/;"	function	line:4
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108100558_invites.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108100558_invites.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108100558_invites.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108100558_invites.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108103648_teams.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108103648_teams.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108103648_teams.js	/^exports.down = function(knex, Promise) {$/;"	function	line:12
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170108103648_teams.js	/^};$/;"	function	line:10
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170116201506_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170116201506_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170116201506_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170116201506_meetings.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170124212309_notes.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170124212309_notes.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170124212309_notes.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170124212309_notes.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170315221241_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170315221241_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170315221241_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170315221241_meetings.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170322235503_notes.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170322235503_notes.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170322235503_notes.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170322235503_notes.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170323000440_notes.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170323000440_notes.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170323000440_notes.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170323000440_notes.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170326191436_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170326191436_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170326191436_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170326191436_meetings.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403163953_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403163953_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403163953_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403163953_meetings.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403184059_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403184059_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403184059_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:7
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170403184059_meetings.js	/^};$/;"	function	line:5
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405212407_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405212407_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405212407_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405212407_meetings.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405213655_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405213655_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405213655_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:16
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405213655_meetings.js	/^};$/;"	function	line:14
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405215426_notes.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405215426_notes.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405215426_notes.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170405215426_notes.js	/^};$/;"	function	line:6
+up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170407114654_meetings.js	/^exports.up = function(knex, Promise) {$/;"	function	line:2
+exports.up	/Users/justinworsdale/goodchat/src/server/db/migrations/20170407114654_meetings.js	/^$/;"	function	line:0
+down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170407114654_meetings.js	/^exports.down = function(knex, Promise) {$/;"	function	line:8
+exports.down	/Users/justinworsdale/goodchat/src/server/db/migrations/20170407114654_meetings.js	/^};$/;"	function	line:6
+user	/Users/justinworsdale/goodchat/src/server/models/membership.js	/^  user: function() {$/;"	function	line:11
+team	/Users/justinworsdale/goodchat/src/server/models/membership.js	/^  team: function() {$/;"	function	line:14
+memberships	/Users/justinworsdale/goodchat/src/server/models/team.js	/^  memberships: function() {$/;"	function	line:10
+memberships	/Users/justinworsdale/goodchat/src/server/models/user.js	/^  memberships: function() {$/;"	function	line:10
+handleLogin	/Users/justinworsdale/goodchat/src/server/routes/auth.js	/^\/\/ function handleLogin(req, user) {$/;"	function	line:56
+handleResponse	/Users/justinworsdale/goodchat/src/server/routes/auth.js	/^function handleResponse(res, code, statusMsg) {$/;"	function	line:65
+handleResponse	/Users/justinworsdale/goodchat/src/server/routes/auth.js	/^function handleResponse(res, code, statusMsg) {$/;"	function	line:65
+handleResponse	/Users/justinworsdale/goodchat/src/server/routes/user.js	/^function handleResponse(res, code, statusMsg) {$/;"	function	line:14
+handleResponse	/Users/justinworsdale/goodchat/src/server/routes/user.js	/^function handleResponse(res, code, statusMsg) {$/;"	function	line:14
+normalizePort	/Users/justinworsdale/goodchat/src/server/server.js	/^  function normalizePort(val) {$/;"	function	line:18
+normalizePort	/Users/justinworsdale/goodchat/src/server/server.js	/^  function normalizePort(val) {$/;"	function	line:18
+onError	/Users/justinworsdale/goodchat/src/server/server.js	/^  function onError(error) {$/;"	function	line:29
+switch	/Users/justinworsdale/goodchat/src/server/server.js	/^    switch (error.code) {$/;"	function	line:34
+onError	/Users/justinworsdale/goodchat/src/server/server.js	/^  function onError(error) {$/;"	function	line:29
+onListening	/Users/justinworsdale/goodchat/src/server/server.js	/^  function onListening() {$/;"	function	line:48
+onListening	/Users/justinworsdale/goodchat/src/server/server.js	/^  function onListening() {$/;"	function	line:48
+html	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^<html lang="en">$/;"	function	line:2
+head	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^  <head>$/;"	function	line:3
+meta	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <meta charset="utf-8">$/;"	function	line:4
+meta	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <meta http-equiv="X-UA-Compatible" content="IE=edge">$/;"	function	line:5
+meta	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <meta name="viewport" content="width=device-width, initial-scale=1">$/;"	function	line:6
+title	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <title>Good Chat<\/title>$/;"	function	line:7
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link href="https:\/\/fonts.googleapis.com\/icon?family=Material+Icons" rel="stylesheet">$/;"	function	line:8
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link href="https:\/\/fonts.googleapis.com\/css?family=Galada" rel="stylesheet">$/;"	function	line:9
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link rel="apple-touch-icon" sizes="180x180" href="\/icons\/apple-touch-icon-180x180.png">$/;"	function	line:11
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link rel="icon" type="image\/png" href="\/icons\/favicon-32x32.png" sizes="32x32">$/;"	function	line:12
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link rel="icon" type="image\/png" href="\/icons\/favicon-16x16.png" sizes="16x16">$/;"	function	line:13
+link	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <link rel="manifest" href="\/icons\/manifest.json">$/;"	function	line:14
+body	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^  <body>$/;"	function	line:18
+script	/Users/justinworsdale/goodchat/src/server/views/_base.html	/^    <script type="text\/javascript" src="\/js\/bundle.js"><\/script>$/;"	function	line:21
+script	/Users/justinworsdale/goodchat/src/server/views/index.html	/^<script type="text\/javascript">$/;"	function	line:5
+script	/Users/justinworsdale/goodchat/src/server/views/index.html	/^<script type="text\/javascript">$/;"	function	line:11
+script	/Users/justinworsdale/goodchat/src/server/views/index.html	/^  <script>$/;"	function	line:23
+script	/Users/justinworsdale/goodchat/src/server/views/index.html	/^  <script src="\/\/apis.google.com\/js\/api:client.js"><\/script>$/;"	function	line:26
+div	/Users/justinworsdale/goodchat/src/server/views/index.html	/^  <div id="app">$/;"	function	line:27
+util	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^var util = require('util');$/;"	variable	line:1
+events	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^var events = require('events');$/;"	variable	line:2
+Login	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^function Login() {$/;"	function	line:3
+Login	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^function Login() {$/;"	function	line:3
+command	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^Login.prototype.command = function(email, password) {$/;"	function	line:9
+Login	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^util.inherits(Login, events.EventEmitter);$/;"	class	line:7
+Login.command	/Users/justinworsdale/goodchat/test/e2e/commands/login.js	/^Login.prototype.command = function(email, password) {$/;"	method	line:9
+module.exports.Create a team and invite someone	/Users/justinworsdale/goodchat/test/e2e/index.js	/^module.exports = {$/;"	property	line:32
+url	/Users/justinworsdale/goodchat/test/e2e/pages/home.js	/^  url: function() {$/;"	function	line:2
+module.exports.url	/Users/justinworsdale/goodchat/test/e2e/pages/home.js	/^module.exports = {$/;"	method	line:1
+module.exports.elements	/Users/justinworsdale/goodchat/test/e2e/pages/home.js	/^  },$/;"	property	line:4
+module.exports.elements	/Users/justinworsdale/goodchat/test/e2e/pages/meetings.js	/^module.exports = {$/;"	property	line:1
+url	/Users/justinworsdale/goodchat/test/e2e/pages/team.js	/^  url: function() {$/;"	function	line:2
+module.exports.url	/Users/justinworsdale/goodchat/test/e2e/pages/team.js	/^module.exports = {$/;"	method	line:1
+module.exports.elements	/Users/justinworsdale/goodchat/test/e2e/pages/team.js	/^  },$/;"	property	line:4
+module.exports.elements	/Users/justinworsdale/goodchat/test/e2e/pages/teamInvite.js	/^module.exports = {$/;"	property	line:1
+url	/Users/justinworsdale/goodchat/test/e2e/pages/teams.js	/^  url: function() {$/;"	function	line:2
+module.exports.url	/Users/justinworsdale/goodchat/test/e2e/pages/teams.js	/^module.exports = {$/;"	method	line:1
+module.exports.elements	/Users/justinworsdale/goodchat/test/e2e/pages/teams.js	/^  },$/;"	property	line:4
+module.exports.entry	/Users/justinworsdale/goodchat/webpack.config.js	/^module.exports = {$/;"	property	line:5
