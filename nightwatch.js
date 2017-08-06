@@ -7,7 +7,7 @@ module.exports = {
   "globals_path" : "",
 
   "selenium" : {
-    "start_process" : true,
+    "start_process" : false,
     "server_path" : "./node_modules/selenium-standalone/.selenium/selenium-server/3.4.0-server.jar",
     "log_path" : "./test/e2e/log",
     "port" : 4444,
