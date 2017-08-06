@@ -17,3 +17,6 @@ before_script:
   - babel-node --presets es2015,stage-0 ./src/server/server &
 script:
   - npm test
+cache:
+  directories:
+  - node_modules
