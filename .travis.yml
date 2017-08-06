@@ -10,9 +10,13 @@ addons:
 language: node_js
 node_js:
   - 7.0.0
+services:
+  - postgresql
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - psql -c 'create database goodchat2;' -U postgres
+  - knex migrate:latest
   - node_modules/selenium-standalone/bin/selenium-standalone install
   - babel-node --presets es2015,stage-0 ./src/server/server &
 script:
