@@ -7,7 +7,7 @@ module.exports = {
   "globals_path" : "",
 
   "selenium" : {
-    "start_process" : false,
+    "start_process" : true,
     "server_path" : "./node_modules/selenium-standalone/.selenium/selenium-server/3.4.0-server.jar",
     "log_path" : "./test/e2e/log",
     "port" : 4444,
@@ -28,6 +28,7 @@ module.exports = {
       },
       "desiredCapabilities": {
         "browserName": "chrome",
+        "marionette": false,
         "javascriptEnabled": true
       }
     },
