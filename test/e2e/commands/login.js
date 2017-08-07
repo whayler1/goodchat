@@ -11,6 +11,7 @@ Login.prototype.command = function(email, password) {
   const { api } = self.client;
   const home = api.page.home();
   const teams = api.page.teams();
+  console.log('---> email', email.length, '\n-- password:', password.length);
 
   home.navigate()
     .waitForElementVisible('@loginCta', 1000)

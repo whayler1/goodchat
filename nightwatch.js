@@ -12,7 +12,7 @@ module.exports = {
     "log_path" : "./test/e2e/log",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "./node_modules/selenium-standalone/.selenium/chromedriver/2.30-x64-chromedriver"
+      "webdriver.chrome.driver" : "./node_modules/selenium-standalone/.selenium/chromedriver/2.31-x64-chromedriver"
     }
   },
 
@@ -28,6 +28,7 @@ module.exports = {
       },
       "desiredCapabilities": {
         "browserName": "chrome",
+        "marionette": false,
         "javascriptEnabled": true
       }
     },
